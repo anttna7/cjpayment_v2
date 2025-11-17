@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>结算订单管理</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:20px}
+    h1{font-size:20px;margin-bottom:10px}
+    .toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+    input,button,select{padding:8px;border:1px solid #ddd;border-radius:4px}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{border:1px solid #eee;padding:8px;text-align:left;font-size:14px}
+    th{background:#f8f8f8}
+    .section{margin-top:20px;padding:15px;border:1px solid #ddd;border-radius:4px}
+    .status-pending{color:#f59e0b}
+    .status-reviewing{color:#3b82f6}
+    .status-approved{color:#10b981}
+    .status-rejected{color:#ef4444}
+    .status-settled{color:#6b7280}
+  </style>
+</head>
+<body>
+  <h1>结算订单管理</h1>
+  <div class="toolbar">
+    <select id="statusFilter">
+      <option value="">全部状态</option>
+      <option value="pending">待提交</option>
+      <option value="reviewing">审核中</option>
+      <option value="approved">已批准</option>
+      <option value="rejected">已拒绝</option>
+      <option value="settled">已结算</option>
+    </select>
+    <input id="customerIdFilter" placeholder="客户ID" style="width:250px">
+    <button onclick="loadOrders()">查询</button>
+    <button onclick="showCreateForm()">新增结算单</button>
+  </div>
+
+  <div id="createForm" class="section" style="display:none">
+    <h2 style="font-size:16px">新增结算单</h2>
+    <div class="toolbar">
+      <input id="customerId" placeholder="客户ID" style="width:250px">
+      <input id="periodStart" type="date" placeholder="结算开始日期">
+      <input id="periodEnd" type="date" placeholder="结算结束日期">
+      <input id="totalAmount" type="number" placeholder="总金额" step="0.01">
+      <textarea id="notes" placeholder="备注" style="height:60px;width:300px"></textarea>
+      <button onclick="createOrder()">创建</button>
+      <button onclick="hideCreateForm()">取消</button>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>结算单号</th><th>客户ID</th><th>结算期间</th><th>总金额</th><th>已结金额</th><th>未结金额</th><th>状态</th><th>创建时间</th><th>操作</th>
+      </tr>
+    </thead>
+    <tbody id="list"></tbody>
+  </table>
+
+  <div id="detailModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:1px solid #ddd;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);z-index:1000;min-width:400px">
+    <h3 style="margin-top:0">结算单详情</h3>
+    <div id="detailContent"></div>
+    <div style="margin-top:15px;display:flex;gap:8px">
+      <button onclick="closeDetail()">关闭</button>
+    </div>
+  </div>
+  <div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999" onclick="closeDetail()"></div>
+
+  <script>
+    const API_BASE = '/api/v1/settlement-orders'
+    const auth = () => ({Authorization: localStorage.getItem('auth')})
+
+    async function loadOrders(){
+      const status = document.getElementById('statusFilter').value
+      const customerId = document.getElementById('customerIdFilter').value
+      let url = `${API_BASE}?page=1&page_size=50`
+      if(status) url += `&status=${status}`
+      if(customerId) url += `&customer_id=${customerId}`
+
+      const res = await fetch(url, {headers: auth()})
+      const data = await res.json()
+      const tbody = document.getElementById('list')
+      tbody.innerHTML = ''
+
+      const orders = data.data || []
+      orders.forEach(ord => {
+        const tr = document.createElement('tr')
+        const statusClass = `status-${ord.status}`
+        const periodStart = new Date(ord.settlement_period_start).toLocaleDateString('zh-CN')
+        const periodEnd = new Date(ord.settlement_period_end).toLocaleDateString('zh-CN')
+
+        tr.innerHTML = `
+          <td>${ord.order_number}</td>
+          <td>${ord.customer_id}</td>
+          <td>${periodStart} ~ ${periodEnd}</td>
+          <td>¥${ord.total_amount}</td>
+          <td>¥${ord.settled_amount || 0}</td>
+          <td>¥${ord.outstanding_amount || ord.total_amount}</td>
+          <td class="${statusClass}">${getStatusText(ord.status)}</td>
+          <td>${new Date(ord.created_at).toLocaleString('zh-CN')}</td>
+          <td>
+            <button onclick="viewDetail('${ord.id}')">详情</button>
+            ${ord.status === 'pending' ? `<button onclick="submitForReview('${ord.id}')">提交审核</button>` : ''}
+            ${ord.status === 'reviewing' ? `<button onclick="approveOrder('${ord.id}')">批准</button>` : ''}
+            ${ord.status === 'reviewing' ? `<button onclick="rejectOrder('${ord.id}')">拒绝</button>` : ''}
+            ${ord.status === 'approved' ? `<button onclick="settleOrder('${ord.id}')">结算</button>` : ''}
+            ${ord.status === 'pending' ? `<button onclick="deleteOrder('${ord.id}')">删除</button>` : ''}
+          </td>
+        `
+        tbody.appendChild(tr)
+      })
+    }
+
+    function getStatusText(status){
+      const statuses = {pending:'待提交',reviewing:'审核中',approved:'已批准',rejected:'已拒绝',settled:'已结算'}
+      return statuses[status] || status
+    }
+
+    function showCreateForm(){
+      document.getElementById('createForm').style.display = 'block'
+    }
+
+    function hideCreateForm(){
+      document.getElementById('createForm').style.display = 'none'
+    }
+
+    async function createOrder(){
+      const body = {
+        customer_id: document.getElementById('customerId').value,
+        settlement_period_start: document.getElementById('periodStart').value + 'T00:00:00Z',
+        settlement_period_end: document.getElementById('periodEnd').value + 'T23:59:59Z',
+        total_amount: parseFloat(document.getElementById('totalAmount').value),
+        related_recharge_orders: [],
+        notes: document.getElementById('notes').value || null
+      }
+
+      const res = await fetch(API_BASE, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', ...auth()},
+        body: JSON.stringify(body)
+      })
+      if(res.ok){
+        hideCreateForm()
+        loadOrders()
+        alert('结算单创建成功')
+      } else {
+        alert('创建失败: ' + (await res.text()))
+      }
+    }
+
+    async function submitForReview(id){
+      if(!confirm('确定要提交此结算单进行审核吗？')) return
+      const res = await fetch(`${API_BASE}/${id}/submit`, {
+        method: 'POST',
+        headers: auth()
+      })
+      if(res.ok){
+        loadOrders()
+        alert('提交成功')
+      } else {
+        alert('提交失败')
+      }
+    }
+
+    async function approveOrder(id){
+      const notes = prompt('请输入审批备注:')
+      const res = await fetch(`${API_BASE}/${id}/approve`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', ...auth()},
+        body: JSON.stringify({notes: notes || ''})
+      })
+      if(res.ok){
+        loadOrders()
+        alert('批准成功')
+      } else {
+        alert('批准失败')
+      }
+    }
+
+    async function rejectOrder(id){
+      const notes = prompt('请输入拒绝原因:')
+      if(!notes) return
+      const res = await fetch(`${API_BASE}/${id}/reject`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', ...auth()},
+        body: JSON.stringify({notes: notes})
+      })
+      if(res.ok){
+        loadOrders()
+        alert('已拒绝')
+      } else {
+        alert('操作失败')
+      }
+    }
+
+    async function settleOrder(id){
+      const notes = prompt('请输入结算备注:')
+      const res = await fetch(`${API_BASE}/${id}/settle`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', ...auth()},
+        body: JSON.stringify({notes: notes || ''})
+      })
+      if(res.ok){
+        loadOrders()
+        alert('结算成功')
+      } else {
+        alert('结算失败')
+      }
+    }
+
+    async function deleteOrder(id){
+      if(!confirm('确定要删除此结算单吗？')) return
+      const res = await fetch(`${API_BASE}/${id}`, {
+        method: 'DELETE',
+        headers: auth()
+      })
+      if(res.ok){
+        loadOrders()
+        alert('删除成功')
+      } else {
+        alert('删除失败')
+      }
+    }
+
+    async function viewDetail(id){
+      const res = await fetch(`${API_BASE}/${id}`, {headers: auth()})
+      const result = await res.json()
+      const ord = result.data
+
+      const periodStart = new Date(ord.settlement_period_start).toLocaleDateString('zh-CN')
+      const periodEnd = new Date(ord.settlement_period_end).toLocaleDateString('zh-CN')
+
+      document.getElementById('detailContent').innerHTML = `
+        <p><strong>结算单号:</strong> ${ord.order_number}</p>
+        <p><strong>客户ID:</strong> ${ord.customer_id}</p>
+        <p><strong>结算期间:</strong> ${periodStart} ~ ${periodEnd}</p>
+        <p><strong>总金额:</strong> ¥${ord.total_amount}</p>
+        <p><strong>已结金额:</strong> ¥${ord.settled_amount || 0}</p>
+        <p><strong>未结金额:</strong> ¥${ord.outstanding_amount || ord.total_amount}</p>
+        <p><strong>状态:</strong> ${getStatusText(ord.status)}</p>
+        <p><strong>创建时间:</strong> ${new Date(ord.created_at).toLocaleString('zh-CN')}</p>
+        ${ord.reviewed_at ? `<p><strong>审核时间:</strong> ${new Date(ord.reviewed_at).toLocaleString('zh-CN')}</p>` : ''}
+        ${ord.settled_at ? `<p><strong>结算时间:</strong> ${new Date(ord.settled_at).toLocaleString('zh-CN')}</p>` : ''}
+        ${ord.notes ? `<p><strong>备注:</strong> ${ord.notes}</p>` : ''}
+        ${ord.review_notes ? `<p><strong>审核备注:</strong> ${ord.review_notes}</p>` : ''}
+      `
+      document.getElementById('detailModal').style.display = 'block'
+      document.getElementById('overlay').style.display = 'block'
+    }
+
+    function closeDetail(){
+      document.getElementById('detailModal').style.display = 'none'
+      document.getElementById('overlay').style.display = 'none'
+    }
+
+    loadOrders()
+  </script>
+</body>
+</html>

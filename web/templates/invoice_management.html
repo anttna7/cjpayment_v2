@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>发票管理</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:20px}
+    h1{font-size:20px;margin-bottom:10px}
+    .toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+    input,button,select{padding:8px;border:1px solid #ddd;border-radius:4px}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{border:1px solid #eee;padding:8px;text-align:left;font-size:14px}
+    th{background:#f8f8f8}
+    .section{margin-top:20px;padding:15px;border:1px solid #ddd;border-radius:4px}
+    .status-pending{color:#f59e0b}
+    .status-issued{color:#3b82f6}
+    .status-sent{color:#8b5cf6}
+    .status-confirmed{color:#10b981}
+    .status-cancelled{color:#ef4444}
+  </style>
+</head>
+<body>
+  <h1>发票管理</h1>
+  <div class="toolbar">
+    <select id="statusFilter">
+      <option value="">全部状态</option>
+      <option value="pending">待开票</option>
+      <option value="issued">已开票</option>
+      <option value="sent">已发送</option>
+      <option value="confirmed">已确认</option>
+      <option value="cancelled">已作废</option>
+    </select>
+    <select id="typeFilter">
+      <option value="">全部类型</option>
+      <option value="vat_normal">增值税普通发票</option>
+      <option value="vat_special">增值税专用发票</option>
+      <option value="electronic">电子发票</option>
+      <option value="paper">纸质发票</option>
+    </select>
+    <button onclick="loadInvoices()">查询</button>
+    <button onclick="showCreateForm()">新增发票</button>
+  </div>
+
+  <div id="createForm" class="section" style="display:none">
+    <h2 style="font-size:16px">新增发票</h2>
+    <div class="toolbar">
+      <input id="customerId" placeholder="客户ID" style="width:250px">
+      <select id="invoiceType">
+        <option value="vat_normal">增值税普通发票</option>
+        <option value="vat_special">增值税专用发票</option>
+        <option value="electronic">电子发票</option>
+        <option value="paper">纸质发票</option>
+      </select>
+      <input id="amount" type="number" placeholder="金额" step="0.01">
+      <input id="taxRate" type="number" placeholder="税率(%)" step="0.01" value="13">
+      <input id="taxAmount" type="number" placeholder="税额" step="0.01">
+      <input id="relatedOrderId" placeholder="关联订单ID(可选)" style="width:250px">
+      <textarea id="notes" placeholder="备注" style="height:60px;width:300px"></textarea>
+      <button onclick="createInvoice()">创建</button>
+      <button onclick="hideCreateForm()">取消</button>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>发票号</th><th>客户ID</th><th>类型</th><th>金额</th><th>税额</th><th>状态</th><th>申请时间</th><th>操作</th>
+      </tr>
+    </thead>
+    <tbody id="list"></tbody>
+  </table>
+
+  <div id="detailModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:1px solid #ddd;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);z-index:1000;min-width:400px">
+    <h3 style="margin-top:0">发票详情</h3>
+    <div id="detailContent"></div>
+    <div style="margin-top:15px;display:flex;gap:8px">
+      <button onclick="closeDetail()">关闭</button>
+    </div>
+  </div>
+  <div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999" onclick="closeDetail()"></div>
+
+  <script>
+    const API_BASE = '/api/v1/invoices'
+    const auth = () => ({Authorization: localStorage.getItem('auth')})
+
+    async function loadInvoices(){
+      const status = document.getElementById('statusFilter').value
+      const type = document.getElementById('typeFilter').value
+      let url = `${API_BASE}?page=1&page_size=50`
+      if(status) url += `&status=${status}`
+      if(type) url += `&invoice_type=${type}`
+
+      const res = await fetch(url, {headers: auth()})
+      const data = await res.json()
+      const tbody = document.getElementById('list')
+      tbody.innerHTML = ''
+
+      const invoices = data.data || []
+      invoices.forEach(inv => {
+        const tr = document.createElement('tr')
+        const statusClass = `status-${inv.status}`
+        tr.innerHTML = `
+          <td>${inv.invoice_number || '未生成'}</td>
+          <td>${inv.customer_id}</td>
+          <td>${getTypeText(inv.invoice_type)}</td>
+          <td>¥${inv.amount}</td>
+          <td>¥${inv.tax_amount || 0}</td>
+          <td class="${statusClass}">${getStatusText(inv.status)}</td>
+          <td>${new Date(inv.created_at).toLocaleString('zh-CN')}</td>
+          <td>
+            <button onclick="viewDetail('${inv.id}')">详情</button>
+            ${inv.status === 'pending' ? `<button onclick="issueInvoice('${inv.id}')">开票</button>` : ''}
+            ${inv.status === 'issued' ? `<button onclick="sendInvoice('${inv.id}')">发送</button>` : ''}
+            ${inv.status === 'sent' ? `<button onclick="confirmInvoice('${inv.id}')">确认</button>` : ''}
+            ${inv.status === 'pending' || inv.status === 'issued' ? `<button onclick="cancelInvoice('${inv.id}')">作废</button>` : ''}
+            ${inv.status === 'pending' ? `<button onclick="deleteInvoice('${inv.id}')">删除</button>` : ''}
+          </td>
+        `
+        tbody.appendChild(tr)
+      })
+    }
+
+    function getTypeText(type){
+      const types = {vat_normal:'增值税普通发票',vat_special:'增值税专用发票',electronic:'电子发票',paper:'纸质发票'}
+      return types[type] || type
+    }
+
+    function getStatusText(status){
+      const statuses = {pending:'待开票',issued:'已开票',sent:'已发送',confirmed:'已确认',cancelled:'已作废'}
+      return statuses[status] || status
+    }
+
+    function showCreateForm(){
+      document.getElementById('createForm').style.display = 'block'
+    }
+
+    function hideCreateForm(){
+      document.getElementById('createForm').style.display = 'none'
+    }
+
+    async function createInvoice(){
+      const body = {
+        customer_id: document.getElementById('customerId').value,
+        invoice_type: document.getElementById('invoiceType').value,
+        amount: parseFloat(document.getElementById('amount').value),
+        tax_rate: parseFloat(document.getElementById('taxRate').value),
+        tax_amount: parseFloat(document.getElementById('taxAmount').value),
+        notes: document.getElementById('notes').value || null
+      }
+      const relatedOrderId = document.getElementById('relatedOrderId').value
+      if(relatedOrderId) body.related_order_id = relatedOrderId
+
+      const res = await fetch(API_BASE, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', ...auth()},
+        body: JSON.stringify(body)
+      })
+      if(res.ok){
+        hideCreateForm()
+        loadInvoices()
+        alert('发票创建成功')
+      } else {
+        alert('创建失败: ' + (await res.text()))
+      }
+    }
+
+    async function issueInvoice(id){
+      const fileURL = prompt('请输入发票文件URL:')
+      if(!fileURL) return
+      const fileName = prompt('请输入文件名:', 'invoice.pdf')
+
+      const res = await fetch(`${API_BASE}/${id}/issue`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', ...auth()},
+        body: JSON.stringify({file_url: fileURL, file_name: fileName, file_size: 1024})
+      })
+      if(res.ok){
+        loadInvoices()
+        alert('开票成功')
+      } else {
+        alert('开票失败')
+      }
+    }
+
+    async function sendInvoice(id){
+      const res = await fetch(`${API_BASE}/${id}/send`, {
+        method: 'POST',
+        headers: auth()
+      })
+      if(res.ok){
+        loadInvoices()
+        alert('发送成功')
+      } else {
+        alert('发送失败')
+      }
+    }
+
+    async function confirmInvoice(id){
+      const res = await fetch(`${API_BASE}/${id}/confirm`, {
+        method: 'POST',
+        headers: auth()
+      })
+      if(res.ok){
+        loadInvoices()
+        alert('确认成功')
+      } else {
+        alert('确认失败')
+      }
+    }
+
+    async function cancelInvoice(id){
+      if(!confirm('确定要作废此发票吗？')) return
+      const res = await fetch(`${API_BASE}/${id}/cancel`, {
+        method: 'POST',
+        headers: auth()
+      })
+      if(res.ok){
+        loadInvoices()
+        alert('作废成功')
+      } else {
+        alert('作废失败')
+      }
+    }
+
+    async function deleteInvoice(id){
+      if(!confirm('确定要删除此发票吗？')) return
+      const res = await fetch(`${API_BASE}/${id}`, {
+        method: 'DELETE',
+        headers: auth()
+      })
+      if(res.ok){
+        loadInvoices()
+        alert('删除成功')
+      } else {
+        alert('删除失败')
+      }
+    }
+
+    async function viewDetail(id){
+      const res = await fetch(`${API_BASE}/${id}`, {headers: auth()})
+      const result = await res.json()
+      const inv = result.data
+
+      document.getElementById('detailContent').innerHTML = `
+        <p><strong>发票号:</strong> ${inv.invoice_number || '未生成'}</p>
+        <p><strong>客户ID:</strong> ${inv.customer_id}</p>
+        <p><strong>类型:</strong> ${getTypeText(inv.invoice_type)}</p>
+        <p><strong>金额:</strong> ¥${inv.amount}</p>
+        <p><strong>税率:</strong> ${inv.tax_rate}%</p>
+        <p><strong>税额:</strong> ¥${inv.tax_amount || 0}</p>
+        <p><strong>状态:</strong> ${getStatusText(inv.status)}</p>
+        <p><strong>申请时间:</strong> ${new Date(inv.created_at).toLocaleString('zh-CN')}</p>
+        ${inv.issued_at ? `<p><strong>开票时间:</strong> ${new Date(inv.issued_at).toLocaleString('zh-CN')}</p>` : ''}
+        ${inv.file_url ? `<p><strong>文件:</strong> <a href="${inv.file_url}" target="_blank">${inv.file_name}</a></p>` : ''}
+        ${inv.notes ? `<p><strong>备注:</strong> ${inv.notes}</p>` : ''}
+      `
+      document.getElementById('detailModal').style.display = 'block'
+      document.getElementById('overlay').style.display = 'block'
+    }
+
+    function closeDetail(){
+      document.getElementById('detailModal').style.display = 'none'
+      document.getElementById('overlay').style.display = 'none'
+    }
+
+    loadInvoices()
+  </script>
+</body>
+</html>

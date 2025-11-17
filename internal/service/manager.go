@@ -28,6 +28,10 @@ type ServiceManager struct {
 	TestDataService          TestDataService
 	DataCleanupService       DataCleanupService
 	RechargeLinkService      RechargeLinkService
+	InvoiceService           InvoiceService
+	SettlementOrderService   SettlementOrderService
+	DepartmentService        DepartmentService
+	CustomFormService        CustomFormService
 }
 
 // ServiceConfig holds configuration for services
@@ -178,6 +182,21 @@ func NewServiceManager(
 	sessionService := NewSessionService(auditLogger, securityMonitor)
 	permissionMonitorService := NewPermissionMonitorService(auditLogger, securityMonitor)
 
+	// Create customer payment system services
+	invoiceService := NewInvoiceService(repoManager.Invoice)
+	settlementOrderService := NewSettlementOrderService(repoManager.SettlementOrder)
+	departmentService := NewDepartmentService(
+		repoManager.Department,
+		repoManager.Role,
+		repoManager.Permission,
+		repoManager.User,
+	)
+	customFormService := NewCustomFormService(
+		repoManager.CustomForm,
+		repoManager.FormField,
+		repoManager.FormSubmission,
+	)
+
 	return &ServiceManager{
 		AuthService:              authService,
 		PermissionService:        permissionService,
@@ -197,6 +216,10 @@ func NewServiceManager(
 		TestDataService:          testDataService,
 		DataCleanupService:       dataCleanupService,
 		RechargeLinkService:      NewRechargeLinkService(repoManager.RechargeLink, repoManager.Merchant),
+		InvoiceService:           invoiceService,
+		SettlementOrderService:   settlementOrderService,
+		DepartmentService:        departmentService,
+		CustomFormService:        customFormService,
 	}
 }
 

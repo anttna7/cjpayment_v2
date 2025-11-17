@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>表单管理</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:20px}
+    h1{font-size:20px;margin-bottom:10px}
+    .toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+    input,button,select,textarea{padding:8px;border:1px solid #ddd;border-radius:4px}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{border:1px solid #eee;padding:8px;text-align:left;font-size:14px}
+    th{background:#f8f8f8}
+    .section{margin-top:20px;padding:15px;border:1px solid #ddd;border-radius:4px}
+    .status-draft{color:#f59e0b}
+    .status-published{color:#10b981}
+    .status-archived{color:#6b7280}
+    .tab{display:inline-block;padding:8px 16px;cursor:pointer;border:1px solid #ddd;margin-right:4px;background:#f8f8f8}
+    .tab.active{background:#3b82f6;color:white;border-color:#3b82f6}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+  </style>
+</head>
+<body>
+  <h1>表单管理</h1>
+
+  <div style="margin-bottom:15px">
+    <span class="tab active" onclick="switchTab('forms')">表单列表</span>
+    <span class="tab" onclick="switchTab('submissions')">提交记录</span>
+  </div>
+
+  <!-- 表单列表 -->
+  <div id="forms" class="tab-content active">
+    <div class="toolbar">
+      <select id="statusFilter">
+        <option value="">全部状态</option>
+        <option value="draft">草稿</option>
+        <option value="published">已发布</option>
+        <option value="archived">已归档</option>
+      </select>
+      <select id="categoryFilter">
+        <option value="">全部分类</option>
+        <option value="survey">问卷调查</option>
+        <option value="application">申请表单</option>
+        <option value="registration">注册表单</option>
+        <option value="feedback">反馈表单</option>
+        <option value="other">其他</option>
+      </select>
+      <button onclick="loadForms()">查询</button>
+      <button onclick="showCreateForm()">新增表单</button>
+    </div>
+
+    <div id="createForm" class="section" style="display:none">
+      <h2 style="font-size:16px">新增表单</h2>
+      <div class="toolbar">
+        <input id="formName" placeholder="表单名称">
+        <textarea id="formDesc" placeholder="表单描述" style="height:60px;width:300px"></textarea>
+        <select id="formCategory">
+          <option value="survey">问卷调查</option>
+          <option value="application">申请表单</option>
+          <option value="registration">注册表单</option>
+          <option value="feedback">反馈表单</option>
+          <option value="other">其他</option>
+        </select>
+        <button onclick="createForm()">创建</button>
+        <button onclick="hideCreateForm()">取消</button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>名称</th><th>分类</th><th>状态</th><th>创建时间</th><th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="formList"></tbody>
+    </table>
+  </div>
+
+  <!-- 提交记录 -->
+  <div id="submissions" class="tab-content">
+    <div class="toolbar">
+      <select id="submissionFormSelect">
+        <option value="">选择表单</option>
+      </select>
+      <select id="submissionStatusFilter">
+        <option value="">全部状态</option>
+        <option value="pending">待审核</option>
+        <option value="approved">已批准</option>
+        <option value="rejected">已拒绝</option>
+      </select>
+      <button onclick="loadSubmissions()">查询</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>提交ID</th><th>表单ID</th><th>提交者</th><th>状态</th><th>提交时间</th><th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="submissionList"></tbody>
+    </table>
+  </div>
+
+  <div id="detailModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:1px solid #ddd;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);z-index:1000;min-width:500px;max-height:80vh;overflow-y:auto">
+    <h3 style="margin-top:0">详情</h3>
+    <div id="detailContent"></div>
+    <div style="margin-top:15px;display:flex;gap:8px">
+      <button onclick="closeDetail()">关闭</button>
+    </div>
+  </div>
+  <div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999" onclick="closeDetail()"></div>
+
+  <script>
+    const API_BASE = '/api/v1/forms'
+    const SUBMISSION_API = '/api/v1/submissions'
+    const auth = () => ({Authorization: localStorage.getItem('auth')})
+    let currentFormId = null
+
+    async function loadForms(){
+      const status = document.getElementById('statusFilter').value
+      const category = document.getElementById('categoryFilter').value
+      let url = `${API_BASE}?page=1&page_size=50`
+      if(status) url += `&status=${status}`
+      if(category) url += `&category=${category}`
+
+      const res = await fetch(url, {headers: auth()})
+      const data = await res.json()
+      const tbody = document.getElementById('formList')
+      tbody.innerHTML = ''
+
+      const forms = data.data || []
+
+      // 填充表单选择器
+      const formSelect = document.getElementById('submissionFormSelect')
+      formSelect.innerHTML = '<option value="">选择表单</option>'
+
+      forms.forEach(form => {
+        const tr = document.createElement('tr')
+        const statusClass = `status-${form.status}`
+
+        tr.innerHTML = `
+          <td>${form.name}</td>
+          <td>${getCategoryText(form.category)}</td>
+          <td class="${statusClass}">${getStatusText(form.status)}</td>
+          <td>${new Date(form.created_at).toLocaleString('zh-CN')}</td>
+          <td>
+            <button onclick="viewFormDetail('${form.id}')">详情</button>
+            ${form.status === 'draft' ? `<button onclick="publishForm('${form.id}')">发布</button>` : ''}
+            ${form.status === 'published' ? `<button onclick="archiveForm('${form.id}')">归档</button>` : ''}
+            ${form.status === 'draft' ? `<button onclick="deleteForm('${form.id}')">删除</button>` : ''}
+          </td>
+        `
+        tbody.appendChild(tr)
+
+        const opt = document.createElement('option')
+        opt.value = form.id
+        opt.textContent = form.name
+        formSelect.appendChild(opt)
+      })
+    }
+
+    function getCategoryText(cat){
+      const cats = {survey:'问卷调查',application:'申请表单',registration:'注册表单',feedback:'反馈表单',other:'其他'}
+      return cats[cat] || cat
+    }
+
+    function getStatusText(status){
+      const statuses = {draft:'草稿',published:'已发布',archived:'已归档'}
+      return statuses[status] || status
+    }
+
+    function showCreateForm(){
+      document.getElementById('createForm').style.display = 'block'
+    }
+
+    function hideCreateForm(){
+      document.getElementById('createForm').style.display = 'none'
+    }
+
+    async function createForm(){
+      const body = {
+        name: document.getElementById('formName').value,
+        description: document.getElementById('formDesc').value || null,
+        category: document.getElementById('formCategory').value,
+        fields: []
+      }
+
+      const res = await fetch(API_BASE, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', ...auth()},
+        body: JSON.stringify(body)
+      })
+      if(res.ok){
+        hideCreateForm()
+        loadForms()
+        alert('表单创建成功')
+      } else {
+        alert('创建失败: ' + (await res.text()))
+      }
+    }
+
+    async function publishForm(id){
+      if(!confirm('确定要发布此表单吗？')) return
+      const res = await fetch(`${API_BASE}/${id}/publish`, {
+        method: 'POST',
+        headers: auth()
+      })
+      if(res.ok){
+        loadForms()
+        alert('发布成功')
+      } else {
+        alert('发布失败')
+      }
+    }
+
+    async function archiveForm(id){
+      if(!confirm('确定要归档此表单吗？')) return
+      const res = await fetch(`${API_BASE}/${id}/archive`, {
+        method: 'POST',
+        headers: auth()
+      })
+      if(res.ok){
+        loadForms()
+        alert('归档成功')
+      } else {
+        alert('归档失败')
+      }
+    }
+
+    async function deleteForm(id){
+      if(!confirm('确定要删除此表单吗？')) return
+      const res = await fetch(`${API_BASE}/${id}`, {
+        method: 'DELETE',
+        headers: auth()
+      })
+      if(res.ok){
+        loadForms()
+        alert('删除成功')
+      } else {
+        alert('删除失败')
+      }
+    }
+
+    async function viewFormDetail(id){
+      const res = await fetch(`${API_BASE}/${id}`, {headers: auth()})
+      const result = await res.json()
+      const form = result.data
+
+      let fieldsHtml = '<h4>表单字段:</h4>'
+      if(form.fields && form.fields.length > 0){
+        fieldsHtml += '<ul>'
+        form.fields.forEach(f => {
+          fieldsHtml += `<li><strong>${f.label}</strong> (${f.field_type}) ${f.required ? '必填' : ''}</li>`
+        })
+        fieldsHtml += '</ul>'
+      } else {
+        fieldsHtml += '<p>暂无字段</p>'
+      }
+
+      document.getElementById('detailContent').innerHTML = `
+        <p><strong>表单名称:</strong> ${form.name}</p>
+        <p><strong>描述:</strong> ${form.description || '无'}</p>
+        <p><strong>分类:</strong> ${getCategoryText(form.category)}</p>
+        <p><strong>状态:</strong> ${getStatusText(form.status)}</p>
+        <p><strong>创建时间:</strong> ${new Date(form.created_at).toLocaleString('zh-CN')}</p>
+        ${fieldsHtml}
+      `
+      document.getElementById('detailModal').style.display = 'block'
+      document.getElementById('overlay').style.display = 'block'
+    }
+
+    async function loadSubmissions(){
+      const formId = document.getElementById('submissionFormSelect').value
+      const status = document.getElementById('submissionStatusFilter').value
+
+      if(!formId){
+        alert('请选择表单')
+        return
+      }
+
+      let url = `${API_BASE}/${formId}/submissions?page=1&page_size=50`
+      if(status) url += `&status=${status}`
+
+      const res = await fetch(url, {headers: auth()})
+      const data = await res.json()
+      const tbody = document.getElementById('submissionList')
+      tbody.innerHTML = ''
+
+      const submissions = data.data || []
+      submissions.forEach(sub => {
+        const tr = document.createElement('tr')
+        const submitterId = sub.submitted_by || '匿名'
+
+        tr.innerHTML = `
+          <td>${sub.id}</td>
+          <td>${sub.form_id}</td>
+          <td>${submitterId}</td>
+          <td>${getSubmissionStatus(sub.status)}</td>
+          <td>${new Date(sub.submitted_at).toLocaleString('zh-CN')}</td>
+          <td>
+            <button onclick="viewSubmissionDetail('${sub.id}')">详情</button>
+            ${sub.status === 'pending' ? `<button onclick="reviewSubmission('${sub.id}', true)">批准</button>` : ''}
+            ${sub.status === 'pending' ? `<button onclick="reviewSubmission('${sub.id}', false)">拒绝</button>` : ''}
+          </td>
+        `
+        tbody.appendChild(tr)
+      })
+    }
+
+    function getSubmissionStatus(status){
+      const statuses = {pending:'待审核',approved:'已批准',rejected:'已拒绝'}
+      return statuses[status] || status
+    }
+
+    async function viewSubmissionDetail(id){
+      const res = await fetch(`${SUBMISSION_API}/${id}`, {headers: auth()})
+      const result = await res.json()
+      const sub = result.data
+
+      let dataHtml = '<h4>提交数据:</h4>'
+      if(sub.form_data){
+        dataHtml += '<pre style="background:#f8f8f8;padding:10px;border-radius:4px">' + JSON.stringify(sub.form_data, null, 2) + '</pre>'
+      }
+
+      document.getElementById('detailContent').innerHTML = `
+        <p><strong>提交ID:</strong> ${sub.id}</p>
+        <p><strong>表单ID:</strong> ${sub.form_id}</p>
+        <p><strong>提交者:</strong> ${sub.submitted_by || '匿名'}</p>
+        <p><strong>状态:</strong> ${getSubmissionStatus(sub.status)}</p>
+        <p><strong>提交时间:</strong> ${new Date(sub.submitted_at).toLocaleString('zh-CN')}</p>
+        ${sub.reviewed_at ? `<p><strong>审核时间:</strong> ${new Date(sub.reviewed_at).toLocaleString('zh-CN')}</p>` : ''}
+        ${sub.review_notes ? `<p><strong>审核备注:</strong> ${sub.review_notes}</p>` : ''}
+        ${dataHtml}
+      `
+      document.getElementById('detailModal').style.display = 'block'
+      document.getElementById('overlay').style.display = 'block'
+    }
+
+    async function reviewSubmission(id, approved){
+      const notes = prompt(approved ? '请输入批准备注:' : '请输入拒绝原因:')
+      const res = await fetch(`${SUBMISSION_API}/${id}/review`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', ...auth()},
+        body: JSON.stringify({approved: approved, notes: notes || ''})
+      })
+      if(res.ok){
+        loadSubmissions()
+        alert(approved ? '批准成功' : '已拒绝')
+      } else {
+        alert('操作失败')
+      }
+    }
+
+    function closeDetail(){
+      document.getElementById('detailModal').style.display = 'none'
+      document.getElementById('overlay').style.display = 'none'
+    }
+
+    function switchTab(tab){
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'))
+
+      event.target.classList.add('active')
+      document.getElementById(tab).classList.add('active')
+
+      if(tab === 'forms'){
+        loadForms()
+      }
+    }
+
+    loadForms()
+  </script>
+</body>
+</html>

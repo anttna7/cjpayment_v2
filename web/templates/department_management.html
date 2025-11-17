@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>部门管理</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:20px}
+    h1{font-size:20px;margin-bottom:10px}
+    .toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+    input,button,select{padding:8px;border:1px solid #ddd;border-radius:4px}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{border:1px solid #eee;padding:8px;text-align:left;font-size:14px}
+    th{background:#f8f8f8}
+    .section{margin-top:20px;padding:15px;border:1px solid #ddd;border-radius:4px}
+    .tab{display:inline-block;padding:8px 16px;cursor:pointer;border:1px solid #ddd;margin-right:4px;background:#f8f8f8}
+    .tab.active{background:#3b82f6;color:white;border-color:#3b82f6}
+    .tab-content{display:none}
+    .tab-content.active{display:block}
+  </style>
+</head>
+<body>
+  <h1>部门管理</h1>
+
+  <div style="margin-bottom:15px">
+    <span class="tab active" onclick="switchTab('depts')">部门列表</span>
+    <span class="tab" onclick="switchTab('users')">用户管理</span>
+    <span class="tab" onclick="switchTab('roles')">角色管理</span>
+  </div>
+
+  <!-- 部门列表 -->
+  <div id="depts" class="tab-content active">
+    <div class="toolbar">
+      <button onclick="loadDepartments()">刷新</button>
+      <button onclick="showCreateForm()">新增部门</button>
+    </div>
+
+    <div id="createForm" class="section" style="display:none">
+      <h2 style="font-size:16px">新增部门</h2>
+      <div class="toolbar">
+        <input id="deptName" placeholder="部门名称">
+        <textarea id="deptDesc" placeholder="部门描述" style="height:60px;width:300px"></textarea>
+        <button onclick="createDepartment()">创建</button>
+        <button onclick="hideCreateForm()">取消</button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th><th>名称</th><th>描述</th><th>创建时间</th><th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="deptList"></tbody>
+    </table>
+  </div>
+
+  <!-- 用户管理 -->
+  <div id="users" class="tab-content">
+    <div class="toolbar">
+      <select id="userDeptSelect">
+        <option value="">选择部门</option>
+      </select>
+      <button onclick="loadDepartmentUsers()">查看用户</button>
+      <input id="userId" placeholder="用户ID">
+      <button onclick="assignUser()">分配用户</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>用户ID</th><th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="userList"></tbody>
+    </table>
+  </div>
+
+  <!-- 角色管理 -->
+  <div id="roles" class="tab-content">
+    <div class="toolbar">
+      <select id="roleDeptSelect">
+        <option value="">选择部门</option>
+      </select>
+      <button onclick="loadDepartmentRoles()">查看角色</button>
+      <input id="roleId" placeholder="角色ID">
+      <button onclick="assignRole()">分配角色</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>角色ID</th><th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="roleList"></tbody>
+    </table>
+  </div>
+
+  <div id="detailModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;padding:20px;border:1px solid #ddd;border-radius:8px;box-shadow:0 4px 6px rgba(0,0,0,0.1);z-index:1000;min-width:400px">
+    <h3 style="margin-top:0">部门详情</h3>
+    <div id="detailContent"></div>
+    <div style="margin-top:15px;display:flex;gap:8px">
+      <button onclick="closeDetail()">关闭</button>
+    </div>
+  </div>
+  <div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999" onclick="closeDetail()"></div>
+
+  <script>
+    const API_BASE = '/api/v1/departments'
+    const auth = () => ({Authorization: localStorage.getItem('auth')})
+    let currentDeptId = null
+
+    async function loadDepartments(){
+      const res = await fetch(`${API_BASE}?page=1&page_size=50`, {headers: auth()})
+      const data = await res.json()
+      const tbody = document.getElementById('deptList')
+      tbody.innerHTML = ''
+
+      const depts = data.data || []
+
+      // 填充部门选择器
+      const userDeptSelect = document.getElementById('userDeptSelect')
+      const roleDeptSelect = document.getElementById('roleDeptSelect')
+      userDeptSelect.innerHTML = '<option value="">选择部门</option>'
+      roleDeptSelect.innerHTML = '<option value="">选择部门</option>'
+
+      depts.forEach(dept => {
+        const tr = document.createElement('tr')
+        tr.innerHTML = `
+          <td>${dept.id}</td>
+          <td>${dept.name}</td>
+          <td>${dept.description || ''}</td>
+          <td>${new Date(dept.created_at).toLocaleString('zh-CN')}</td>
+          <td>
+            <button onclick="viewDetail('${dept.id}')">详情</button>
+            <button onclick="deleteDepartment('${dept.id}')">删除</button>
+          </td>
+        `
+        tbody.appendChild(tr)
+
+        const opt1 = document.createElement('option')
+        opt1.value = dept.id
+        opt1.textContent = dept.name
+        userDeptSelect.appendChild(opt1)
+
+        const opt2 = document.createElement('option')
+        opt2.value = dept.id
+        opt2.textContent = dept.name
+        roleDeptSelect.appendChild(opt2)
+      })
+    }
+
+    function showCreateForm(){
+      document.getElementById('createForm').style.display = 'block'
+    }
+
+    function hideCreateForm(){
+      document.getElementById('createForm').style.display = 'none'
+    }
+
+    async function createDepartment(){
+      const body = {
+        name: document.getElementById('deptName').value,
+        description: document.getElementById('deptDesc').value || null
+      }
+
+      const res = await fetch(API_BASE, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', ...auth()},
+        body: JSON.stringify(body)
+      })
+      if(res.ok){
+        hideCreateForm()
+        loadDepartments()
+        alert('部门创建成功')
+      } else {
+        alert('创建失败: ' + (await res.text()))
+      }
+    }
+
+    async function deleteDepartment(id){
+      if(!confirm('确定要删除此部门吗？')) return
+      const res = await fetch(`${API_BASE}/${id}`, {
+        method: 'DELETE',
+        headers: auth()
+      })
+      if(res.ok){
+        loadDepartments()
+        alert('删除成功')
+      } else {
+        alert('删除失败: ' + (await res.text()))
+      }
+    }
+
+    async function loadDepartmentUsers(){
+      const deptId = document.getElementById('userDeptSelect').value
+      if(!deptId){
+        alert('请选择部门')
+        return
+      }
+      currentDeptId = deptId
+
+      const res = await fetch(`${API_BASE}/${deptId}/users`, {headers: auth()})
+      const data = await res.json()
+      const tbody = document.getElementById('userList')
+      tbody.innerHTML = ''
+
+      const users = data.data || []
+      users.forEach(userId => {
+        const tr = document.createElement('tr')
+        tr.innerHTML = `
+          <td>${userId}</td>
+          <td><button onclick="removeUser('${userId}')">移除</button></td>
+        `
+        tbody.appendChild(tr)
+      })
+    }
+
+    async function assignUser(){
+      const deptId = document.getElementById('userDeptSelect').value
+      const userId = document.getElementById('userId').value
+      if(!deptId || !userId){
+        alert('请选择部门并输入用户ID')
+        return
+      }
+
+      const res = await fetch(`${API_BASE}/${deptId}/users/${userId}`, {
+        method: 'POST',
+        headers: auth()
+      })
+      if(res.ok){
+        loadDepartmentUsers()
+        document.getElementById('userId').value = ''
+        alert('用户分配成功')
+      } else {
+        alert('分配失败')
+      }
+    }
+
+    async function removeUser(userId){
+      if(!currentDeptId) return
+      if(!confirm('确定要移除此用户吗？')) return
+
+      const res = await fetch(`${API_BASE}/${currentDeptId}/users/${userId}`, {
+        method: 'DELETE',
+        headers: auth()
+      })
+      if(res.ok){
+        loadDepartmentUsers()
+        alert('移除成功')
+      } else {
+        alert('移除失败')
+      }
+    }
+
+    async function loadDepartmentRoles(){
+      const deptId = document.getElementById('roleDeptSelect').value
+      if(!deptId){
+        alert('请选择部门')
+        return
+      }
+      currentDeptId = deptId
+
+      const res = await fetch(`${API_BASE}/${deptId}/roles`, {headers: auth()})
+      const data = await res.json()
+      const tbody = document.getElementById('roleList')
+      tbody.innerHTML = ''
+
+      const roles = data.data || []
+      roles.forEach(roleId => {
+        const tr = document.createElement('tr')
+        tr.innerHTML = `
+          <td>${roleId}</td>
+          <td><button onclick="removeRole('${roleId}')">移除</button></td>
+        `
+        tbody.appendChild(tr)
+      })
+    }
+
+    async function assignRole(){
+      const deptId = document.getElementById('roleDeptSelect').value
+      const roleId = document.getElementById('roleId').value
+      if(!deptId || !roleId){
+        alert('请选择部门并输入角色ID')
+        return
+      }
+
+      const res = await fetch(`${API_BASE}/${deptId}/roles/${roleId}`, {
+        method: 'POST',
+        headers: auth()
+      })
+      if(res.ok){
+        loadDepartmentRoles()
+        document.getElementById('roleId').value = ''
+        alert('角色分配成功')
+      } else {
+        alert('分配失败')
+      }
+    }
+
+    async function removeRole(roleId){
+      if(!currentDeptId) return
+      if(!confirm('确定要移除此角色吗？')) return
+
+      const res = await fetch(`${API_BASE}/${currentDeptId}/roles/${roleId}`, {
+        method: 'DELETE',
+        headers: auth()
+      })
+      if(res.ok){
+        loadDepartmentRoles()
+        alert('移除成功')
+      } else {
+        alert('移除失败')
+      }
+    }
+
+    async function viewDetail(id){
+      const res = await fetch(`${API_BASE}/${id}`, {headers: auth()})
+      const result = await res.json()
+      const dept = result.data
+
+      document.getElementById('detailContent').innerHTML = `
+        <p><strong>ID:</strong> ${dept.id}</p>
+        <p><strong>名称:</strong> ${dept.name}</p>
+        <p><strong>描述:</strong> ${dept.description || '无'}</p>
+        <p><strong>创建时间:</strong> ${new Date(dept.created_at).toLocaleString('zh-CN')}</p>
+        ${dept.updated_at ? `<p><strong>更新时间:</strong> ${new Date(dept.updated_at).toLocaleString('zh-CN')}</p>` : ''}
+      `
+      document.getElementById('detailModal').style.display = 'block'
+      document.getElementById('overlay').style.display = 'block'
+    }
+
+    function closeDetail(){
+      document.getElementById('detailModal').style.display = 'none'
+      document.getElementById('overlay').style.display = 'none'
+    }
+
+    function switchTab(tab){
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'))
+
+      event.target.classList.add('active')
+      document.getElementById(tab).classList.add('active')
+
+      if(tab === 'depts'){
+        loadDepartments()
+      }
+    }
+
+    loadDepartments()
+  </script>
+</body>
+</html>

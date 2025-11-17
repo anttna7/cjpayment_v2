@@ -27,27 +27,31 @@ import (
 
 // Handler holds the dependencies for HTTP handlers
 type Handler struct {
-    db                    *sqlx.DB
-    config                *config.Config
-    jwtAuth               *middleware.JWTAuthMiddleware
-    authService           service.AuthService
-    permissionService     service.PermissionService
-    rechargeService       service.RechargeService
-    notificationService   service.NotificationService
-    merchantService       service.MerchantService
+    db                     *sqlx.DB
+    config                 *config.Config
+    jwtAuth                *middleware.JWTAuthMiddleware
+    authService            service.AuthService
+    permissionService      service.PermissionService
+    rechargeService        service.RechargeService
+    notificationService    service.NotificationService
+    merchantService        service.MerchantService
     merchantAccountService service.MerchantAccountService
-    accountService        service.ReceiveAccountService
-    bankService           service.BankService
-    reportService         service.ReportService
-	testDataService       service.TestDataService
-	dataCleanupService    service.DataCleanupService
-	merchantValidator     *service.MerchantValidator
-	agentSuggestionRepo   repository.AgentSuggestionRepository
+    accountService         service.ReceiveAccountService
+    bankService            service.BankService
+    reportService          service.ReportService
+	testDataService        service.TestDataService
+	dataCleanupService     service.DataCleanupService
+	merchantValidator      *service.MerchantValidator
+	agentSuggestionRepo    repository.AgentSuggestionRepository
 	rechargeTestingHandler *RechargeTestingHandler
-	rechargeLinkHandler   *RechargeLinkHandler
-	passwordResetHandler  *PasswordResetHandler
-	validationMiddleware  *ValidationMiddleware
-	errorMiddleware       *ErrorMiddleware
+	rechargeLinkHandler    *RechargeLinkHandler
+	passwordResetHandler   *PasswordResetHandler
+	validationMiddleware   *ValidationMiddleware
+	errorMiddleware        *ErrorMiddleware
+	invoiceHandler         *InvoiceHandler
+	settlementOrderHandler *SettlementOrderHandler
+	departmentHandler      *DepartmentHandler
+	customFormHandler      *CustomFormHandler
 }
 
 // New creates a new handler instance
@@ -105,6 +109,12 @@ func New(db *sqlx.DB, cfg *config.Config) *Handler {
 	// Initialize password reset handler
 	passwordResetHandler := NewPasswordResetHandler()
 
+	// Initialize customer payment system handlers
+	invoiceHandler := NewInvoiceHandler(serviceManager.InvoiceService)
+	settlementOrderHandler := NewSettlementOrderHandler(serviceManager.SettlementOrderService)
+	departmentHandler := NewDepartmentHandler(serviceManager.DepartmentService)
+	customFormHandler := NewCustomFormHandler(serviceManager.CustomFormService)
+
     return &Handler{
         db:                     db,
         config:                 cfg,
@@ -127,6 +137,10 @@ func New(db *sqlx.DB, cfg *config.Config) *Handler {
 		passwordResetHandler:   passwordResetHandler,
 		validationMiddleware:   validationMiddleware,
 		errorMiddleware:        errorMiddleware,
+		invoiceHandler:         invoiceHandler,
+		settlementOrderHandler: settlementOrderHandler,
+		departmentHandler:      departmentHandler,
+		customFormHandler:      customFormHandler,
 	}
 }
 
@@ -180,6 +194,40 @@ func (h *Handler) RegisterRoutes(router *gin.Engine) {
 		c.File("./web/templates/customer_management.html")
 	})
 	router.GET("/validation", h.ValidationDashboardPage)
+
+	// Customer payment system pages
+	router.GET("/invoice-management", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/invoice_management.html")
+	})
+	router.GET("/invoice_management", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/invoice_management.html")
+	})
+	router.GET("/settlement-order-management", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/settlement_order_management.html")
+	})
+	router.GET("/settlement_order_management", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/settlement_order_management.html")
+	})
+	router.GET("/department-management", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/department_management.html")
+	})
+	router.GET("/department_management", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/department_management.html")
+	})
+	router.GET("/form-management", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/form_management.html")
+	})
+	router.GET("/form_management", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/form_management.html")
+	})
 	
 	// System management pages
 	router.GET("/system_management", h.SystemManagementPage)
@@ -418,8 +466,76 @@ func (h *Handler) RegisterRoutes(router *gin.Engine) {
 			// Auxiliary API routes for merchant modal
 			protected.GET("/agents/suggestions", h.GetAgentSuggestions)
 			protected.GET("/ports/validate", h.ValidatePortName)
+
+			// Invoice management routes
+			invoices := protected.Group("/invoices")
+			{
+				invoices.GET("/", h.invoiceHandler.ListInvoices)
+				invoices.POST("/", h.invoiceHandler.CreateInvoice)
+				invoices.GET("/:id", h.invoiceHandler.GetInvoice)
+				invoices.PUT("/:id", h.invoiceHandler.UpdateInvoice)
+				invoices.DELETE("/:id", h.invoiceHandler.DeleteInvoice)
+				invoices.POST("/:id/issue", h.invoiceHandler.IssueInvoice)
+				invoices.POST("/:id/send", h.invoiceHandler.SendInvoice)
+				invoices.POST("/:id/confirm", h.invoiceHandler.ConfirmInvoice)
+				invoices.POST("/:id/cancel", h.invoiceHandler.CancelInvoice)
+				invoices.GET("/pending", h.invoiceHandler.GetPendingInvoices)
+			}
+
+			// Settlement order routes
+			settlements := protected.Group("/settlement-orders")
+			{
+				settlements.GET("/", h.settlementOrderHandler.ListSettlementOrders)
+				settlements.POST("/", h.settlementOrderHandler.CreateSettlementOrder)
+				settlements.GET("/:id", h.settlementOrderHandler.GetSettlementOrder)
+				settlements.PUT("/:id", h.settlementOrderHandler.UpdateSettlementOrder)
+				settlements.DELETE("/:id", h.settlementOrderHandler.DeleteSettlementOrder)
+				settlements.POST("/:id/submit", h.settlementOrderHandler.SubmitForReview)
+				settlements.POST("/:id/approve", h.settlementOrderHandler.ApproveOrder)
+				settlements.POST("/:id/reject", h.settlementOrderHandler.RejectOrder)
+				settlements.POST("/:id/settle", h.settlementOrderHandler.SettleOrder)
+				settlements.GET("/pending", h.settlementOrderHandler.GetPendingOrders)
+			}
+
+			// Department management routes
+			departments := protected.Group("/departments")
+			{
+				departments.GET("/", h.departmentHandler.ListDepartments)
+				departments.POST("/", h.departmentHandler.CreateDepartment)
+				departments.GET("/:id", h.departmentHandler.GetDepartment)
+				departments.PUT("/:id", h.departmentHandler.UpdateDepartment)
+				departments.DELETE("/:id", h.departmentHandler.DeleteDepartment)
+				departments.POST("/:departmentId/users/:userId", h.departmentHandler.AssignUserToDepartment)
+				departments.DELETE("/:departmentId/users/:userId", h.departmentHandler.RemoveUserFromDepartment)
+				departments.GET("/:id/users", h.departmentHandler.GetDepartmentUsers)
+				departments.POST("/:departmentId/roles/:roleId", h.departmentHandler.AssignRoleToDepartment)
+				departments.DELETE("/:departmentId/roles/:roleId", h.departmentHandler.RemoveRoleFromDepartment)
+				departments.GET("/:id/roles", h.departmentHandler.GetDepartmentRoles)
+				departments.GET("/users/:userId/permissions", h.departmentHandler.GetUserEffectivePermissions)
+			}
+
+			// Custom form routes
+			forms := protected.Group("/forms")
+			{
+				forms.GET("/", h.customFormHandler.ListForms)
+				forms.POST("/", h.customFormHandler.CreateForm)
+				forms.GET("/:id", h.customFormHandler.GetForm)
+				forms.PUT("/:id", h.customFormHandler.UpdateForm)
+				forms.DELETE("/:id", h.customFormHandler.DeleteForm)
+				forms.POST("/:id/publish", h.customFormHandler.PublishForm)
+				forms.POST("/:id/archive", h.customFormHandler.ArchiveForm)
+				forms.POST("/:id/submissions", h.customFormHandler.SubmitForm)
+				forms.GET("/:id/submissions", h.customFormHandler.ListSubmissions)
+			}
+
+			// Form submission routes
+			submissions := protected.Group("/submissions")
+			{
+				submissions.GET("/:id", h.customFormHandler.GetSubmission)
+				submissions.POST("/:id/review", h.customFormHandler.ReviewSubmission)
+			}
 		}
-		
+
 		// Recharge Testing System Management API routes
 		rechargeTestingAPI := v1.Group("/recharge-testing")
 		rechargeTestingAPI.Use(h.validationMiddleware.ValidatePagination())

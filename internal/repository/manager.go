@@ -29,9 +29,17 @@ type Manager struct {
 	RechargeSession        RechargeSessionRepository
 	AccountMatchingLog     AccountMatchingLogRepository
 	DataExportLog          DataExportLogRepository
-	
+
 	// Recharge Link System repositories
 	RechargeLink           RechargeLinkRepository
+
+	// Customer Payment System repositories
+	Invoice                InvoiceRepository
+	SettlementOrder        SettlementOrderRepository
+	Department             DepartmentRepository
+	CustomForm             CustomFormRepository
+	FormField              FormFieldRepository
+	FormSubmission         FormSubmissionRepository
 }
 
 // NewManager creates a new repository manager with all repositories initialized
@@ -56,14 +64,22 @@ func NewManager(db *sqlx.DB) *Manager {
 		Webhook:                webhookRepo,
 		Report:                 NewReportRepository(db),
 		AgentSuggestion:        NewAgentSuggestionRepository(db),
-		
+
 		// Recharge Testing System repositories
 		RechargeSession:        NewRechargeSessionRepository(db),
 		AccountMatchingLog:     NewAccountMatchingLogRepository(db),
 		DataExportLog:          NewDataExportLogRepository(db),
-		
+
 		// Recharge Link System repositories
 		RechargeLink:           NewRechargeLinkRepository(db),
+
+		// Customer Payment System repositories
+		Invoice:                NewInvoiceRepository(db),
+		SettlementOrder:        NewSettlementOrderRepository(db),
+		Department:             NewDepartmentRepository(db),
+		CustomForm:             NewCustomFormRepository(db),
+		FormField:              NewFormFieldRepository(db),
+		FormSubmission:         NewFormSubmissionRepository(db),
 	}
 }
 
@@ -86,14 +102,22 @@ func NewManagerWithCache(db *sqlx.DB, cacheClient cache.Cache) *Manager {
 		Webhook:                NewWebhookRepository(db.DB),
 		Report:                 NewReportRepository(db),
 		AgentSuggestion:        NewAgentSuggestionRepositoryWithCache(db, cacheClient),
-		
+
 		// Recharge Testing System repositories
 		RechargeSession:        NewRechargeSessionRepository(db),
 		AccountMatchingLog:     NewAccountMatchingLogRepository(db),
 		DataExportLog:          NewDataExportLogRepository(db),
-		
+
 		// Recharge Link System repositories
 		RechargeLink:           NewRechargeLinkRepository(db),
+
+		// Customer Payment System repositories
+		Invoice:                NewInvoiceRepository(db),
+		SettlementOrder:        NewSettlementOrderRepository(db),
+		Department:             NewDepartmentRepository(db),
+		CustomForm:             NewCustomFormRepository(db),
+		FormField:              NewFormFieldRepository(db),
+		FormSubmission:         NewFormSubmissionRepository(db),
 	}
 }
 
