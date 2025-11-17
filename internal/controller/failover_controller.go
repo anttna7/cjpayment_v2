@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cjpayment/internal/domain"
-	"github.com/cjpayment/internal/gateway"
+	"github.com/company/cjpayment/internal/domain"
+	"github.com/company/cjpayment/internal/gateway"
 )
 
 // FailoverEvent 故障转移事件类型
