@@ -1,0 +1,727 @@
+/* ==========================================================================
+   Progress Indicator Components
+   Step progress, progress bars, and operation progress indicators
+   ========================================================================== */
+
+/* ==========================================================================
+   Base Progress Bar Component
+   ========================================================================== */
+
+.progress {
+  width: 100%;
+  height: 8px;
+  background-color: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--color-interactive-primary);
+  border-radius: var(--radius-full);
+  transition: width var(--duration-300) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Progress bar sizes */
+.progress-sm {
+  height: 4px;
+}
+
+.progress-md {
+  height: 8px;
+}
+
+.progress-lg {
+  height: 12px;
+}
+
+.progress-xl {
+  height: 16px;
+}
+
+/* Progress bar variants */
+.progress-bar-success {
+  background-color: var(--color-status-success);
+}
+
+.progress-bar-warning {
+  background-color: var(--color-status-warning);
+}
+
+.progress-bar-error {
+  background-color: var(--color-status-error);
+}
+
+.progress-bar-info {
+  background-color: var(--color-status-info);
+}
+
+/* Striped progress bar */
+.progress-bar-striped {
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 16px 16px;
+}
+
+/* Animated stripes */
+.progress-bar-animated {
+  animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+  0% {
+    background-position: 16px 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* Progress with label */
+.progress-labeled {
+  position: relative;
+  margin-bottom: var(--space-6);
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.progress-label-text {
+  color: var(--color-text-secondary);
+}
+
+.progress-label-value {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* ==========================================================================
+   Circular Progress Component
+   ========================================================================== */
+
+.progress-circle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+}
+
+.progress-circle-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.progress-circle-bg {
+  fill: none;
+  stroke: var(--color-bg-tertiary);
+  stroke-width: 4;
+}
+
+.progress-circle-bar {
+  fill: none;
+  stroke: var(--color-interactive-primary);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 251.2; /* 2 * π * 40 */
+  stroke-dashoffset: 251.2;
+  transition: stroke-dashoffset var(--duration-500) var(--ease-out);
+}
+
+.progress-circle-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+/* Circular progress sizes */
+.progress-circle-sm {
+  width: 60px;
+  height: 60px;
+}
+
+.progress-circle-sm .progress-circle-text {
+  font-size: var(--font-size-xs);
+}
+
+.progress-circle-lg {
+  width: 120px;
+  height: 120px;
+}
+
+.progress-circle-lg .progress-circle-text {
+  font-size: var(--font-size-base);
+}
+
+.progress-circle-xl {
+  width: 160px;
+  height: 160px;
+}
+
+.progress-circle-xl .progress-circle-text {
+  font-size: var(--font-size-lg);
+}
+
+/* Circular progress variants */
+.progress-circle-success .progress-circle-bar {
+  stroke: var(--color-status-success);
+}
+
+.progress-circle-warning .progress-circle-bar {
+  stroke: var(--color-status-warning);
+}
+
+.progress-circle-error .progress-circle-bar {
+  stroke: var(--color-status-error);
+}
+
+.progress-circle-info .progress-circle-bar {
+  stroke: var(--color-status-info);
+}
+
+/* ==========================================================================
+   Step Progress Component
+   ========================================================================== */
+
+.step-progress {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: var(--space-6) 0;
+}
+
+.step-progress-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.step-progress-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: calc(50% + 16px);
+  right: calc(-50% + 16px);
+  height: 2px;
+  background-color: var(--color-border-primary);
+  z-index: 1;
+}
+
+.step-progress-item.completed:not(:last-child)::after {
+  background-color: var(--color-status-success);
+}
+
+.step-progress-item.active:not(:last-child)::after {
+  background: linear-gradient(
+    to right,
+    var(--color-status-success) 50%,
+    var(--color-border-primary) 50%
+  );
+}
+
+.step-progress-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-bg-secondary);
+  border: 2px solid var(--color-border-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-tertiary);
+  position: relative;
+  z-index: 2;
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.step-progress-item.completed .step-progress-icon {
+  background-color: var(--color-status-success);
+  border-color: var(--color-status-success);
+  color: white;
+}
+
+.step-progress-item.active .step-progress-icon {
+  background-color: var(--color-interactive-primary);
+  border-color: var(--color-interactive-primary);
+  color: white;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+}
+
+.step-progress-item.error .step-progress-icon {
+  background-color: var(--color-status-error);
+  border-color: var(--color-status-error);
+  color: white;
+}
+
+.step-progress-label {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-tertiary);
+  text-align: center;
+  max-width: 100px;
+}
+
+.step-progress-item.completed .step-progress-label {
+  color: var(--color-status-success);
+}
+
+.step-progress-item.active .step-progress-label {
+  color: var(--color-interactive-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.step-progress-item.error .step-progress-label {
+  color: var(--color-status-error);
+}
+
+.step-progress-description {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-quaternary);
+  text-align: center;
+  max-width: 120px;
+  line-height: var(--line-height-tight);
+}
+
+/* Vertical step progress */
+.step-progress-vertical {
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 300px;
+}
+
+.step-progress-vertical .step-progress-item {
+  flex-direction: row;
+  align-items: flex-start;
+  padding: var(--space-4) 0;
+  flex: none;
+}
+
+.step-progress-vertical .step-progress-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: calc(32px + var(--space-2));
+  bottom: calc(-1 * var(--space-4));
+  left: 15px;
+  width: 2px;
+  height: auto;
+  right: auto;
+}
+
+.step-progress-vertical .step-progress-label {
+  margin-top: 0;
+  margin-left: var(--space-4);
+  text-align: left;
+  max-width: none;
+  flex: 1;
+}
+
+.step-progress-vertical .step-progress-description {
+  margin-top: var(--space-1);
+  text-align: left;
+  max-width: none;
+}
+
+/* ==========================================================================
+   Upload Progress Component
+   ========================================================================== */
+
+.upload-progress {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin: var(--space-4) 0;
+}
+
+.upload-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.upload-progress-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.upload-progress-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+}
+
+.upload-progress-details {
+  flex: 1;
+}
+
+.upload-progress-filename {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.upload-progress-size {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.upload-progress-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.upload-progress-action {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-tertiary);
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.upload-progress-action:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
+.upload-progress-bar-container {
+  margin-bottom: var(--space-2);
+}
+
+.upload-progress-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.upload-progress-speed {
+  color: var(--color-text-quaternary);
+}
+
+/* Upload states */
+.upload-progress.uploading .upload-progress-icon {
+  background: var(--color-status-info-bg);
+  color: var(--color-status-info);
+  animation: upload-pulse 2s ease-in-out infinite;
+}
+
+.upload-progress.completed .upload-progress-icon {
+  background: var(--color-status-success-bg);
+  color: var(--color-status-success);
+}
+
+.upload-progress.error .upload-progress-icon {
+  background: var(--color-status-error-bg);
+  color: var(--color-status-error);
+}
+
+@keyframes upload-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* ==========================================================================
+   Multi-step Progress Component
+   ========================================================================== */
+
+.multi-step-progress {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin: var(--space-6) 0;
+}
+
+.multi-step-progress-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.multi-step-progress-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.multi-step-progress-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.multi-step-progress-content {
+  margin: var(--space-8) 0;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.multi-step-progress-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-8);
+}
+
+.multi-step-progress-nav {
+  display: flex;
+  gap: var(--space-3);
+}
+
+/* ==========================================================================
+   Loading Progress Component
+   ========================================================================== */
+
+.loading-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.loading-progress-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--color-bg-tertiary);
+  border-top: 4px solid var(--color-interactive-primary);
+  border-radius: 50%;
+  animation: loading-spin 1s linear infinite;
+  margin-bottom: var(--space-4);
+}
+
+@keyframes loading-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-progress-text {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.loading-progress-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.loading-progress-bar {
+  width: 200px;
+  margin-bottom: var(--space-2);
+}
+
+.loading-progress-status {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+/* ==========================================================================
+   Progress Animations
+   ========================================================================== */
+
+/* Indeterminate progress */
+.progress-indeterminate .progress-bar {
+  width: 30% !important;
+  animation: progress-indeterminate 2s ease-in-out infinite;
+}
+
+@keyframes progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+/* Pulse animation for active states */
+.progress-pulse {
+  animation: progress-pulse 2s ease-in-out infinite;
+}
+
+@keyframes progress-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .step-progress {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .step-progress-item {
+    flex-direction: row;
+    align-items: center;
+    padding: var(--space-3) 0;
+  }
+  
+  .step-progress-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: auto;
+    bottom: 0;
+    left: 15px;
+    right: auto;
+    width: 2px;
+    height: var(--space-3);
+  }
+  
+  .step-progress-label {
+    margin-top: 0;
+    margin-left: var(--space-4);
+    text-align: left;
+    max-width: none;
+  }
+  
+  .multi-step-progress {
+    padding: var(--space-4);
+  }
+  
+  .multi-step-progress-actions {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  
+  .multi-step-progress-nav {
+    order: 2;
+  }
+}
+
+/* ==========================================================================
+   Dark Theme Adjustments
+   ========================================================================== */
+
+[data-theme="dark"] .progress-circle-bg {
+  stroke: var(--neutral-700);
+}
+
+[data-theme="dark"] .upload-progress-action:hover {
+  background: var(--neutral-700);
+}
+
+/* ==========================================================================
+   High Contrast Theme Adjustments
+   ========================================================================== */
+
+[data-theme="high-contrast"] .progress,
+[data-theme="high-contrast"] .step-progress-icon,
+[data-theme="high-contrast"] .upload-progress {
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--color-border-primary);
+}
+
+[data-theme="high-contrast"] .progress-bar {
+  border: 1px solid var(--color-interactive-primary);
+}
+
+/* ==========================================================================
+   Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-bar,
+  .progress-circle-bar,
+  .step-progress-icon,
+  .loading-progress-spinner {
+    transition: none;
+    animation: none;
+  }
+  
+  .progress-bar-animated,
+  .progress-indeterminate .progress-bar,
+  .progress-pulse,
+  .upload-progress.uploading .upload-progress-icon {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  .progress,
+  .progress-circle,
+  .step-progress,
+  .upload-progress,
+  .multi-step-progress {
+    background: white !important;
+    color: black !important;
+    border: 1px solid black !important;
+  }
+  
+  .progress-bar,
+  .progress-circle-bar {
+    background: black !important;
+    stroke: black !important;
+  }
+  
+  .loading-progress-spinner {
+    display: none !important;
+  }
+}

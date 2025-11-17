@@ -1,0 +1,387 @@
+/**
+ * Chrome图标风格仪表板 - 完全复刻Chrome浏览器图标设计
+ * 基于Google Chrome图标的简洁、现代、扁平化设计理念
+ */
+
+/* 仪表板主容器 */
+.dashboard {
+    padding: 40px 24px;
+    background: #f8f9fa;
+    min-height: calc(100vh - 80px);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* 页面标题区域 */
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding: 0 20px;
+}
+
+.dashboard-title {
+    font-size: 32px;
+    font-weight: 400;
+    color: #202124;
+    margin: 0 0 8px;
+    letter-spacing: -0.5px;
+}
+
+.dashboard-subtitle {
+    font-size: 16px;
+    color: #5f6368;
+    margin: 0 0 32px;
+}
+
+/* Chrome风格卡片网格 - 优化间距和布局 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+}
+
+/* Chrome图标风格卡片 - 优化尺寸和间距 */
+.chrome-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s ease;
+    border: 1px solid #e8eaed;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06);
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chrome-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Chrome图标核心设计 - 优化尺寸 */
+.chrome-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 20px;
+    position: relative;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+/* 交易统计 - 红色为主 */
+.chrome-card.transactions .chrome-icon {
+    background: 
+        /* 中心蓝色圆 */
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 35%, transparent 35%),
+        /* 红色扇形 (顶部) */
+        conic-gradient(from -30deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        /* 绿色扇形 (右下) */
+        conic-gradient(from 90deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        /* 黄色扇形 (左下) */
+        conic-gradient(from 210deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        #ffffff;
+}
+
+/* 收益统计 - 绿色为主 */
+.chrome-card.revenue .chrome-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 35%, transparent 35%),
+        conic-gradient(from 30deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        conic-gradient(from 150deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        conic-gradient(from 270deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        #ffffff;
+}
+
+/* 商户统计 - 黄色为主 */
+.chrome-card.merchants .chrome-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 35%, transparent 35%),
+        conic-gradient(from 90deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        conic-gradient(from 210deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        conic-gradient(from 330deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        #ffffff;
+}
+
+/* 成功率统计 - 蓝色为主 */
+.chrome-card.success-rate .chrome-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 35%, transparent 35%),
+        conic-gradient(from 0deg, #4285f4 0deg, #4285f4 120deg, transparent 120deg),
+        conic-gradient(from 120deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        conic-gradient(from 240deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        #ffffff;
+}
+
+/* Chrome图标的白色分割线 */
+.chrome-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: 
+        /* 三条放射状分割线 */
+        conic-gradient(from 0deg, transparent 0deg, transparent 58deg, #ffffff 59deg, #ffffff 61deg, transparent 62deg, transparent 118deg, #ffffff 119deg, #ffffff 121deg, transparent 122deg, transparent 178deg, #ffffff 179deg, #ffffff 181deg, transparent 182deg, transparent 238deg, #ffffff 239deg, #ffffff 241deg, transparent 242deg, transparent 298deg, #ffffff 299deg, #ffffff 301deg, transparent 302deg, transparent 358deg, #ffffff 359deg, #ffffff 361deg, transparent 362deg),
+        /* 中心圆的边框 */
+        radial-gradient(circle at center, transparent 33%, #ffffff 34%, #ffffff 36%, transparent 37%);
+    pointer-events: none;
+}
+
+/* 卡片标题 */
+.chrome-card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #5f6368;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    line-height: 1.2;
+}
+
+/* 卡片数值 */
+.chrome-card-value {
+    font-size: 28px;
+    font-weight: 400;
+    color: #202124;
+    margin: 0 0 8px;
+    line-height: 1.1;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 卡片变化指示 */
+.chrome-card-change {
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 0;
+    min-height: 20px;
+}
+
+.chrome-card-change.positive {
+    color: #34a853;
+}
+
+.chrome-card-change.negative {
+    color: #ea4335;
+}
+
+.chrome-card-change.neutral {
+    color: #5f6368;
+}
+
+/* 优化的响应式设计 */
+/* 大屏幕 (1200px+) - 显示4列 */
+@media (min-width: 1200px) {
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 40px;
+        max-width: 1200px;
+    }
+    
+    .dashboard {
+        padding: 48px 32px;
+    }
+}
+
+/* 中等屏幕 (900px - 1199px) - 显示3列 */
+@media (min-width: 900px) and (max-width: 1199px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+    }
+    
+    .dashboard {
+        padding: 40px 24px;
+    }
+}
+
+/* 小屏幕 (600px - 899px) - 显示2列 */
+@media (min-width: 600px) and (max-width: 899px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+    }
+    
+    .dashboard {
+        padding: 32px 20px;
+    }
+    
+    .chrome-card {
+        padding: 28px 20px;
+        min-height: 180px;
+    }
+    
+    .chrome-icon {
+        width: 64px;
+        height: 64px;
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+    
+    .chrome-card-value {
+        font-size: 24px;
+    }
+}
+
+/* 手机屏幕 (480px - 599px) - 显示1列，但保持宽度 */
+@media (min-width: 480px) and (max-width: 599px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 400px;
+        margin: 0 auto 40px;
+    }
+    
+    .dashboard {
+        padding: 24px 16px;
+    }
+    
+    .chrome-card {
+        padding: 24px 20px;
+        min-height: 160px;
+    }
+    
+    .chrome-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    
+    .chrome-card-value {
+        font-size: 22px;
+    }
+    
+    .dashboard-title {
+        font-size: 28px;
+    }
+}
+
+/* 超小屏幕 (max-width: 479px) - 显示1列，紧凑布局 */
+@media (max-width: 479px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 12px;
+        margin-bottom: 32px;
+    }
+    
+    .dashboard {
+        padding: 20px 12px;
+    }
+    
+    .dashboard-header {
+        margin-bottom: 32px;
+        padding: 0 12px;
+    }
+    
+    .dashboard-title {
+        font-size: 24px;
+    }
+    
+    .dashboard-subtitle {
+        font-size: 14px;
+    }
+    
+    .chrome-card {
+        padding: 20px 16px;
+        min-height: 140px;
+        border-radius: 12px;
+    }
+    
+    .chrome-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    
+    .chrome-card-value {
+        font-size: 20px;
+    }
+    
+    .chrome-card-title {
+        font-size: 11px;
+        margin-bottom: 8px;
+    }
+    
+    .chrome-card-change {
+        font-size: 11px;
+    }
+}
+
+/* Chrome风格的辅助图表区域 - 优化布局 */
+.dashboard-charts {
+    margin-top: 60px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+}
+
+.chart-section {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px;
+    border: 1px solid #e8eaed;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.chart-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #202124;
+    margin: 0 0 24px;
+    text-align: center;
+}
+
+/* 图表区域响应式 */
+@media (min-width: 900px) {
+    .dashboard-charts {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-charts {
+        margin-top: 40px;
+        padding: 0 12px;
+    }
+    
+    .chart-section {
+        padding: 20px;
+        border-radius: 12px;
+    }
+    
+    .chart-title {
+        font-size: 16px;
+        margin-bottom: 16px;
+    }
+}

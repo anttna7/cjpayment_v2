@@ -1,0 +1,1276 @@
+/* ==========================================================================
+   New Accounts Management - Clean Architecture
+   ========================================================================== */
+
+/* Variables */
+:root {
+    /* Account colors */
+    --account-primary: #667eea;
+    --account-primary-hover: #5a67d8;
+    --account-secondary: #764ba2;
+    --account-accent: #f093fb;
+    
+    /* Status colors */
+    --status-active: #22c55e;
+    --status-inactive: #94a3b8;
+    --status-pending: #f59e0b;
+    --status-suspended: #ef4444;
+    
+    /* Background colors */
+    --account-bg-primary: #f8fafc;
+    --account-bg-secondary: #ffffff;
+    --account-bg-tertiary: #f1f5f9;
+    --account-bg-hover: rgba(102, 126, 234, 0.05);
+    
+    /* Enhanced shadows */
+    --account-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --account-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --account-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --account-shadow-card: 0 4px 12px rgba(102, 126, 234, 0.08);
+    
+    /* Border radius */
+    --account-radius-sm: 6px;
+    --account-radius-md: 8px;
+    --account-radius-lg: 12px;
+    
+    /* Transitions */
+    --account-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Main Container */
+.accounts-management {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .accounts-management {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .accounts-management {
+        padding: 1rem;
+    }
+}
+
+/* 简化的页面标题 */
+.page-title-compact {
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+}
+
+.page-title-compact .page-title__text {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    letter-spacing: -0.025em;
+}
+
+/* 优化的平衡布局 - 左标题右按钮组 */
+.section-header {
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.section-header-balanced {
+    display: flex;
+    align-items: center; /* 垂直居中对齐 */
+    justify-content: space-between;
+    width: 100%;
+    min-height: 70px; /* 减少高度，更紧凑 */
+    gap: 2rem;
+}
+
+/* 左侧标题区域 */
+.section-title-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem; /* 标题和副标题间距更紧凑 */
+}
+
+/* 右侧按钮组区域 */
+.section-actions-area {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* 两个按钮之间的间距 */
+    flex-shrink: 0; /* 防止收缩 */
+}
+
+.section-title-group {
+    margin-bottom: 0;
+}
+
+/* 保持原有的按钮间距样式 */
+.section-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+/* 保持兼容性 */
+.section-header__content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: 80px;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+    display: flex;
+    background: var(--account-bg-secondary);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--account-radius-lg);
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--account-shadow-sm);
+}
+
+.tab-nav__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: transparent;
+    border-radius: var(--account-radius-md);
+    cursor: pointer;
+    transition: var(--account-transition);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #64748b;
+    flex: 1;
+    justify-content: center;
+}
+
+.tab-nav__item:hover {
+    background: var(--account-bg-hover);
+    color: var(--account-primary);
+}
+
+.tab-nav__item--active {
+    background: var(--account-primary);
+    color: white;
+    box-shadow: var(--account-shadow-md);
+}
+
+.tab-nav__icon {
+    font-size: 1rem;
+}
+
+/* Tab Content */
+.tab-content {
+    min-height: 600px;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel--active {
+    display: block;
+}
+
+/* Section Headers */
+.section-header {
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+}
+
+.section-subtitle {
+    color: #64748b;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.subsection-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem 0;
+}
+
+/* Enhanced Table Styles with Horizontal Scrolling */
+.accounts-table-container {
+    background: var(--account-bg-secondary);
+    border-radius: var(--account-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--account-shadow-card);
+    border: 1px solid #e2e8f0;
+}
+
+.table-responsive-wrapper {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: visible;
+    max-width: 100%;
+    border-radius: var(--account-radius-lg);
+}
+
+/* 自定义滚动条样式 */
+.table-responsive-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, var(--account-primary), var(--account-secondary));
+    border-radius: 4px;
+    transition: var(--account-transition);
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, var(--account-primary-hover), var(--account-primary));
+}
+
+.enhanced-table {
+    width: 100%;
+    min-width: 1400px; /* 增加最小宽度，确保横向滚动和固定列功能 */
+    border-collapse: collapse;
+    background: var(--account-bg-secondary);
+    position: relative;
+}
+
+.table-optimized {
+    border-spacing: 0;
+    background: var(--account-bg-secondary);
+    position: relative;
+}
+
+.enhanced-table th {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    padding: 0.875rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    white-space: nowrap;
+    vertical-align: middle;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 表头图标样式 */
+.th-icon {
+    display: inline-block;
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* 固定左侧列样式 */
+.col-fixed-left {
+    position: sticky;
+    left: 0;
+    z-index: 11;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9) !important;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.col-fixed-left:first-child {
+    left: 0;
+}
+
+.col-fixed-left:nth-child(2) {
+    left: 60px; /* 调整第二个固定列的位置 */
+}
+
+/* 固定右侧列样式 */
+.col-fixed-right {
+    position: sticky;
+    right: 0;
+    z-index: 11;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9) !important;
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+    min-width: 120px; /* 确保操作列有足够宽度 */
+}
+
+/* 修复表头固定列样式一致性 */
+.enhanced-table th.col-fixed,
+.enhanced-table th.col-index,
+.enhanced-table th.col-actions {
+    position: sticky;
+    z-index: 11;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9) !important;
+}
+
+.enhanced-table th.col-index {
+    left: 0;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.enhanced-table th.col-actions {
+    right: 0;
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 表格体固定列样式 */
+.enhanced-table tbody tr td.col-fixed-left {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: var(--account-bg-secondary);
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.enhanced-table tbody tr td.col-fixed-left:first-child {
+    left: 0;
+}
+
+.enhanced-table tbody tr td.col-fixed-left:nth-child(2) {
+    left: 60px;
+}
+
+.enhanced-table tbody tr td.col-fixed-right {
+    position: sticky;
+    right: 0;
+    z-index: 5;
+    background: var(--account-bg-secondary);
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 表格体固定列样式一致性修复 */
+.enhanced-table tbody tr td.col-fixed,
+.enhanced-table tbody tr td.col-index,
+.enhanced-table tbody tr td.col-actions {
+    position: sticky;
+    z-index: 5;
+    background: var(--account-bg-secondary);
+}
+
+.enhanced-table tbody tr td.col-index {
+    left: 0;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.enhanced-table tbody tr td.col-actions,
+.enhanced-table thead th.col-actions {
+    min-width: 120px; /* 确保操作列有足够宽度 */
+    width: 120px;
+    text-align: center;
+}
+
+/* 悬浮状态下固定列背景 */
+.enhanced-table tbody tr:hover td.col-fixed-left,
+.enhanced-table tbody tr:hover td.col-fixed-right,
+.enhanced-table tbody tr:hover td.col-fixed,
+.enhanced-table tbody tr:hover td.col-index,
+.enhanced-table tbody tr:hover td.col-actions {
+    background: var(--account-bg-hover);
+}
+
+.enhanced-table td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #374151;
+    font-size: 0.85rem;
+    vertical-align: middle;
+    white-space: nowrap;
+    position: relative;
+}
+
+/* 移除列优先级响应式隐藏，保持横向滚动功能 */
+
+/* 高亮列样式（如余额、收款金额等重要数据） */
+.col-highlight {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05)) !important;
+    font-weight: 600;
+    color: var(--account-primary) !important;
+}
+
+/* 列调整大小手柄 */
+.col-resize-handle-enhanced {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3px;
+    height: 100%;
+    background: transparent;
+    cursor: col-resize;
+    z-index: 1;
+    transition: var(--account-transition);
+}
+
+.col-resize-handle-enhanced:hover {
+    background: var(--account-primary);
+    opacity: 0.6;
+}
+
+.col-resize-handle-enhanced:active {
+    background: var(--account-primary);
+    opacity: 0.8;
+}
+
+.enhanced-table tr:hover {
+    background: var(--account-bg-hover);
+}
+
+.enhanced-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Table Loading State */
+.table__loading {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #64748b;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    border-top-color: var(--account-primary);
+    animation: spin 1s linear infinite;
+    margin-right: 0.5rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge--active {
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--status-active);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-badge--inactive {
+    background: rgba(148, 163, 184, 0.15);
+    color: var(--status-inactive);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.status-badge--pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--status-pending);
+}
+
+.status-badge--suspended {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--status-suspended);
+}
+
+/* Account Type Badges */
+.type-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.type-badge--corporate {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.type-badge--personal {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+/* Table Content Styling */
+.account-number {
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.85rem;
+    color: #374151;
+    word-break: break-all;
+}
+
+.account-name {
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.institution-type {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.limit-amount {
+    font-weight: 500;
+    color: var(--account-primary);
+    text-align: right;
+}
+
+.remarks-text {
+    color: #6b7280;
+    font-size: 0.85rem;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Table Actions */
+.table-actions {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    flex-wrap: nowrap;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--account-radius-sm);
+    border: 1px solid #d1d5db;
+    background: var(--account-bg-secondary);
+    cursor: pointer;
+    transition: var(--account-transition);
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: auto;
+}
+
+.action-btn:hover {
+    background: var(--account-bg-hover);
+}
+
+.action-btn--view {
+    color: #0ea5e9;
+}
+
+.action-btn--edit {
+    color: #f59e0b;
+    border-color: #fbbf24;
+}
+
+.action-btn--edit:hover {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: #f59e0b;
+}
+
+.action-btn--delete {
+    color: #ef4444;
+}
+
+.action-btn--toggle {
+    color: var(--status-pending);
+}
+
+.action-btn--test {
+    color: #0ea5e9;
+}
+
+.action-btn--enable {
+    color: #22c55e;
+    border-color: #34d399;
+}
+
+.action-btn--enable:hover {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: #22c55e;
+}
+
+.action-btn--disable {
+    color: #ef4444;
+    border-color: #f87171;
+}
+
+.action-btn--disable:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+}
+
+.action-icon {
+    font-size: 0.85rem;
+}
+
+/* Polling Modes Grid */
+.polling-modes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.polling-mode-card {
+    background: var(--account-bg-secondary);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--account-radius-lg);
+    padding: 1.5rem;
+    transition: var(--account-transition);
+    cursor: pointer;
+}
+
+.polling-mode-card:hover {
+    border-color: var(--account-primary);
+    box-shadow: var(--account-shadow-md);
+    transform: translateY(-2px);
+}
+
+.polling-mode-card h4 {
+    margin: 0 0 0.5rem 0;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.polling-mode-card p {
+    margin: 0 0 1rem 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* Polling Groups */
+.polling-section {
+    margin-bottom: 2rem;
+}
+
+.polling-groups-section {
+    margin-top: 2rem;
+}
+
+.polling-groups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.polling-group-placeholder {
+    background: var(--account-bg-secondary);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--account-radius-lg);
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+}
+
+.polling-group-card {
+    background: var(--account-bg-secondary);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--account-radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--account-shadow-sm);
+    transition: var(--account-transition);
+}
+
+.polling-group-card:hover {
+    box-shadow: var(--account-shadow-md);
+}
+
+.polling-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.polling-group-header h4 {
+    margin: 0;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.polling-group-info {
+    margin-bottom: 1rem;
+}
+
+.polling-group-info p {
+    margin: 0 0 0.5rem 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.polling-group-info strong {
+    color: #374151;
+}
+
+.weight-config-details {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--account-bg-tertiary);
+    border-radius: var(--account-radius-sm);
+    border-left: 3px solid var(--account-primary);
+}
+
+.weight-accounts-list {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.weight-account-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: var(--account-bg-secondary);
+    border-radius: var(--account-radius-sm);
+    border: 1px solid #e2e8f0;
+}
+
+.weight-account-item .account-name {
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.weight-account-item .weight-info {
+    font-size: 0.8rem;
+    color: var(--account-primary);
+    font-weight: 500;
+}
+
+.polling-group-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Modal Styles - 提高z-index确保显示在最上层 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999 !important; /* 确保在最上层 */
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--account-transition);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-enhanced {
+    background: var(--account-bg-secondary);
+    border-radius: var(--account-radius-lg);
+    box-shadow: var(--account-shadow-lg);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.9) translateY(-20px);
+    transition: var(--account-transition);
+    position: relative;
+    z-index: 99999 !important; /* 确保模态框内容在最上层 */
+}
+
+.modal-overlay.active .modal-enhanced {
+    transform: scale(1) translateY(0);
+}
+
+/* 特别确保轮询组模态框可见 - 更新为新的类名 */
+#pollingGroupModalOverlay.account-modal-overlay--active #pollingGroupModal,
+#pollingGroupModalOverlay.active #pollingGroupModal {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+#pollingGroupModalOverlay.account-modal-overlay--active,
+#pollingGroupModalOverlay.active {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* 优先级轮询配置样式 */
+.priority-accounts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.priority-account-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--account-radius-md);
+    background: var(--account-bg-secondary);
+    transition: var(--account-transition);
+}
+
+.priority-account-item:hover {
+    border-color: var(--account-primary);
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.1);
+}
+
+.priority-account-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.priority-account-name {
+    font-weight: 500;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+}
+
+.priority-account-details {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.priority-input-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: 1rem;
+}
+
+.priority-label {
+    font-size: 0.9rem;
+    color: #374151;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.priority-input {
+    width: 80px;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: var(--account-radius-sm);
+    text-align: center;
+    font-size: 0.9rem;
+    transition: var(--account-transition);
+}
+
+.priority-input:focus {
+    outline: none;
+    border-color: var(--account-primary);
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.priority-input:invalid {
+    border-color: #ef4444;
+}
+
+.priority-remove-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: #ef4444;
+    border-radius: var(--account-radius-sm);
+    cursor: pointer;
+    transition: var(--account-transition);
+}
+
+.priority-remove-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: var(--account-radius-sm);
+    cursor: pointer;
+    color: #64748b;
+    font-size: 1.5rem;
+    transition: var(--account-transition);
+}
+
+.modal-close:hover {
+    background: var(--account-bg-hover);
+    color: #374151;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+    background: var(--account-bg-tertiary);
+}
+
+/* Form Styles */
+.form-enhanced {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.9rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: var(--account-radius-sm);
+    font-size: 0.9rem;
+    transition: var(--account-transition);
+    background: var(--account-bg-secondary);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--account-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Account Selector */
+.account-selector {
+    border: 1px solid #d1d5db;
+    border-radius: var(--account-radius-sm);
+    padding: 1rem;
+    background: var(--account-bg-secondary);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.account-selector-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: var(--account-radius-sm);
+    transition: var(--account-transition);
+}
+
+.account-selector-item:hover {
+    background: var(--account-bg-hover);
+}
+
+.account-selector-checkbox {
+    margin: 0;
+}
+
+/* Weight Account Selector */
+.weight-account-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.selector-header {
+    padding: 0.75rem;
+    background: var(--account-bg-tertiary);
+    border-radius: var(--account-radius-sm);
+    border-left: 4px solid var(--account-primary);
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+.account-weight-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--account-radius-md);
+    background: var(--account-bg-secondary);
+    transition: var(--account-transition);
+}
+
+.account-weight-item:hover {
+    border-color: var(--account-primary);
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.1);
+}
+
+.account-info-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.account-label {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.account-name {
+    font-weight: 500;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+}
+
+.account-details {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.weight-input-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.weight-label {
+    font-size: 0.9rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+.weight-input {
+    width: 80px;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: var(--account-radius-sm);
+    text-align: center;
+    font-size: 0.9rem;
+    transition: var(--account-transition);
+}
+
+.weight-input:focus {
+    outline: none;
+    border-color: var(--account-primary);
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.weight-input:invalid {
+    border-color: #ef4444;
+}
+
+/* Toast Notification */
+.toast-notification {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background: var(--account-bg-secondary);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--account-radius-lg);
+    box-shadow: var(--account-shadow-lg);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 10001;
+    transform: translateX(100%);
+    transition: var(--account-transition);
+}
+
+.toast-notification.show {
+    transform: translateX(0);
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toast-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 1rem;
+}
+
+/* 响应式设计 - 适配平衡布局 */
+@media (max-width: 1024px) {
+    .section-header-balanced {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        min-height: auto;
+    }
+    
+    .section-title-area {
+        width: 100%;
+    }
+    
+    .section-actions-area {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    /* 保持兼容性 */
+    .section-header__content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        min-height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .page-header__actions {
+        width: 100%;
+    }
+    
+    .section-header-balanced {
+        gap: 1rem;
+    }
+    
+    .section-title-area {
+        gap: 0.5rem;
+    }
+    
+    /* 移动端按钮样式调整 */
+    .section-actions-area {
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+    }
+    
+    .section-actions-area .btn-primary,
+    .section-actions-area .btn-secondary {
+        width: 100%;
+        justify-content: center;
+        font-size: 0.9rem;
+        padding: 0.75rem 1rem;
+    }
+    
+    /* 保持兼容性 */
+    .section-header__content {
+        gap: 1rem;
+    }
+    
+    .tab-navigation {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .polling-modes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .enhanced-table {
+        font-size: 0.75rem;
+        min-width: 800px; /* 移动端最小宽度 */
+    }
+    
+    .enhanced-table th,
+    .enhanced-table td {
+        padding: 0.625rem 0.5rem;
+    }
+    
+    .th-icon {
+        display: none; /* 移动端隐藏图标 */
+    }
+    
+    /* 移动端固定列位置调整 */
+    .col-fixed-left:nth-child(2) {
+        left: 50px;
+    }
+    
+    /* 移动端保持横向滚动，不隐藏列 */
+    
+    /* 确保固定列在移动端正常显示 */
+    .col-fixed-left,
+    .col-fixed-right {
+        display: table-cell !important;
+    }
+}

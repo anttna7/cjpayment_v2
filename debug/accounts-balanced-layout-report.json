@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-08-29T05:40:05.608Z",
+  "layout": "左标题右双按钮平衡布局",
+  "results": {
+    "desktop": {
+      "containerWidth": "1296px",
+      "titleRatio": "74.2%",
+      "actionsRatio": "23.3%",
+      "buttonsOnSameLine": true,
+      "buttonGap": "12.0px",
+      "spaceSaving": true,
+      "screenshot": "accounts-balanced-layout.png"
+    },
+    "tablet": {
+      "viewport": "768x1024",
+      "screenshot": "accounts-balanced-tablet.png"
+    },
+    "mobile": {
+      "viewport": "375x667",
+      "screenshot": "accounts-balanced-mobile.png"
+    }
+  },
+  "advantages": [
+    "✅ 左右视觉平衡",
+    "✅ 不占用额外行空间",
+    "✅ 按钮组合紧凑",
+    "✅ 操作区域集中",
+    "✅ 响应式适配完善"
+  ],
+  "userExperience": {
+    "visualBalance": "优秀",
+    "spaceEfficiency": "最大化",
+    "operationEfficiency": "高效",
+    "overallScore": "完美"
+  }
+}

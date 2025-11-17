@@ -1,0 +1,583 @@
+/* 订单信息表高级样式 - 带序号固定滚动功能 */
+
+/* ============================================
+   表格容器和基础结构
+   ============================================ */
+
+.table-wrapper-advanced {
+    position: relative;
+    width: 100%;
+    max-height: 70vh; /* 限制表格最大高度 */
+    overflow: auto; /* 支持水平和垂直滚动 */
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    
+    /* 优化滚动条样式 */
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f9fafb;
+}
+
+.table-wrapper-advanced::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.table-wrapper-advanced::-webkit-scrollbar-track {
+    background: #f9fafb;
+    border-radius: 5px;
+}
+
+.table-wrapper-advanced::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #d1d5db, #9ca3af);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.table-wrapper-advanced::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #9ca3af, #6b7280);
+}
+
+.table-wrapper-advanced::-webkit-scrollbar-corner {
+    background: #f9fafb;
+}
+
+/* ============================================
+   表格主体结构
+   ============================================ */
+
+.horizontal-scroll-table {
+    width: 100%;
+    min-width: 2000px; /* 确保触发横向滚动，容纳所有14列 */
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #ffffff;
+    font-size: 14px;
+    table-layout: fixed; /* 固定表格布局以便控制列宽 */
+}
+
+/* ============================================
+   粘性表头样式
+   ============================================ */
+
+.table-head-enhanced-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table-header-row {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* ============================================
+   序号列固定样式 - 核心功能
+   ============================================ */
+
+.col-serial {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 101 !important; /* 比表头更高的层级 */
+    background: #ffffff !important;
+    border-right: 2px solid #e5e7eb !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1) !important;
+    
+    /* 确保序号列始终可见 */
+    min-width: 80px !important;
+    max-width: 80px !important;
+    width: 80px !important;
+}
+
+/* 序号列在表头中的样式 */
+.col-serial .th-content-enhanced {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    font-weight: 700 !important;
+    color: #374151 !important;
+    justify-content: center !important;
+    border-right: none !important;
+}
+
+/* 序号列在表体中的样式 */
+.col-serial-cell {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 99 !important;
+    background: #ffffff !important;
+    border-right: 2px solid #e5e7eb !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08) !important;
+    
+    text-align: center !important;
+    font-weight: 600 !important;
+    color: #6b7280 !important;
+    vertical-align: middle !important;
+}
+
+/* 序号列悬停效果 */
+.col-serial-cell:hover {
+    background: #f9fafb !important;
+}
+
+/* 表格行悬停时序号列的样式 */
+tr:hover .col-serial-cell {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+}
+
+/* ============================================
+   表头增强样式
+   ============================================ */
+
+.th-content-enhanced {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 12px;
+    min-height: 56px;
+    user-select: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid #e5e7eb;
+    border-right: 1px solid #e5e7eb;
+}
+
+.th-content-enhanced:hover {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+.th-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.th-icon {
+    font-size: 16px;
+    opacity: 0.8;
+    flex-shrink: 0;
+}
+
+.th-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sort-indicator-enhanced {
+    font-size: 14px;
+    opacity: 0.6;
+    margin-left: 6px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.col-sortable:hover .sort-indicator-enhanced {
+    opacity: 1;
+    color: #3b82f6;
+    transform: scale(1.1);
+}
+
+/* ============================================
+   列宽度优化
+   ============================================ */
+
+/* 序号列 */
+.col-serial { width: 80px; min-width: 80px; max-width: 80px; }
+
+/* 订单号列 - 确保可以滚动，不固定 */
+th[data-column="order_number"], 
+td[data-column="order_number"] { 
+    width: 160px; min-width: 160px;
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    z-index: auto !important;
+}
+
+/* 银行凭证号列 - 确保可以滚动 */
+th[data-column="bank_voucher"], 
+td[data-column="bank_voucher"] { 
+    width: 150px; min-width: 150px;
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+}
+
+/* 交易金额列 - 确保可以滚动 */
+th[data-column="amount"], 
+td[data-column="amount"] { 
+    width: 130px; min-width: 130px;
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+}
+
+/* 商户名称列 */
+th[data-column="merchant_name"], 
+td[data-column="merchant_name"] { 
+    width: 140px; min-width: 140px; 
+}
+
+/* 付款账户名称列 */
+th[data-column="payer_account_name"], 
+td[data-column="payer_account_name"] { 
+    width: 140px; min-width: 140px; 
+}
+
+/* 付款账号列 */
+th[data-column="payer_account_number"], 
+td[data-column="payer_account_number"] { 
+    width: 160px; min-width: 160px; 
+}
+
+/* 收款账户名称列 */
+th[data-column="receiver_account_name"], 
+td[data-column="receiver_account_name"] { 
+    width: 140px; min-width: 140px; 
+}
+
+/* 收款账号列 */
+th[data-column="receiver_account_number"], 
+td[data-column="receiver_account_number"] { 
+    width: 160px; min-width: 160px; 
+}
+
+/* 业务类别列 */
+th[data-column="business_type"], 
+td[data-column="business_type"] { 
+    width: 120px; min-width: 120px; 
+}
+
+/* 状态列 */
+th[data-column="status"], 
+td[data-column="status"] { 
+    width: 110px; min-width: 110px; 
+}
+
+/* 创建时间列 */
+th[data-column="created_time"], 
+td[data-column="created_time"] { 
+    width: 140px; min-width: 140px; 
+}
+
+/* 成功时间列 */
+th[data-column="success_time"], 
+td[data-column="success_time"] { 
+    width: 140px; min-width: 140px; 
+}
+
+/* 审核列 */
+th[data-column="audit_status"], 
+td[data-column="audit_status"] { 
+    width: 140px; min-width: 140px; 
+}
+
+/* ============================================
+   表格行和单元格样式
+   ============================================ */
+
+.horizontal-scroll-table tbody tr {
+    border-bottom: 1px solid #f3f4f6;
+    transition: all 0.2s ease;
+}
+
+.horizontal-scroll-table tbody tr:hover {
+    background: linear-gradient(135deg, #f8fafc 0%, #f3f4f6 100%);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.horizontal-scroll-table tbody tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+.horizontal-scroll-table tbody tr:nth-child(even):hover {
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+}
+
+.horizontal-scroll-table td {
+    padding: 12px;
+    vertical-align: middle;
+    border-right: 1px solid #f3f4f6;
+    font-size: 13px;
+    color: #374151;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ============================================
+   特殊列样式
+   ============================================ */
+
+/* 金额高亮 */
+.col-highlight {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+}
+
+.col-highlight .th-text {
+    color: #92400e;
+    font-weight: 700;
+}
+
+/* 状态列样式 */
+.col-status .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.status-badge--success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.status-badge--failed {
+    background: #fecaca;
+    color: #dc2626;
+    border: 1px solid #fca5a5;
+}
+
+/* 审核列样式 */
+.col-audit .audit-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.audit-badge--audited {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+.audit-badge--pending {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+/* ============================================
+   加载状态样式
+   ============================================ */
+
+.loading-row td {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f9fafb;
+    color: #6b7280;
+    border: none;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 12px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ============================================
+   响应式设计
+   ============================================ */
+
+@media (max-width: 1400px) {
+    .horizontal-scroll-table {
+        min-width: 1800px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .table-wrapper-advanced {
+        max-height: 60vh;
+    }
+    
+    .horizontal-scroll-table {
+        min-width: 1600px;
+    }
+    
+    .th-content-enhanced {
+        padding: 12px 8px;
+        min-height: 48px;
+    }
+    
+    .horizontal-scroll-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-wrapper-advanced {
+        max-height: 50vh;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+    
+    .horizontal-scroll-table {
+        min-width: 1400px;
+    }
+    
+    .col-serial {
+        min-width: 60px !important;
+        max-width: 60px !important;
+        width: 60px !important;
+    }
+    
+    .th-content-enhanced {
+        padding: 8px 6px;
+        min-height: 44px;
+    }
+    
+    .th-text {
+        font-size: 12px;
+    }
+    
+    .horizontal-scroll-table td {
+        padding: 6px;
+        font-size: 11px;
+    }
+}
+
+/* ============================================
+   打印样式优化
+   ============================================ */
+
+@media print {
+    .table-wrapper-advanced {
+        overflow: visible;
+        max-height: none;
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+    
+    .col-serial {
+        position: static !important;
+        box-shadow: none !important;
+    }
+    
+    .horizontal-scroll-table {
+        min-width: auto;
+    }
+    
+    .th-content-enhanced,
+    .horizontal-scroll-table td {
+        padding: 4px 6px;
+    }
+}
+
+/* ============================================
+   列调整手柄样式
+   ============================================ */
+
+.col-resize-handle-enhanced {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: transparent;
+    cursor: col-resize;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.col-resize-handle-enhanced:hover {
+    background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+    box-shadow: 0 0 4px rgba(59, 130, 246, 0.5);
+}
+
+.col-resize-handle-enhanced:active {
+    background: #1d4ed8;
+    cursor: col-resize;
+}
+
+/* ============================================
+   序号列特殊交互效果
+   ============================================ */
+
+.col-serial-cell::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(180deg, transparent 0%, #e5e7eb 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.col-serial-cell:hover::after {
+    opacity: 1;
+}
+
+/* 序号数字样式 */
+.serial-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    border-radius: 50%;
+    font-weight: 700;
+    color: #374151;
+    transition: all 0.3s ease;
+}
+
+tr:hover .serial-number {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+tr:nth-child(even) .serial-number {
+    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+}
+
+tr:nth-child(even):hover .serial-number {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff;
+}
+
+/* ============================================
+   确保非固定列可以正常滚动
+   ============================================ */
+
+/* 强制所有非固定列都可以正常滚动，覆盖任何可能的固定样式 */
+th[data-column]:not([data-column="audit_status"]):not(.col-serial):not(.col-fixed-left):not(.col-fixed-right),
+td[data-column]:not(.col-serial-cell):not(.col-audit-cell):not(.col-fixed-left):not(.col-fixed-right) {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    z-index: auto !important;
+}

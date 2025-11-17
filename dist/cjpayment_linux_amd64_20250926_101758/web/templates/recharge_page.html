@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>充值页面 - CJPayment</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/dashboard-enhanced.css">
+    <link rel="stylesheet" href="../static/css/account-management-enhanced.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/recharge_page.css" rel="stylesheet">
+</head>
+<body>
+    <style>
+        /* 验证相关样式 */
+        .verification-section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .verification-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-icon {
+            font-size: 1.2rem;
+        }
+        
+        .status-icon.pending { color: #f59e0b; }
+        .status-icon.processing { color: #3b82f6; }
+        .status-icon.success { color: #10b981; }
+        .status-icon.failed { color: #ef4444; }
+        
+        .verification-steps-list {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .verification-steps-list li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        /* 审批相关样式 */
+        .approval-status-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .approval-info {
+            margin-bottom: 1.5rem;
+        }
+        
+        .approval-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .result-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .result-card.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+        }
+        
+        .result-card.failed {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .recharge-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--account-bg-primary);
+        }
+        
+        .recharge-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--account-bg-secondary);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--account-shadow-card);
+        }
+        
+        .recharge-title {
+            font-size: 2.5rem;
+            color: var(--account-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .recharge-subtitle {
+            color: var(--dashboard-text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .recharge-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .step-card {
+            background: var(--account-bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--account-shadow-card);
+            border-left: 5px solid var(--account-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .step-card.active {
+            border-left-color: var(--rule-active);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.15);
+        }
+        
+        .step-card.completed {
+            border-left-color: var(--rule-active);
+            background: rgba(34, 197, 94, 0.02);
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--account-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .step-card.active .step-number {
+            background: var(--rule-active);
+            animation: pulse 2s infinite;
+        }
+        
+        .step-card.completed .step-number {
+            background: var(--rule-active);
+        }
+        
+        .step-card.completed .step-number::before {
+            content: "✓";
+            font-size: 1.2rem;
+        }
+        
+        .step-title {
+            color: var(--dashboard-text-primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .step-content {
+            display: none;
+        }
+        
+        .step-card.active .step-content {
+            display: block;
+        }
+        
+        .receiving-accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .receiving-account-card {
+            background: var(--account-bg-tertiary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .receiving-account-card:hover {
+            border-color: var(--account-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .receiving-account-card.selected {
+            border-color: var(--rule-active);
+            background: rgba(34, 197, 94, 0.05);
+        }
+        
+        .account-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .type-银行卡 {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        
+        .type-支付宝 {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--rule-active);
+        }
+        
+        .type-微信 {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--rule-active);
+        }
+        
+        .type-其它 {
+            background: rgba(156, 163, 175, 0.1);
+            color: #6b7280;
+        }
+        
+        .account-info {
+            margin-bottom: 1rem;
+        }
+        
+        .account-name {
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .account-number {
+            color: var(--dashboard-text-secondary);
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+        
+        .account-limits {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--dashboard-border-primary);
+        }
+        
+        .limit-item {
+            text-align: center;
+        }
+        
+        .limit-label {
+            font-size: 0.75rem;
+            color: var(--dashboard-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .limit-value {
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+        }
+        
+        .recharge-form {
+            background: var(--account-bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--account-shadow-card);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .amount-input-group {
+            position: relative;
+        }
+        
+        .amount-input-group .form-input-enhanced {
+            padding-left: 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .currency-symbol {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--account-primary);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @media (max-width: 768px) {
+            .recharge-steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .receiving-accounts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <div class="recharge-container">
+        <!-- 页面标题 -->
+        <div class="recharge-header">
+            <h1 class="recharge-title">💰 充值页面</h1>
+            <p class="recharge-subtitle">请按步骤完成充值信息填写</p>
+        </div>
+        
+        <!-- 充值步骤 -->
+        <div class="recharge-steps">
+            <!-- 步骤1：付款人信息 -->
+            <div class="step-card active" id="step1">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">付款人信息</h3>
+                </div>
+                <div class="step-content">
+                    <form id="payerForm">
+                        <div class="form-section">
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label for="payerName" class="form-label-enhanced required">付款人姓名</label>
+                                    <input type="text" id="payerName" name="payerName" 
+                                           class="form-input-enhanced" 
+                                           placeholder="请输入付款人姓名"
+                                           required>
+                                    <div class="form-error" id="payerNameError"></div>
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label for="payerAccount" class="form-label-enhanced required">付款账号</label>
+                                    <input type="text" id="payerAccount" name="payerAccount" 
+                                           class="form-input-enhanced" 
+                                           placeholder="请输入付款账号"
+                                           required>
+                                    <div class="form-error" id="payerAccountError"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label for="payerAccountType" class="form-label-enhanced required">付款账号类型</label>
+                                    <select id="payerAccountType" name="payerAccountType" 
+                                            class="form-input-enhanced" 
+                                            required
+                                            onchange="togglePayerBankName()">
+                                        <option value="">请选择账号类型</option>
+                                        <option value="银行卡">银行卡</option>
+                                        <option value="支付宝">支付宝</option>
+                                        <option value="微信">微信</option>
+                                        <option value="其它">其它</option>
+                                    </select>
+                                    <div class="form-error" id="payerAccountTypeError"></div>
+                                </div>
+                                
+                                <div class="form-group-enhanced" id="payerBankNameGroup" style="display: none;">
+                                    <label for="payerBankName" class="form-label-enhanced required">银行名称</label>
+                                    <select id="payerBankName" name="payerBankName" 
+                                            class="form-input-enhanced">
+                                        <option value="">请选择银行</option>
+                                        <option value="中国工商银行">中国工商银行</option>
+                                        <option value="中国建设银行">中国建设银行</option>
+                                        <option value="中国农业银行">中国农业银行</option>
+                                        <option value="中国银行">中国银行</option>
+                                        <option value="交通银行">交通银行</option>
+                                        <option value="招商银行">招商银行</option>
+                                        <option value="浦发银行">浦发银行</option>
+                                        <option value="中信银行">中信银行</option>
+                                        <option value="光大银行">光大银行</option>
+                                        <option value="民生银行">民生银行</option>
+                                        <option value="华夏银行">华夏银行</option>
+                                        <option value="平安银行">平安银行</option>
+                                        <option value="兴业银行">兴业银行</option>
+                                        <option value="其它银行">其它银行</option>
+                                    </select>
+                                    <div class="form-error" id="payerBankNameError"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <div></div>
+                            <button type="button" class="btn-enhanced btn-primary" onclick="nextStep(2)">
+                                下一步：选择收款账户
+                                <span class="btn__icon">→</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 步骤2：选择收款账户 -->
+            <div class="step-card" id="step2">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">选择收款账户</h3>
+                </div>
+                <div class="step-content">
+                    <p style="color: var(--dashboard-text-secondary); margin-bottom: 1.5rem;">
+                        根据您的付款信息，系统为您匹配了以下收款账户：
+                    </p>
+                    
+                    <div class="receiving-accounts-grid" id="receivingAccountsGrid">
+                        <!-- 收款账户将通过JavaScript动态加载 -->
+                    </div>
+                    
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-enhanced btn-outline" onclick="prevStep(1)">
+                            <span class="btn__icon">←</span>
+                            上一步
+                        </button>
+                        <button type="button" class="btn-enhanced btn-primary" onclick="nextStep(3)" id="selectAccountBtn" disabled>
+                            下一步：填写充值信息
+                            <span class="btn__icon">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 步骤3：充值信息与账户验证 -->
+            <div class="step-card" id="step3">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">充值信息与账户验证</h3>
+                </div>
+                <div class="step-content">
+                    <form id="rechargeForm" class="recharge-form">
+                        <!-- 账户验证部分 -->
+                        <div class="form-section">
+                            <h4 class="form-section-title">🔒 付款账户验证</h4>
+                            <div class="alert alert-info">
+                                <i class="fas fa-shield-alt me-2"></i>
+                                为保障资金安全，系统需要验证您的付款账户信息
+                            </div>
+                            
+                            <div class="verification-section">
+                                <div class="form-row">
+                                    <div class="form-group-enhanced">
+                                        <label class="form-label-enhanced required">付款账户验证状态</label>
+                                        <div class="verification-status" id="verificationStatus">
+                                            <div class="status-item">
+                                                <span class="status-icon pending">⏳</span>
+                                                <span class="status-text">待验证</span>
+                                            </div>
+                                            <button type="button" class="btn-enhanced btn-outline btn-sm" id="startVerificationBtn">
+                                                <span class="btn__icon">🔍</span>
+                                                开始验证
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group-enhanced" id="verificationAmountGroup" style="display: none;">
+                                        <label class="form-label-enhanced required">验证金额</label>
+                                        <div class="amount-input-group">
+                                            <span class="currency-symbol">¥</span>
+                                            <input type="number" id="verificationAmount" name="verificationAmount" 
+                                                   class="form-input-enhanced" 
+                                                   placeholder="0.01"
+                                                   step="0.01"
+                                                   min="0.01"
+                                                   max="1.00"
+                                                   readonly>
+                                        </div>
+                                        <div class="form-help">系统将自动生成一个小额验证金额，请输入此金额进行账户验证</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="verification-steps" id="verificationSteps" style="display: none;">
+                                    <h5>验证步骤：</h5>
+                                    <ol class="verification-steps-list">
+                                        <li>使用您的付款账户向指定收款账户转账上述验证金额</li>
+                                        <li>转账完成后，系统将自动检测并验证您的账户</li>
+                                        <li>验证成功后，您就可以继续填写充值信息</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 充值详情部分 -->
+                        <div class="form-section" id="rechargeDetailsSection" style="display: none;">
+                            <h4 class="form-section-title">💰 充值详情</h4>
+                            
+                            <div class="form-grid">
+                                <div class="form-group-enhanced">
+                                    <label for="rechargeAmount" class="form-label-enhanced required">充值金额</label>
+                                    <div class="amount-input-group">
+                                        <span class="currency-symbol">¥</span>
+                                        <input type="number" id="rechargeAmount" name="rechargeAmount" 
+                                               class="form-input-enhanced" 
+                                               placeholder="0.00"
+                                               step="0.01"
+                                               min="0.01"
+                                               required>
+                                    </div>
+                                    <div class="form-error" id="rechargeAmountError"></div>
+                                    <div class="form-help">请输入充值金额，最小金额为0.01元</div>
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label for="adAccountId" class="form-label-enhanced required">广告账户ID</label>
+                                    <input type="text" id="adAccountId" name="adAccountId" 
+                                           class="form-input-enhanced" 
+                                           placeholder="请输入广告账户ID"
+                                           required>
+                                    <div class="form-error" id="adAccountIdError"></div>
+                                    <div class="form-help">请输入需要充值的广告账户ID</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label for="rechargeRemark" class="form-label-enhanced">充值备注</label>
+                                    <textarea id="rechargeRemark" name="rechargeRemark" 
+                                              class="form-input-enhanced" 
+                                              placeholder="请输入充值备注（可选）"
+                                              rows="3"></textarea>
+                                    <div class="form-help">可选填写充值相关备注信息</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 管理员审批状态 -->
+                        <div class="form-section" id="approvalSection" style="display: none;">
+                            <h4 class="form-section-title">🔍 管理员审批状态</h4>
+                            <div class="approval-status-card">
+                                <div class="approval-info">
+                                    <div class="approval-status" id="approvalStatus">
+                                        <div class="status-item">
+                                            <span class="status-icon pending">⏳</span>
+                                            <span class="status-text">等待管理员审批</span>
+                                        </div>
+                                    </div>
+                                    <div class="approval-details" id="approvalDetails">
+                                        <p class="text-muted">您的充值申请已提交，请等待管理员审核。审核时间通常为1-30分钟。</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="approval-actions">
+                                    <button type="button" class="btn-enhanced btn-outline" id="refreshStatusBtn">
+                                        <span class="btn__icon">🔄</span>
+                                        刷新状态
+                                    </button>
+                                    <button type="button" class="btn-enhanced btn-secondary" id="contactAdminBtn">
+                                        <span class="btn__icon">📞</span>
+                                        联系管理员
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <button type="button" class="btn-enhanced btn-outline" onclick="prevStep(2)">
+                                <span class="btn__icon">←</span>
+                                上一步
+                            </button>
+                            <button type="submit" class="btn-enhanced btn-primary btn-success" id="submitRechargeBtn" disabled>
+                                <span class="btn__icon">💰</span>
+                                提交充值申请
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 步骤4：审批结果 -->
+        <div class="step-card" id="step4">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h3 class="step-title">审批结果</h3>
+            </div>
+            <div class="step-content">
+                <div class="approval-result-section">
+                    <div class="result-card" id="approvalResultCard">
+                        <!-- 审批结果将通过JavaScript动态显示 -->
+                    </div>
+                    
+                    <div class="result-actions">
+                        <button type="button" class="btn-enhanced btn-outline" onclick="resetForm()">
+                            <span class="btn__icon">🔄</span>
+                            重新申请
+                        </button>
+                        <button type="button" class="btn-enhanced btn-primary" id="downloadReceiptBtn" style="display: none;">
+                            <span class="btn__icon">📄</span>
+                            下载收据
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 收款信息模态框 -->
+    <div class="modal fade" id="paymentInfoModal" tabindex="-1" aria-labelledby="paymentInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="paymentInfoModalLabel">
+                        <i class="fas fa-check-circle me-2"></i>充值申请已提交
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>订单号：</strong><span id="orderNumber"></span>
+                    </div>
+                    
+                    <div class="payment-info-section">
+                        <h6 class="mb-3">
+                            <i class="fas fa-university me-2"></i>收款账号信息
+                        </h6>
+                        
+                        <div class="account-info-card">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">收款人姓名</label>
+                                    <div class="info-display" id="accountName">
+                                        <span class="info-text"></span>
+                                        <button class="btn btn-sm btn-outline-secondary copy-btn" type="button">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">银行名称</label>
+                                    <div class="info-display" id="bankName">
+                                        <span class="info-text"></span>
+                                        <button class="btn btn-sm btn-outline-secondary copy-btn" type="button">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">银行账号</label>
+                                    <div class="info-display" id="accountNumber">
+                                        <span class="info-text"></span>
+                                        <button class="btn btn-sm btn-outline-secondary copy-btn" type="button">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">转账金额</label>
+                                    <div class="amount-display">
+                                        <span class="amount-text" id="transferAmount"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-instructions mt-4">
+                            <h6><i class="fas fa-exclamation-triangle me-2 text-warning"></i>付款注意事项</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>请确保转账金额与显示金额完全一致</li>
+                                <li><i class="fas fa-check text-success me-2"></i>转账完成后请上传付款凭证</li>
+                                <li><i class="fas fa-check text-success me-2"></i>如有疑问请联系客服</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- 支付凭证上传 -->
+                    <div class="upload-section mt-4">
+                        <h6><i class="fas fa-upload me-2"></i>上传付款凭证</h6>
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="proofFile" accept="image/*" class="d-none">
+                            <div class="upload-placeholder">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">点击或拖拽上传付款凭证</p>
+                                <small class="text-muted">支持 JPG、PNG 格式，最大 5MB</small>
+                            </div>
+                            <div class="upload-preview d-none">
+                                <img id="previewImage" src="" alt="付款凭证预览" class="img-fluid">
+                                <button type="button" class="btn btn-sm btn-danger remove-image">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-success mt-3" id="uploadProofBtn" disabled>
+                            <i class="fas fa-upload me-2"></i>上传凭证
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="checkStatusBtn">查看订单状态</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 加载提示 -->
+    <div class="loading-overlay d-none" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">正在处理您的请求...</p>
+        </div>
+    </div>
+    
+    <script>
+        // 切换付款人银行名称字段显示
+        function togglePayerBankName() {
+            const accountTypeSelect = document.getElementById('payerAccountType');
+            const bankNameGroup = document.getElementById('payerBankNameGroup');
+            const bankNameInput = document.getElementById('payerBankName');
+            
+            if (accountTypeSelect && bankNameGroup) {
+                const selectedType = accountTypeSelect.value;
+                
+                if (selectedType === '银行卡') {
+                    bankNameGroup.style.display = 'block';
+                    if (bankNameInput) {
+                        bankNameInput.setAttribute('required', 'required');
+                    }
+                } else {
+                    bankNameGroup.style.display = 'none';
+                    if (bankNameInput) {
+                        bankNameInput.removeAttribute('required');
+                        bankNameInput.value = '';
+                    }
+                }
+            }
+        }
+        
+        // 步骤导航
+        let currentStep = 1;
+        let selectedReceivingAccount = null;
+        
+        function nextStep(step) {
+            if (step === 2) {
+                // 验证付款人信息
+                if (!validatePayerForm()) {
+                    return;
+                }
+                loadReceivingAccounts();
+            } else if (step === 3) {
+                // 验证是否选择了收款账户
+                if (!selectedReceivingAccount) {
+                    showToast('请选择一个收款账户', 'warning');
+                    return;
+                }
+            } else if (step === 4) {
+                // 进入结果页面，无需额外验证
+            }
+            
+            // 更新步骤状态
+            if (currentStep <= 3) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                document.getElementById(`step${currentStep}`).classList.add('completed');
+            }
+            
+            currentStep = step;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+        }
+        
+        function prevStep(step) {
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('completed');
+            }
+            
+            currentStep = step;
+            document.getElementById(`step${currentStep}`).classList.remove('completed');
+            document.getElementById(`step${currentStep}`).classList.add('active');
+        }
+        
+        function validatePayerForm() {
+            const payerName = document.getElementById('payerName').value.trim();
+            const payerAccount = document.getElementById('payerAccount').value.trim();
+            const payerAccountType = document.getElementById('payerAccountType').value;
+            const payerBankName = document.getElementById('payerBankName').value;
+            
+            if (!payerName) {
+                showError('payerNameError', '请输入付款人姓名');
+                return false;
+            }
+            
+            if (!payerAccount) {
+                showError('payerAccountError', '请输入付款账号');
+                return false;
+            }
+            
+            if (!payerAccountType) {
+                showError('payerAccountTypeError', '请选择付款账号类型');
+                return false;
+            }
+            
+            if (payerAccountType === '银行卡' && !payerBankName) {
+                showError('payerBankNameError', '请选择银行名称');
+                return false;
+            }
+            
+            clearErrors();
+            return true;
+        }
+        
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.form-error');
+            errorElements.forEach(element => {
+                element.textContent = '';
+                element.style.display = 'none';
+            });
+        }
+        
+        // 全局变量
+        let verificationCompleted = false;
+        let adminApprovalStatus = 'pending'; // pending, approved, rejected
+        let rechargeOrderId = null;
+        
+        // 绑定事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            // 开始验证按钮
+            document.getElementById('startVerificationBtn')?.addEventListener('click', startAccountVerification);
+            
+            // 刷新状态按钮
+            document.getElementById('refreshStatusBtn')?.addEventListener('click', refreshApprovalStatus);
+            
+            // 联系管理员按钮
+            document.getElementById('contactAdminBtn')?.addEventListener('click', contactAdmin);
+            
+            // 下载收据按钮
+            document.getElementById('downloadReceiptBtn')?.addEventListener('click', downloadReceipt);
+        });
+        
+        // 开始账户验证
+        function startAccountVerification() {
+            const verificationAmountGroup = document.getElementById('verificationAmountGroup');
+            const verificationSteps = document.getElementById('verificationSteps');
+            const startBtn = document.getElementById('startVerificationBtn');
+            const verificationAmountInput = document.getElementById('verificationAmount');
+            
+            // 生成随机验证金额（0.01-1.00元）
+            const randomAmount = (Math.random() * 0.99 + 0.01).toFixed(2);
+            verificationAmountInput.value = randomAmount;
+            
+            // 显示验证金额输入和步骤
+            verificationAmountGroup.style.display = 'block';
+            verificationSteps.style.display = 'block';
+            
+            // 更新按钮状态
+            startBtn.innerHTML = '<span class="btn__icon">⏳</span>处理中...';
+            startBtn.disabled = true;
+            
+            // 模拟验证过程（5秒后完成）
+            setTimeout(() => {
+                completeAccountVerification();
+            }, 5000);
+        }
+        
+        function completeAccountVerification() {
+            const verificationStatus = document.getElementById('verificationStatus');
+            const rechargeDetailsSection = document.getElementById('rechargeDetailsSection');
+            const submitBtn = document.getElementById('submitRechargeBtn');
+            
+            verificationCompleted = true;
+            
+            // 更新验证状态
+            verificationStatus.innerHTML = `
+                <div class="status-item">
+                    <span class="status-icon success">✅</span>
+                    <span class="status-text">验证成功</span>
+                </div>
+                <div class="text-success">
+                    <small>账户验证已完成，可以继续填写充值信息</small>
+                </div>
+            `;
+            
+            // 显示充值详情部分
+            rechargeDetailsSection.style.display = 'block';
+            
+            // 启用提交按钮
+            submitBtn.disabled = false;
+            
+            // 显示成功提示
+            showToast('账户验证成功！可以继续填写充值信息', 'success');
+        }
+        
+        // 模拟管理员审批过程
+        function simulateAdminApproval(orderData) {
+            const approvalSection = document.getElementById('approvalSection');
+            const approvalStatus = document.getElementById('approvalStatus');
+            const approvalDetails = document.getElementById('approvalDetails');
+            
+            // 显示审批部分
+            approvalSection.style.display = 'block';
+            
+            // 生成订单ID
+            rechargeOrderId = 'RO' + Date.now();
+            
+            // 模拟审批延迟（10-30秒）
+            const approvalDelay = Math.random() * 20000 + 10000;
+            
+            setTimeout(() => {
+                // 随机决定审批结果（90%通过）
+                const isApproved = Math.random() > 0.1;
+                
+                if (isApproved) {
+                    adminApprovalStatus = 'approved';
+                    approvalStatus.innerHTML = `
+                        <div class="status-item">
+                            <span class="status-icon success">✅</span>
+                            <span class="status-text">审批通过</span>
+                        </div>
+                    `;
+                    approvalDetails.innerHTML = `
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>恭喜！</strong>您的充值申请已通过管理员审批。
+                        </div>
+                        <div class="approval-info">
+                            <p><strong>订单号：</strong>${rechargeOrderId}</p>
+                            <p><strong>审批时间：</strong>${new Date().toLocaleString()}</p>
+                            <p><strong>充值金额：</strong>¥${orderData.rechargeAmount}</p>
+                        </div>
+                    `;
+                    
+                    // 进入下一步
+                    setTimeout(() => {
+                        nextStep(4);
+                        showApprovalResult(true, orderData);
+                    }, 2000);
+                } else {
+                    adminApprovalStatus = 'rejected';
+                    approvalStatus.innerHTML = `
+                        <div class="status-item">
+                            <span class="status-icon failed">❌</span>
+                            <span class="status-text">审批被拒</span>
+                        </div>
+                    `;
+                    approvalDetails.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-times-circle me-2"></i>
+                            <strong>抱歉！</strong>您的充值申请未通过管理员审批。
+                        </div>
+                        <div class="rejection-reason">
+                            <p><strong>拒绝原因：</strong>付款信息不符或存在风险</p>
+                            <p><strong>建议：</strong>请核实付款信息后重新申请</p>
+                        </div>
+                    `;
+                    
+                    // 进入结果页面
+                    setTimeout(() => {
+                        nextStep(4);
+                        showApprovalResult(false, orderData);
+                    }, 2000);
+                }
+            }, approvalDelay);
+        }
+        
+        function showApprovalResult(isApproved, orderData) {
+            const resultCard = document.getElementById('approvalResultCard');
+            const downloadBtn = document.getElementById('downloadReceiptBtn');
+            
+            if (isApproved) {
+                resultCard.className = 'result-card success';
+                resultCard.innerHTML = `
+                    <div class="success-icon" style="font-size: 4rem; color: #10b981; margin-bottom: 1rem;">✅</div>
+                    <h3 style="color: #10b981; margin-bottom: 1rem;">充值申请成功！</h3>
+                    <div class="result-details">
+                        <p><strong>订单号：</strong>${rechargeOrderId}</p>
+                        <p><strong>充值金额：</strong>¥${orderData.rechargeAmount}</p>
+                        <p><strong>广告账户：</strong>${orderData.adAccountId}</p>
+                        <p><strong>状态：</strong><span class="badge bg-success">已审批</span></p>
+                        <p><strong>完成时间：</strong>${new Date().toLocaleString()}</p>
+                    </div>
+                    <div class="next-steps mt-3">
+                        <h5>完成步骤：</h5>
+                        <ul class="list-unstyled">
+                            <li>✓ 付款人信息验证</li>
+                            <li>✓ 账户验证完成</li>
+                            <li>✓ 管理员审批通过</li>
+                            <li>✓ 充值流程已完成</li>
+                        </ul>
+                    </div>
+                `;
+                downloadBtn.style.display = 'inline-block';
+            } else {
+                resultCard.className = 'result-card failed';
+                resultCard.innerHTML = `
+                    <div class="error-icon" style="font-size: 4rem; color: #ef4444; margin-bottom: 1rem;">❌</div>
+                    <h3 style="color: #ef4444; margin-bottom: 1rem;">充值申请被拒</h3>
+                    <div class="result-details">
+                        <p><strong>拒绝原因：</strong>付款信息不符或存在风险</p>
+                        <p><strong>处理建议：</strong></p>
+                        <ul class="text-start">
+                            <li>请核实您的付款账户信息</li>
+                            <li>确保账户信息与身份信息一致</li>
+                            <li>如有疑问请联系客服</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+        
+        function refreshApprovalStatus() {
+            showToast('状态已刷新，请稍后...', 'info');
+            // 这里可以加入实际的API调用
+        }
+        
+        function contactAdmin() {
+            alert('请联系管理员：\n邮箱：admin@cjpayment.com\n电话：400-123-4567\n工作时间：9:00-18:00');
+        }
+        
+        function downloadReceipt() {
+            // 模拟下载收据
+            const receiptData = `
+充值收据
+==================
+订单号：${rechargeOrderId}
+充值时间：${new Date().toLocaleString()}
+状态：已审批
+==================
+CJPayment 支付系统
+            `;
+            
+            const blob = new Blob([receiptData], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `充值收据_${rechargeOrderId}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function resetForm() {
+            // 重置所有状态
+            currentStep = 1;
+            selectedReceivingAccount = null;
+            verificationCompleted = false;
+            adminApprovalStatus = 'pending';
+            rechargeOrderId = null;
+            
+            // 重置步骤显示
+            document.querySelectorAll('.step-card').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index === 0) {
+                    step.classList.add('active');
+                }
+            });
+            
+            // 清空表单
+            document.getElementById('payerForm').reset();
+            document.getElementById('rechargeForm').reset();
+            
+            // 隐藏相关部分
+            document.getElementById('verificationAmountGroup').style.display = 'none';
+            document.getElementById('verificationSteps').style.display = 'none';
+            document.getElementById('rechargeDetailsSection').style.display = 'none';
+            document.getElementById('approvalSection').style.display = 'none';
+            
+            // 重置按钮状态
+            document.getElementById('startVerificationBtn').innerHTML = '<span class="btn__icon">🔍</span>开始验证';
+            document.getElementById('startVerificationBtn').disabled = false;
+            document.getElementById('submitRechargeBtn').disabled = true;
+        }
+        
+        function showToast(message, type = 'info') {
+            // 简单的提示实现
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type === 'success' ? 'success' : 'info'} position-fixed`;
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : 'info'}-circle me-2"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+        
+        // 模拟收款账户数据
+        const mockReceivingAccounts = [
+            {
+                id: 'R001',
+                accountName: '北京科技有限公司',
+                accountNumber: '6214830012345678',
+                accountType: '银行卡',
+                bankName: '中国工商银行',
+                businessType: '对公',
+                singleLimit: 50000,
+                dailyLimit: 200000,
+                priority: 1,
+                status: '启用'
+            },
+            {
+                id: 'R002',
+                accountName: '张三',
+                accountNumber: 'zhangsan@alipay.com',
+                accountType: '支付宝',
+                bankName: '',
+                businessType: '对私',
+                singleLimit: 10000,
+                dailyLimit: 50000,
+                priority: 2,
+                status: '启用'
+            },
+            {
+                id: 'R003',
+                accountName: '李四',
+                accountNumber: 'wx_lisi_123',
+                accountType: '微信',
+                bankName: '',
+                businessType: '对私',
+                singleLimit: 5000,
+                dailyLimit: 20000,
+                priority: 3,
+                status: '启用'
+            }
+        ];
+        
+        function loadReceivingAccounts() {
+            const grid = document.getElementById('receivingAccountsGrid');
+            grid.innerHTML = '';
+            
+            mockReceivingAccounts.forEach(account => {
+                const accountCard = createAccountCard(account);
+                grid.appendChild(accountCard);
+            });
+        }
+        
+        function createAccountCard(account) {
+            const card = document.createElement('div');
+            card.className = 'receiving-account-card';
+            card.dataset.accountId = account.id;
+            
+            const maskedNumber = maskAccountNumber(account.accountNumber);
+            
+            card.innerHTML = `
+                <div class="account-type-badge type-${account.accountType}">${account.accountType}</div>
+                <div class="account-info">
+                    <div class="account-name">${account.accountName}</div>
+                    <div class="account-number">${maskedNumber}</div>
+                    ${account.bankName ? `<div class="bank-name" style="color: var(--dashboard-text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">${account.bankName}</div>` : ''}
+                </div>
+                <div class="account-limits">
+                    <div class="limit-item">
+                        <div class="limit-label">单笔限额</div>
+                        <div class="limit-value">¥${account.singleLimit.toLocaleString()}</div>
+                    </div>
+                    <div class="limit-item">
+                        <div class="limit-label">单日限额</div>
+                        <div class="limit-value">¥${account.dailyLimit.toLocaleString()}</div>
+                    </div>
+                </div>
+            `;
+            
+            card.addEventListener('click', () => selectReceivingAccount(account, card));
+            
+            return card;
+        }
+        
+        function selectReceivingAccount(account, cardElement) {
+            // 清除其他选中状态
+            document.querySelectorAll('.receiving-account-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 选中当前账户
+            cardElement.classList.add('selected');
+            selectedReceivingAccount = account;
+            
+            // 启用下一步按钮
+            document.getElementById('selectAccountBtn').disabled = false;
+        }
+        
+        function maskAccountNumber(accountNumber) {
+            if (accountNumber.includes('@')) {
+                // 邮箱格式（支付宝）
+                const parts = accountNumber.split('@');
+                const username = parts[0];
+                const domain = parts[1];
+                return username.slice(0, 2) + '***' + username.slice(-2) + '@' + domain;
+            } else if (accountNumber.length > 8) {
+                // 银行卡号
+                return accountNumber.slice(0, 4) + ' **** **** ' + accountNumber.slice(-4);
+            } else {
+                // 其他格式
+                return accountNumber.slice(0, 2) + '***' + accountNumber.slice(-2);
+            }
+        }
+        
+        // 充值表单提交
+        document.getElementById('rechargeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 检查验证是否完成
+            if (!verificationCompleted) {
+                showToast('请先完成账户验证', 'warning');
+                return;
+            }
+            
+            // 检查表单数据
+            const rechargeAmount = document.getElementById('rechargeAmount').value;
+            const adAccountId = document.getElementById('adAccountId').value;
+            
+            if (!rechargeAmount || !adAccountId) {
+                showToast('请填写完整的充值信息', 'warning');
+                return;
+            }
+            
+            const formData = new FormData(this);
+            const rechargeData = {
+                // 付款人信息
+                payerName: document.getElementById('payerName').value,
+                payerAccount: document.getElementById('payerAccount').value,
+                payerAccountType: document.getElementById('payerAccountType').value,
+                payerBankName: document.getElementById('payerBankName').value,
+                
+                // 收款账户信息
+                receivingAccount: selectedReceivingAccount,
+                
+                // 充值信息
+                rechargeAmount: rechargeAmount,
+                adAccountId: adAccountId,
+                rechargeRemark: formData.get('rechargeRemark'),
+                
+                // 验证信息
+                verificationAmount: document.getElementById('verificationAmount').value,
+                verificationCompleted: verificationCompleted
+            };
+            
+            console.log('充值申请数据：', rechargeData);
+            
+            // 禁用提交按钮
+            const submitBtn = document.getElementById('submitRechargeBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="btn__icon">⏳</span>提交中...';
+            
+            // 显示提交成功消息
+            showToast('充值申请已提交，等待管理员审批...', 'info');
+            
+            // 开始管理员审批流程
+            setTimeout(() => {
+                simulateAdminApproval(rechargeData);
+            }, 1000);
+        });
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('充值页面已加载，当前步骤：', currentStep);
+        });
+    </script>
+    
+    <script src="../static/js/recharge-verification.js"></script>
+    <script src="../static/js/recharge-page.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

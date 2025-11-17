@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>充值 - {{.MerchantName}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/recharge_page.css" rel="stylesheet">
+    <link href="/static/css/recharge_mobile.css" rel="stylesheet">
+</head>
+<body class="mobile-body">
+    <!-- 顶部导航 -->
+    <nav class="mobile-nav">
+        <div class="nav-content">
+            <button class="nav-back" onclick="history.back()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="nav-title">{{.MerchantName}} 充值</h1>
+            <div class="nav-placeholder"></div>
+        </div>
+    </nav>
+    
+    <!-- 主要内容 -->
+    <main class="mobile-main">
+        <!-- 商户信息卡片 -->
+        <div class="merchant-card">
+            <div class="merchant-info">
+                <div class="merchant-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <div class="merchant-details">
+                    <h2>{{.MerchantName}}</h2>
+                    <p>安全便捷的充值服务</p>
+                </div>
+            </div>
+            <div class="security-badges">
+                <span class="badge"><i class="fas fa-shield-alt"></i> 银行级安全</span>
+                <span class="badge"><i class="fas fa-clock"></i> 快速到账</span>
+            </div>
+        </div>
+        
+        <!-- 充值表单 -->
+        <div class="form-container">
+            <form id="rechargeForm" class="mobile-form" novalidate>
+                <input type="hidden" id="merchantId" value="{{.MerchantID}}">
+                
+                <!-- 付款人信息 -->
+                <div class="form-group">
+                    <label for="payerName" class="form-label">
+                        <i class="fas fa-user"></i>
+                        付款人姓名 <span class="required">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="payerName" name="payerName" 
+                           placeholder="请输入付款人姓名" required autocomplete="name">
+                    <div class="invalid-feedback"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="amount" class="form-label">
+                        <i class="fas fa-yen-sign"></i>
+                        充值金额 <span class="required">*</span>
+                    </label>
+                    <div class="amount-input-group">
+                        <span class="currency-symbol">¥</span>
+                        <input type="number" class="form-control" id="amount" name="amount" 
+                               placeholder="0.00" min="1" max="999999" step="0.01" 
+                               required inputmode="decimal">
+                    </div>
+                    <div class="invalid-feedback"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adAccount" class="form-label">
+                        <i class="fas fa-ad"></i>
+                        广告账户 <span class="required">*</span>
+                    </label>
+                    <input type="text" class="form-control" id="adAccount" name="adAccount" 
+                           placeholder="请输入广告账户ID或名称" required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                
+                <!-- 付款方式选择 -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-credit-card"></i>
+                        付款方式 <span class="required">*</span>
+                    </label>
+                    <div class="payment-options">
+                        <div class="payment-option">
+                            <input type="radio" id="corporate" name="paymentType" value="corporate" required>
+                            <label for="corporate" class="payment-label">
+                                <div class="payment-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="payment-info">
+                                    <div class="payment-title">对公转账</div>
+                                    <div class="payment-desc">企业账户转账</div>
+                                </div>
+                                <div class="payment-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="payment-option">
+                            <input type="radio" id="personal" name="paymentType" value="personal" required>
+                            <label for="personal" class="payment-label">
+                                <div class="payment-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="payment-info">
+                                    <div class="payment-title">对私转账</div>
+                                    <div class="payment-desc">个人账户转账</div>
+                                </div>
+                                <div class="payment-check">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="invalid-feedback">请选择付款方式</div>
+                </div>
+                
+                <!-- 提交按钮 -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    提交充值申请
+                </button>
+            </form>
+        </div>
+    </main>
+    
+    <!-- 收款信息底部弹窗 -->
+    <div class="bottom-sheet" id="paymentSheet">
+        <div class="sheet-backdrop"></div>
+        <div class="sheet-content">
+            <div class="sheet-header">
+                <div class="sheet-handle"></div>
+                <h3>
+                    <i class="fas fa-check-circle text-success"></i>
+                    充值申请已提交
+                </h3>
+                <button class="sheet-close" id="closeSheet">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="sheet-body">
+                <!-- 订单信息 -->
+                <div class="order-info">
+                    <div class="order-number">
+                        <span class="label">订单号</span>
+                        <span class="value" id="orderNumber"></span>
+                        <button class="copy-btn" data-copy="orderNumber">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 收款账号信息 -->
+                <div class="account-section">
+                    <h4><i class="fas fa-university"></i> 收款账号信息</h4>
+                    
+                    <div class="account-item">
+                        <div class="account-label">收款人姓名</div>
+                        <div class="account-value">
+                            <span id="accountName"></span>
+                            <button class="copy-btn" data-copy="accountName">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="account-item">
+                        <div class="account-label">银行名称</div>
+                        <div class="account-value">
+                            <span id="bankName"></span>
+                            <button class="copy-btn" data-copy="bankName">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="account-item">
+                        <div class="account-label">银行账号</div>
+                        <div class="account-value">
+                            <span id="accountNumber"></span>
+                            <button class="copy-btn" data-copy="accountNumber">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="amount-section">
+                        <div class="amount-label">转账金额</div>
+                        <div class="amount-value" id="transferAmount"></div>
+                    </div>
+                </div>
+                
+                <!-- 付款说明 -->
+                <div class="instructions">
+                    <h4><i class="fas fa-info-circle"></i> 付款说明</h4>
+                    <ul>
+                        <li>请确保转账金额与显示金额完全一致</li>
+                        <li>转账完成后请上传付款凭证</li>
+                        <li>如有疑问请联系客服</li>
+                    </ul>
+                </div>
+                
+                <!-- 上传凭证 -->
+                <div class="upload-section">
+                    <h4><i class="fas fa-camera"></i> 上传付款凭证</h4>
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="proofFile" accept="image/*" capture="environment">
+                        <div class="upload-content">
+                            <i class="fas fa-camera-retro"></i>
+                            <p>拍照或选择图片</p>
+                        </div>
+                        <div class="upload-preview d-none">
+                            <img id="previewImage" alt="付款凭证">
+                            <button class="remove-btn" id="removeImage">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="upload-btn" id="uploadBtn" disabled>
+                        <i class="fas fa-upload"></i>
+                        上传凭证
+                    </button>
+                </div>
+                
+                <!-- 操作按钮 -->
+                <div class="action-buttons">
+                    <button class="btn-secondary" id="checkStatusBtn">
+                        <i class="fas fa-search"></i>
+                        查看状态
+                    </button>
+                    <button class="btn-primary" id="completeBtn">
+                        <i class="fas fa-check"></i>
+                        完成
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 加载提示 -->
+    <div class="loading-overlay d-none" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>正在处理...</p>
+        </div>
+    </div>
+    
+    <!-- Toast 容器 -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/recharge_page.js"></script>
+    <script src="/static/js/recharge_mobile.js"></script>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="充值系统">
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="/static/css/recharge_mobile.css" as="style">
+    <link rel="preload" href="/static/js/recharge_mobile.js" as="script">
+    
+    <!-- 离线支持提示 -->
+    <div class="sr-only" aria-live="polite" id="offline-status"></div>
+</body>
+</html>

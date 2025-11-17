@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>账户设置 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- CJPayment 统一设计系统 v3.0 -->
+    <link rel="stylesheet" href="/static/css/cjpayment-unified.css">
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- Header Dropdown 修复 - 解决通知和用户菜单默认打开状态问题 -->
+    <link rel="stylesheet" href="/static/css/header-dropdown-fix.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <!-- Account Settings Specific CSS -->
+    <style>
+        /* 账户设置页面特定样式 */
+        .account-settings {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .content-tabs {
+            margin-bottom: 2rem;
+        }
+        
+        .tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: var(--dashboard-bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--dashboard-border-light);
+            overflow-x: auto;
+        }
+        
+        .tab-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            color: var(--dashboard-text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .tab-nav-item:hover {
+            color: #8b5cf6;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%);
+            transform: translateY(-1px);
+        }
+        
+        .tab-nav-item.active {
+            color: white;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+        }
+        
+        .tab-icon {
+            font-size: 1.125rem;
+        }
+        
+        .tab-text {
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            position: relative;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .content-card {
+            background: var(--dashboard-bg-surface);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--dashboard-border-light);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 2rem 2rem 1rem 2rem;
+            border-bottom: 1px solid var(--dashboard-border-light);
+            background: var(--dashboard-bg-secondary);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .card-description {
+            color: var(--dashboard-text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .card-body {
+            padding: 2rem;
+        }
+        
+        .profile-avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--dashboard-bg-tertiary);
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar-display {
+            flex-shrink: 0;
+        }
+        
+        .avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--dashboard-primary), #6366f1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .avatar-controls {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .form-row {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-row-cols-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        
+        .form-col {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-label.required::after {
+            content: ' *';
+            color: var(--status-error, #ef4444);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--dashboard-border-light);
+            border-radius: 8px;
+            background: var(--dashboard-bg-surface);
+            color: var(--dashboard-text-primary);
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--dashboard-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-control:read-only {
+            background: var(--dashboard-bg-tertiary);
+            color: var(--dashboard-text-secondary);
+        }
+        
+        .input-group {
+            display: flex;
+            align-items: stretch;
+        }
+        
+        .input-group .form-control {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none;
+        }
+        
+        .input-group .btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: 2px solid var(--dashboard-border-light);
+        }
+        
+        .form-text {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            line-height: 1.4;
+        }
+        
+        .text-muted {
+            color: var(--dashboard-text-muted);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--dashboard-border-light);
+        }
+        
+        /* 标准化按钮样式 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            min-height: 2.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--dashboard-primary);
+            color: white;
+            border-color: var(--dashboard-primary);
+        }
+        
+        .btn-primary:hover {
+            background: #4f46e5;
+            border-color: #4f46e5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--dashboard-bg-tertiary);
+            color: var(--dashboard-text-primary);
+            border-color: var(--dashboard-border-medium);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--dashboard-bg-quaternary);
+            border-color: var(--dashboard-border-heavy);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--dashboard-text-primary);
+            border-color: var(--dashboard-border-medium);
+        }
+        
+        .btn-outline:hover {
+            background: var(--dashboard-bg-tertiary);
+            border-color: var(--dashboard-border-heavy);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .account-settings {
+                padding: 1rem;
+            }
+            
+            .tab-nav {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .tab-nav-item {
+                justify-content: flex-start;
+            }
+            
+            .profile-avatar-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .form-row-cols-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+        
+        /* 新增样式 - 补充缺失的组件样式 */
+        .form-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--dashboard-border-light);
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+            margin: 0 0 1.5rem 0;
+        }
+        
+        .security-option, .preference-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--dashboard-bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .security-option-info, .option-info {
+            flex: 1;
+        }
+        
+        .option-title {
+            font-weight: 500;
+            color: var(--dashboard-text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .option-desc {
+            font-size: 0.875rem;
+            color: var(--dashboard-text-secondary);
+        }
+        
+        /* 切换开关样式 */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--dashboard-border-medium);
+            border-radius: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        input:checked + .toggle-slider {
+            background: var(--dashboard-primary);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+        
+        /* 登录记录样式 */
+        .login-records {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .login-record {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--dashboard-bg-tertiary);
+            border-radius: 8px;
+            border: 2px solid transparent;
+        }
+        
+        .login-record.current {
+            border-color: var(--dashboard-primary);
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
+        .record-info {
+            flex: 1;
+        }
+        
+        .record-device {
+            font-weight: 500;
+            color: var(--dashboard-text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .record-details {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--dashboard-text-secondary);
+        }
+        
+        .record-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .record-status.current {
+            background: var(--dashboard-primary);
+            color: white;
+        }
+        
+        /* 通知选项样式 */
+        .notification-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .notification-option {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background: var(--dashboard-bg-tertiary);
+            border-radius: 8px;
+        }
+        
+        .notification-info {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 500;
+            color: var(--dashboard-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .notification-desc {
+            font-size: 0.875rem;
+            color: var(--dashboard-text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .notification-methods {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .method-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--dashboard-bg-surface);
+            border: 1px solid var(--dashboard-border-light);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+        
+        .method-checkbox:hover {
+            background: var(--dashboard-bg-secondary);
+            border-color: var(--dashboard-primary);
+        }
+        
+        .method-checkbox input:checked + span {
+            color: var(--dashboard-primary);
+        }
+        
+        /* 时间选择器 */
+        .time-range {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .time-select {
+            min-width: 100px;
+        }
+        
+        .time-separator {
+            color: var(--dashboard-text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        /* 活动时间线样式 */
+        .activity-timeline {
+            position: relative;
+            margin-top: 2rem;
+        }
+        
+        .activity-timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--dashboard-border-light);
+        }
+        
+        .activity-item {
+            position: relative;
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            margin-bottom: 1rem;
+        }
+        
+        .activity-icon {
+            position: relative;
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dashboard-bg-surface);
+            border: 2px solid var(--dashboard-border-light);
+            z-index: 1;
+        }
+        
+        .activity-item--login .activity-icon {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .activity-item--security .activity-icon {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        
+        .activity-item--settings .activity-icon {
+            border-color: var(--dashboard-primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .activity-item--data .activity-icon {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .activity-icon-text {
+            font-size: 1.125rem;
+        }
+        
+        .activity-content {
+            flex: 1;
+            padding-top: 0.25rem;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            color: var(--dashboard-text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .activity-desc {
+            font-size: 0.875rem;
+            color: var(--dashboard-text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--dashboard-text-muted);
+        }
+        
+        .activity-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--dashboard-border-light);
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="page-account-settings" data-page="account-settings">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知" aria-expanded="false">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">0</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>系统通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <!-- 通知项将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton" aria-label="用户菜单" title="用户设置" aria-expanded="false">
+                        <div class="user-menu__avatar">🧑‍💼</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">系统管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">⌄</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown">
+                        <a href="/profile" class="user-menu__item">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item user-menu__item--active">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="/help" class="user-menu__item">
+                            <span class="user-menu__item-icon">❓</span>
+                            帮助中心
+                        </a>
+                        <div class="user-menu__divider"></div>
+                        <a href="#" class="user-menu__item user-menu__item--danger" id="logoutLink">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="account-settings">
+            <!-- Enhanced Page Header -->
+            <div class="page__header">
+                <div class="page__title">
+                    <div class="breadcrumb">
+                        <a href="/dashboard" class="breadcrumb__item">仪表板</a>
+                        <span class="breadcrumb__separator">›</span>
+                        <span class="breadcrumb__item breadcrumb__item--current">账户设置</span>
+                    </div>
+                    <h1>⚙️ 账户设置</h1>
+                    <p class="page__subtitle">管理个人账户信息、安全设置和系统偏好</p>
+                </div>
+            </div>
+
+            <!-- Settings Navigation -->
+            <div class="content-tabs">
+                <div class="tab-nav" role="tablist">
+                    <button class="tab-nav-item active" data-section="profile" role="tab" aria-selected="true">
+                        <span class="tab-icon">👤</span>
+                        <span class="tab-text">个人信息</span>
+                    </button>
+                    <button class="tab-nav-item" data-section="security" role="tab">
+                        <span class="tab-icon">🔐</span>
+                        <span class="tab-text">安全设置</span>
+                    </button>
+                    <button class="tab-nav-item" data-section="preferences" role="tab">
+                        <span class="tab-icon">🎛️</span>
+                        <span class="tab-text">偏好设置</span>
+                    </button>
+                    <button class="tab-nav-item" data-section="notifications" role="tab">
+                        <span class="tab-icon">🔔</span>
+                        <span class="tab-text">通知设置</span>
+                    </button>
+                    <button class="tab-nav-item" data-section="activity" role="tab">
+                        <span class="tab-icon">📊</span>
+                        <span class="tab-text">活动记录</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Settings Content -->
+            <div class="tab-content">
+                <!-- Profile Section -->
+                <div class="tab-pane active" id="profileSection" role="tabpanel">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">个人信息</h2>
+                            <p class="card-description">管理您的基本信息和联系方式</p>
+                        </div>
+                        
+                        <div class="card-body">
+                            <form id="profileForm" class="form-container">
+                                <!-- Avatar Section -->
+                                <div class="profile-avatar-section">
+                                    <div class="avatar-display">
+                                        <div class="avatar-large">
+                                            <span class="avatar-text">🧑‍💼</span>
+                                            <input type="file" id="avatarInput" class="file-input-hidden" accept="image/*" hidden>
+                                        </div>
+                                    </div>
+                                    <div class="avatar-controls">
+                                        <button type="button" class="btn btn-secondary" id="changeAvatarBtn">
+                                            📷 更换头像
+                                        </button>
+                                        <button type="button" class="btn btn-outline" id="removeAvatarBtn">
+                                            🗑️ 移除头像
+                                        </button>
+                                    </div>
+                                </div>
+    
+                                <!-- Basic Information -->
+                                <div class="form-row form-row-cols-2">
+                                    <div class="form-col">
+                                        <label for="username" class="form-label required">用户名</label>
+                                        <input type="text" id="username" name="username" class="form-control" value="admin" placeholder="请输入用户名" required readonly>
+                                        <small class="form-text text-muted">用于登录系统的唯一标识符</small>
+                                    </div>
+                                    <div class="form-col">
+                                        <label for="displayName" class="form-label">显示名称</label>
+                                        <input type="text" id="displayName" name="displayName" class="form-control" value="系统管理员" placeholder="请输入显示名称">
+                                        <small class="form-text text-muted">其他用户看到的您的名称</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row form-row-cols-2">
+                                    <div class="form-col">
+                                        <label for="email" class="form-label required">邮箱地址</label>
+                                        <div class="input-group">
+                                            <input type="email" id="email" name="email" class="form-control" value="admin@cjpayment.com" placeholder="请输入邮箱地址" required>
+                                            <button type="button" class="btn btn-outline" id="verifyEmailBtn" title="验证邮箱">
+                                                ✉️
+                                            </button>
+                                        </div>
+                                        <small class="form-text text-muted">用于接收系统通知和密码重置</small>
+                                    </div>
+                                    
+                                    <div class="form-col">
+                                        <label for="phone" class="form-label">手机号码</label>
+                                        <div class="input-group">
+                                            <input type="tel" id="phone" name="phone" class="form-control" value="" placeholder="请输入手机号码">
+                                            <button type="button" class="btn btn-outline" id="verifyPhoneBtn" title="验证手机">
+                                                📱
+                                            </button>
+                                        </div>
+                                        <small class="form-text text-muted">用于接收短信验证码和安全提醒</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row form-row-cols-2">
+                                    <div class="form-col">
+                                        <label for="department" class="form-label">所属部门</label>
+                                        <select id="department" name="department" class="form-control">
+                                            <option value="">请选择部门</option>
+                                            <option value="admin" selected>管理部门</option>
+                                            <option value="finance">财务部门</option>
+                                            <option value="technical">技术部门</option>
+                                            <option value="operations">运营部门</option>
+                                            <option value="audit">审计部门</option>
+                                        </select>
+                                        <small class="form-text text-muted">您在组织中的部门归属</small>
+                                    </div>
+                                    
+                                    <div class="form-col">
+                                        <label for="position" class="form-label">职位</label>
+                                        <input type="text" id="position" name="position" class="form-control" value="系统管理员" placeholder="请输入职位">
+                                        <small class="form-text text-muted">您在组织中的职位</small>
+                                    </div>
+                                </div>
+    
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        💾 保存更改
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="resetFormBtn">
+                                        🔄 重置
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div class="tab-pane" id="securitySection" role="tabpanel">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">安全设置</h2>
+                            <p class="card-description">保护您的账户安全</p>
+                        </div>
+                        <div class="card-body">
+                            <!-- 密码修改 -->
+                            <div class="form-section">
+                                <h3 class="section-title">🔐 密码安全</h3>
+                                <div class="form-row form-row-cols-1">
+                                    <div class="form-col">
+                                        <label for="currentPassword" class="form-label required">当前密码</label>
+                                        <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="请输入当前密码" required>
+                                    </div>
+                                </div>
+                                <div class="form-row form-row-cols-2">
+                                    <div class="form-col">
+                                        <label for="newPassword" class="form-label required">新密码</label>
+                                        <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="请输入新密码" required>
+                                        <small class="form-text text-muted">密码长度8-20位，包含字母、数字和特殊字符</small>
+                                    </div>
+                                    <div class="form-col">
+                                        <label for="confirmPassword" class="form-label required">确认密码</label>
+                                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="请再次输入新密码" required>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-primary" id="changePasswordBtn">
+                                        🔐 修改密码
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- 两步验证 -->
+                            <div class="form-section">
+                                <h3 class="section-title">📱 两步验证</h3>
+                                <div class="security-option">
+                                    <div class="security-option-info">
+                                        <div class="option-title">手机验证码</div>
+                                        <div class="option-desc">登录时需要输入手机验证码</div>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="smsVerification" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <div class="security-option">
+                                    <div class="security-option-info">
+                                        <div class="option-title">邮箱验证</div>
+                                        <div class="option-desc">重要操作时发送邮件确认</div>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="emailVerification">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 登录记录 -->
+                            <div class="form-section">
+                                <h3 class="section-title">📝 最近登录记录</h3>
+                                <div class="login-records">
+                                    <div class="login-record">
+                                        <div class="record-info">
+                                            <div class="record-device">🖥️ Windows Chrome</div>
+                                            <div class="record-details">
+                                                <span class="record-ip">192.168.1.100</span>
+                                                <span class="record-location">北京市</span>
+                                                <span class="record-time">2小时前</span>
+                                            </div>
+                                        </div>
+                                        <span class="record-status current">当前会话</span>
+                                    </div>
+                                    <div class="login-record">
+                                        <div class="record-info">
+                                            <div class="record-device">📱 iPhone Safari</div>
+                                            <div class="record-details">
+                                                <span class="record-ip">192.168.1.101</span>
+                                                <span class="record-location">北京市</span>
+                                                <span class="record-time">1天前</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline btn-sm">终止会话</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences Section -->
+                <div class="tab-pane" id="preferencesSection" role="tabpanel">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">偏好设置</h2>
+                            <p class="card-description">自定义系统界面和行为</p>
+                        </div>
+                        <div class="card-body">
+                            <!-- 主题设置 -->
+                            <div class="form-section">
+                                <h3 class="section-title">🎨 主题外观</h3>
+                                <div class="theme-options">
+                                    <div class="theme-option">
+                                        <input type="radio" id="themeLight" name="theme" value="light" checked>
+                                        <label class="theme-card" for="themeLight">
+                                            <div class="theme-preview theme-preview--light">
+                                                <div class="theme-preview-header"></div>
+                                                <div class="theme-preview-content"></div>
+                                            </div>
+                                            <span class="theme-name">浅色主题</span>
+                                        </label>
+                                    </div>
+                                    <div class="theme-option">
+                                        <input type="radio" id="themeDark" name="theme" value="dark">
+                                        <label class="theme-card" for="themeDark">
+                                            <div class="theme-preview theme-preview--dark">
+                                                <div class="theme-preview-header"></div>
+                                                <div class="theme-preview-content"></div>
+                                            </div>
+                                            <span class="theme-name">深色主题</span>
+                                        </label>
+                                    </div>
+                                    <div class="theme-option">
+                                        <input type="radio" id="themeAuto" name="theme" value="auto">
+                                        <label class="theme-card" for="themeAuto">
+                                            <div class="theme-preview theme-preview--auto">
+                                                <div class="theme-preview-header"></div>
+                                                <div class="theme-preview-content"></div>
+                                            </div>
+                                            <span class="theme-name">跟随系统</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 语言设置 -->
+                            <div class="form-section">
+                                <h3 class="section-title">🌐 语言设置</h3>
+                                <div class="form-row form-row-cols-2">
+                                    <div class="form-col">
+                                        <label for="language" class="form-label">界面语言</label>
+                                        <select id="language" name="language" class="form-control">
+                                            <option value="zh-CN" selected>简体中文</option>
+                                            <option value="zh-TW">繁体中文</option>
+                                            <option value="en-US">English</option>
+                                            <option value="ja-JP">日本語</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-col">
+                                        <label for="timezone" class="form-label">时区设置</label>
+                                        <select id="timezone" name="timezone" class="form-control">
+                                            <option value="Asia/Shanghai" selected>北京时间 (GMT+8)</option>
+                                            <option value="America/New_York">纽约时间 (GMT-5)</option>
+                                            <option value="Europe/London">伦敦时间 (GMT+0)</option>
+                                            <option value="Asia/Tokyo">东京时间 (GMT+9)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 数据显示 -->
+                            <div class="form-section">
+                                <h3 class="section-title">📊 数据显示</h3>
+                                <div class="form-row form-row-cols-2">
+                                    <div class="form-col">
+                                        <label for="dateFormat" class="form-label">日期格式</label>
+                                        <select id="dateFormat" name="dateFormat" class="form-control">
+                                            <option value="YYYY-MM-DD" selected>2025-01-30</option>
+                                            <option value="MM/DD/YYYY">01/30/2025</option>
+                                            <option value="DD/MM/YYYY">30/01/2025</option>
+                                            <option value="YYYY年MM月DD日">2025年01月30日</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-col">
+                                        <label for="pageSize" class="form-label">每页显示条数</label>
+                                        <select id="pageSize" name="pageSize" class="form-control">
+                                            <option value="10">10 条/页</option>
+                                            <option value="20" selected>20 条/页</option>
+                                            <option value="50">50 条/页</option>
+                                            <option value="100">100 条/页</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 界面选项 -->
+                            <div class="form-section">
+                                <h3 class="section-title">🖼️ 界面选项</h3>
+                                <div class="preference-options">
+                                    <div class="preference-option">
+                                        <div class="option-info">
+                                            <div class="option-title">紧凑模式</div>
+                                            <div class="option-desc">减少界面元素间距，显示更多内容</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="compactMode">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="preference-option">
+                                        <div class="option-info">
+                                            <div class="option-title">动画效果</div>
+                                            <div class="option-desc">启用页面切换和交互动画</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="animations" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="preference-option">
+                                        <div class="option-info">
+                                            <div class="option-title">声音提示</div>
+                                            <div class="option-desc">操作完成时播放提示音</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="soundEffects">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-primary" id="savePreferencesBtn">
+                                    💾 保存偏好设置
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="resetPreferencesBtn">
+                                    🔄 恢复默认
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div class="tab-pane" id="notificationsSection" role="tabpanel">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">通知设置</h2>
+                            <p class="card-description">管理您接收的通知类型</p>
+                        </div>
+                        <div class="card-body">
+                            <!-- 系统通知 -->
+                            <div class="form-section">
+                                <h3 class="section-title">🔔 系统通知</h3>
+                                <div class="notification-options">
+                                    <div class="notification-option">
+                                        <div class="notification-info">
+                                            <div class="notification-title">新订单通知</div>
+                                            <div class="notification-desc">收到新的充值订单时通知</div>
+                                        </div>
+                                        <div class="notification-methods">
+                                            <label class="method-checkbox">
+                                                <input type="checkbox" checked>
+                                                <span>📧 邮件</span>
+                                            </label>
+                                            <label class="method-checkbox">
+                                                <input type="checkbox" checked>
+                                                <span>📱 短信</span>
+                                            </label>
+                                            <label class="method-checkbox">
+                                                <input type="checkbox">
+                                                <span>🔔 浏览器</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="notification-option">
+                                        <div class="notification-info">
+                                            <div class="notification-title">审核结果通知</div>
+                                            <div class="notification-desc">订单审核完成时通知</div>
+                                        </div>
+                                        <div class="notification-methods">
+                                            <label class="method-checkbox">
+                                                <input type="checkbox" checked>
+                                                <span>📧 邮件</span>
+                                            </label>
+                                            <label class="method-checkbox">
+                                                <input type="checkbox">
+                                                <span>📱 短信</span>
+                                            </label>
+                                            <label class="method-checkbox">
+                                                <input type="checkbox" checked>
+                                                <span>🔔 浏览器</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="notification-option">
+                                        <div class="notification-info">
+                                            <div class="notification-title">系统维护通知</div>
+                                            <div class="notification-desc">系统维护和更新通知</div>
+                                        </div>
+                                        <div class="notification-methods">
+                                            <label class="method-checkbox">
+                                                <input type="checkbox" checked>
+                                                <span>📧 邮件</span>
+                                            </label>
+                                            <label class="method-checkbox">
+                                                <input type="checkbox">
+                                                <span>📱 短信</span>
+                                            </label>
+                                            <label class="method-checkbox">
+                                                <input type="checkbox">
+                                                <span>🔔 浏览器</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 通知时间 -->
+                            <div class="form-section">
+                                <h3 class="section-title">⏰ 通知时间</h3>
+                                <div class="form-row form-row-cols-2">
+                                    <div class="form-col">
+                                        <label class="form-label">免打扰时间段</label>
+                                        <div class="time-range">
+                                            <select class="form-control time-select">
+                                                <option value="22" selected>22:00</option>
+                                                <option value="23">23:00</option>
+                                                <option value="00">00:00</option>
+                                            </select>
+                                            <span class="time-separator">至</span>
+                                            <select class="form-control time-select">
+                                                <option value="08" selected>08:00</option>
+                                                <option value="07">07:00</option>
+                                                <option value="09">09:00</option>
+                                            </select>
+                                        </div>
+                                        <small class="form-text text-muted">该时间段内不会发送非紧急通知</small>
+                                    </div>
+                                    <div class="form-col">
+                                        <label class="form-label">周末通知</label>
+                                        <select class="form-control">
+                                            <option value="all" selected>全部接收</option>
+                                            <option value="urgent">仅紧急通知</option>
+                                            <option value="none">不接收</option>
+                                        </select>
+                                        <small class="form-text text-muted">周末时间的通知接收策略</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-primary" id="saveNotificationsBtn">
+                                    💾 保存通知设置
+                                </button>
+                                <button type="button" class="btn btn-outline" id="testNotificationBtn">
+                                    🗏️ 发送测试通知
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Section -->
+                <div class="tab-pane" id="activitySection" role="tabpanel">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h2 class="card-title">活动记录</h2>
+                            <p class="card-description">查看您的账户活动历史</p>
+                        </div>
+                        <div class="card-body">
+                            <!-- 筛选器 -->
+                            <div class="activity-filter">
+                                <div class="filter-group">
+                                    <label class="filter-label">活动类型</label>
+                                    <select class="form-control filter-select">
+                                        <option value="all">全部类型</option>
+                                        <option value="login">登录活动</option>
+                                        <option value="security">安全设置</option>
+                                        <option value="settings">设置更改</option>
+                                        <option value="data">数据操作</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label class="filter-label">时间范围</label>
+                                    <select class="form-control filter-select">
+                                        <option value="today">今天</option>
+                                        <option value="week" selected>近一周</option>
+                                        <option value="month">近一个月</option>
+                                        <option value="quarter">近三个月</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- 活动时间线 -->
+                            <div class="activity-timeline">
+                                <div class="activity-item activity-item--login">
+                                    <div class="activity-icon">
+                                        <span class="activity-icon-text">🚪</span>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">登录系统</div>
+                                        <div class="activity-desc">使用 Windows Chrome 浏览器登录</div>
+                                        <div class="activity-time">2小时前</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item activity-item--settings">
+                                    <div class="activity-icon">
+                                        <span class="activity-icon-text">⚙️</span>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">修改个人信息</div>
+                                        <div class="activity-desc">更新了手机号码和部门信息</div>
+                                        <div class="activity-time">1天前</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item activity-item--security">
+                                    <div class="activity-icon">
+                                        <span class="activity-icon-text">🔐</span>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">启用两步验证</div>
+                                        <div class="activity-desc">为账户启用了手机短信验证</div>
+                                        <div class="activity-time">3天前</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item activity-item--data">
+                                    <div class="activity-icon">
+                                        <span class="activity-icon-text">📊</span>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">导出数据报表</div>
+                                        <div class="activity-desc">导出了近一个月的财务审核数据</div>
+                                        <div class="activity-time">5天前</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item activity-item--login">
+                                    <div class="activity-icon">
+                                        <span class="activity-icon-text">📱</span>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">移动端登录</div>
+                                        <div class="activity-desc">使用 iPhone Safari 浏览器登录</div>
+                                        <div class="activity-time">1周前</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item activity-item--settings">
+                                    <div class="activity-icon">
+                                        <span class="activity-icon-text">🎨</span>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-title">切换主题</div>
+                                        <div class="activity-desc">将系统主题从浅色切换为深色</div>
+                                        <div class="activity-time">1周前</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 加载更多 -->
+                            <div class="activity-actions">
+                                <button class="btn btn-secondary" id="loadMoreActivity">
+                                    🔄 加载更多活动记录
+                                </button>
+                                <button class="btn btn-outline" id="exportActivity">
+                                    📎 导出活动记录
+                                </button>
+                                <button class="btn btn-outline" id="clearOldActivity">
+                                    🗑️ 清理旧记录
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+
+    <!-- Enhanced Footer (if needed) -->
+    
+    <!-- JavaScript Libraries -->
+    <script src="/static/js/header-unified.js"></script>
+    
+    <!-- Account Settings JavaScript -->
+    <script>
+        // 设置演示模式的认证Token
+        if (!localStorage.getItem('authToken')) {
+            localStorage.setItem('authToken', 'demo-account-settings-token');
+            localStorage.setItem('userInfo', JSON.stringify({
+                name: '系统管理员',
+                username: 'admin',
+                role: '超级管理员',
+                id: 'demo_admin',
+                email: 'admin@cjpayment.com'
+            }));
+            console.log('✅ 演示模式认证Token设置成功');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎉 账户设置页面加载完成');
+            
+            // 标签页切换功能
+            const tabNavItems = document.querySelectorAll('.tab-nav-item');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabNavItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('data-section');
+                    
+                    // 移除所有活动状态
+                    tabNavItems.forEach(nav => nav.classList.remove('active'));
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+                    
+                    // 添加活动状态到当前项
+                    this.classList.add('active');
+                    document.getElementById(targetSection + 'Section').classList.add('active');
+                    
+                    console.log(`切换到标签页: ${targetSection}`);
+                });
+            });
+            
+            // 表单处理
+            const profileForm = document.getElementById('profileForm');
+            if (profileForm) {
+                profileForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('提交个人信息表单');
+                    alert('个人信息保存成功！');
+                });
+            }
+            
+            // 头像更换功能
+            const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+            const avatarInput = document.getElementById('avatarInput');
+            if (changeAvatarBtn && avatarInput) {
+                changeAvatarBtn.addEventListener('click', () => avatarInput.click());
+                avatarInput.addEventListener('change', function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        console.log('选择头像文件:', e.target.files[0].name);
+                        alert('头像上传功能正在开发中...');
+                    }
+                });
+            }
+            
+            // 邮箱和手机验证按钮
+            const verifyEmailBtn = document.getElementById('verifyEmailBtn');
+            const verifyPhoneBtn = document.getElementById('verifyPhoneBtn');
+            
+            if (verifyEmailBtn) {
+                verifyEmailBtn.addEventListener('click', () => {
+                    alert('邮箱验证功能正在开发中...');
+                });
+            }
+            
+            if (verifyPhoneBtn) {
+                verifyPhoneBtn.addEventListener('click', () => {
+                    alert('手机验证功能正在开发中...');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

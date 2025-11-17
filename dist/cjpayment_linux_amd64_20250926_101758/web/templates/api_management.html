@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>API管理 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard-enhanced.css">
+    
+    <!-- API Management Specific CSS -->
+    <link rel="stylesheet" href="/static/css/api-management.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+<body class="page-api-management">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link nav__link--active" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">1</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>API通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">API调用异常</div>
+                                    <div class="notification-text">检测到API频率限制触发</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">10分钟前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton" aria-expanded="false" aria-haspopup="true">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">系统管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown" role="menu">
+                        <a href="/profile" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="#" class="user-menu__item user-menu__item--danger" role="menuitem" id="logoutLink">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="api-management">
+            <!-- Page Header -->
+            <div class="page__header">
+                <div class="page__title">
+                    <div class="breadcrumb">
+                        <a href="/system_management" class="breadcrumb__item">系统管理</a>
+                        <span class="breadcrumb__separator">›</span>
+                        <span class="breadcrumb__item breadcrumb__item--current">API管理</span>
+                    </div>
+                    <h1>🔌 API管理</h1>
+                    <p class="page__subtitle">API接口管理、密钥配置和调用监控</p>
+                </div>
+                
+                <div class="page__actions">
+                    <button class="btn btn-outline" id="refreshApiData" title="刷新API数据">
+                        <span class="btn__icon">🔄</span>
+                        <span class="btn__text">刷新数据</span>
+                    </button>
+                    <button class="btn btn-outline" id="exportApiLogs" title="导出API日志">
+                        <span class="btn__icon">📊</span>
+                        <span class="btn__text">导出日志</span>
+                    </button>
+                    <button class="btn btn-primary" id="createApiKey" title="创建API密钥">
+                        <span class="btn__icon">🔑</span>
+                        <span class="btn__text">创建密钥</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- API Statistics -->
+            <div class="api-stats">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-content">
+                            <div class="stat-label">今日调用</div>
+                            <div class="stat-value" id="todayApiCalls">12,543</div>
+                            <div class="stat-change positive">+8.5%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-content">
+                            <div class="stat-label">成功率</div>
+                            <div class="stat-value" id="successRate">99.2%</div>
+                            <div class="stat-change positive">+0.3%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-content">
+                            <div class="stat-label">平均响应时间</div>
+                            <div class="stat-value" id="avgResponseTime">128ms</div>
+                            <div class="stat-change negative">+12ms</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">🔑</div>
+                        <div class="stat-content">
+                            <div class="stat-label">活跃密钥</div>
+                            <div class="stat-value" id="activeKeys">24</div>
+                            <div class="stat-change neutral">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Tabs -->
+            <div class="api-tabs">
+                <div class="tab-list" role="tablist">
+                    <button class="tab-button tab-button--active" data-tab="endpoints" role="tab" aria-selected="true">
+                        <span class="tab-icon">🎯</span>
+                        API接口
+                    </button>
+                    <button class="tab-button" data-tab="keys" role="tab">
+                        <span class="tab-icon">🔑</span>
+                        密钥管理
+                    </button>
+                    <button class="tab-button" data-tab="monitoring" role="tab">
+                        <span class="tab-icon">📊</span>
+                        监控统计
+                    </button>
+                    <button class="tab-button" data-tab="logs" role="tab">
+                        <span class="tab-icon">📝</span>
+                        调用日志
+                    </button>
+                    <button class="tab-button" data-tab="documentation" role="tab">
+                        <span class="tab-icon">📚</span>
+                        接口文档
+                    </button>
+                </div>
+            </div>
+
+            <!-- API Content -->
+            <div class="api-content">
+                <!-- API Endpoints -->
+                <div class="tab-panel tab-panel--active" id="endpointsPanel" role="tabpanel">
+                    <div class="section-header">
+                        <h3 class="section-title">API接口列表</h3>
+                        <div class="section-actions">
+                            <div class="filter-group">
+                                <select id="statusFilter" class="form-select">
+                                    <option value="">全部状态</option>
+                                    <option value="active">正常</option>
+                                    <option value="deprecated">已弃用</option>
+                                    <option value="maintenance">维护中</option>
+                                </select>
+                                <select id="categoryFilter" class="form-select">
+                                    <option value="">全部分类</option>
+                                    <option value="payment">支付</option>
+                                    <option value="merchant">商户</option>
+                                    <option value="user">用户</option>
+                                    <option value="system">系统</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoints-grid" id="endpointsGrid">
+                        <!-- API接口卡片将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- API Keys -->
+                <div class="tab-panel" id="keysPanel" role="tabpanel">
+                    <div class="section-header">
+                        <h3 class="section-title">API密钥管理</h3>
+                        <div class="section-actions">
+                            <button class="btn btn-outline btn--sm" id="regenerateAllKeys">
+                                <span class="btn__icon">🔄</span>
+                                批量重新生成
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="keys-list" id="keysList">
+                        <!-- API密钥列表将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- Monitoring -->
+                <div class="tab-panel" id="monitoringPanel" role="tabpanel">
+                    <div class="section-header">
+                        <h3 class="section-title">API监控统计</h3>
+                        <div class="section-actions">
+                            <select id="timeRangeFilter" class="form-select">
+                                <option value="1h">最近1小时</option>
+                                <option value="24h" selected>最近24小时</option>
+                                <option value="7d">最近7天</option>
+                                <option value="30d">最近30天</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="monitoring-charts">
+                        <div class="chart-container">
+                            <h4 class="chart-title">调用量趋势</h4>
+                            <div class="chart-placeholder" id="callsChart">
+                                <div class="chart-mock">📈 调用量图表加载中...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <h4 class="chart-title">响应时间分布</h4>
+                            <div class="chart-placeholder" id="responseTimeChart">
+                                <div class="chart-mock">⏱️ 响应时间图表加载中...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <h4 class="chart-title">错误率统计</h4>
+                            <div class="chart-placeholder" id="errorRateChart">
+                                <div class="chart-mock">❌ 错误率图表加载中...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <h4 class="chart-title">热门接口 TOP 10</h4>
+                            <div class="chart-placeholder" id="topApisChart">
+                                <div class="chart-mock">🔥 热门接口图表加载中...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Logs -->
+                <div class="tab-panel" id="logsPanel" role="tabpanel">
+                    <div class="section-header">
+                        <h3 class="section-title">API调用日志</h3>
+                        <div class="section-actions">
+                            <div class="log-filters">
+                                <input type="text" id="logSearch" class="form-input" placeholder="搜索API路径或IP">
+                                <select id="logLevelFilter" class="form-select">
+                                    <option value="">全部级别</option>
+                                    <option value="info">INFO</option>
+                                    <option value="warn">WARN</option>
+                                    <option value="error">ERROR</option>
+                                </select>
+                                <select id="logTimeFilter" class="form-select">
+                                    <option value="1h">最近1小时</option>
+                                    <option value="24h" selected>最近24小时</option>
+                                    <option value="7d">最近7天</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="logs-container" id="logsContainer">
+                        <!-- API日志将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="logs-pagination">
+                        <div class="pagination-info">
+                            显示 <span id="logsStart">1</span>-<span id="logsEnd">50</span> 
+                            共 <span id="logsTotal">1,234</span> 条记录
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="btn btn-outline btn--sm" id="prevLogsPage">上一页</button>
+                            <button class="btn btn-outline btn--sm" id="nextLogsPage">下一页</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Documentation -->
+                <div class="tab-panel" id="documentationPanel" role="tabpanel">
+                    <div class="section-header">
+                        <h3 class="section-title">API接口文档</h3>
+                        <div class="section-actions">
+                            <button class="btn btn-outline btn--sm" id="generateDocs">
+                                <span class="btn__icon">📝</span>
+                                生成文档
+                            </button>
+                            <button class="btn btn-outline btn--sm" id="exportDocs">
+                                <span class="btn__icon">📄</span>
+                                导出文档
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="docs-container">
+                        <div class="docs-sidebar">
+                            <div class="docs-nav">
+                                <div class="docs-nav-group">
+                                    <h4 class="docs-nav-title">支付接口</h4>
+                                    <ul class="docs-nav-list">
+                                        <li><a href="#payment-create" class="docs-nav-link">创建支付</a></li>
+                                        <li><a href="#payment-query" class="docs-nav-link">查询支付</a></li>
+                                        <li><a href="#payment-refund" class="docs-nav-link">申请退款</a></li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="docs-nav-group">
+                                    <h4 class="docs-nav-title">商户接口</h4>
+                                    <ul class="docs-nav-list">
+                                        <li><a href="#merchant-info" class="docs-nav-link">商户信息</a></li>
+                                        <li><a href="#merchant-balance" class="docs-nav-link">余额查询</a></li>
+                                        <li><a href="#merchant-settle" class="docs-nav-link">结算申请</a></li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="docs-nav-group">
+                                    <h4 class="docs-nav-title">系统接口</h4>
+                                    <ul class="docs-nav-list">
+                                        <li><a href="#system-health" class="docs-nav-link">健康检查</a></li>
+                                        <li><a href="#system-version" class="docs-nav-link">版本信息</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="docs-content" id="docsContent">
+                            <div class="docs-section" id="payment-create">
+                                <h3>创建支付</h3>
+                                <div class="api-method">POST</div>
+                                <div class="api-url">/api/v1/payment/create</div>
+                                
+                                <h4>请求参数</h4>
+                                <div class="params-table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>参数名</th>
+                                                <th>类型</th>
+                                                <th>必填</th>
+                                                <th>说明</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>merchant_id</td>
+                                                <td>string</td>
+                                                <td>是</td>
+                                                <td>商户ID</td>
+                                            </tr>
+                                            <tr>
+                                                <td>amount</td>
+                                                <td>decimal</td>
+                                                <td>是</td>
+                                                <td>支付金额（元）</td>
+                                            </tr>
+                                            <tr>
+                                                <td>order_no</td>
+                                                <td>string</td>
+                                                <td>是</td>
+                                                <td>商户订单号</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <h4>响应示例</h4>
+                                <div class="code-block">
+                                    <pre><code>{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "payment_id": "PAY2024081712345678",
+    "status": "pending",
+    "qr_code": "data:image/png;base64,..."
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | API Management</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- API Key Modal -->
+    <div class="modal" id="apiKeyModal" aria-hidden="true">
+        <div class="modal__overlay">
+            <div class="modal__content">
+                <div class="modal__header">
+                    <h3 class="modal__title" id="apiKeyModalTitle">创建API密钥</h3>
+                    <button class="modal__close" id="apiKeyModalClose" aria-label="关闭">&times;</button>
+                </div>
+                
+                <div class="modal__body">
+                    <form id="apiKeyForm">
+                        <div class="form-group">
+                            <label for="keyName" class="form-label">密钥名称</label>
+                            <input type="text" id="keyName" class="form-input" required>
+                            <div class="form-help">用于识别此密钥的名称</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="keyDescription" class="form-label">描述</label>
+                            <textarea id="keyDescription" class="form-textarea" rows="3"></textarea>
+                            <div class="form-help">密钥的用途说明</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="keyExpiry" class="form-label">有效期</label>
+                            <select id="keyExpiry" class="form-select">
+                                <option value="never">永久有效</option>
+                                <option value="30">30天</option>
+                                <option value="90">90天</option>
+                                <option value="365">1年</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">权限范围</label>
+                            <div class="permissions-list">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="permissions" value="payment">
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">支付接口</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="permissions" value="merchant">
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">商户接口</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="permissions" value="query">
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">查询接口</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" id="cancelApiKeyBtn">取消</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn__icon">🔑</span>
+                                创建密钥
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">正在处理...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="globalToast" class="toast-container" aria-live="polite"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/components.js"></script>
+    
+    <!-- Unified Header System - 统一头部系统 -->
+    <script src="/static/js/header-unified.js"></script>
+    
+    <script src="/static/js/api-management.js"></script>
+    
+    <!-- Initialize API Management -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化统一头部组件
+            window.headerUnified = new HeaderUnified();
+            
+            console.log('API management initialized successfully');
+        });
+    </script>
+</body>
+</html>

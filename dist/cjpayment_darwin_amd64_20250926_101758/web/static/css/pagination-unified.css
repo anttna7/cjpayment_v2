@@ -1,0 +1,357 @@
+/**
+ * CJPayment 统一分页组件样式系统
+ * 解决各页面分页组件类名不一致、布局混乱问题
+ * 适用于所有页面的分页组件，确保视觉和交互一致性
+ */
+
+/* ==========================================================================
+   通用分页组件基础样式
+   ========================================================================== */
+
+/* 支持所有现有分页容器类名 */
+.orders-pagination,
+.pagination-enhanced, 
+.table-pagination-advanced,
+.pagination-wrapper,
+.log-pagination,
+.history-pagination,
+.logs-pagination,
+.pagination-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: 24px !important;
+    padding: 24px 0 !important;
+    border-top: 1px solid var(--color-border-lightest, #f3f4f6) !important;
+    background: white !important;
+    min-height: 60px !important;
+    width: 100% !important;
+}
+
+/* 分页信息区域 */
+.pagination-info,
+.pagination-info-advanced,
+.pagination-left {
+    flex-shrink: 0 !important;
+    font-size: 0.875rem !important;
+    color: var(--color-text-secondary, #6b7280) !important;
+    white-space: nowrap !important;
+    line-height: 1.5 !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 40px !important;
+}
+
+/* 分页控制区域 */
+.pagination-controls,
+.pagination-controls-advanced,
+.pagination-center,
+.pagination {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex: 1 !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    height: 40px !important;
+}
+
+/* 分页尺寸选择区域 */
+.pagination-size,
+.pagination-size-advanced,
+.pagination-right {
+    flex-shrink: 0 !important;
+    line-height: 1.5 !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 40px !important;
+    gap: 8px !important;
+}
+
+/* 分页按钮统一样式 */
+.pagination-btn,
+.pagination-btn-advanced,
+.pagination-button {
+    padding: 8px 12px !important;
+    border: 1px solid var(--color-border-light, #d1d5db) !important;
+    background: white !important;
+    color: var(--color-text-primary, #374151) !important;
+    border-radius: 6px !important;
+    font-size: 0.875rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+    min-width: auto !important;
+    height: 36px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.pagination-btn:hover:not(:disabled),
+.pagination-btn-advanced:hover:not(:disabled),
+.pagination-button:hover:not(:disabled) {
+    background: var(--color-bg-hover, #f9fafb) !important;
+    border-color: var(--color-primary, #3b82f6) !important;
+    color: var(--color-primary, #3b82f6) !important;
+}
+
+.pagination-btn:disabled,
+.pagination-btn-advanced:disabled,
+.pagination-button:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+
+.pagination-btn.active,
+.pagination-btn-advanced.active,
+.pagination-button.active,
+.pagination-btn--current {
+    background: var(--color-primary, #3b82f6) !important;
+    border-color: var(--color-primary, #3b82f6) !important;
+    color: white !important;
+}
+
+/* 页码数字区域 */
+.pagination-numbers,
+.pagination-numbers-advanced {
+    display: flex !important;
+    gap: 4px !important;
+    align-items: center !important;
+}
+
+/* 分页选择器 */
+.pagination-select,
+.size-select-advanced {
+    padding: 8px 12px !important;
+    border: 1px solid var(--color-border-light, #d1d5db) !important;
+    border-radius: 6px !important;
+    background: white !important;
+    font-size: 0.875rem !important;
+    cursor: pointer !important;
+    height: 36px !important;
+    min-width: 80px !important;
+}
+
+/* 页面跳转输入框 */
+.page-jump-input {
+    padding: 6px 8px !important;
+    border: 1px solid var(--color-border-light, #d1d5db) !important;
+    border-radius: 4px !important;
+    width: 50px !important;
+    text-align: center !important;
+    font-size: 0.875rem !important;
+    height: 32px !important;
+}
+
+.jump-btn {
+    padding: 6px 12px !important;
+    background: var(--color-primary, #3b82f6) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-size: 0.875rem !important;
+    cursor: pointer !important;
+    height: 32px !important;
+    transition: all 0.2s ease !important;
+}
+
+.jump-btn:hover {
+    background: var(--color-primary-dark, #2563eb) !important;
+}
+
+/* 跳转组件 */
+.pagination-jump {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 0.875rem !important;
+    color: var(--color-text-secondary, #6b7280) !important;
+}
+
+/* 性能指示器 */
+.pagination-performance {
+    display: flex !important;
+    align-items: center !important;
+    font-size: 0.75rem !important;
+    color: var(--color-text-tertiary, #9ca3af) !important;
+}
+
+/* ==========================================================================
+   响应式设计
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .orders-pagination,
+    .pagination-enhanced, 
+    .table-pagination-advanced,
+    .pagination-wrapper,
+    .log-pagination,
+    .history-pagination,
+    .logs-pagination,
+    .pagination-container {
+        gap: 16px !important;
+        padding: 20px 0 !important;
+    }
+    
+    .pagination-info,
+    .pagination-info-advanced,
+    .pagination-left {
+        font-size: 0.8rem !important;
+    }
+    
+    .pagination-btn,
+    .pagination-btn-advanced,
+    .pagination-button {
+        padding: 6px 10px !important;
+        font-size: 0.8rem !important;
+        height: 32px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .orders-pagination,
+    .pagination-enhanced, 
+    .table-pagination-advanced,
+    .pagination-wrapper,
+    .log-pagination,
+    .history-pagination,
+    .logs-pagination,
+    .pagination-container {
+        flex-direction: column !important;
+        gap: 16px !important;
+        align-items: stretch !important;
+        padding: 16px 0 !important;
+    }
+    
+    .pagination-controls,
+    .pagination-controls-advanced,
+    .pagination-center,
+    .pagination {
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+    
+    .pagination-info,
+    .pagination-info-advanced,
+    .pagination-left,
+    .pagination-size,
+    .pagination-size-advanced,
+    .pagination-right {
+        text-align: center !important;
+        justify-content: center !important;
+    }
+    
+    .pagination-btn,
+    .pagination-btn-advanced,
+    .pagination-button {
+        min-width: 44px !important;
+        padding: 8px 12px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .orders-pagination,
+    .pagination-enhanced, 
+    .table-pagination-advanced,
+    .pagination-wrapper,
+    .log-pagination,
+    .history-pagination,
+    .logs-pagination,
+    .pagination-container {
+        margin: 0 -4px !important;
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+        padding: 12px 0 !important;
+    }
+    
+    .pagination-controls,
+    .pagination-controls-advanced,
+    .pagination-center,
+    .pagination {
+        gap: 4px !important;
+    }
+    
+    .pagination-btn,
+    .pagination-btn-advanced,
+    .pagination-button {
+        padding: 6px 8px !important;
+        font-size: 0.75rem !important;
+        min-width: 40px !important;
+    }
+}
+
+/* ==========================================================================
+   特殊样式兼容性
+   ========================================================================== */
+
+/* 数据报表页面特殊布局修复 */
+.table-pagination-advanced .pagination-left,
+.table-pagination-advanced .pagination-center, 
+.table-pagination-advanced .pagination-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.table-pagination-advanced .pagination-left {
+    justify-content: flex-start !important;
+}
+
+.table-pagination-advanced .pagination-center {
+    justify-content: center !important;
+}
+
+.table-pagination-advanced .pagination-right {
+    justify-content: flex-end !important;
+}
+
+/* 用户管理页面特殊按钮样式 */
+.pagination-btn--prev,
+.pagination-btn--next {
+    font-weight: 500 !important;
+}
+
+.pagination-btn--current {
+    font-weight: 600 !important;
+}
+
+/* 确保所有分页组件都有正确的边框和背景 */
+.orders-pagination,
+.pagination-enhanced, 
+.table-pagination-advanced,
+.pagination-wrapper,
+.log-pagination,
+.history-pagination,
+.logs-pagination,
+.pagination-container {
+    border-top: 1px solid var(--color-border-lightest, #f3f4f6) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(5px) !important;
+}
+
+/* ==========================================================================
+   调试和验证
+   ========================================================================== */
+
+/* 开发环境调试 - 可在生产环境删除 */
+[data-debug="pagination"] .orders-pagination,
+[data-debug="pagination"] .pagination-enhanced, 
+[data-debug="pagination"] .table-pagination-advanced,
+[data-debug="pagination"] .pagination-wrapper,
+[data-debug="pagination"] .log-pagination,
+[data-debug="pagination"] .history-pagination,
+[data-debug="pagination"] .logs-pagination,
+[data-debug="pagination"] .pagination-container {
+    outline: 2px solid #22c55e !important;
+    outline-offset: 2px !important;
+}
+
+[data-debug="pagination"] .pagination-info,
+[data-debug="pagination"] .pagination-controls,
+[data-debug="pagination"] .pagination-size {
+    outline: 1px solid #3b82f6 !important;
+}

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    
+    <!-- 统一按钮样式 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- 页面特定样式 -->
+    <link rel="stylesheet" href="/static/css/auth-enhanced.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+    
+    <!-- Meta tags for better SEO -->
+    <meta name="description" content="CJPayment企业内部支付管理系统登录页面">
+    <meta name="keywords" content="支付管理,企业内部系统,充值收款">
+    <meta name="author" content="CJPayment Team">
+</head>
+<body class="auth-page">
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+        <span class="theme-icon">🌙</span>
+    </button>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Header -->
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <h1>CJPayment</h1>
+                    <p>企业内部支付管理系统</p>
+                </div>
+            </div>
+            
+            <!-- Main Form -->
+            <div class="auth-body">
+                <form id="loginForm" class="auth-form" novalidate>
+                    <!-- Username Field -->
+                    <div class="form-group">
+                        <label for="username" class="form-label">用户名</label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            class="form-input" 
+                            placeholder="请输入您的用户名"
+                            autocomplete="username"
+                            required
+                            aria-describedby="usernameError"
+                        >
+                        <div class="form-error" id="usernameError" role="alert"></div>
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">密码</label>
+                        <div class="password-input">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-input" 
+                                placeholder="请输入您的密码"
+                                autocomplete="current-password"
+                                required
+                                aria-describedby="passwordError"
+                            >
+                            <button 
+                                type="button" 
+                                class="password-toggle" 
+                                id="passwordToggle"
+                                aria-label="显示/隐藏密码"
+                                title="点击显示或隐藏密码"
+                            >
+                                <span class="icon">👁️</span>
+                            </button>
+                        </div>
+                        <div class="form-error" id="passwordError" role="alert"></div>
+                    </div>
+                    
+                    <!-- Remember Me Checkbox -->
+                    <div class="form-group">
+                        <div class="form-checkbox">
+                            <input 
+                                type="checkbox" 
+                                id="remember" 
+                                name="remember" 
+                                class="checkbox-input"
+                            >
+                            <label for="remember" class="checkbox-label">
+                                记住登录状态 (7天)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="form-group">
+                        <button 
+                            type="submit" 
+                            class="btn-enhanced btn-primary" 
+                            id="loginButton"
+                            aria-describedby="loginStatus"
+                        >
+                            <span class="btn-text">立即登录</span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="spinner" aria-hidden="true"></span>
+                                登录中...
+                            </span>
+                        </button>
+                        <div id="loginStatus" class="sr-only" aria-live="polite"></div>
+                    </div>
+                </form>
+                
+                <!-- Demo Account Info -->
+                <div class="demo-info">
+                    <h4>💡 演示账户</h4>
+                    <p><strong>用户名:</strong> admin &nbsp;&nbsp; <strong>密码:</strong> 123456</p>
+                    <p><strong>用户名:</strong> manager &nbsp;&nbsp; <strong>密码:</strong> manager123</p>
+                    <p><strong>用户名:</strong> auditor &nbsp;&nbsp; <strong>密码:</strong> audit123</p>
+                    <p><strong>用户名:</strong> cjpayment &nbsp;&nbsp; <strong>密码:</strong> cjpay2025</p>
+                </div>
+                
+                <!-- Additional Links -->
+                <div class="auth-links">
+                    <a href="/forgot-password" class="auth-link">
+                        忘记密码？
+                    </a>
+                    <span class="auth-divider">|</span>
+                    <a href="/help" class="auth-link">
+                        使用帮助
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="auth-footer">
+                <p>&copy; 2025 CJPayment. All rights reserved. | Version 2.0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">正在验证登录信息...</p>
+    </div>
+
+    <!-- Success Animation -->
+    <div id="successAnimation" class="success-animation" style="display: none;" aria-hidden="true">
+        <div class="success-icon">✅</div>
+        <h3>登录成功!</h3>
+        <p>正在跳转到管理后台...</p>
+    </div>
+
+    <!-- Critical JavaScript - Inline for Performance -->
+    <script>
+        // Theme switching functionality
+        (function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const html = document.documentElement;
+            
+            // Load saved theme
+            const savedTheme = localStorage.getItem('auth-theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('auth-theme', newTheme);
+                updateThemeIcon(newTheme);
+                
+                // Add theme transition class
+                document.body.classList.add('theme-transitioning');
+                setTimeout(() => {
+                    document.body.classList.remove('theme-transitioning');
+                }, 300);
+            });
+            
+            function updateThemeIcon(theme) {
+                themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+                themeToggle.setAttribute('title', 
+                    theme === 'light' ? '切换到深色主题' : '切换到浅色主题'
+                );
+            }
+        })();
+        
+        // Password toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password');
+            const passwordToggle = document.getElementById('passwordToggle');
+            const toggleIcon = passwordToggle.querySelector('.icon');
+            
+            passwordToggle.addEventListener('click', function() {
+                const isPassword = passwordInput.type === 'password';
+                
+                passwordInput.type = isPassword ? 'text' : 'password';
+                toggleIcon.textContent = isPassword ? '🙈' : '👁️';
+                
+                // Update aria-label
+                passwordToggle.setAttribute('aria-label', 
+                    isPassword ? '隐藏密码' : '显示密码'
+                );
+                
+                // Focus back to input
+                passwordInput.focus();
+            });
+        });
+    </script>
+
+    <!-- Initialize Enhanced Authentication with CORS fix -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 初始化增强登录系统...');
+            
+            // 简化的登录处理，兼容原有样式
+            const form = document.getElementById('loginForm');
+            const button = document.getElementById('loginButton');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+                
+                // Basic validation
+                if (!data.username || !data.password) {
+                    alert('请填写用户名和密码');
+                    return;
+                }
+                
+                // 显示加载状态
+                button.classList.add('loading');
+                button.querySelector('.btn-text').style.display = 'none';
+                button.querySelector('.btn-loading').style.display = 'flex';
+                
+                // 显示加载覆盖层
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                
+                console.log('🔐 开始登录请求:', data);
+                console.log('🌐 API端点:', '/api/login');
+                
+                // 使用fetch发送请求，添加必要的头部
+                fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(data)
+                })
+                .then(response => {
+                    console.log('📥 收到响应:', response.status, response.statusText);
+                    return response.json().then(data => {
+                        if (!response.ok) {
+                            throw new Error(data.message || `HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        return data;
+                    });
+                })
+                .then(result => {
+                    console.log('✅ 登录结果:', result);
+                    
+                    // 隐藏加载覆盖层
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    
+                    if (result.success === true) {
+                        // 保存用户信息
+                        localStorage.setItem('authToken', result.token);
+                        localStorage.setItem('userInfo', JSON.stringify(result.user));
+                        
+                        // 显示成功动画
+                        document.getElementById('successAnimation').style.display = 'flex';
+                        
+                        // 跳转到管理后台
+                        setTimeout(() => {
+                            window.location.href = '/dashboard';
+                        }, 1500);
+                    } else {
+                        // 显示错误信息
+                        alert(result.message || '登录失败，请检查用户名和密码');
+                        resetLoginForm();
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ 登录请求失败:', error);
+                    
+                    // 隐藏加载覆盖层
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    
+                    // 显示具体错误信息
+                    alert(`登录失败: ${error.message}`);
+                    resetLoginForm();
+                });
+                
+                function resetLoginForm() {
+                    button.classList.remove('loading');
+                    button.querySelector('.btn-text').style.display = 'inline';
+                    button.querySelector('.btn-loading').style.display = 'none';
+                }
+            });
+            
+            console.log('✅ 登录系统初始化完成');
+        });
+    </script>
+
+</body>
+</html>

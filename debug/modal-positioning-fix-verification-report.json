@@ -1,0 +1,107 @@
+{
+  "timestamp": "2025-08-27T09:19:59.236Z",
+  "fixedModalPositioning": {
+    "scroll": {
+      "x": 0,
+      "y": 1754
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "backdrop": {
+      "rect": {
+        "top": 0,
+        "left": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "styles": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "width": "1280px",
+        "height": "720px",
+        "zIndex": "1000",
+        "pointerEvents": "auto"
+      },
+      "isProperlyFixed": true,
+      "coversFullViewport": true
+    },
+    "container": {
+      "rect": {
+        "top": 54,
+        "left": 96,
+        "width": 1088,
+        "height": 612,
+        "centerX": 640,
+        "centerY": 360
+      },
+      "styles": {
+        "position": "static",
+        "pointerEvents": "auto",
+        "zIndex": "1001"
+      },
+      "isCenteredInViewport": {
+        "horizontally": true,
+        "vertically": true
+      },
+      "isFullyVisible": true
+    }
+  },
+  "afterScrollPositioning": {
+    "scroll": {
+      "x": 0,
+      "y": 1254
+    },
+    "backdrop": {
+      "top": 0,
+      "left": 0,
+      "isStillFixed": true,
+      "coversViewport": true
+    },
+    "container": {
+      "top": 54,
+      "left": 96,
+      "centerY": 360,
+      "isStillCentered": true,
+      "isFullyVisible": true
+    }
+  },
+  "interactionMessages": [],
+  "flickerPatterns": [],
+  "modalClosedCheck": {
+    "isHidden": true,
+    "styles": {
+      "display": "none",
+      "className": "modal-backdrop"
+    }
+  },
+  "testResults": [
+    {
+      "test": "backdrop-fixed-positioning",
+      "status": "PASS",
+      "message": "Backdrop正确固定在视口"
+    },
+    {
+      "test": "container-centering",
+      "status": "PASS",
+      "message": "模态框正确在视口中心显示"
+    },
+    {
+      "test": "scroll-stability",
+      "status": "PASS",
+      "message": "滚动时模态框保持固定"
+    },
+    {
+      "test": "mouse-interaction-stability",
+      "status": "PASS",
+      "message": "鼠标交互无闪烁问题"
+    },
+    {
+      "test": "background-click-close",
+      "status": "PASS",
+      "message": "背景点击正确关闭模态框"
+    }
+  ]
+}

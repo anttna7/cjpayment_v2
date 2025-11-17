@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>充值支付管理中心 - CJPayment 企业内部支付管理系统</title>
+
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard-enhanced.css">
+
+    <!-- Recharge Payment Center Specific CSS -->
+    <link rel="stylesheet" href="/static/css/recharge-payment-center.css">
+    <!-- Enhanced Styles -->
+    <link rel="stylesheet" href="/static/css/recharge-payment-center-enhanced.css">
+    <!-- Mobile Responsive Styles -->
+    <link rel="stylesheet" href="/static/css/recharge-payment-center-mobile.css">
+    <!-- Layout Fix Styles -->
+    <link rel="stylesheet" href="/static/css/recharge-layout-fix.css">
+    <!-- Ultimate Layout Override - 最高优先级 -->
+    <link rel="stylesheet" href="/static/css/ultimate-layout-override.css">
+    <!-- Layout Optimization Fix - 基于Playwright分析的精确优化 -->
+    <link rel="stylesheet" href="/static/css/layout-optimization-fix.css">
+    <!-- Targeted Layout Fixes - 针对三个具体问题的精确修复 -->
+    <link rel="stylesheet" href="/static/css/targeted-layout-fixes.css">
+    <!-- Breadcrumb Text Fix - 修复breadcrumb文字截断问题 -->
+    <link rel="stylesheet" href="/static/css/breadcrumb-text-fix.css">
+    <!-- Stat Cards Height Optimization - 优化stat-card高度使其美观 -->
+    <link rel="stylesheet" href="/static/css/stat-cards-height-optimization.css">
+    <!-- Stat Card Vertical Alignment Fix - 修复stat-card内部元素垂直居中对齐 -->
+    <link rel="stylesheet" href="/static/css/stat-card-vertical-alignment-fix.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+<body class="page-recharge-payment">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">0</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h3 class="notifications__title">通知中心</h3>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <!-- 通知列表将动态加载 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userMenuButton" aria-label="用户菜单" title="用户菜单">
+                        <span class="user-menu__avatar">👤</span>
+                        <span class="user-menu__name" id="userName">测试用户</span>
+                        <span class="user-menu__chevron">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userMenuDropdown">
+                        <div class="user-menu__info">
+                            <div class="user-menu__name" id="userDisplayName">测试用户</div>
+                            <div class="user-menu__role">系统管理员</div>
+                        </div>
+                        <div class="user-menu__actions">
+                            <a href="/account_settings" class="user-menu__link">账户设置</a>
+                            <a href="/help" class="user-menu__link">帮助中心</a>
+                            <button class="user-menu__link user-menu__logout" id="logoutButton">退出登录</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app__main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page__header">
+                <div class="page__title-section">
+                    <h1 class="page__title">
+                        <span class="page__icon">💳</span>
+                        充值支付管理中心
+                    </h1>
+                    <p class="page__description">统一管理充值配置、链接管理、数据统计和测试工具</p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-card__icon">🔗</div>
+                        <div class="stat-card__content">
+                            <div class="stat-card__value" id="totalLinks">156</div>
+                            <div class="stat-card__label">活跃链接</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">💰</div>
+                        <div class="stat-card__content">
+                            <div class="stat-card__value" id="totalAmount">¥2,847,392</div>
+                            <div class="stat-card__label">今日充值</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">📈</div>
+                        <div class="stat-card__content">
+                            <div class="stat-card__value" id="successRate">94.6%</div>
+                            <div class="stat-card__label">成功率</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">🏪</div>
+                        <div class="stat-card__content">
+                            <div class="stat-card__value" id="activeMerchants">89</div>
+                            <div class="stat-card__label">活跃商户</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Tabs -->
+            <div class="content-tabs">
+                <div class="tab-list" role="tablist">
+                    <button class="tab-button tab-button--active" data-tab="config" role="tab" aria-selected="true">
+                        <span class="tab-icon">⚙️</span>
+                        <span class="tab-text">系统配置</span>
+                        <span class="tab-badge">4</span>
+                    </button>
+                    <button class="tab-button" data-tab="gateways" role="tab">
+                        <span class="tab-icon">🏦</span>
+                        <span class="tab-text">网关管理</span>
+                        <span class="tab-badge">3</span>
+                    </button>
+                    <button class="tab-button" data-tab="links" role="tab">
+                        <span class="tab-icon">🔗</span>
+                        <span class="tab-text">链接管理</span>
+                        <span class="tab-badge">156</span>
+                    </button>
+                    <button class="tab-button" data-tab="analytics" role="tab">
+                        <span class="tab-icon">📊</span>
+                        <span class="tab-text">数据统计</span>
+                    </button>
+                    <button class="tab-button" data-tab="testing" role="tab">
+                        <span class="tab-icon">🧪</span>
+                        <span class="tab-text">测试工具</span>
+                        <span class="tab-status tab-status--success">正常</span>
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+
+                    <!-- System Configuration Tab -->
+                    <div class="tab-panel tab-panel--active" id="configPanel" role="tabpanel">
+                        <div class="config-section">
+                            <div class="section-header">
+                                <h3 class="section-title">充值支付系统配置</h3>
+                                <p class="section-description">配置充值域名、支付限额、手续费等核心参数</p>
+                            </div>
+
+                            <div class="config-grid">
+                                <div class="config-group">
+                                    <h4 class="config-group-title">🌐 充值域名配置</h4>
+
+                                    <div class="form-group">
+                                        <label for="rechargeBaseDomain" class="form-label">商户充值主域名</label>
+                                        <input type="text" id="rechargeBaseDomain" class="form-input"
+                                               value="pay.cjpayment.com" placeholder="例如：pay.cjpayment.com">
+                                        <div class="form-help">商户充值页面的基础域名，将自动生成随机后缀分配给商户</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="enableSSLForRecharge" checked>
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">强制启用SSL加密（推荐）</span>
+                                        </label>
+                                        <div class="form-help">为所有充值域名启用HTTPS加密，提高安全性</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="domainSuffixLength" class="form-label">域名后缀长度</label>
+                                        <select id="domainSuffixLength" class="form-select">
+                                            <option value="4">4位随机字符</option>
+                                            <option value="6" selected>6位随机字符</option>
+                                            <option value="8">8位随机字符</option>
+                                        </select>
+                                        <div class="form-help">自动生成的域名后缀长度，如：pay.cjpayment.com/abc123</div>
+                                    </div>
+                                </div>
+
+                                <div class="config-group">
+                                    <h4 class="config-group-title">💰 支付限额配置</h4>
+
+                                    <div class="form-group">
+                                        <label for="minPayAmount" class="form-label">最小支付金额（元）</label>
+                                        <input type="number" id="minPayAmount" class="form-input"
+                                               value="0.01" min="0.01" step="0.01">
+                                        <div class="form-help">系统允许的最小单笔支付金额</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="maxPayAmount" class="form-label">最大支付金额（元）</label>
+                                        <input type="number" id="maxPayAmount" class="form-input"
+                                               value="1000000" min="1" step="1">
+                                        <div class="form-help">系统允许的最大单笔支付金额</div>
+                                    </div>
+                                </div>
+
+                                <div class="config-group">
+                                    <h4 class="config-group-title">💳 手续费配置</h4>
+
+                                    <div class="form-group">
+                                        <label for="feeRate" class="form-label">手续费率（%）</label>
+                                        <input type="number" id="feeRate" class="form-input"
+                                               value="0.6" min="0" max="100" step="0.1">
+                                        <div class="form-help">默认手续费率，可在商户级别覆盖</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="enableDynamicFee" checked>
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">启用动态手续费</span>
+                                        </label>
+                                        <div class="form-help">根据交易金额和商户等级动态调整手续费</div>
+                                    </div>
+                                </div>
+
+                                <div class="config-group">
+                                    <h4 class="config-group-title">🔒 安全策略配置</h4>
+
+                                    <div class="form-group">
+                                        <label for="sessionTimeout" class="form-label">会话超时时间（分钟）</label>
+                                        <select id="sessionTimeout" class="form-select">
+                                            <option value="15">15分钟</option>
+                                            <option value="30" selected>30分钟</option>
+                                            <option value="60">60分钟</option>
+                                        </select>
+                                        <div class="form-help">充值页面会话超时时间</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="enableIPRestriction">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">启用IP访问限制</span>
+                                        </label>
+                                        <div class="form-help">限制特定IP地址访问充值页面</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="config-actions">
+                                <button class="btn btn-primary" id="saveConfigBtn">
+                                    <span class="btn__icon">💾</span>
+                                    <span class="btn__text">保存配置</span>
+                                </button>
+                                <button class="btn btn-outline" id="resetConfigBtn">
+                                    <span class="btn__icon">🔄</span>
+                                    <span class="btn__text">重置设置</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gateway Management Tab -->
+                    <div class="tab-panel" id="gatewaysPanel" role="tabpanel">
+                        <div class="gateway-section">
+                            <div class="section-header">
+                                <h3 class="section-title">支付网关管理</h3>
+                                <p class="section-description">配置和管理多支付网关，实现负载均衡和故障转移</p>
+                            </div>
+
+                            <!-- Gateway Status Overview -->
+                            <div class="gateway-overview">
+                                <div class="overview-header">
+                                    <h4 class="overview-title">网关状态概览</h4>
+                                    <div class="overview-actions">
+                                        <button class="btn btn-outline btn-sm" id="refreshGatewayStatus">
+                                            <span class="btn__icon">🔄</span>
+                                            <span class="btn__text">刷新状态</span>
+                                        </button>
+                                        <button class="btn btn-primary btn-sm" id="addGatewayBtn">
+                                            <span class="btn__icon">➕</span>
+                                            <span class="btn__text">添加网关</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="gateway-stats">
+                                    <div class="stat-card">
+                                        <div class="stat-card__icon">🎯</div>
+                                        <div class="stat-card__content">
+                                            <div class="stat-card__value" id="primaryGatewayCount">1</div>
+                                            <div class="stat-card__label">主网关</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card__icon">🛡️</div>
+                                        <div class="stat-card__content">
+                                            <div class="stat-card__value" id="backupGatewayCount">2</div>
+                                            <div class="stat-card__label">备用网关</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card__icon">✅</div>
+                                        <div class="stat-card__content">
+                                            <div class="stat-card__value" id="onlineGatewayCount">3</div>
+                                            <div class="stat-card__label">在线网关</div>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card__icon">⚠️</div>
+                                        <div class="stat-card__content">
+                                            <div class="stat-card__value" id="offlineGatewayCount">0</div>
+                                            <div class="stat-card__label">离线网关</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gateway List -->
+                            <div class="gateway-list">
+                                <div class="gateway-list-header">
+                                    <h4 class="gateway-list-title">支付网关列表</h4>
+                                    <div class="gateway-list-actions">
+                                        <div class="search-box">
+                                            <input type="text" id="gatewaySearchInput" class="form-input" placeholder="搜索网关...">
+                                            <span class="search-icon">🔍</span>
+                                        </div>
+                                        <select id="gatewayTypeFilter" class="form-select">
+                                            <option value="">所有类型</option>
+                                            <option value="primary">主网关</option>
+                                            <option value="backup">备用网关</option>
+                                        </select>
+                                        <select id="gatewayStatusFilter" class="form-select">
+                                            <option value="">所有状态</option>
+                                            <option value="online">在线</option>
+                                            <option value="offline">离线</option>
+                                            <option value="checking">检查中</option>
+                                            <option value="maintenance">维护中</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="gateway-table-container">
+                                    <table class="gateway-table" id="gatewayTable">
+                                        <thead>
+                                            <tr>
+                                                <th>网关名称</th>
+                                                <th>类型</th>
+                                                <th>状态</th>
+                                                <th>优先级</th>
+                                                <th>权重</th>
+                                                <th>成功率</th>
+                                                <th>响应时间</th>
+                                                <th>支持货币</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="gatewayTableBody">
+                                            <tr class="gateway-row" data-gateway-id="1">
+                                                <td>
+                                                    <div class="gateway-info">
+                                                        <div class="gateway-name">主支付网关</div>
+                                                        <div class="gateway-desc">primary_gateway</div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="gateway-type primary">主网关</span>
+                                                </td>
+                                                <td>
+                                                    <div class="gateway-status online">
+                                                        <span class="status-dot"></span>
+                                                        <span class="status-text">在线</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="priority-badge priority-0">0</span></td>
+                                                <td><span class="weight-value">100</span></td>
+                                                <td><span class="success-rate excellent">99.2%</span></td>
+                                                <td><span class="response-time good">245ms</span></td>
+                                                <td>
+                                                    <div class="currency-list">
+                                                        <span class="currency-tag">CNY</span>
+                                                        <span class="currency-tag">USD</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="table-actions">
+                                                        <button class="btn-icon" title="编辑网关" onclick="window.rechargePaymentCenter.editGateway(1)">
+                                                            <span>✏️</span>
+                                                        </button>
+                                                        <button class="btn-icon" title="健康检查" onclick="window.rechargePaymentCenter.checkGateway(1)">
+                                                            <span>🔍</span>
+                                                        </button>
+                                                        <button class="btn-icon" title="测试支付" onclick="window.rechargePaymentCenter.testGateway(1)">
+                                                            <span>🧪</span>
+                                                        </button>
+                                                        <button class="btn-icon" title="查看日志" onclick="window.rechargePaymentCenter.viewGatewayLogs(1)">
+                                                            <span>📋</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="gateway-row" data-gateway-id="2">
+                                                <td>
+                                                    <div class="gateway-info">
+                                                        <div class="gateway-name">备用支付网关1</div>
+                                                        <div class="gateway-desc">backup_gateway_1</div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="gateway-type backup">备用网关</span>
+                                                </td>
+                                                <td>
+                                                    <div class="gateway-status online">
+                                                        <span class="status-dot"></span>
+                                                        <span class="status-text">在线</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="priority-badge priority-1">1</span></td>
+                                                <td><span class="weight-value">80</span></td>
+                                                <td><span class="success-rate good">98.1%</span></td>
+                                                <td><span class="response-time good">278ms</span></td>
+                                                <td>
+                                                    <div class="currency-list">
+                                                        <span class="currency-tag">CNY</span>
+                                                        <span class="currency-tag">USD</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="table-actions">
+                                                        <button class="btn-icon" title="编辑网关" onclick="window.rechargePaymentCenter.editGateway(2)">
+                                                            <span>✏️</span>
+                                                        </button>
+                                                        <button class="btn-icon" title="健康检查" onclick="window.rechargePaymentCenter.checkGateway(2)">
+                                                            <span>🔍</span>
+                                                        </button>
+                                                        <button class="btn-icon" title="测试支付" onclick="window.rechargePaymentCenter.testGateway(2)">
+                                                            <span>🧪</span>
+                                                        </button>
+                                                        <button class="btn-icon" title="查看日志" onclick="window.rechargePaymentCenter.viewGatewayLogs(2)">
+                                                            <span>📋</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="gateway-row" data-gateway-id="3">
+                                                <td>
+                                                    <div class="gateway-info">
+                                                        <div class="gateway-name">备用支付网关2</div>
+                                                        <div class="gateway-desc">backup_gateway_2</div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="gateway-type backup">备用网关</span>
+                                                </td>
+                                                <td>
+                                                    <div class="gateway-status online">
+                                                        <span class="status-dot"></span>
+                                                        <span class="status-text">在线</span>
+                                                    </div>
+                                                </td>
+                                                <td><span class="priority-badge priority-2">2</span></td>
+                                                <td><span class="weight-value">60</span></td>
+                                                <td><span class="success-rate good">97.8%</span></td>
+                                                <td><span class="response-time warning">312ms</span></td>
+                                                <td>
+                                                    <div class="currency-list">
+                                                        <span class="currency-tag">CNY</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="table-actions">
+                                                        <button class="btn-icon" title="编辑网关" onclick="window.rechargePaymentCenter.editGateway(3)">
+                                                            <span>✏️</span>
+                                                        </button>
+                                                        <button class="btn-icon" title="健康检查" onclick="window.rechargePaymentCenter.checkGateway(3)">
+                                                            <span>🔍</span>
+                                                        </button>
+                                                        <button class="btn-icon" title="测试支付" onclick="window.rechargePaymentCenter.testGateway(3)">
+                                                            <span>🧪</span>
+                                                        </button>
+                                                        <button class="btn-icon" title="查看日志" onclick="window.rechargePaymentCenter.viewGatewayLogs(3)">
+                                                            <span>📋</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Load Balancing & Failover Configuration -->
+                            <div class="config-grid">
+                                <div class="config-group">
+                                    <h4 class="config-group-title">负载均衡配置</h4>
+
+                                    <div class="form-group">
+                                        <label for="loadBalanceStrategy" class="form-label">负载均衡策略</label>
+                                        <select id="loadBalanceStrategy" class="form-select">
+                                            <option value="weighted_random" selected>加权随机</option>
+                                            <option value="round_robin">轮询</option>
+                                            <option value="least_connections">最少连接</option>
+                                            <option value="response_time">响应时间</option>
+                                        </select>
+                                        <div class="form-help">选择网关选择的负载均衡算法</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="enableWeightedRouting" checked>
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">启用权重路由</span>
+                                        </label>
+                                        <div class="form-help">根据网关权重分配请求流量</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="maxRetryCount" class="form-label">最大重试次数</label>
+                                        <input type="number" id="maxRetryCount" class="form-input" value="3" min="1" max="10">
+                                        <div class="form-help">单个请求的最大重试次数</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="timeoutSeconds" class="form-label">请求超时时间（秒）</label>
+                                        <input type="number" id="timeoutSeconds" class="form-input" value="30" min="5" max="300">
+                                        <div class="form-help">网关请求的超时时间</div>
+                                    </div>
+                                </div>
+
+                                <div class="config-group">
+                                    <h4 class="config-group-title">故障转移配置</h4>
+
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="enableGatewayFailover" checked>
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">启用自动故障转移</span>
+                                        </label>
+                                        <div class="form-help">网关故障时自动切换到备用网关</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="healthCheckInterval" class="form-label">健康检查间隔（秒）</label>
+                                        <input type="number" id="healthCheckInterval" class="form-input" value="60" min="30" max="600">
+                                        <div class="form-help">定期检查网关健康状态的间隔</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="failureThreshold" class="form-label">故障判定阈值</label>
+                                        <input type="number" id="failureThreshold" class="form-input" value="5" min="1" max="20">
+                                        <div class="form-help">连续失败多少次后判定为故障</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="recoveryThreshold" class="form-label">恢复判定阈值</label>
+                                        <input type="number" id="recoveryThreshold" class="form-input" value="3" min="1" max="10">
+                                        <div class="form-help">连续成功多少次后判定为恢复</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Gateway Events -->
+                            <div class="recent-events">
+                                <div class="events-header">
+                                    <h4 class="events-title">最近网关事件</h4>
+                                    <button class="btn btn-outline btn-sm" id="viewAllGatewayEvents">
+                                        <span class="btn__icon">📋</span>
+                                        <span class="btn__text">查看全部</span>
+                                    </button>
+                                </div>
+                                <div class="events-list" id="recentGatewayEventsList">
+                                    <div class="event-item">
+                                        <div class="event-icon success">✅</div>
+                                        <div class="event-content">
+                                            <div class="event-title">网关健康检查正常</div>
+                                            <div class="event-desc">所有网关状态正常，负载均衡运行稳定</div>
+                                            <div class="event-meta">
+                                                <span class="event-time">刚刚</span>
+                                                <span class="event-type">健康检查</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="event-item">
+                                        <div class="event-icon info">ℹ️</div>
+                                        <div class="event-content">
+                                            <div class="event-title">支付请求成功处理</div>
+                                            <div class="event-desc">主支付网关处理了1,247笔支付，成功率99.2%</div>
+                                            <div class="event-meta">
+                                                <span class="event-time">5分钟前</span>
+                                                <span class="event-type">交易统计</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="event-item">
+                                        <div class="event-icon info">🔄</div>
+                                        <div class="event-content">
+                                            <div class="event-title">负载均衡策略已更新</div>
+                                            <div class="event-desc">已切换到加权随机算法，网关权重已重新分配</div>
+                                            <div class="event-meta">
+                                                <span class="event-time">1小时前</span>
+                                                <span class="event-type">配置更新</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Link Management Tab -->
+                    <div class="tab-panel" id="linksPanel" role="tabpanel">
+                        <div class="links-section">
+                            <div class="section-header">
+                                <h3 class="section-title">充值链接管理</h3>
+                                <p class="section-description">创建、管理和监控所有充值链接的状态和性能</p>
+                            </div>
+
+                            <!-- Action Bar -->
+                            <div class="action-bar">
+                                <div class="action-bar__left">
+                                    <button class="btn btn-primary" id="createLinkBtn">
+                                        <span class="btn__icon">➕</span>
+                                        <span class="btn__text">创建充值链接</span>
+                                    </button>
+                                    <button class="btn btn-outline" id="bulkActionsBtn">
+                                        <span class="btn__icon">📋</span>
+                                        <span class="btn__text">批量操作</span>
+                                    </button>
+                                </div>
+                                <div class="action-bar__right">
+                                    <div class="search-box">
+                                        <input type="text" id="linkSearchInput" class="search-input" placeholder="搜索链接标题或商户...">
+                                        <button class="search-btn" id="searchBtn">🔍</button>
+                                    </div>
+                                    <select id="linkTypeFilter" class="form-select">
+                                        <option value="">所有类型</option>
+                                        <option value="merchant">商户专用</option>
+                                        <option value="general">通用链接</option>
+                                    </select>
+                                    <select id="statusFilter" class="form-select">
+                                        <option value="">所有状态</option>
+                                        <option value="active">激活</option>
+                                        <option value="inactive">禁用</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Links Table -->
+                            <div class="table-container">
+                                <table class="data-table" id="linksTable">
+                                    <thead>
+                                        <tr>
+                                            <th class="table-checkbox">
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" id="selectAllLinks">
+                                                    <span class="checkbox-custom"></span>
+                                                </label>
+                                            </th>
+                                            <th>链接信息</th>
+                                            <th>类型</th>
+                                            <th>关联商户</th>
+                                            <th>状态</th>
+                                            <th>访问数据</th>
+                                            <th>转化数据</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="linksTableBody">
+                                        <!-- 示例数据 -->
+                                        <tr>
+                                            <td class="table-checkbox">
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" value="link_001">
+                                                    <span class="checkbox-custom"></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div class="link-info">
+                                                    <div class="link-title">电商充值专用链接</div>
+                                                    <div class="link-url">pay.cjpayment.com/abc123</div>
+                                                    <div class="link-created">创建于 2024-09-15</div>
+                                                </div>
+                                            </td>
+                                            <td><span class="badge badge--primary">商户专用</span></td>
+                                            <td>
+                                                <div class="merchant-info">
+                                                    <div class="merchant-name">示例电商</div>
+                                                    <div class="merchant-id">DEMO_001</div>
+                                                </div>
+                                            </td>
+                                            <td><span class="status status--success">激活</span></td>
+                                            <td>
+                                                <div class="data-stats">
+                                                    <div class="stat-item">
+                                                        <span class="stat-label">今日访问:</span>
+                                                        <span class="stat-value">1,245</span>
+                                                    </div>
+                                                    <div class="stat-item">
+                                                        <span class="stat-label">总访问:</span>
+                                                        <span class="stat-value">87,356</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="data-stats">
+                                                    <div class="stat-item">
+                                                        <span class="stat-label">成功订单:</span>
+                                                        <span class="stat-value">234</span>
+                                                    </div>
+                                                    <div class="stat-item">
+                                                        <span class="stat-label">转化率:</span>
+                                                        <span class="stat-value">18.8%</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <button class="btn-action btn-action--edit" data-link-id="link_001" title="编辑链接" onclick="window.rechargePaymentCenter?.editLink('link_001')">✏️</button>
+                                                    <button class="btn-action btn-action--copy" data-link-url="https://pay.cjpayment.com/abc123" title="复制链接" onclick="window.rechargePaymentCenter?.copyLink('https://pay.cjpayment.com/abc123')">📋</button>
+                                                    <button class="btn-action btn-action--stats" title="查看统计">📊</button>
+                                                    <button class="btn-action btn-action--disable" data-link-id="link_001" title="禁用链接" onclick="window.rechargePaymentCenter?.deleteLink('link_001')">⏸️</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="pagination-container">
+                                <div class="pagination-info">
+                                显示 1-10 条，共 156 条记录
+                                </div>
+                                <div class="pagination">
+                                    <button class="pagination-btn pagination-btn--prev" disabled>‹ 上一页</button>
+                                    <button class="pagination-btn pagination-btn--active">1</button>
+                                    <button class="pagination-btn">2</button>
+                                    <button class="pagination-btn">3</button>
+                                    <button class="pagination-btn">...</button>
+                                    <button class="pagination-btn">16</button>
+                                    <button class="pagination-btn pagination-btn--next">下一页 ›</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Tab -->
+                    <div class="tab-panel" id="analyticsPanel" role="tabpanel">
+                        <div class="analytics-section">
+                            <div class="section-header">
+                                <h3 class="section-title">充值数据统计</h3>
+                                <p class="section-description">全面分析充值表现，优化业务策略</p>
+                            </div>
+
+                            <!-- Charts and Analytics Content -->
+                            <div class="analytics-grid">
+                                <div class="analytics-card">
+                                    <h4 class="analytics-card__title">📈 充值趋势分析</h4>
+                                    <div class="chart-placeholder">
+                                        [趋势图表]
+                                    </div>
+                                </div>
+
+                                <div class="analytics-card">
+                                    <h4 class="analytics-card__title">🎯 转化率分析</h4>
+                                    <div class="chart-placeholder">
+                                        [转化率图表]
+                                    </div>
+                                </div>
+
+                                <div class="analytics-card">
+                                    <h4 class="analytics-card__title">🏆 商户排行榜</h4>
+                                    <div class="ranking-list">
+                                        <div class="ranking-item">
+                                            <div class="ranking-badge">1</div>
+                                            <div class="ranking-info">
+                                                <div class="ranking-name">示例电商</div>
+                                                <div class="ranking-value">¥584,290</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testing Tools Tab -->
+                    <div class="tab-panel" id="testingPanel" role="tabpanel">
+                        <div class="testing-section">
+                            <div class="section-header">
+                                <h3 class="section-title">充值测试工具</h3>
+                                <p class="section-description">测试充值流程，验证配置正确性，诊断问题</p>
+                            </div>
+
+                            <div class="testing-grid">
+                                <div class="testing-card">
+                                    <h4 class="testing-card__title">🧪 充值流程测试</h4>
+                                    <p class="testing-card__desc">端到端测试完整充值流程</p>
+                                    <button class="btn btn-primary">开始测试</button>
+                                </div>
+
+                                <div class="testing-card">
+                                    <h4 class="testing-card__title">🔗 链接可用性检测</h4>
+                                    <p class="testing-card__desc">批量检测充值链接可用性</p>
+                                    <button class="btn btn-outline">批量检测</button>
+                                </div>
+
+                                <div class="testing-card">
+                                    <h4 class="testing-card__title">⚙️ 配置验证工具</h4>
+                                    <p class="testing-card__desc">验证当前配置的有效性</p>
+                                    <button class="btn btn-outline">验证配置</button>
+                                </div>
+
+                                <div class="testing-card">
+                                    <h4 class="testing-card__title">🔍 问题诊断工具</h4>
+                                    <p class="testing-card__desc">诊断和分析常见问题</p>
+                                    <button class="btn btn-outline">开始诊断</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="/static/js/theme-unified.js"></script>
+    <script src="/static/js/header-unified.js"></script>
+    <script src="/static/js/mobile-utilities.js"></script>
+    <script src="/static/js/interaction-enhancements.js"></script>
+    <script src="/static/js/recharge-payment-center.js"></script>
+    <!-- Enhanced Interactive Features -->
+    <script src="/static/js/recharge-payment-center-enhanced.js"></script>
+    <!-- Force Layout Fix -->
+    <script src="/static/js/force-layout-fix.js"></script>
+    <!-- Emergency Layout Override - 最激进的解决方案 -->
+    <script src="/static/js/emergency-layout-override.js"></script>
+</body>
+</html>

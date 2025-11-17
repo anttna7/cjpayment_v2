@@ -1,0 +1,654 @@
+/* ==========================================================================
+   Accessibility Enhancement Styles
+   无障碍访问增强样式
+   ========================================================================== */
+
+/* ==========================================================================
+   Screen Reader Only Content
+   ========================================================================== */
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: inherit !important;
+  margin: inherit !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: inherit !important;
+}
+
+/* ==========================================================================
+   Focus Management
+   ========================================================================== */
+
+/* Enhanced focus indicators */
+*:focus {
+  outline: 2px solid var(--color-border-focus, #0ea5e9);
+  outline-offset: 2px;
+}
+
+/* Remove default focus outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Enhanced focus for keyboard users */
+*:focus-visible {
+  outline: 2px solid var(--color-border-focus, #0ea5e9);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+}
+
+/* Form field focus enhancements */
+.form-input:focus-visible,
+.form-select:focus-visible,
+.form-textarea:focus-visible {
+  outline: 2px solid var(--color-border-focus, #0ea5e9);
+  outline-offset: 2px;
+  border-color: var(--color-border-focus, #0ea5e9);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+/* Button focus enhancements */
+.modal-btn:focus-visible {
+  outline: 2px solid var(--color-border-focus, #0ea5e9);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+}
+
+/* Skip to content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--color-bg-surface, #ffffff);
+  color: var(--color-text-primary, #171717);
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  border: 2px solid var(--color-border-focus, #0ea5e9);
+  z-index: 10000;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* ==========================================================================
+   High Contrast Mode Support
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  /* Enhanced borders */
+  .form-input,
+  .form-select,
+  .form-textarea,
+  .modal-btn {
+    border-width: 2px;
+  }
+  
+  /* Enhanced error states */
+  .form-input.error,
+  .form-select.error,
+  .form-textarea.error {
+    border-width: 3px;
+    border-color: var(--color-status-error, #ef4444);
+  }
+  
+  /* Enhanced focus indicators */
+  *:focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+  
+  /* Enhanced required indicators */
+  .required-mark {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  
+  /* Enhanced section dividers */
+  .form-section {
+    border-bottom-width: 2px;
+  }
+  
+  /* Enhanced error messages */
+  .field-error {
+    border-width: 2px;
+    font-weight: bold;
+  }
+}
+
+/* Windows High Contrast Mode */
+@media screen and (-ms-high-contrast: active) {
+  /* Use system colors */
+  .form-input,
+  .form-select,
+  .form-textarea {
+    background: ButtonFace;
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+  
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus {
+    background: Highlight;
+    color: HighlightText;
+  }
+  
+  .modal-btn {
+    background: ButtonFace;
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+  
+  .modal-btn:hover,
+  .modal-btn:focus {
+    background: Highlight;
+    color: HighlightText;
+  }
+  
+  .field-error {
+    color: WindowText;
+    background: Window;
+    border-color: WindowText;
+  }
+}
+
+/* Custom high contrast mode */
+[data-high-contrast="true"] {
+  /* Enhanced borders */
+  .form-input,
+  .form-select,
+  .form-textarea,
+  .modal-btn {
+    border-width: 2px !important;
+  }
+  
+  /* Enhanced focus indicators */
+  *:focus {
+    outline: 3px solid !important;
+    outline-offset: 2px !important;
+  }
+  
+  /* Enhanced error states */
+  .form-input.error,
+  .form-select.error,
+  .form-textarea.error {
+    border-width: 3px !important;
+  }
+  
+  /* Enhanced required indicators */
+  .required-mark {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+  }
+}
+
+/* ==========================================================================
+   Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Disable animations */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Remove loading spinner animation */
+  .loading-spinner {
+    animation: none !important;
+    border-top-color: currentColor !important;
+  }
+  
+  /* Remove transition effects */
+  .form-group[data-field],
+  .form-input,
+  .form-select,
+  .form-textarea,
+  .modal-btn {
+    transition: none !important;
+  }
+}
+
+/* Custom reduced motion mode */
+[data-reduced-motion="true"] {
+  /* Disable all animations and transitions */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   Keyboard Navigation Enhancements
+   ========================================================================== */
+
+/* Visual indicator for keyboard navigation */
+.keyboard-navigation-active *:focus {
+  outline: 2px solid var(--color-border-focus, #0ea5e9);
+  outline-offset: 2px;
+}
+
+/* Tab order indicators (for development/testing) */
+.show-tab-order [tabindex]:not([tabindex="-1"])::before,
+.show-tab-order input:not([disabled])::before,
+.show-tab-order select:not([disabled])::before,
+.show-tab-order textarea:not([disabled])::before,
+.show-tab-order button:not([disabled])::before {
+  content: attr(tabindex);
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  background: var(--color-status-warning, #f59e0b);
+  color: white;
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  z-index: 1000;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   ARIA Live Regions
+   ========================================================================== */
+
+[aria-live] {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Make live regions visible for debugging */
+.debug-aria [aria-live] {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 300px;
+  height: auto;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 10000;
+  overflow: visible;
+}
+
+/* ==========================================================================
+   Form Field Enhancements
+   ========================================================================== */
+
+/* Required field indicators */
+.form-label .required-mark {
+  color: var(--color-status-error, #ef4444);
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+/* Error state enhancements */
+.form-group .field-error[role="alert"] {
+  display: block;
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-status-error, #ef4444);
+  margin-top: var(--space-1, 0.25rem);
+  padding: var(--space-1, 0.25rem) var(--space-2, 0.5rem);
+  background: var(--color-status-error-bg, #fef2f2);
+  border: 1px solid var(--color-status-error-border, #fecaca);
+  border-radius: var(--radius-sm, 0.125rem);
+  border-left: 3px solid var(--color-status-error, #ef4444);
+}
+
+.form-group .field-error:empty {
+  display: none;
+}
+
+/* Help text enhancements */
+.field-help {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-text-tertiary, #737373);
+  line-height: var(--line-height-tight, 1.25);
+  margin-top: var(--space-1, 0.25rem);
+}
+
+/* Character counter enhancements */
+.field-counter {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-text-tertiary, #737373);
+  text-align: right;
+  margin-top: var(--space-1, 0.25rem);
+}
+
+.field-counter.warning {
+  color: var(--color-status-warning, #f59e0b);
+  font-weight: 600;
+}
+
+.field-counter.error {
+  color: var(--color-status-error, #ef4444);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Modal Accessibility Enhancements
+   ========================================================================== */
+
+/* Modal backdrop */
+.modal-backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+/* Modal container */
+.modal[role="dialog"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-4, 1rem);
+}
+
+/* Modal content */
+.modal-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--color-bg-surface, #ffffff);
+  border-radius: var(--radius-lg, 0.5rem);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Modal header */
+.modal-header {
+  padding: var(--space-6, 1.5rem) var(--space-6, 1.5rem) 0;
+  border-bottom: 1px solid var(--color-border-secondary, #e5e5e5);
+}
+
+.modal-title {
+  font-size: var(--font-size-xl, 1.25rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-text-primary, #171717);
+  margin: 0;
+}
+
+/* Modal close button */
+.modal-close {
+  position: absolute;
+  top: var(--space-4, 1rem);
+  right: var(--space-4, 1rem);
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-base, 0.25rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-tertiary, #737373);
+  transition: all var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+.modal-close:hover {
+  background: var(--color-bg-secondary, #f9fafb);
+  color: var(--color-text-primary, #171717);
+}
+
+.modal-close:focus-visible {
+  outline: 2px solid var(--color-border-focus, #0ea5e9);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Autocomplete Accessibility Enhancements
+   ========================================================================== */
+
+.autocomplete-suggestions {
+  role: listbox;
+}
+
+.autocomplete-suggestion {
+  role: option;
+  cursor: pointer;
+  padding: var(--space-3, 0.75rem);
+  border-bottom: 1px solid var(--color-border-tertiary, #f5f5f5);
+}
+
+.autocomplete-suggestion[aria-selected="true"] {
+  background: var(--color-bg-secondary, #f9fafb);
+  color: var(--color-text-primary, #171717);
+}
+
+.autocomplete-suggestion:hover {
+  background: var(--color-bg-secondary, #f9fafb);
+}
+
+/* ==========================================================================
+   Loading State Accessibility
+   ========================================================================== */
+
+.loading-spinner[aria-hidden="false"] {
+  /* Ensure loading spinner is announced */
+}
+
+.btn-loading[aria-hidden="false"] {
+  /* Ensure loading state is announced */
+}
+
+/* ==========================================================================
+   Print Accessibility
+   ========================================================================== */
+
+@media print {
+  /* Hide interactive elements */
+  .modal-btn,
+  .modal-close,
+  .loading-spinner {
+    display: none !important;
+  }
+  
+  /* Show all form content */
+  .form-group[style*="display: none"] {
+    display: block !important;
+    opacity: 1 !important;
+  }
+  
+  /* Enhance text contrast */
+  * {
+    color: #000 !important;
+    background: #fff !important;
+  }
+  
+  /* Show field labels clearly */
+  .form-label {
+    font-weight: bold !important;
+  }
+  
+  /* Show error messages */
+  .field-error {
+    border: 2px solid #000 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
+
+/* ==========================================================================
+   Touch Device Accessibility
+   ========================================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .form-input,
+  .form-select,
+  .form-textarea,
+  .modal-btn {
+    min-height: 44px;
+    padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  }
+  
+  /* Enhanced focus indicators for touch */
+  *:focus {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+  
+  /* Larger close button */
+  .modal-close {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ==========================================================================
+   Color Blind Accessibility
+   ========================================================================== */
+
+/* Use patterns and shapes in addition to color */
+.form-input.error::after,
+.form-select.error::after,
+.form-textarea.error::after {
+  content: '⚠';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-status-error, #ef4444);
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.form-input.valid::after,
+.form-select.valid::after,
+.form-textarea.valid::after {
+  content: '✓';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-status-success, #22c55e);
+  font-weight: bold;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Development and Testing Utilities
+   ========================================================================== */
+
+/* Accessibility testing mode */
+.a11y-test-mode {
+  /* Show all ARIA attributes */
+  [aria-label]::before {
+    content: 'ARIA-LABEL: ' attr(aria-label);
+    display: block;
+    font-size: 10px;
+    color: blue;
+    background: yellow;
+    padding: 2px;
+  }
+  
+  [aria-describedby]::after {
+    content: 'DESCRIBED-BY: ' attr(aria-describedby);
+    display: block;
+    font-size: 10px;
+    color: green;
+    background: lightgreen;
+    padding: 2px;
+  }
+  
+  /* Show focus order */
+  [tabindex]::before {
+    content: 'TAB: ' attr(tabindex);
+    position: absolute;
+    top: -15px;
+    left: 0;
+    font-size: 10px;
+    background: orange;
+    color: white;
+    padding: 2px;
+    z-index: 1000;
+  }
+}
+
+/* ==========================================================================
+   Dark Theme Accessibility
+   ========================================================================== */
+
+[data-theme="dark"] {
+  /* Enhanced contrast for dark theme */
+  .form-input:focus-visible,
+  .form-select:focus-visible,
+  .form-textarea:focus-visible {
+    outline-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+  }
+  
+  .field-error {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    color: #fca5a5;
+  }
+  
+  .required-mark {
+    color: #fca5a5;
+  }
+  
+  .field-counter.warning {
+    color: #fbbf24;
+  }
+  
+  .field-counter.error {
+    color: #fca5a5;
+  }
+}
+
+/* ==========================================================================
+   Responsive Accessibility
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  /* Larger touch targets on mobile */
+  .form-input,
+  .form-select,
+  .form-textarea,
+  .modal-btn {
+    min-height: 48px;
+    font-size: var(--font-size-base, 1rem);
+  }
+  
+  /* Enhanced focus indicators on mobile */
+  *:focus-visible {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+  
+  /* Larger modal close button */
+  .modal-close {
+    width: 48px;
+    height: 48px;
+    top: var(--space-2, 0.5rem);
+    right: var(--space-2, 0.5rem);
+  }
+}

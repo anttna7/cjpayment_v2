@@ -1,0 +1,124 @@
+# Redis cache configuration
+redis:
+  # Connection settings
+  connection:
+    # Redis server address
+    host: "localhost"
+    port: 6379
+    # Authentication
+    password: ""
+    # Database number
+    database: 0
+    
+  # Connection pool settings
+  pool:
+    # Maximum number of socket connections
+    pool_size: 10
+    # Minimum number of idle connections
+    min_idle_conns: 5
+    # Connection age at which client retires (closes) the connection
+    max_conn_age: 30m
+    # Amount of time client waits for connection if all connections are busy
+    pool_timeout: 4s
+    # Amount of time after which client closes idle connections
+    idle_timeout: 5m
+    # Frequency of idle checks made by idle connections reaper
+    idle_check_frequency: 1m
+    
+  # Timeout settings
+  timeouts:
+    # Dial timeout for establishing new connections
+    dial_timeout: 5s
+    # Timeout for socket reads
+    read_timeout: 3s
+    # Timeout for socket writes
+    write_timeout: 3s
+    
+  # Retry settings
+  retry:
+    # Maximum number of retries before giving up
+    max_retries: 3
+    # Minimum backoff between each retry
+    min_retry_backoff: 8ms
+    # Maximum backoff between each retry
+    max_retry_backoff: 512ms
+    
+  # Cache settings
+  cache:
+    # Default TTL for cache entries
+    default_ttl: 3600s # 1 hour
+    # Key prefix for all cache keys
+    key_prefix: "recharge:"
+    # Enable cache compression
+    compression: true
+    # Compression threshold (bytes)
+    compression_threshold: 1024
+    
+  # Specific cache configurations
+  caches:
+    # Merchant information cache
+    merchants:
+      ttl: 1800s # 30 minutes
+      key_pattern: "merchant:{id}"
+      
+    # Account information cache
+    accounts:
+      ttl: 900s # 15 minutes
+      key_pattern: "account:{id}"
+      
+    # Order cache
+    orders:
+      ttl: 3600s # 1 hour
+      key_pattern: "order:{order_no}"
+      
+    # Session cache
+    sessions:
+      ttl: 86400s # 24 hours
+      key_pattern: "session:{token}"
+      
+    # Rate limiting cache
+    rate_limit:
+      ttl: 60s # 1 minute
+      key_pattern: "rate_limit:{ip}:{endpoint}"
+      
+    # Account matching cache
+    account_matching:
+      ttl: 300s # 5 minutes
+      key_pattern: "match:{merchant_id}:{payment_type}"
+
+# Environment-specific overrides
+environments:
+  development:
+    redis:
+      pool:
+        pool_size: 5
+        min_idle_conns: 2
+      cache:
+        default_ttl: 600s # 10 minutes for faster development
+        
+  testing:
+    redis:
+      database: 1
+      pool:
+        pool_size: 3
+        min_idle_conns: 1
+      cache:
+        default_ttl: 60s # 1 minute for testing
+        
+  production:
+    redis:
+      pool:
+        pool_size: 50
+        min_idle_conns: 10
+        max_conn_age: 60m
+      cache:
+        default_ttl: 7200s # 2 hours
+        compression: true
+      # Enable Redis Sentinel for high availability
+      sentinel:
+        enabled: true
+        master_name: "recharge-master"
+        sentinels:
+          - "sentinel1:26379"
+          - "sentinel2:26379"
+          - "sentinel3:26379"

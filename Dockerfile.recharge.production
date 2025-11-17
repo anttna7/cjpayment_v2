@@ -1,0 +1,66 @@
+# Production optimized multi-stage build for recharge testing system
+FROM golang:1.21-alpine AS builder
+
+# Install build dependencies
+RUN apk add --no-cache git ca-certificates tzdata make upx
+
+# Set working directory
+WORKDIR /app
+
+# Copy go mod files first for better caching
+COPY go.mod go.sum ./
+
+# Download dependencies with verification
+RUN go mod download && go mod verify
+
+# Copy source code
+COPY . .
+
+# Run tests before building
+RUN go test -short ./...
+
+# Build the application with maximum optimizations
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+    -ldflags='-w -s -extldflags "-static" -X main.version=$(git describe --tags --always --dirty) -X main.buildTime=$(date -u +%Y-%m-%dT%H:%M:%SZ)' \
+    -a -installsuffix cgo \
+    -trimpath \
+    -tags netgo,osusergo \
+    -o recharge-system ./cmd/api
+
+# Compress binary with UPX
+RUN upx --best --lzma recharge-system
+
+# Final stage - use distroless for maximum security
+FROM gcr.io/distroless/static:nonroot
+
+# Copy CA certificates
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
+# Copy timezone data
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
+
+# Set working directory
+WORKDIR /app
+
+# Copy binary from builder stage
+COPY --from=builder /app/recharge-system .
+
+# Copy essential configuration files only
+COPY --from=builder /app/configs/config.recharge.production.yaml ./configs/
+COPY --from=builder /app/configs/database.yaml ./configs/
+COPY --from=builder /app/configs/redis.yaml ./configs/
+COPY --from=builder /app/web ./web
+COPY --from=builder /app/migrations ./migrations
+
+# Expose port
+EXPOSE 8080
+
+# Set environment
+ENV GIN_MODE=release
+ENV TZ=UTC
+
+# Run as non-root user (distroless default)
+USER nonroot:nonroot
+
+# Run the application
+ENTRYPOINT ["./recharge-system"]

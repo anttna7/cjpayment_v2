@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通用充值页面 - CJPayment</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/dashboard-enhanced.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --payment-primary: #6366f1;
+            --payment-secondary: #8b5cf6;
+            --payment-success: #10b981;
+            --payment-error: #ef4444;
+            --payment-warning: #f59e0b;
+            --payment-bg-primary: #ffffff;
+            --payment-bg-secondary: #f8fafc;
+            --payment-bg-tertiary: #f1f5f9;
+            --payment-text-primary: #1e293b;
+            --payment-text-secondary: #64748b;
+            --payment-border: #e2e8f0;
+            --payment-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--payment-bg-secondary) 0%, var(--payment-bg-tertiary) 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+        }
+        
+        .payment-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .payment-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: var(--payment-bg-primary);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--payment-shadow);
+        }
+        
+        .payment-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--payment-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .payment-subtitle {
+            color: var(--payment-text-secondary);
+            font-size: 1rem;
+        }
+        
+        .payment-form {
+            background: var(--payment-bg-primary);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: var(--payment-shadow);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--payment-border);
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--payment-text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-icon {
+            color: var(--payment-primary);
+            font-size: 1.1rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-row.single {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--payment-text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .form-label.required::after {
+            content: ' *';
+            color: var(--payment-error);
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--payment-border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: var(--payment-bg-primary);
+            color: var(--payment-text-primary);
+        }
+        
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--payment-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .form-input.error {
+            border-color: var(--payment-error);
+        }
+        
+        .form-help {
+            font-size: 0.75rem;
+            color: var(--payment-text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        .form-error {
+            color: var(--payment-error);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        .form-error.show {
+            display: block;
+        }
+        
+        .amount-group {
+            position: relative;
+        }
+        
+        .currency-symbol {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--payment-primary);
+            font-weight: 600;
+        }
+        
+        .amount-input {
+            padding-left: 2.5rem !important;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .receiving-accounts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .account-card {
+            border: 2px solid var(--payment-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--payment-bg-secondary);
+        }
+        
+        .account-card:hover {
+            border-color: var(--payment-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+        }
+        
+        .account-card.selected {
+            border-color: var(--payment-success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        .account-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        
+        .type-bank {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        
+        .type-alipay {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+        
+        .type-wechat {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+        
+        .weight-badge {
+            margin-left: 0.5rem;
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 0.1rem 0.4rem;
+            border-radius: 8px;
+        }
+        
+        .branch-name {
+            color: var(--payment-text-secondary);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+        
+        .single-receiving-account {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(34, 197, 94, 0.08) 100%);
+            border: 2px solid var(--payment-success);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .account-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .account-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--payment-text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .account-status {
+            background: var(--payment-success);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .account-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-item {
+            background: var(--payment-bg-primary);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--payment-primary);
+        }
+        
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--payment-text-secondary);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--payment-text-primary);
+            font-size: 0.95rem;
+        }
+        
+        .account-number-display {
+            font-family: monospace;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        
+        .loading-account {
+            text-align: center;
+            padding: 2rem;
+            color: var(--payment-text-secondary);
+        }
+        
+        .loading-account .loading-spinner {
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        
+        .bank-fields-group {
+            display: none;
+        }
+        
+        .bank-fields-group.show {
+            display: block;
+        }
+        
+        /* 简化流程指引样式 */
+        .simple-process-guide {
+            margin-top: 1.5rem;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        .process-steps-inline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .process-step-inline {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: var(--payment-bg-secondary);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+        
+        .process-step-inline.active {
+            border-color: var(--payment-primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .process-step-inline.completed {
+            border-color: var(--payment-success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .step-number-inline {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--payment-border);
+            color: var(--payment-text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .process-step-inline.active .step-number-inline {
+            background: var(--payment-primary);
+            color: white;
+        }
+        
+        .process-step-inline.completed .step-number-inline {
+            background: var(--payment-success);
+            color: white;
+        }
+        
+        .step-text {
+            font-weight: 500;
+            color: var(--payment-text-primary);
+        }
+        
+        .step-arrow {
+            color: var(--payment-text-secondary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* 账户占位提示样式 */
+        .account-placeholder {
+            background: var(--payment-bg-secondary);
+            border: 2px dashed var(--payment-border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .placeholder-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .placeholder-icon {
+            font-size: 2rem;
+            color: var(--payment-text-secondary);
+        }
+        
+        .placeholder-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--payment-text-primary);
+        }
+        
+        .placeholder-desc {
+            font-size: 0.9rem;
+            color: var(--payment-text-secondary);
+            line-height: 1.5;
+            max-width: 400px;
+        }
+        
+        /* 确认充值按钮样式 */
+        .btn-confirm-recharge {
+            width: 100%;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-confirm-recharge:disabled {
+            background: #9ca3af;
+            color: #f9fafb;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-confirm-recharge:not(:disabled) {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        
+        .btn-confirm-recharge:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+        
+        .btn-confirm-recharge:not(:disabled):hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 0.6s ease-out;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .process-guide {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.08) 100%);
+            border: 2px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .guide-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--payment-primary);
+        }
+        
+        .guide-header i {
+            font-size: 1.3rem;
+        }
+        
+        .process-steps {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .process-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--payment-bg-primary);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .process-step.active {
+            border-color: var(--payment-primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+        
+        .process-step.completed {
+            border-color: var(--payment-success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--payment-border);
+            color: var(--payment-text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .process-step.active .step-number {
+            background: var(--payment-primary);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        .process-step.completed .step-number {
+            background: var(--payment-success);
+            color: white;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: var(--payment-text-primary);
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+        
+        .step-desc {
+            color: var(--payment-text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .step-status {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .step-status i {
+            font-size: 1rem;
+            color: var(--payment-text-secondary);
+        }
+        
+        .process-step.active .step-status i {
+            color: var(--payment-primary);
+            animation: spin 2s linear infinite;
+        }
+        
+        .process-step.completed .step-status i {
+            color: var(--payment-success);
+        }
+        
+        .process-step.completed .step-status i::before {
+            content: "\f00c";
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .account-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--payment-text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .account-number {
+            font-family: monospace;
+            color: var(--payment-text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .account-limits {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--payment-border);
+        }
+        
+        .limit-item {
+            text-align: center;
+        }
+        
+        .limit-label {
+            font-size: 0.75rem;
+            color: var(--payment-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .limit-value {
+            font-weight: 600;
+            color: var(--payment-text-primary);
+        }
+        
+        .submit-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--payment-border);
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--payment-primary) 0%, var(--payment-secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-submit:disabled {
+            background: var(--payment-text-secondary);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-load-accounts {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--payment-secondary) 0%, var(--payment-primary) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-load-accounts:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        
+        .btn-load-accounts:disabled {
+            background: var(--payment-text-secondary);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .account-info-display {
+            background: var(--payment-bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--payment-success);
+        }
+        
+        .polling-group-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .info-item {
+            text-align: center;
+        }
+        
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--payment-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .info-value {
+            font-weight: 600;
+            color: var(--payment-text-primary);
+            font-size: 0.95rem;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--payment-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+        
+        .toast.success {
+            background: var(--payment-success);
+        }
+        
+        .toast.error {
+            background: var(--payment-error);
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* 机构选择特殊样式 */
+        .institution-select {
+            position: relative;
+        }
+        
+        .institution-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--payment-bg-primary);
+            border: 2px solid var(--payment-border);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .institution-dropdown.show {
+            display: block;
+        }
+        
+        .institution-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid var(--payment-border);
+        }
+        
+        .institution-option:hover {
+            background: var(--payment-bg-secondary);
+        }
+        
+        .institution-option:last-child {
+            border-bottom: none;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-container {
+                padding: 0 0.5rem;
+                margin: 1rem auto;
+            }
+            
+            .payment-form {
+                padding: 1.5rem;
+            }
+            
+            .receiving-accounts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="payment-container">
+        <!-- 页面头部 -->
+        <div class="payment-header">
+            <h1 class="payment-title">通用充值页面</h1>
+            <p class="payment-subtitle">请填写完整的付款信息，我们将为您匹配最优的收款账户</p>
+            
+            <!-- 简化的流程指引 -->
+            <div class="simple-process-guide">
+                <div class="process-steps-inline">
+                    <div class="process-step-inline" id="stepInline1">
+                        <span class="step-number-inline">1</span>
+                        <span class="step-text">填写付款信息</span>
+                    </div>
+                    <div class="step-arrow">→</div>
+                    <div class="process-step-inline" id="stepInline2">
+                        <span class="step-number-inline">2</span>
+                        <span class="step-text">填写充值信息</span>
+                    </div>
+                    <div class="step-arrow">→</div>
+                    <div class="process-step-inline" id="stepInline3">
+                        <span class="step-number-inline">3</span>
+                        <span class="step-text">匹配收款账户</span>
+                    </div>
+                    <div class="step-arrow">→</div>
+                    <div class="process-step-inline" id="stepInline4">
+                        <span class="step-number-inline">4</span>
+                        <span class="step-text">确认充值</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主表单 -->
+        <form class="payment-form" id="paymentForm">
+            <!-- 第一部分：付款信息 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-wallet section-icon"></i>
+                付款账户信息
+                </h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="payerAccount">付款账号</label>
+                        <input type="text" id="payerAccount" name="payerAccount" 
+                               class="form-input" 
+                               placeholder="例如：6225880123456789" required>
+                        <div class="form-help">请输入付款账号/卡号</div>
+                        <div class="form-error" id="payerAccountError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="payerName">账户名称</label>
+                        <input type="text" id="payerName" name="payerName" 
+                               class="form-input" 
+                               placeholder="例如：上海创迹优先公司" required>
+                        <div class="form-help">付款账户的开户名称</div>
+                        <div class="form-error" id="payerNameError"></div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="institutionType">账户机构</label>
+                        <select id="institutionType" name="institutionType" class="form-select" required>
+                            <option value="">请选择账户机构类型</option>
+                            <option value="bank">银行</option>
+                            <option value="alipay">支付宝</option>
+                            <option value="wechat">微信</option>
+                            <option value="other">其它</option>
+                        </select>
+                        <div class="form-help">选择您的付款机构类型</div>
+                        <div class="form-error" id="institutionTypeError"></div>
+                    </div>
+                    
+                    <!-- 银行详细信息（仅在选择银行时显示） -->
+                    <div class="form-group" id="bankDetailsGroup" style="display: none;">
+                        <label class="form-label required" for="bankName">银行名称</label>
+                        <select id="bankName" name="bankName" class="form-select">
+                            <option value="">请选择银行</option>
+                            <option value="招商银行">招商银行</option>
+                            <option value="工商银行">工商银行</option>
+                            <option value="建设银行">建设银行</option>
+                            <option value="农业银行">农业银行</option>
+                            <option value="中国银行">中国银行</option>
+                            <option value="交通银行">交通银行</option>
+                            <option value="民生银行">民生银行</option>
+                            <option value="兴业银行">兴业银行</option>
+                            <option value="浦发银行">浦发银行</option>
+                            <option value="中信银行">中信银行</option>
+                            <option value="光大银行">光大银行</option>
+                            <option value="华夏银行">华夏银行</option>
+                            <option value="广发银行">广发银行</option>
+                            <option value="平安银行">平安银行</option>
+                        </select>
+                        <div class="form-help">选择具体的银行名称</div>
+                        <div class="form-error" id="bankNameError"></div>
+                    </div>
+                </div>
+                
+                <div class="form-row" id="bankBranchRow" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="bankBranch">开户行</label>
+                        <input type="text" id="bankBranch" name="bankBranch" 
+                               class="form-input" 
+                               placeholder="例如：招商银行上海静安支行">
+                        <div class="form-help">可选填写具体开户行名称</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <!-- 空占位 -->
+                    </div>
+                </div>
+                
+                <div class="form-row single">
+                    <div class="form-group">
+                        <label class="form-label required" for="paymentType">付款类型</label>
+                        <select id="paymentType" name="paymentType" class="form-select" required>
+                            <option value="">请选择付款类型</option>
+                            <option value="business">对公转账</option>
+                            <option value="personal">对私转账</option>
+                        </select>
+                        <div class="form-help">选择对公或对私转账方式</div>
+                        <div class="form-error" id="paymentTypeError"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二部分：充值账户信息 -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-user-circle section-icon"></i>
+                充值账户信息
+                </h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="adAccountId">账户ID</label>
+                        <input type="text" id="adAccountId" name="adAccountId" 
+                               class="form-input" 
+                               placeholder="例如：123456789012" required>
+                        <div class="form-help">请输入需要充值的广告账户ID</div>
+                        <div class="form-error" id="adAccountIdError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="companyName">开户主体名称</label>
+                        <input type="text" id="companyName" name="companyName" 
+                               class="form-input" 
+                               placeholder="例如：上海创迹科技有限公司" required>
+                        <div class="form-help">充值账户的开户主体名称</div>
+                        <div class="form-error" id="companyNameError"></div>
+                    </div>
+                </div>
+                
+                <div class="form-row single">
+                    <div class="form-group">
+                        <label class="form-label required" for="rechargeAmount">充值金额</label>
+                        <div class="amount-group">
+                            <span class="currency-symbol">￥</span>
+                            <input type="number" id="rechargeAmount" name="rechargeAmount" 
+                                   class="form-input amount-input" 
+                                   placeholder="请输入充值金额" 
+                                   min="0.01" step="0.01" required>
+                        </div>
+                        <div class="form-help">请输入本次充值的金额</div>
+                        <div class="form-error" id="rechargeAmountError"></div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- 第三部分：收款账户信息 -->
+            <div class="form-section" id="receivingAccountSection">
+                <h3 class="section-title">
+                    <i class="fas fa-credit-card section-icon"></i>
+                收款账户信息
+                </h3>
+                
+                <!-- 初始化提示信息 -->
+                <div class="account-placeholder" id="accountPlaceholder">
+                    <div class="placeholder-content">
+                        <i class="fas fa-info-circle placeholder-icon"></i>
+                        <div class="placeholder-title">请先完成填写付款账户信息和充值信息</div>
+                        <div class="placeholder-desc">完成前两部分信息填写后，系统将自动为您匹配最优的收款账户</div>
+                    </div>
+                </div>
+                
+                <!-- 收款账户信息显示区域 -->
+                <div class="single-receiving-account" id="singleReceivingAccount" style="display: none;">
+                    <!-- 将显示单个匹配的收款账户信息 -->
+                </div>
+                
+                <div class="form-error" id="accountLoadError"></div>
+                
+                <!-- 确认充值按钮 -->
+                <div class="confirm-section">
+                    <button type="submit" class="btn-confirm-recharge" id="confirmRechargeBtn" disabled>
+                        <i class="fas fa-check-circle"></i>
+                        确认充值
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Toast 消息容器 -->
+    <div id="toastContainer"></div>
+
+    <script>
+        class PaymentSystem {
+            constructor() {
+                this.institutions = [
+                    { name: '招商银行', type: 'bank' },
+                    { name: '工商银行', type: 'bank' },
+                    { name: '建设银行', type: 'bank' },
+                    { name: '农业银行', type: 'bank' },
+                    { name: '中国银行', type: 'bank' },
+                    { name: '交通银行', type: 'bank' },
+                    { name: '民生银行', type: 'bank' },
+                    { name: '兴业银行', type: 'bank' },
+                    { name: '浦发银行', type: 'bank' },
+                    { name: '中信银行', type: 'bank' },
+                    { name: '光大银行', type: 'bank' },
+                    { name: '华夏银行', type: 'bank' },
+                    { name: '广发银行', type: 'bank' },
+                    { name: '平安银行', type: 'bank' },
+                    { name: '支付宝', type: 'alipay' },
+                    { name: '微信支付', type: 'wechat' },
+                    { name: '其他', type: 'other' }
+                ];
+                
+                this.pollingGroups = {}; // 存储轮询组配置
+                this.selectedAccount = null;
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+                this.initInstitutionDropdown();
+                this.initProcessGuide();
+            }
+            
+            // 初始化流程指引
+            initProcessGuide() {
+                this.updateInlineProcessGuide();
+            }
+            
+            bindEvents() {
+                // 机构类型选择
+                document.getElementById('institutionType').addEventListener('change', (e) => {
+                    this.handleInstitutionTypeChange(e.target.value);
+                });
+                
+                // 付款类型和账户ID变化时自动查询
+                document.getElementById('paymentType').addEventListener('change', () => {
+                    this.checkAutoLoadAccounts();
+                });
+                
+                document.getElementById('adAccountId').addEventListener('input', () => {
+                    this.checkAutoLoadAccounts();
+                });
+                
+                // 确认充值按钮
+                const confirmBtn = document.getElementById('confirmRechargeBtn');
+                if (confirmBtn) {
+                    confirmBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.confirmRecharge();
+                    });
+                }
+                
+                // 输入验证
+                document.getElementById('rechargeAmount').addEventListener('input', (e) => {
+                    this.validateAmount(e.target.value);
+                });
+                
+                document.getElementById('adAccountId').addEventListener('input', (e) => {
+                    this.validateAccountId(e.target.value);
+                });
+                
+                document.getElementById('companyName').addEventListener('input', (e) => {
+                    this.validateCompanyName(e.target.value);
+                });
+                
+                // 监听表单变化，更新流程指引和按钮状态
+                const formFields = ['payerAccount', 'payerName', 'institutionType', 'paymentType', 
+                                  'adAccountId', 'companyName', 'rechargeAmount'];
+                formFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.addEventListener('input', () => {
+                            this.updateInlineProcessGuide();
+                            this.updateConfirmButtonState();
+                        });
+                        field.addEventListener('change', () => {
+                            this.updateInlineProcessGuide();
+                            this.updateConfirmButtonState();
+                        });
+                    }
+                });
+            }
+            
+            // 更新内联流程指引状态
+            updateInlineProcessGuide() {
+                // 检查各步骤完成状态
+                const step1Complete = this.checkStep1Complete();
+                const step2Complete = step1Complete && this.checkStep2Complete();
+                const step3Complete = step2Complete && this.selectedAccount;
+                const step4Ready = step3Complete;
+                
+                // 更新内联步骤状态
+                this.updateInlineStepStatus('stepInline1', step1Complete ? 'completed' : 'active');
+                this.updateInlineStepStatus('stepInline2', step2Complete ? 'completed' : (step1Complete ? 'active' : 'pending'));
+                this.updateInlineStepStatus('stepInline3', step3Complete ? 'completed' : (step2Complete ? 'active' : 'pending'));
+                this.updateInlineStepStatus('stepInline4', step4Ready ? 'active' : 'pending');
+            }
+            
+            // 检查第一步是否完成
+            checkStep1Complete() {
+                const payerAccount = document.getElementById('payerAccount').value.trim();
+                const payerName = document.getElementById('payerName').value.trim();
+                const institutionType = document.getElementById('institutionType').value;
+                const paymentType = document.getElementById('paymentType').value;
+                
+                let bankInfoComplete = true;
+                if (institutionType === 'bank') {
+                    const bankName = document.getElementById('bankName').value;
+                    bankInfoComplete = !!bankName;
+                }
+                
+                return payerAccount && payerName && institutionType && paymentType && bankInfoComplete;
+            }
+            
+            // 检查第二步是否完成
+            checkStep2Complete() {
+                const adAccountId = document.getElementById('adAccountId').value.trim();
+                const companyName = document.getElementById('companyName').value.trim();
+                const amount = document.getElementById('rechargeAmount').value;
+                
+                return adAccountId && companyName && amount && parseFloat(amount) > 0;
+            }
+            
+            // 更新内联步骤状态
+            updateInlineStepStatus(stepId, status) {
+                const stepElement = document.getElementById(stepId);
+                if (!stepElement) return;
+                
+                // 移除所有状态类
+                stepElement.classList.remove('active', 'completed', 'pending');
+                
+                // 添加新状态类
+                stepElement.classList.add(status);
+            }
+            
+            // 更新确认充值按钮状态
+            updateConfirmButtonState() {
+                const confirmBtn = document.getElementById('confirmRechargeBtn');
+                const step1Complete = this.checkStep1Complete();
+                const step2Complete = this.checkStep2Complete();
+                const step3Complete = this.selectedAccount;
+                
+                const allComplete = step1Complete && step2Complete && step3Complete;
+                
+                if (allComplete) {
+                    confirmBtn.disabled = false;
+                } else {
+                    confirmBtn.disabled = true;
+                }
+            }
+            
+            // 处理机构类型选择
+            handleInstitutionTypeChange(type) {
+                const bankDetailsGroup = document.getElementById('bankDetailsGroup');
+                const bankBranchRow = document.getElementById('bankBranchRow');
+                const bankNameField = document.getElementById('bankName');
+                
+                if (type === 'bank') {
+                    // 显示银行相关字段
+                    bankDetailsGroup.style.display = 'block';
+                    bankBranchRow.style.display = 'flex';
+                    bankNameField.required = true;
+                } else {
+                    // 隐藏银行相关字段
+                    bankDetailsGroup.style.display = 'none';
+                    bankBranchRow.style.display = 'none';
+                    bankNameField.required = false;
+                    bankNameField.value = '';
+                    document.getElementById('bankBranch').value = '';
+                }
+            }
+            
+            // 检查是否可以自动加载收款账户
+            checkAutoLoadAccounts() {
+                const paymentType = document.getElementById('paymentType').value;
+                const adAccountId = document.getElementById('adAccountId').value.trim();
+                
+                // 当付款类型和账户ID都填写后，自动查询收款账户
+                if (paymentType && adAccountId && adAccountId.length >= 8) {
+                    this.autoLoadAccountInfo(adAccountId, paymentType);
+                } else {
+                    // 显示占位符，隐藏收款账户信息
+                    document.getElementById('accountPlaceholder').style.display = 'block';
+                    document.getElementById('singleReceivingAccount').style.display = 'none';
+                    this.selectedAccount = null;
+                    this.updateInlineProcessGuide();
+                    this.updateConfirmButtonState();
+                }
+            }
+            
+            // 自动加载收款账户信息
+            async autoLoadAccountInfo(adAccountId, paymentType) {
+                try {
+                    // 显示加载状态
+                    document.getElementById('receivingAccountSection').style.display = 'block';
+                    document.getElementById('singleReceivingAccount').innerHTML = `
+                        <div class=\"loading-account\">
+                            <span class=\"loading-spinner\"></span>
+                            正在查询收款账户信息...
+                        </div>
+                    `;
+                    
+                    // 模拟API调用
+                    const response = await this.fetchSingleReceivingAccount(adAccountId, paymentType);
+                    
+                    if (response.success) {
+                        this.displaySingleReceivingAccount(response.data);
+                        
+                        // 隐藏占位符，显示收款账户信息
+                        document.getElementById('accountPlaceholder').style.display = 'none';
+                        document.getElementById('singleReceivingAccount').style.display = 'block';
+                        
+                        // 更新流程指引状态和按钮状态
+                        this.updateInlineProcessGuide();
+                        this.updateConfirmButtonState();
+                    } else {
+                        document.getElementById('singleReceivingAccount').innerHTML = `
+                            <div style=\"text-align: center; color: var(--payment-error); padding: 2rem;\">
+                                <i class=\"fas fa-exclamation-triangle\" style=\"font-size: 2rem; margin-bottom: 1rem;\"></i>
+                                <div>${response.message}</div>
+                            </div>
+                        `;
+                        document.getElementById('confirmSection').style.display = 'none';
+                    }
+                    
+                } catch (error) {
+                    console.error('自动查询收款账户失败:', error);
+                    document.getElementById('singleReceivingAccount').innerHTML = `
+                        <div style=\"text-align: center; color: var(--payment-error); padding: 2rem;\">
+                            查询失败，请稍后重试
+                        </div>
+                    `;
+                }
+            }
+            
+            // 获取单个收款账户信息
+            async fetchSingleReceivingAccount(adAccountId, paymentType) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // 模拟根据账户ID和付款类型匹配的单个收款账户
+                const mockAccountMapping = {
+                    '123456789012': {
+                        business: {
+                            id: 'ACC001',
+                            type: 'bank',
+                            bankName: '招商银行',
+                            accountName: '上海创迹科技有限公司',
+                            accountNumber: '6225880123456789',
+                            branchName: '上海静安支行',
+                            minAmount: 100,
+                            maxAmount: 500000,
+                            pollingGroupId: 'PG001',
+                            pollingMode: 'round_robin'
+                        },
+                        personal: {
+                            id: 'ACC003',
+                            type: 'alipay',
+                            bankName: '支付宝',
+                            accountName: '创迹科技',
+                            accountNumber: 'chuangji@alipay.com',
+                            branchName: '支付宝平台',
+                            minAmount: 1,
+                            maxAmount: 50000,
+                            pollingGroupId: 'PG002',
+                            pollingMode: 'weighted'
+                        }
+                    }
+                };
+                
+                if (mockAccountMapping[adAccountId] && mockAccountMapping[adAccountId][paymentType]) {
+                    return {
+                        success: true,
+                        data: mockAccountMapping[adAccountId][paymentType]
+                    };
+                } else {
+                    return {
+                        success: false,
+                        message: `未找到账户ID ${adAccountId} 在 ${paymentType === 'business' ? '对公' : '对私'} 模式下的收款账户配置`
+                    };
+                }
+            }
+            
+            // 显示单个收款账户信息
+            displaySingleReceivingAccount(account) {
+                const container = document.getElementById('singleReceivingAccount');
+                const pollingModeText = {
+                    'round_robin': '轮询模式',
+                    'weighted': '权重模式', 
+                    'random': '随机模式'
+                };
+                
+                container.innerHTML = `
+                    <div class=\"account-header\">
+                        <div class=\"account-title\">
+                            <i class=\"fas fa-university\"></i>
+                            ${account.bankName}
+                        </div>
+                        <div class=\"account-status\">已匹配</div>
+                    </div>
+                    
+                    <div class=\"account-details\">
+                        <div class=\"detail-item\">
+                            <div class=\"detail-label\">账户名称</div>
+                            <div class=\"detail-value\">${account.accountName}</div>
+                        </div>
+                        <div class=\"detail-item\">
+                            <div class=\"detail-label\">账户号码</div>
+                            <div class=\"detail-value account-number-display\">${account.accountNumber}</div>
+                        </div>
+                        <div class=\"detail-item\">
+                            <div class=\"detail-label\">开户行</div>
+                            <div class=\"detail-value\">${account.branchName}</div>
+                        </div>
+                        <div class=\"detail-item\">
+                            <div class=\"detail-label\">轮询组</div>
+                            <div class=\"detail-value\">${account.pollingGroupId}</div>
+                        </div>
+                        <div class=\"detail-item\">
+                            <div class=\"detail-label\">轮询模式</div>
+                            <div class=\"detail-value\">${pollingModeText[account.pollingMode]}</div>
+                        </div>
+                        <div class=\"detail-item\">
+                            <div class=\"detail-label\">金额范围</div>
+                            <div class=\"detail-value\">￥${account.minAmount} - ￥${account.maxAmount.toLocaleString()}</div>
+                        </div>
+                    </div>
+                `;
+                
+                this.selectedAccount = account;
+            }
+            
+            initInstitutionDropdown() {
+                const dropdown = document.getElementById('institutionDropdown');
+                dropdown.innerHTML = this.institutions.map(inst => 
+                    `<div class="institution-option" data-name="${inst.name}" data-type="${inst.type}">
+                        ${inst.name}
+                    </div>`
+                ).join('');
+                
+                // 绑定选择事件
+                dropdown.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('institution-option')) {
+                        document.getElementById('paymentInstitution').value = e.target.dataset.name;
+                        this.hideDropdown();
+                    }
+                });
+            }
+            
+            filterInstitutions(query) {
+                const dropdown = document.getElementById('institutionDropdown');
+                const filtered = this.institutions.filter(inst => 
+                    inst.name.toLowerCase().includes(query.toLowerCase())
+                );
+                
+                dropdown.innerHTML = filtered.map(inst => 
+                    `<div class="institution-option" data-name="${inst.name}" data-type="${inst.type}">
+                        ${inst.name}
+                    </div>`
+                ).join('');
+                
+                this.showDropdown();
+            }
+            
+            showDropdown() {
+                document.getElementById('institutionDropdown').classList.add('show');
+            }
+            
+            hideDropdown() {
+                document.getElementById('institutionDropdown').classList.remove('show');
+            }
+            
+            // 根据广告账户ID查询收款账户信息
+            async loadAccountsByAdId() {
+                const adAccountId = document.getElementById('adAccountId').value.trim();
+                const companyName = document.getElementById('companyName').value.trim();
+                
+                // 验证必填字段
+                if (!adAccountId) {
+                    this.showError('adAccountIdError', '请先输入账户ID');
+                    return;
+                }
+                
+                if (!companyName) {
+                    this.showError('companyNameError', '请先输入开户主体名称');
+                    return;
+                }
+                
+                const loadBtn = document.getElementById('loadAccountsBtn');
+                const originalText = loadBtn.innerHTML;
+                
+                // 显示加载状态
+                loadBtn.disabled = true;
+                loadBtn.innerHTML = '<span class="loading-spinner"></span> 查询中...';
+                
+                try {
+                    // 模拟API调用查询轮询组配置
+                    const response = await this.fetchPollingGroupConfig(adAccountId, companyName);
+                    
+                    if (response.success) {
+                        this.displayPollingGroupInfo(response.data);
+                        this.displayReceivingAccounts(response.data.accounts);
+                        
+                        // 显示收款账户部分
+                        document.getElementById('receivingAccountSection').style.display = 'block';
+                        
+                        this.showToast('收款账户信息加载成功', 'success');
+                    } else {
+                        this.showToast(response.message || '查询失败，请检查账户信息', 'error');
+                    }
+                    
+                } catch (error) {
+                    console.error('查询收款账户失败:', error);
+                    this.showToast('查询失败，请重试', 'error');
+                } finally {
+                    loadBtn.disabled = false;
+                    loadBtn.innerHTML = originalText;
+                }
+            }
+            
+            // 模拟后台API调用
+            async fetchPollingGroupConfig(adAccountId, companyName) {
+                // 模拟API延迟
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // 模拟轮询组配置数据
+                const mockPollingGroups = {
+                    '123456789012': {
+                        pollingGroupId: 'PG001',
+                        pollingMode: 'round_robin', // 轮询模式：round_robin, weighted, random
+                        companyName: '上海创迹科技有限公司',
+                        accounts: [
+                            {
+                                id: 'ACC001',
+                                type: 'bank',
+                                bankName: '招商银行',
+                                accountName: '上海创迹科技有限公司',
+                                accountNumber: '6225880123456789',
+                                branchName: '上海静安支行',
+                                minAmount: 100,
+                                maxAmount: 500000,
+                                weight: 30,
+                                status: 'active'
+                            },
+                            {
+                                id: 'ACC002', 
+                                type: 'bank',
+                                bankName: '工商银行',
+                                accountName: '上海创迹科技有限公司',
+                                accountNumber: '6222020123456789',
+                                branchName: '上海徐汇支行',
+                                minAmount: 50,
+                                maxAmount: 1000000,
+                                weight: 40,
+                                status: 'active'
+                            },
+                            {
+                                id: 'ACC003',
+                                type: 'alipay',
+                                bankName: '支付宝',
+                                accountName: '创迹科技',
+                                accountNumber: 'chuangji@alipay.com',
+                                branchName: '支付宝平台',
+                                minAmount: 1,
+                                maxAmount: 50000,
+                                weight: 30,
+                                status: 'active'
+                            }
+                        ]
+                    }
+                };
+                
+                // 验证账户ID是否存在配置
+                if (mockPollingGroups[adAccountId]) {
+                    return {
+                        success: true,
+                        data: {
+                            ...mockPollingGroups[adAccountId],
+                            accountId: adAccountId,
+                            queryTime: new Date().toLocaleString('zh-CN')
+                        }
+                    };
+                } else {
+                    return {
+                        success: false,
+                        message: `未找到账户ID ${adAccountId} 的轮询组配置，请检查账户信息`
+                    };
+                }
+            }
+            
+            // 显示轮询组信息
+            displayPollingGroupInfo(data) {
+                const container = document.getElementById('accountInfoDisplay');
+                const pollingModeText = {
+                    'round_robin': '轮询模式',
+                    'weighted': '权重模式', 
+                    'random': '随机模式'
+                };
+                
+                container.innerHTML = `
+                    <h4 style="color: var(--payment-text-primary); margin-bottom: 1rem;">
+                        <i class="fas fa-info-circle" style="color: var(--payment-success);"></i>
+                        轮询组配置信息
+                    </h4>
+                    <div class="polling-group-info">
+                        <div class="info-item">
+                            <div class="info-label">轮询组ID</div>
+                            <div class="info-value">${data.pollingGroupId}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">轮询模式</div>
+                            <div class="info-value">${pollingModeText[data.pollingMode] || data.pollingMode}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">关联公司</div>
+                            <div class="info-value">${data.companyName}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">可用账户</div>
+                            <div class="info-value">${data.accounts.filter(acc => acc.status === 'active').length}个</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">查询时间</div>
+                            <div class="info-value">${data.queryTime}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 显示收款账户列表
+            displayReceivingAccounts(accounts) {
+                const container = document.getElementById('receivingAccounts');
+                const activeAccounts = accounts.filter(account => account.status === 'active');
+                
+                container.innerHTML = activeAccounts.map(account => `
+                    <div class="account-card" data-account-id="${account.id}">
+                        <div class="account-type-badge type-${account.type}">
+                            ${this.getAccountTypeLabel(account.type)}
+                            <span class="weight-badge">权重: ${account.weight}%</span>
+                        </div>
+                        <div class="account-info">
+                            <h4>${account.accountName}</h4>
+                            <div class="account-number">${account.bankName} - ${account.accountNumber}</div>
+                            <div class="branch-name">${account.branchName}</div>
+                        </div>
+                        <div class="account-limits">
+                            <div class="limit-item">
+                                <div class="limit-label">最小金额</div>
+                                <div class="limit-value">￥${account.minAmount}</div>
+                            </div>
+                            <div class="limit-item">
+                                <div class="limit-label">最大金额</div>
+                                <div class="limit-value">￥${account.maxAmount.toLocaleString()}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // 绑定账户选择事件
+                container.addEventListener('click', (e) => {
+                    const card = e.target.closest('.account-card');
+                    if (card) {
+                        this.selectAccount(card, activeAccounts);
+                    }
+                });
+            }
+            
+            getAccountTypeLabel(type) {
+                const labels = {
+                    'bank': '银行卡',
+                    'alipay': '支付宝',
+                    'wechat': '微信支付'
+                };
+                return labels[type] || type;
+            }
+            
+            selectAccount(cardElement, accounts) {
+                // 移除之前的选中状态
+                document.querySelectorAll('.account-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                
+                // 选中当前账户
+                cardElement.classList.add('selected');
+                this.selectedAccount = accounts.find(
+                    account => account.id == cardElement.dataset.accountId
+                );
+                
+                // 清除错误状态
+                this.hideError('accountSelectionError');
+                
+                // 显示提交按钮
+                document.getElementById('submitSection').style.display = 'block';
+                
+                this.showToast(`已选择收款账户：${this.selectedAccount.bankName}`, 'success');
+            }
+            
+            validateCompanyName(companyName) {
+                if (!companyName.trim()) {
+                    this.showError('companyNameError', '请输入开户主体名称');
+                    return false;
+                } else {
+                    this.hideError('companyNameError');
+                    return true;
+                }
+            }
+            
+            validateAmount(amount) {
+                const amountFloat = parseFloat(amount);
+                if (isNaN(amountFloat) || amountFloat < 0.01) {
+                    this.showError('rechargeAmountError', '金额必须大于等于0.01元');
+                    return false;
+                } else {
+                    this.hideError('rechargeAmountError');
+                    return true;
+                }
+            }
+            
+            validateAccountId(accountId) {
+                if (!accountId.trim()) {
+                    this.showError('adAccountIdError', '请输入广告账户ID');
+                    return false;
+                } else if (!/^\\d+$/.test(accountId)) {
+                    this.showError('adAccountIdError', '账户ID只能包含数字');
+                    return false;
+                } else {
+                    this.hideError('adAccountIdError');
+                    return true;
+                }
+            }
+            
+            showError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                const inputElement = document.querySelector(`[name="${elementId.replace('Error', '')}"]`) || 
+                                   document.getElementById(elementId.replace('Error', ''));
+                
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+                if (inputElement) {
+                    inputElement.classList.add('error');
+                }
+            }
+            
+            hideError(elementId) {
+                const errorElement = document.getElementById(elementId);
+                const inputElement = document.querySelector(`[name="${elementId.replace('Error', '')}"]`) || 
+                                   document.getElementById(elementId.replace('Error', ''));
+                
+                errorElement.classList.remove('show');
+                if (inputElement) {
+                    inputElement.classList.remove('error');
+                }
+            }
+            
+            // 确认充值
+            confirmRecharge() {
+                // 验证所有必填字段
+                let isValid = true;
+                
+                // 第一部分：付款信息验证
+                const payerAccount = document.getElementById('payerAccount').value.trim();
+                const payerName = document.getElementById('payerName').value.trim();
+                const institutionType = document.getElementById('institutionType').value;
+                const paymentType = document.getElementById('paymentType').value;
+                
+                if (!payerAccount) {
+                    this.showError('payerAccountError', '请输入付款账号');
+                    isValid = false;
+                } else {
+                    this.hideError('payerAccountError');
+                }
+                
+                if (!payerName) {
+                    this.showError('payerNameError', '请输入账户名称');
+                    isValid = false;
+                } else {
+                    this.hideError('payerNameError');
+                }
+                
+                if (!institutionType) {
+                    this.showError('institutionTypeError', '请选择账户机构类型');
+                    isValid = false;
+                } else {
+                    this.hideError('institutionTypeError');
+                }
+                
+                // 如果选择了银行，验证银行名称
+                if (institutionType === 'bank') {
+                    const bankName = document.getElementById('bankName').value;
+                    if (!bankName) {
+                        this.showError('bankNameError', '请选择银行名称');
+                        isValid = false;
+                    } else {
+                        this.hideError('bankNameError');
+                    }
+                }
+                
+                if (!paymentType) {
+                    this.showError('paymentTypeError', '请选择付款类型');
+                    isValid = false;
+                } else {
+                    this.hideError('paymentTypeError');
+                }
+                
+                // 第二部分：充值账户信息验证
+                const adAccountId = document.getElementById('adAccountId').value.trim();
+                const companyName = document.getElementById('companyName').value.trim();
+                const amount = document.getElementById('rechargeAmount').value;
+                
+                if (!this.validateAccountId(adAccountId)) isValid = false;
+                if (!this.validateCompanyName(companyName)) isValid = false;
+                if (!this.validateAmount(amount)) isValid = false;
+                
+                // 第三部分：收款账户验证
+                if (!this.selectedAccount) {
+                    this.showToast('收款账户信息未加载，请检查账户ID和付款类型', 'error');
+                    isValid = false;
+                } else {
+                    // 检查金额范围
+                    const amountFloat = parseFloat(amount);
+                    if (amountFloat < this.selectedAccount.minAmount || amountFloat > this.selectedAccount.maxAmount) {
+                        this.showError('rechargeAmountError', `金额必须在￥${this.selectedAccount.minAmount} - ￥${this.selectedAccount.maxAmount}范围内`);
+                        isValid = false;
+                    }
+                }
+                
+                if (!isValid) {
+                    this.showToast('请检查并修正表单中的错误', 'error');
+                    return;
+                }
+                
+                // 提交充值申请
+                this.processRecharge();
+            }
+            
+            async processRecharge() {
+                const confirmBtn = document.getElementById('confirmRechargeBtn');
+                const originalText = confirmBtn.innerHTML;
+                
+                // 禁用按钮并显示加载状态
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 处理中...';
+                
+                try {
+                    // 收集完整的表单数据
+                    const institutionType = document.getElementById('institutionType').value;
+                    const formData = {
+                        // 第一部分：付款信息
+                        payerInfo: {
+                            payerAccount: document.getElementById('payerAccount').value,
+                            payerName: document.getElementById('payerName').value,
+                            institutionType: institutionType,
+                            bankName: institutionType === 'bank' ? document.getElementById('bankName').value : '',
+                            bankBranch: institutionType === 'bank' ? document.getElementById('bankBranch').value : '',
+                            paymentType: document.getElementById('paymentType').value
+                        },
+                        // 第二部分：充值账户信息
+                        rechargeInfo: {
+                            adAccountId: document.getElementById('adAccountId').value,
+                            companyName: document.getElementById('companyName').value,
+                            amount: parseFloat(document.getElementById('rechargeAmount').value)
+                        },
+                        // 第三部分：收款账户信息
+                        receivingAccount: this.selectedAccount,
+                        // 订单信息
+                        orderId: 'ORD' + Date.now(),
+                        submitTime: new Date().toISOString()
+                    };
+                    
+                    // 模拟API调用提交充值申请
+                    console.log('提交充值申请数据:', formData);
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    
+                    this.showToast('充值申请提交成功！正在跳转到转账页面...', 'success');
+                    
+                    // 跳转到转账页面，携带订单信息
+                    setTimeout(() => {
+                        const transferParams = new URLSearchParams({
+                            orderId: formData.orderId,
+                            amount: formData.rechargeInfo.amount,
+                            accountId: formData.rechargeInfo.adAccountId,
+                            companyName: formData.rechargeInfo.companyName,
+                            receivingAccount: formData.receivingAccount.accountNumber,
+                            receivingName: formData.receivingAccount.accountName,
+                            bankName: formData.receivingAccount.bankName
+                        });
+                        
+                        window.location.href = `/transfer?${transferParams.toString()}`;
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('提交失败:', error);
+                    this.showToast('提交失败，请重试', 'error');
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerHTML = originalText;
+                }
+            }
+            
+            showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = message;
+                
+                document.getElementById('toastContainer').appendChild(toast);
+                
+                // 显示
+                setTimeout(() => toast.classList.add('show'), 100);
+                
+                // 隐藏并移除
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+        }
+        
+        // 初始化系统
+        document.addEventListener('DOMContentLoaded', () => {
+            new PaymentSystem();
+        });
+    </script>
+</body>
+</html>

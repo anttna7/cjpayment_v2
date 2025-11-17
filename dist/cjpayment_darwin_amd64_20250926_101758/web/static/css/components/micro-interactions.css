@@ -1,0 +1,671 @@
+/* ==========================================================================
+   Micro-Interactions Component
+   Button clicks, form interactions, and data animations
+   ========================================================================== */
+
+/* ==========================================================================
+   Ripple Effects
+   ========================================================================== */
+
+.btn,
+button,
+[role="button"] {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0); /* GPU acceleration */
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--ripple-color, rgba(255, 255, 255, 0.3));
+  transform: scale(0);
+  animation: ripple-animation 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes ripple-animation {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Dark theme ripple */
+[data-theme="dark"] .ripple {
+  background: var(--ripple-color, rgba(255, 255, 255, 0.2));
+}
+
+/* ==========================================================================
+   Button Interactions
+   ========================================================================== */
+
+/* Press Animation */
+.btn-pressed {
+  transform: scale(0.98) translateZ(0);
+  transition: transform var(--duration-100, 100ms) var(--ease-out, ease-out);
+}
+
+/* Hover Effects */
+.btn-hovered {
+  transform: translateY(-1px) translateZ(0);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+/* Loading State */
+.btn.loading {
+  pointer-events: none;
+  position: relative;
+  color: transparent;
+}
+
+.btn.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: btn-loading-spin 1s linear infinite;
+}
+
+.btn.loading .loading-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: currentColor;
+  font-size: var(--font-size-sm, 0.875rem);
+  white-space: nowrap;
+  margin-left: 24px;
+}
+
+@keyframes btn-loading-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Card Interactions
+   ========================================================================== */
+
+.card,
+.card-interactive {
+  transition: all var(--duration-200, 200ms) var(--ease-out, ease-out);
+  transform: translateZ(0);
+}
+
+.card-hovered {
+  transform: translateY(-2px) translateZ(0);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-interactive:active {
+  transform: translateY(0) scale(0.99) translateZ(0);
+  transition: transform var(--duration-100, 100ms) var(--ease-out, ease-out);
+}
+
+/* ==========================================================================
+   Focus Effects
+   ========================================================================== */
+
+/* Enhanced focus indicators */
+.element-focused {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring-color, rgba(59, 130, 246, 0.3));
+  transition: box-shadow var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+/* Keyboard navigation mode */
+.keyboard-navigation .element-focused {
+  outline: 2px solid var(--primary-500, #3b82f6);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+/* Focus ring colors for different elements */
+.btn:focus-visible,
+button:focus-visible {
+  --focus-ring-color: rgba(59, 130, 246, 0.3);
+}
+
+.btn--success:focus-visible {
+  --focus-ring-color: rgba(34, 197, 94, 0.3);
+}
+
+.btn--warning:focus-visible {
+  --focus-ring-color: rgba(245, 158, 11, 0.3);
+}
+
+.btn--error:focus-visible {
+  --focus-ring-color: rgba(239, 68, 68, 0.3);
+}
+
+/* ==========================================================================
+   Form Interactions
+   ========================================================================== */
+
+/* Form group focus animation */
+.form-group {
+  transition: transform var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+.form-group.focused {
+  transform: scale(1.01) translateZ(0);
+}
+
+/* Input focus effects */
+.form-input,
+.form-textarea,
+.form-select {
+  transition: all var(--duration-200, 200ms) var(--ease-out, ease-out);
+  position: relative;
+}
+
+.input-focused {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: var(--primary-500, #3b82f6);
+  transform: translateZ(0);
+}
+
+/* Floating labels */
+.form-label {
+  transition: all var(--duration-200, 200ms) var(--ease-out, ease-out);
+  transform-origin: left top;
+}
+
+.form-label.floating {
+  transform: translateY(-20px) scale(0.8) translateZ(0);
+  color: var(--primary-500, #3b82f6);
+  font-weight: var(--font-weight-medium, 500);
+}
+
+/* Validation animations */
+.form-group.valid .form-input {
+  border-color: var(--success-500, #22c55e);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.form-group.invalid .form-input {
+  border-color: var(--error-500, #ef4444);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.validation-success {
+  animation: validation-success var(--duration-300, 300ms) var(--ease-out, ease-out);
+}
+
+.validation-error {
+  animation: validation-error var(--duration-300, 300ms) var(--ease-out, ease-out);
+}
+
+@keyframes validation-success {
+  0% { transform: scale(1) translateZ(0); }
+  50% { 
+    transform: scale(1.02) translateZ(0); 
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+  }
+  100% { transform: scale(1) translateZ(0); }
+}
+
+@keyframes validation-error {
+  0%, 100% { transform: translateX(0) translateZ(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px) translateZ(0); }
+  20%, 40%, 60%, 80% { transform: translateX(3px) translateZ(0); }
+}
+
+/* Form submission state */
+.form-submitting {
+  opacity: 0.8;
+  pointer-events: none;
+  transition: opacity var(--duration-300, 300ms) var(--ease-out, ease-out);
+}
+
+/* ==========================================================================
+   Number Animations
+   ========================================================================== */
+
+.number-changing {
+  animation: number-change var(--duration-300, 300ms) var(--ease-out, ease-out);
+  display: inline-block;
+}
+
+@keyframes number-change {
+  0% { 
+    transform: scale(1) translateZ(0); 
+    color: inherit;
+  }
+  50% { 
+    transform: scale(1.1) translateZ(0); 
+    color: var(--primary-500, #3b82f6);
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+  100% { 
+    transform: scale(1) translateZ(0); 
+    color: inherit;
+  }
+}
+
+/* Counting animation */
+.counting {
+  color: var(--primary-500, #3b82f6);
+  font-weight: var(--font-weight-semibold, 600);
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+  transition: all var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+/* Number highlight effect */
+[data-animate-number] {
+  transition: all var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+[data-animate-number]:hover {
+  color: var(--primary-600, #2563eb);
+  transform: scale(1.05) translateZ(0);
+}
+
+/* ==========================================================================
+   Chart Animations
+   ========================================================================== */
+
+.chart-animating {
+  overflow: hidden;
+}
+
+/* Bar chart animations */
+.chart-bar,
+.bar {
+  transform-origin: bottom center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chart-animating .chart-bar,
+.chart-animating .bar {
+  transform: scaleY(0) translateZ(0);
+}
+
+.chart-animating .chart-bar.animate-in,
+.chart-animating .bar.animate-in {
+  transform: scaleY(1) translateZ(0);
+}
+
+/* Line chart animations */
+.chart-line,
+.line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 1s ease-out;
+}
+
+.chart-animating .chart-line.animate-in,
+.chart-animating .line.animate-in {
+  stroke-dashoffset: 0;
+}
+
+/* Point animations */
+.chart-point,
+.point {
+  transform-origin: center;
+  transition: transform var(--duration-300, 300ms) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chart-animating .chart-point,
+.chart-animating .point {
+  transform: scale(0) translateZ(0);
+}
+
+.chart-animating .chart-point.animate-in,
+.chart-animating .point.animate-in {
+  transform: scale(1) translateZ(0);
+}
+
+/* Pie chart animations */
+.chart-slice,
+.slice {
+  transform-origin: center;
+  transition: all var(--duration-300, 300ms) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chart-animating .chart-slice,
+.chart-animating .slice {
+  transform: scale(0) rotate(-90deg) translateZ(0);
+}
+
+.chart-animating .chart-slice.animate-in,
+.chart-animating .slice.animate-in {
+  transform: scale(1) rotate(0deg) translateZ(0);
+}
+
+/* ==========================================================================
+   Progress Animations
+   ========================================================================== */
+
+.progress {
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar,
+.progress__bar {
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-animating .progress-bar,
+.progress-animating .progress__bar {
+  position: relative;
+}
+
+.progress-animating .progress-bar::after,
+.progress-animating .progress__bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.4) 50%, 
+    transparent 100%);
+  animation: progress-shimmer 1.5s infinite;
+}
+
+@keyframes progress-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Circular progress */
+.progress-circle {
+  transform: rotate(-90deg);
+  transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Stagger Animations
+   ========================================================================== */
+
+.stagger-container {
+  --stagger-delay: 100ms;
+}
+
+.stagger-item {
+  transition: all var(--duration-300, 300ms) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fade in stagger */
+.stagger-fade-in {
+  opacity: 0;
+  transform: translateY(20px) translateZ(0);
+}
+
+.stagger-animate.stagger-fade-in {
+  opacity: 1;
+  transform: translateY(0) translateZ(0);
+}
+
+/* Slide left stagger */
+.stagger-slide-left {
+  opacity: 0;
+  transform: translateX(-20px) translateZ(0);
+}
+
+.stagger-animate.stagger-slide-left {
+  opacity: 1;
+  transform: translateX(0) translateZ(0);
+}
+
+/* Slide right stagger */
+.stagger-slide-right {
+  opacity: 0;
+  transform: translateX(20px) translateZ(0);
+}
+
+.stagger-animate.stagger-slide-right {
+  opacity: 1;
+  transform: translateX(0) translateZ(0);
+}
+
+/* Scale stagger */
+.stagger-scale {
+  opacity: 0;
+  transform: scale(0.8) translateZ(0);
+}
+
+.stagger-animate.stagger-scale {
+  opacity: 1;
+  transform: scale(1) translateZ(0);
+}
+
+/* Rotate stagger */
+.stagger-rotate {
+  opacity: 0;
+  transform: rotate(10deg) scale(0.9) translateZ(0);
+}
+
+.stagger-animate.stagger-rotate {
+  opacity: 1;
+  transform: rotate(0deg) scale(1) translateZ(0);
+}
+
+/* Stagger delays */
+.stagger-item:nth-child(1) { transition-delay: calc(var(--stagger-delay) * 0); }
+.stagger-item:nth-child(2) { transition-delay: calc(var(--stagger-delay) * 1); }
+.stagger-item:nth-child(3) { transition-delay: calc(var(--stagger-delay) * 2); }
+.stagger-item:nth-child(4) { transition-delay: calc(var(--stagger-delay) * 3); }
+.stagger-item:nth-child(5) { transition-delay: calc(var(--stagger-delay) * 4); }
+.stagger-item:nth-child(6) { transition-delay: calc(var(--stagger-delay) * 5); }
+.stagger-item:nth-child(7) { transition-delay: calc(var(--stagger-delay) * 6); }
+.stagger-item:nth-child(8) { transition-delay: calc(var(--stagger-delay) * 7); }
+.stagger-item:nth-child(9) { transition-delay: calc(var(--stagger-delay) * 8); }
+.stagger-item:nth-child(10) { transition-delay: calc(var(--stagger-delay) * 9); }
+
+/* ==========================================================================
+   Loading Animations
+   ========================================================================== */
+
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-primary, #e2e8f0);
+  border-top: 2px solid var(--primary-500, #3b82f6);
+  border-radius: 50%;
+  animation: micro-spin 1s linear infinite;
+}
+
+.loading-dots {
+  display: inline-flex;
+  gap: var(--space-1, 0.25rem);
+}
+
+.loading-dots span {
+  width: 6px;
+  height: 6px;
+  background: var(--primary-500, #3b82f6);
+  border-radius: 50%;
+  animation: loading-dots-bounce 1.4s ease-in-out infinite both;
+}
+
+.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+.loading-dots span:nth-child(3) { animation-delay: 0s; }
+
+@keyframes micro-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes loading-dots-bounce {
+  0%, 80%, 100% { 
+    transform: scale(0) translateZ(0); 
+    opacity: 0.5;
+  }
+  40% { 
+    transform: scale(1) translateZ(0); 
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   Pulse Animations
+   ========================================================================== */
+
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.pulse-ring {
+  position: relative;
+}
+
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--primary-500, #3b82f6);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Accessibility & Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .ripple,
+  .btn-pressed,
+  .btn-hovered,
+  .card-hovered,
+  .form-group.focused,
+  .number-changing,
+  .counting,
+  .stagger-animate,
+  .chart-bar,
+  .chart-line,
+  .chart-point,
+  .progress-bar,
+  .loading-spinner,
+  .pulse,
+  .pulse-ring::before {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Keep essential feedback for reduced motion users */
+  .element-focused {
+    outline: 2px solid var(--primary-500, #3b82f6) !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+    transition: none !important;
+  }
+
+  .form-group.valid .form-input {
+    border-color: var(--success-500, #22c55e) !important;
+    box-shadow: none !important;
+  }
+
+  .form-group.invalid .form-input {
+    border-color: var(--error-500, #ef4444) !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ==========================================================================
+   High Contrast Mode
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  .ripple {
+    background: var(--text-primary, #000000);
+    opacity: 0.3;
+  }
+
+  .element-focused {
+    outline: 3px solid var(--text-primary, #000000) !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+  }
+
+  .loading-spinner {
+    border-color: var(--text-primary, #000000);
+    border-top-color: var(--primary-600, #2563eb);
+  }
+}
+
+/* ==========================================================================
+   Dark Theme Adjustments
+   ========================================================================== */
+
+[data-theme="dark"] {
+  --ripple-color: rgba(255, 255, 255, 0.2);
+  --focus-ring-color: rgba(96, 165, 250, 0.3);
+}
+
+[data-theme="dark"] .loading-spinner {
+  border-color: var(--border-primary, #334155);
+  border-top-color: var(--primary-400, #60a5fa);
+}
+
+[data-theme="dark"] .counting {
+  color: var(--primary-400, #60a5fa);
+  text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  .ripple,
+  .loading-spinner,
+  .loading-dots,
+  .pulse,
+  .pulse-ring::before {
+    display: none !important;
+  }
+
+  .btn-hovered,
+  .card-hovered,
+  .element-focused {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}

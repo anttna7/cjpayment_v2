@@ -1,0 +1,299 @@
+/* ==========================================================================
+   Layout Design Tokens
+   Sizing, spacing, and layout-related tokens
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     Border Radius Scale
+     ========================================================================== */
+  
+  --radius-none: 0;
+  --radius-sm: 0.125rem;    /* 2px */
+  --radius-base: 0.25rem;   /* 4px */
+  --radius-md: 0.375rem;    /* 6px */
+  --radius-lg: 0.5rem;      /* 8px */
+  --radius-xl: 0.75rem;     /* 12px */
+  --radius-2xl: 1rem;       /* 16px */
+  --radius-3xl: 1.5rem;     /* 24px */
+  --radius-full: 9999px;
+
+  /* ==========================================================================
+     Shadow Scale
+     ========================================================================== */
+  
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+
+  /* ==========================================================================
+     Z-Index Scale
+     ========================================================================== */
+  
+  --z-0: 0;
+  --z-10: 10;
+  --z-20: 20;
+  --z-30: 30;
+  --z-40: 40;
+  --z-50: 50;
+  --z-auto: auto;
+
+  /* Component Z-Index */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+
+  /* ==========================================================================
+     Container Sizes
+     ========================================================================== */
+  
+  --container-xs: 20rem;     /* 320px */
+  --container-sm: 24rem;     /* 384px */
+  --container-md: 28rem;     /* 448px */
+  --container-lg: 32rem;     /* 512px */
+  --container-xl: 36rem;     /* 576px */
+  --container-2xl: 42rem;    /* 672px */
+  --container-3xl: 48rem;    /* 768px */
+  --container-4xl: 56rem;    /* 896px */
+  --container-5xl: 64rem;    /* 1024px */
+  --container-6xl: 72rem;    /* 1152px */
+  --container-7xl: 80rem;    /* 1280px */
+  --container-full: 100%;
+
+  /* ==========================================================================
+     Breakpoints
+     ========================================================================== */
+  
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* ==========================================================================
+     Animation and Transition Tokens
+     ========================================================================== */
+  
+  --duration-75: 75ms;
+  --duration-100: 100ms;
+  --duration-150: 150ms;
+  --duration-200: 200ms;
+  --duration-300: 300ms;
+  --duration-500: 500ms;
+  --duration-700: 700ms;
+  --duration-1000: 1000ms;
+
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ==========================================================================
+     Component-Specific Layout Tokens
+     ========================================================================== */
+  
+  /* Header */
+  --header-height: 60px;
+  --header-height-mobile: 56px;
+  --header-z-index: var(--z-fixed);
+
+  /* Footer */
+  --footer-height: 50px;
+  --footer-height-mobile: 60px;
+
+  /* Sidebar */
+  --sidebar-width: 250px;
+  --sidebar-width-collapsed: 60px;
+  --sidebar-z-index: var(--z-sticky);
+
+  /* Main Content */
+  --main-padding: var(--space-layout-md);
+  --main-padding-mobile: var(--space-layout-sm);
+  --main-max-width: var(--container-7xl);
+
+  /* Cards */
+  --card-border-radius: var(--radius-lg);
+  --card-shadow: var(--shadow-sm);
+  --card-shadow-hover: var(--shadow-md);
+  --card-padding: var(--space-card-padding-md);
+  --card-header-padding: var(--space-card-padding-md);
+  --card-footer-padding: var(--space-card-padding-md);
+
+  /* Buttons */
+  --button-border-radius: var(--radius-base);
+  --button-shadow: var(--shadow-xs);
+  --button-shadow-hover: var(--shadow-sm);
+  --button-height-sm: 32px;
+  --button-height-md: 40px;
+  --button-height-lg: 48px;
+
+  /* Form Elements */
+  --input-border-radius: var(--radius-base);
+  --input-border-width: 1px;
+  --input-height-sm: 32px;
+  --input-height-md: 40px;
+  --input-height-lg: 48px;
+  --input-focus-ring-width: 3px;
+  --input-focus-ring-opacity: 0.1;
+
+  /* Tables */
+  --table-border-radius: var(--radius-lg);
+  --table-shadow: var(--shadow-sm);
+  --table-row-height: 48px;
+  --table-header-height: 56px;
+
+  /* Modals */
+  --modal-border-radius: var(--radius-xl);
+  --modal-shadow: var(--shadow-2xl);
+  --modal-backdrop-opacity: 0.5;
+  --modal-max-width: 500px;
+  --modal-max-width-sm: 300px;
+  --modal-max-width-lg: 800px;
+  --modal-max-width-xl: 1140px;
+
+  /* Dropdowns */
+  --dropdown-border-radius: var(--radius-md);
+  --dropdown-shadow: var(--shadow-lg);
+  --dropdown-min-width: 180px;
+  --dropdown-max-height: 300px;
+
+  /* Tooltips */
+  --tooltip-border-radius: var(--radius-base);
+  --tooltip-shadow: var(--shadow-md);
+  --tooltip-max-width: 250px;
+
+  /* Toast Notifications */
+  --toast-border-radius: var(--radius-lg);
+  --toast-shadow: var(--shadow-lg);
+  --toast-max-width: 350px;
+  --toast-offset: var(--space-6);
+
+  /* Progress Bars */
+  --progress-height: 8px;
+  --progress-border-radius: var(--radius-full);
+  --progress-bg-opacity: 0.2;
+
+  /* Badges */
+  --badge-border-radius: var(--radius-full);
+  --badge-height: 20px;
+  --badge-padding-x: var(--space-2);
+
+  /* Dividers */
+  --divider-width: 1px;
+  --divider-opacity: 0.2;
+
+  /* Focus Ring */
+  --focus-ring-width: var(--input-focus-ring-width);
+  --focus-ring-opacity: var(--input-focus-ring-opacity);
+  --focus-ring-offset: 2px;
+}
+
+/* ==========================================================================
+   Dark Theme Layout Overrides
+   ========================================================================== */
+
+[data-theme="dark"] {
+  /* Shadows for dark theme */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+
+  /* Modal backdrop for dark theme */
+  --modal-backdrop-opacity: 0.8;
+}
+
+/* ==========================================================================
+   High Contrast Theme Layout Overrides
+   ========================================================================== */
+
+[data-theme="high-contrast"] {
+  /* Enhanced shadows for better contrast */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+
+  /* Enhanced focus ring for better visibility */
+  --focus-ring-width: 4px;
+  --focus-ring-opacity: 0.3;
+  --focus-ring-offset: 3px;
+
+  /* Increased border widths */
+  --input-border-width: 2px;
+  --divider-width: 2px;
+}
+
+/* ==========================================================================
+   Responsive Layout Adjustments
+   ========================================================================== */
+
+/* Mobile devices */
+@media (max-width: 767px) {
+  :root {
+    /* Adjust header height for mobile */
+    --header-height: var(--header-height-mobile);
+    
+    /* Reduce main padding on mobile */
+    --main-padding: var(--main-padding-mobile);
+    
+    /* Adjust card padding for mobile */
+    --card-padding: var(--space-card-padding-sm);
+    --card-header-padding: var(--space-card-padding-sm);
+    --card-footer-padding: var(--space-card-padding-sm);
+    
+    /* Adjust modal sizing for mobile */
+    --modal-max-width: calc(100vw - var(--space-8));
+    --modal-max-width-sm: calc(100vw - var(--space-8));
+    --modal-max-width-lg: calc(100vw - var(--space-8));
+    --modal-max-width-xl: calc(100vw - var(--space-8));
+    
+    /* Adjust toast positioning for mobile */
+    --toast-offset: var(--space-4);
+    --toast-max-width: calc(100vw - var(--space-8));
+  }
+}
+
+/* Tablet devices */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    /* Adjust modal sizing for tablet */
+    --modal-max-width-lg: calc(100vw - var(--space-16));
+    --modal-max-width-xl: calc(100vw - var(--space-16));
+  }
+}
+
+/* ==========================================================================
+   Motion Preferences
+   ========================================================================== */
+
+/* Respect user's preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-75: 0ms;
+    --duration-100: 0ms;
+    --duration-150: 0ms;
+    --duration-200: 0ms;
+    --duration-300: 0ms;
+    --duration-500: 0ms;
+    --duration-700: 0ms;
+    --duration-1000: 0ms;
+  }
+}

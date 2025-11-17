@@ -1,0 +1,761 @@
+/**
+ * Dashboard增强样式
+ * 基于统一主题系统的仪表板专用样式
+ */
+
+/* 完全模仿Chrome图标环境的背景设计 */
+.dashboard {
+    padding: var(--spacing-xl, 32px);
+    max-width: 1600px;
+    margin: 0 auto;
+    /* Chrome图标的白色纸质背景质感 */
+    background: 
+        linear-gradient(135deg, #ffffff 0%, #fafbfc 30%, #f5f6f7 100%),
+        radial-gradient(ellipse at top left, rgba(66, 133, 244, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(234, 67, 53, 0.04) 0%, transparent 50%);
+    min-height: calc(100vh - 80px);
+    position: relative;
+}
+
+/* Chrome图标式的纸张折角效果 */
+.dashboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background: 
+        linear-gradient(-45deg, transparent 0%, transparent 40%, #e5e7eb 40%, #e5e7eb 60%, #d1d5db 60%);
+    border-bottom-left-radius: 8px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+}
+
+/* Chrome图标的微妙渐变装饰 */
+.dashboard::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 15% 25%, rgba(66, 133, 244, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 35%, rgba(52, 168, 83, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 45% 85%, rgba(251, 188, 5, 0.04) 0%, transparent 45%),
+        radial-gradient(circle at 75% 75%, rgba(234, 67, 53, 0.05) 0%, transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.dashboard > * {
+    position: relative;
+    z-index: 1;
+}
+
+.dashboard-container {
+    padding: var(--spacing-lg, 24px);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Dashboard头部优化 */
+.dashboard__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl, 32px);
+    padding: var(--spacing-lg, 24px);
+    background: var(--color-bg-surface, white);
+    border-radius: var(--border-radius-lg, 12px);
+    box-shadow: var(--card-shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
+    border: 1px solid var(--color-border-light, #e5e7eb);
+    gap: var(--spacing-lg, 24px);
+    flex-wrap: wrap;
+}
+
+.dashboard__title h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+    margin: 0 0 var(--spacing-sm, 8px);
+    background: var(--primary-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.dashboard__subtitle {
+    font-size: 16px;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.dashboard__search {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md, 16px);
+    flex: 1;
+    max-width: 600px;
+    min-width: 300px;
+}
+
+.search-bar {
+    position: relative;
+    flex: 1;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 48px 12px 16px;
+    border: 2px solid var(--color-border-light, #e5e7eb);
+    border-radius: var(--border-radius-md, 8px);
+    font-size: 14px;
+    background: var(--color-bg-input, #f9fafb);
+    color: var(--color-text-primary, #111827);
+    transition: all var(--transition-fast, 0.2s ease);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--color-primary, #667eea);
+    background: var(--color-bg-surface, white);
+    box-shadow: 0 0 0 3px var(--primary-50, rgba(102, 126, 234, 0.1));
+}
+
+.search-button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 8px;
+    border: none;
+    background: none;
+    color: var(--color-text-secondary, #6b7280);
+    cursor: pointer;
+    border-radius: var(--border-radius-sm, 6px);
+    transition: all var(--transition-fast, 0.2s ease);
+}
+
+.search-button:hover {
+    background: var(--color-bg-hover, #f3f4f6);
+    color: var(--color-primary, #667eea);
+}
+
+.dashboard__actions {
+    display: flex;
+    gap: var(--spacing-md, 16px);
+    align-items: center;
+}
+
+/* Dashboard统计区域 */
+.dashboard__stats {
+    margin-bottom: var(--spacing-xl, 32px);
+}
+
+.card-grid--fixed-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg, 24px);
+}
+
+/* 完全模仿Chrome图标的精确立体卡片设计 */
+.stat-card, .card {
+    background: 
+        linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #fdfdfd 100%),
+        radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.8) 0%, transparent 50%);
+    border-radius: 20px;
+    padding: var(--spacing-xl, 32px);
+    border: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: visible;
+    
+    /* Chrome图标的精确立体阴影层次 */
+    box-shadow: 
+        /* 内部高光与深度 */
+        inset 0 2px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+        /* 分层外部阴影 */
+        0 1px 3px rgba(0, 0, 0, 0.05),
+        0 4px 8px rgba(0, 0, 0, 0.08),
+        0 8px 16px rgba(0, 0, 0, 0.08),
+        0 16px 32px rgba(0, 0, 0, 0.06),
+        /* 材质感边缘 */
+        0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+.stat-card:hover, .card:hover {
+    transform: translateY(-8px);
+    /* 悬停时增强阴影，模仿Chrome图标的悬浮效果 */
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.12),
+        0 12px 24px rgba(0, 0, 0, 0.15),
+        0 24px 48px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Chrome图标式的彩色顶部边框，模仿分割线效果 */
+.stat-card::before, .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 16px 16px 0 0;
+    /* 默认渐变 */
+    background: linear-gradient(90deg, #4285f4 0%, #34a853 50%, #fbbc05 75%, #ea4335 100%);
+}
+
+/* 为每个卡片设置专属的Chrome风格渐变边框 */
+.stat-card.transactions::before {
+    background: linear-gradient(135deg, #ea4335 0%, #d93025 50%, #c5221f 100%);
+}
+
+.stat-card.revenue::before {
+    background: linear-gradient(135deg, #34a853 0%, #2d7d32 50%, #1b5e20 100%);
+}
+
+.stat-card.merchants::before {
+    background: linear-gradient(135deg, #fbbc05 0%, #f9a825 50%, #f57f17 100%);
+}
+
+.stat-card.success-rate::before {
+    background: linear-gradient(135deg, #4285f4 0%, #1976d2 50%, #0d47a1 100%);
+}
+
+.stat-card::before, .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+}
+
+/* Chrome风格统计卡片 - 仿Chrome图标色彩 */
+.stat-card.transactions::before {
+    background: linear-gradient(135deg, #ea4335 0%, #c5221f 100%); /* Chrome红色 */
+}
+
+.stat-card.revenue::before {
+    background: linear-gradient(135deg, #34a853 0%, #137333 100%); /* Chrome绿色 */
+}
+
+.stat-card.merchants::before {
+    background: linear-gradient(135deg, #fbbc05 0%, #f29900 100%); /* Chrome黄色 */
+}
+
+.stat-card.success-rate::before {
+    background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%); /* Chrome蓝色 */
+}
+
+/* 统计卡片内容布局 */
+.stat-card__header, .card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg, 24px);
+}
+
+.stat-card__title, .card__title {
+    color: var(--color-text-secondary, #6b7280);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 完美复刻Chrome图标的分割圆形设计 */
+.stat-card__icon, .card__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    
+    /* Chrome图标式的立体阴影 */
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.2),
+        0 4px 8px rgba(0, 0, 0, 0.15),
+        0 8px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Chrome图标的三色分割 + 中心圆形结构 */
+.stat-card.transactions .stat-card__icon {
+    background: 
+        /* 中心蓝色圆 */
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        /* 红色扇形 */
+        conic-gradient(from 0deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg, transparent 240deg, #fbbc05 240deg, #fbbc05 360deg),
+        /* 绿色扇形 */
+        conic-gradient(from 120deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        /* 基础白色背景 */
+        #ffffff;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.stat-card.revenue .stat-card__icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #34a853 0deg, #34a853 120deg, transparent 120deg, transparent 240deg, #ea4335 240deg, #ea4335 360deg),
+        conic-gradient(from 120deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        #ffffff;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.stat-card.merchants .stat-card__icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg, transparent 240deg, #34a853 240deg, #34a853 360deg),
+        conic-gradient(from 120deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        #ffffff;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.stat-card.success-rate .stat-card__icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #4285f4 0deg, #4285f4 120deg, transparent 120deg, transparent 240deg, #ea4335 240deg, #ea4335 360deg),
+        conic-gradient(from 120deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        #ffffff;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 为图标添加Chrome式的白色分割线效果 */
+.stat-card__icon::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    bottom: 10%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+}
+
+/* 悬停时的增强效果 */
+.stat-card:hover .stat-card__icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.25),
+        0 8px 16px rgba(0, 0, 0, 0.2),
+        0 16px 32px rgba(0, 0, 0, 0.15),
+        inset 0 2px 4px rgba(255, 255, 255, 0.4);
+}
+
+.stat-card__value, .card__value {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--color-text-primary, #111827);
+    margin: 0 0 var(--spacing-sm, 8px);
+    line-height: 1;
+    letter-spacing: -0.5px;
+}
+
+.stat-card__change, .card__change {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm, 8px);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.stat-card__change.positive {
+    color: var(--color-success, #059669);
+}
+
+.stat-card__change.negative {
+    color: var(--color-error, #dc2626);
+}
+
+.stat-card__change.neutral {
+    color: var(--color-text-secondary, #6b7280);
+}
+
+.stat-card__change-icon {
+    font-size: 12px;
+}
+
+.stat-card__description, .card__description {
+    color: var(--color-text-tertiary, #9ca3af);
+    font-size: 13px;
+    margin-top: var(--spacing-sm, 8px);
+    line-height: 1.4;
+}
+
+/* Dashboard内容区域 */
+.dashboard__content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-xl, 32px);
+    margin-bottom: var(--spacing-xl, 32px);
+}
+
+.dashboard__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl, 32px);
+}
+
+.dashboard__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg, 24px);
+}
+
+/* 图表容器增强 */
+.dashboard__charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg, 24px);
+    margin-bottom: var(--spacing-xl, 32px);
+}
+
+.chart-card {
+    background: var(--color-bg-surface, white);
+    border-radius: var(--border-radius-lg, 12px);
+    padding: var(--spacing-xl, 32px);
+    box-shadow: var(--card-shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
+    border: 1px solid var(--color-border-light, #e5e7eb);
+    transition: all var(--transition-normal, 0.3s ease);
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover, 0 12px 32px rgba(0, 0, 0, 0.12));
+}
+
+.chart-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+}
+
+.chart-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl, 32px);
+    padding-bottom: var(--spacing-lg, 24px);
+    border-bottom: 2px solid var(--color-border-light, #e5e7eb);
+}
+
+.chart-card__title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+    margin: 0 0 var(--spacing-sm, 8px);
+}
+
+.chart-card__subtitle {
+    font-size: 14px;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.chart-card__actions {
+    display: flex;
+    gap: var(--spacing-sm, 8px);
+}
+
+.chart-card__body {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 快速操作面板 */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md, 16px);
+    margin-bottom: var(--spacing-xl, 32px);
+}
+
+.quick-action-item {
+    background: var(--color-bg-surface, white);
+    border: 2px solid var(--color-border-light, #e5e7eb);
+    border-radius: var(--border-radius-md, 8px);
+    padding: var(--spacing-lg, 24px);
+    text-align: center;
+    text-decoration: none;
+    color: var(--color-text-primary, #111827);
+    transition: all var(--transition-fast, 0.2s ease);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm, 8px);
+}
+
+.quick-action-item:hover {
+    border-color: var(--color-primary, #667eea);
+    background: var(--color-bg-hover, #f8fafc);
+    transform: translateY(-2px);
+}
+
+.quick-action-icon {
+    font-size: 24px;
+    color: var(--color-primary, #667eea);
+}
+
+.quick-action-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.quick-action-desc {
+    font-size: 14px;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+}
+
+/* 仪表板布局网格 */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg, 24px);
+}
+
+@media (min-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.dashboard-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg, 24px);
+}
+
+.dashboard-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg, 24px);
+}
+
+/* 最近活动卡片 */
+.recent-activity {
+    background: var(--color-bg-surface, white);
+    border-radius: var(--border-radius-lg, 12px);
+    padding: var(--spacing-lg, 24px);
+    box-shadow: var(--card-shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
+    border: 1px solid var(--color-border-light, #e5e7eb);
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md, 16px);
+    padding: var(--spacing-md, 16px) 0;
+    border-bottom: 1px solid var(--color-border-light, #e5e7eb);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-bg-secondary, #f3f4f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary, #111827);
+    margin: 0 0 4px;
+}
+
+.activity-desc {
+    font-size: 12px;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+}
+
+.activity-time {
+    font-size: 12px;
+    color: var(--color-text-tertiary, #9ca3af);
+    flex-shrink: 0;
+}
+
+/* ========== 统一响应式设计 ========== */
+
+/* 大屏幕 (1440px+) */
+@media (min-width: 1440px) {
+    .dashboard {
+        padding: var(--spacing-2xl, 48px);
+    }
+    
+    .card-grid--fixed-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .dashboard__charts {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 桌面端 (1024px - 1439px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
+    .card-grid--fixed-4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .dashboard__content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg, 24px);
+    }
+    
+    .dashboard__charts {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* 平板端 (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .dashboard {
+        padding: var(--spacing-lg, 24px);
+    }
+    
+    .dashboard__header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-lg, 24px);
+    }
+    
+    .dashboard__search {
+        max-width: none;
+        min-width: auto;
+    }
+    
+    .card-grid--fixed-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dashboard__charts {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard__content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 手机端 (480px - 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+    .dashboard {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .dashboard__header {
+        padding: var(--spacing-lg, 24px);
+    }
+    
+    .dashboard__title h1 {
+        font-size: 24px;
+    }
+    
+    .card-grid--fixed-4 {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md, 16px);
+    }
+    
+    .stat-card, .card {
+        padding: var(--spacing-lg, 24px);
+    }
+    
+    .stat-card__value, .card__value {
+        font-size: 32px;
+    }
+    
+    .dashboard__actions {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+/* 小屏手机端 (320px - 479px) */
+@media (max-width: 479px) {
+    .dashboard {
+        padding: var(--spacing-sm, 8px);
+    }
+    
+    .dashboard__header {
+        padding: var(--spacing-md, 16px);
+        text-align: center;
+    }
+    
+    .dashboard__title h1 {
+        font-size: 20px;
+    }
+    
+    .dashboard__subtitle {
+        font-size: 14px);
+    }
+    
+    .dashboard__search {
+        flex-direction: column;
+        gap: var(--spacing-sm, 8px);
+    }
+    
+    .stat-card, .card {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .stat-card__value, .card__value {
+        font-size: 28px;
+    }
+    
+    .stat-card__icon, .card__icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .chart-card {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .chart-card__body {
+        min-height: 200px;
+    }
+}

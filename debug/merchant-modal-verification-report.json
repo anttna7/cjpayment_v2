@@ -1,0 +1,26 @@
+{
+  "timestamp": "2025-08-28T09:47:44.057Z",
+  "testType": "商户管理页面验证测试",
+  "url": "http://127.0.0.1:8091/merchant",
+  "results": {
+    "pageLoad": true,
+    "tableStructure": true,
+    "modalOpen": true,
+    "newFields": true,
+    "linkTypeSwitching": true,
+    "agentAutoFill": true,
+    "customRebatePolicy": true,
+    "formCompletion": true,
+    "tableData": true,
+    "actionButtons": true
+  },
+  "screenshots": [
+    "merchant-verification-01-initial.png",
+    "merchant-verification-02-table-view.png",
+    "merchant-verification-03-modal-opened.png",
+    "merchant-verification-04-merchant-link.png",
+    "merchant-verification-05-form-completed.png",
+    "merchant-verification-06-final-state.png"
+  ],
+  "summary": "商户管理页面功能验证完成，所有主要功能正常工作"
+}

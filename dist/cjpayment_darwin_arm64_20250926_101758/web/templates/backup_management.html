@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>备份管理 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/static/css/backup-management.css" as="style">
+    <link rel="preload" href="/static/js/backup-management.js" as="script">
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard-enhanced.css">
+    
+    <!-- Backup Management CSS -->
+    <link rel="stylesheet" href="/static/css/backup-management.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="CJPayment企业内部支付管理系统备份管理">
+    <meta name="keywords" content="备份管理,数据恢复,系统备份,企业系统">
+</head>
+<body class="page-backup-management">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link nav__link--active" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">3</span>
+                    </button>
+                    
+                    <!-- Notification Dropdown -->
+                    <div class="notifications__dropdown" id="notificationDropdown">
+                        <div class="dropdown__header">
+                            <h3 class="dropdown__title">通知中心</h3>
+                            <button class="dropdown__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="dropdown__body" id="notificationList">
+                            <!-- 通知项将通过JavaScript动态生成 -->
+                        </div>
+                        <div class="dropdown__footer">
+                            <a href="/notifications" class="dropdown__link">查看全部通知</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userMenuButton" aria-label="用户菜单" title="用户菜单">
+                        <div class="user-avatar">
+                            <span class="avatar-text">管</span>
+                        </div>
+                        <span class="user-name">系统管理员</span>
+                        <span class="user-arrow">▼</span>
+                    </button>
+                    
+                    <!-- User Dropdown -->
+                    <div class="user-menu__dropdown" id="userMenuDropdown">
+                        <div class="dropdown__header">
+                            <div class="user-info">
+                                <div class="user-avatar user-avatar--large">
+                                    <span class="avatar-text">管</span>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">系统管理员</div>
+                                    <div class="user-role">Super Admin</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown__body">
+                            <a href="/profile" class="dropdown__item">
+                                <span class="item__icon">👤</span>
+                                个人资料
+                            </a>
+                            <a href="/account-settings" class="dropdown__item">
+                                <span class="item__icon">⚙️</span>
+                                系统设置
+                            </a>
+                            <div class="dropdown__divider"></div>
+                            <button class="dropdown__item dropdown__item--danger" onclick="logout()">
+                                <span class="item__icon">🚪</span>
+                                退出登录
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page__header">
+                <div class="page__title-section">
+                    <nav class="breadcrumb">
+                        <a href="/dashboard" class="breadcrumb__item">首页</a>
+                        <span class="breadcrumb__separator">»</span>
+                        <a href="/system_management" class="breadcrumb__item">系统管理</a>
+                        <span class="breadcrumb__separator">»</span>
+                        <span class="breadcrumb__item breadcrumb__item--active">备份管理</span>
+                    </nav>
+                    <h1 class="page__title">
+                        <span class="page__icon">💾</span>
+                        备份管理
+                    </h1>
+                    <p class="page__description">管理系统数据备份、恢复和版本控制</p>
+                </div>
+                
+                <div class="page__actions">
+                    <button class="btn-enhanced btn-outline" id="refreshBackupList" title="刷新备份列表">
+                        <span class="btn__icon">🔄</span>
+                        刷新列表
+                    </button>
+                    <button class="btn-enhanced btn-primary" id="createBackupBtn" title="创建新备份">
+                        <span class="btn__icon">➕</span>
+                        创建备份
+                    </button>
+                </div>
+            </div>
+
+            <!-- Backup Statistics Dashboard -->
+            <div class="backup-stats-dashboard">
+                <div class="stats-card">
+                    <div class="stats-card__icon">💾</div>
+                    <div class="stats-card__content">
+                        <div class="stats-card__value" id="totalBackupsCount">0</div>
+                        <div class="stats-card__label">总备份数</div>
+                        <div class="stats-card__trend">
+                            <span class="trend-indicator positive">↗️</span>
+                            <span class="trend-text">本月 +5</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stats-card__icon">🗂️</div>
+                    <div class="stats-card__content">
+                        <div class="stats-card__value" id="totalBackupSize">0 GB</div>
+                        <div class="stats-card__label">总备份大小</div>
+                        <div class="stats-card__trend">
+                            <span class="trend-indicator neutral">📊</span>
+                            <span class="trend-text">存储空间</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stats-card__icon">⏰</div>
+                    <div class="stats-card__content">
+                        <div class="stats-card__value" id="lastBackupTime">-</div>
+                        <div class="stats-card__label">最近备份</div>
+                        <div class="stats-card__trend">
+                            <span class="trend-indicator positive">✅</span>
+                            <span class="trend-text">成功</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stats-card__icon">📈</div>
+                    <div class="stats-card__content">
+                        <div class="stats-card__value" id="backupSuccess">98.5%</div>
+                        <div class="stats-card__label">备份成功率</div>
+                        <div class="stats-card__trend">
+                            <span class="trend-indicator positive">⭐</span>
+                            <span class="trend-text">优秀</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="backup-management-content">
+                <!-- Backup Configuration Panel -->
+                <div class="backup-config-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <span class="panel-icon">⚙️</span>
+                            备份配置
+                        </h2>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <!-- Auto Backup Settings -->
+                        <div class="config-section">
+                            <h3 class="section-title">自动备份设置</h3>
+                            <div class="config-grid">
+                                <div class="config-item">
+                                    <label for="autoBackupEnabled" class="config-label">启用自动备份</label>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="autoBackupEnabled" checked>
+                                        <label for="autoBackupEnabled" class="toggle-label">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="config-item">
+                                    <label for="backupFrequency" class="config-label">备份频率</label>
+                                    <select id="backupFrequency" class="config-select">
+                                        <option value="daily">每日</option>
+                                        <option value="weekly" selected>每周</option>
+                                        <option value="monthly">每月</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="config-item">
+                                    <label for="backupTime" class="config-label">备份时间</label>
+                                    <input type="time" id="backupTime" class="config-input" value="02:00">
+                                </div>
+                                
+                                <div class="config-item">
+                                    <label for="retentionDays" class="config-label">保留天数</label>
+                                    <input type="number" id="retentionDays" class="config-input" value="30" min="7" max="365">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Backup Types -->
+                        <div class="config-section">
+                            <h3 class="section-title">备份类型设置</h3>
+                            <div class="backup-types-grid">
+                                <label class="backup-type-item">
+                                    <input type="checkbox" class="backup-type-checkbox" value="database" checked>
+                                    <div class="backup-type-card">
+                                        <div class="backup-type-icon">🗄️</div>
+                                        <div class="backup-type-title">数据库备份</div>
+                                        <div class="backup-type-description">备份所有业务数据和配置</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="backup-type-item">
+                                    <input type="checkbox" class="backup-type-checkbox" value="files" checked>
+                                    <div class="backup-type-card">
+                                        <div class="backup-type-icon">📁</div>
+                                        <div class="backup-type-title">文件备份</div>
+                                        <div class="backup-type-description">备份上传文件和日志文件</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="backup-type-item">
+                                    <input type="checkbox" class="backup-type-checkbox" value="config" checked>
+                                    <div class="backup-type-card">
+                                        <div class="backup-type-icon">⚙️</div>
+                                        <div class="backup-type-title">配置备份</div>
+                                        <div class="backup-type-description">备份系统配置和设置</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="backup-type-item">
+                                    <input type="checkbox" class="backup-type-checkbox" value="logs">
+                                    <div class="backup-type-card">
+                                        <div class="backup-type-icon">📜</div>
+                                        <div class="backup-type-title">日志备份</div>
+                                        <div class="backup-type-description">备份系统运行日志</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="config-actions">
+                            <button type="button" class="btn-enhanced btn-outline" id="resetConfigBtn">
+                                <span class="btn__icon">🔄</span>
+                                重置配置
+                            </button>
+                            <button type="button" class="btn-enhanced btn-primary" id="saveConfigBtn">
+                                <span class="btn__icon">💾</span>
+                                保存配置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backup List Panel -->
+                <div class="backup-list-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <span class="panel-icon">📋</span>
+                            备份列表
+                        </h2>
+                        
+                        <div class="panel-actions">
+                            <div class="search-box">
+                                <input type="text" id="backupSearch" class="search-input" placeholder="搜索备份...">
+                                <span class="search-icon">🔍</span>
+                            </div>
+                            
+                            <select id="backupTypeFilter" class="filter-select">
+                                <option value="">全部类型</option>
+                                <option value="full">完整备份</option>
+                                <option value="incremental">增量备份</option>
+                                <option value="manual">手动备份</option>
+                                <option value="auto">自动备份</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="backup-list-container">
+                            <div class="backup-list-header">
+                                <div class="backup-list-actions">
+                                    <button class="btn-enhanced btn-outline btn-sm" id="selectAllBackups">
+                                        <span class="btn__icon">☑️</span>
+                                        全选
+                                    </button>
+                                    <button class="btn-enhanced btn-danger btn-sm" id="deleteSelectedBackups" disabled>
+                                        <span class="btn__icon">🗑️</span>
+                                        删除选中
+                                    </button>
+                                </div>
+                                
+                                <div class="view-toggle">
+                                    <button class="view-toggle-btn active" data-view="list">
+                                        <span class="btn__icon">📄</span>
+                                        列表
+                                    </button>
+                                    <button class="view-toggle-btn" data-view="grid">
+                                        <span class="btn__icon">▦</span>
+                                        网格
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- List View -->
+                            <div class="backup-list-view active" id="backupListView">
+                                <table class="backup-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="checkbox-column">
+                                                <input type="checkbox" id="selectAllCheckbox">
+                                            </th>
+                                            <th>备份名称</th>
+                                            <th>类型</th>
+                                            <th>大小</th>
+                                            <th>创建时间</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="backupTableBody">
+                                        <tr class="loading-row">
+                                            <td colspan="7">
+                                                <div class="loading-spinner"></div>
+                                                <span>正在加载备份列表...</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Grid View -->
+                            <div class="backup-grid-view" id="backupGridView">
+                                <div class="backup-grid" id="backupGrid">
+                                    <!-- Backup cards will be generated here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="pagination-container">
+                            <div class="pagination-info">
+                                显示 <span id="pageStart">1</span>-<span id="pageEnd">20</span> 条，共 <span id="totalBackups">-</span> 条记录
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="pagination-btn" id="firstPage" disabled>首页</button>
+                                <button class="pagination-btn" id="prevPage" disabled>上一页</button>
+                                <div class="pagination-numbers" id="paginationNumbers">
+                                    <!-- 页码将通过JavaScript动态生成 -->
+                                </div>
+                                <button class="pagination-btn" id="nextPage">下一页</button>
+                                <button class="pagination-btn" id="lastPage">末页</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Backup Modal -->
+    <div class="modal-enhanced" id="createBackupModal" role="dialog" aria-labelledby="createBackupModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="createBackupModalTitle">创建备份</h2>
+                <button class="modal-close" id="createBackupModalClose" aria-label="关闭对话框">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="createBackupForm" class="backup-form">
+                    <div class="form-section">
+                        <h4 class="form-section-title">基本信息</h4>
+                        
+                        <div class="form-group-enhanced">
+                            <label for="backupName" class="form-label-enhanced required">备份名称</label>
+                            <input type="text" 
+                                   id="backupName" 
+                                   name="backupName" 
+                                   class="form-input-enhanced" 
+                                   placeholder="请输入备份名称"
+                                   required>
+                            <div class="form-help">建议使用有意义的名称，如：daily_backup_20240120</div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group-enhanced">
+                                <label for="backupType" class="form-label-enhanced required">备份类型</label>
+                                <select id="backupType" name="backupType" class="form-input-enhanced" required>
+                                    <option value="">请选择备份类型</option>
+                                    <option value="full">完整备份</option>
+                                    <option value="incremental">增量备份</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group-enhanced">
+                                <label for="compressionLevel" class="form-label-enhanced">压缩级别</label>
+                                <select id="compressionLevel" name="compressionLevel" class="form-input-enhanced">
+                                    <option value="none">无压缩</option>
+                                    <option value="low">低压缩</option>
+                                    <option value="medium" selected>中等压缩</option>
+                                    <option value="high">高压缩</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">备份内容</h4>
+                        
+                        <div class="backup-content-grid">
+                            <label class="backup-content-item">
+                                <input type="checkbox" name="backupContent" value="database" checked>
+                                <div class="content-card">
+                                    <div class="content-icon">🗄️</div>
+                                    <div class="content-title">数据库</div>
+                                    <div class="content-description">所有业务数据</div>
+                                </div>
+                            </label>
+                            
+                            <label class="backup-content-item">
+                                <input type="checkbox" name="backupContent" value="files" checked>
+                                <div class="content-card">
+                                    <div class="content-icon">📁</div>
+                                    <div class="content-title">文件</div>
+                                    <div class="content-description">上传的文件</div>
+                                </div>
+                            </label>
+                            
+                            <label class="backup-content-item">
+                                <input type="checkbox" name="backupContent" value="config" checked>
+                                <div class="content-card">
+                                    <div class="content-icon">⚙️</div>
+                                    <div class="content-title">配置</div>
+                                    <div class="content-description">系统配置文件</div>
+                                </div>
+                            </label>
+                            
+                            <label class="backup-content-item">
+                                <input type="checkbox" name="backupContent" value="logs">
+                                <div class="content-card">
+                                    <div class="content-icon">📜</div>
+                                    <div class="content-title">日志</div>
+                                    <div class="content-description">系统日志文件</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">高级选项</h4>
+                        
+                        <div class="form-row">
+                            <div class="form-group-enhanced">
+                                <label class="form-label-enhanced">备份选项</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="backupOptions" value="encrypt" checked>
+                                        <span class="checkbox-label">加密备份文件</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="backupOptions" value="verify">
+                                        <span class="checkbox-label">验证备份完整性</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group-enhanced">
+                                <label for="backupDescription" class="form-label-enhanced">备份说明</label>
+                                <textarea id="backupDescription" 
+                                         name="backupDescription" 
+                                         class="form-input-enhanced" 
+                                         placeholder="请输入备份说明（可选）"
+                                         rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-enhanced btn-outline" id="cancelCreateBackup">取消</button>
+                <button type="submit" form="createBackupForm" class="btn-enhanced btn-primary" id="confirmCreateBackup">
+                    <span class="btn__text">开始备份</span>
+                    <span class="btn__loading" style="display: none;">
+                        <span class="loading-spinner"></span>
+                        创建中...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restore Modal -->
+    <div class="modal-enhanced" id="restoreModal" role="dialog" aria-labelledby="restoreModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="restoreModalTitle">恢复备份</h2>
+                <button class="modal-close" id="restoreModalClose" aria-label="关闭对话框">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="restore-warning">
+                    <div class="warning-icon">⚠️</div>
+                    <div class="warning-content">
+                        <h4 class="warning-title">恢复确认</h4>
+                        <p class="warning-text">恢复操作将覆盖当前系统数据，请确保您了解此操作的影响。建议在恢复前创建当前数据的备份。</p>
+                    </div>
+                </div>
+                
+                <div class="restore-info">
+                    <div class="restore-item">
+                        <span class="restore-label">备份名称：</span>
+                        <span class="restore-value" id="restoreBackupName">-</span>
+                    </div>
+                    <div class="restore-item">
+                        <span class="restore-label">创建时间：</span>
+                        <span class="restore-value" id="restoreBackupDate">-</span>
+                    </div>
+                    <div class="restore-item">
+                        <span class="restore-label">备份大小：</span>
+                        <span class="restore-value" id="restoreBackupSize">-</span>
+                    </div>
+                    <div class="restore-item">
+                        <span class="restore-label">备份类型：</span>
+                        <span class="restore-value" id="restoreBackupType">-</span>
+                    </div>
+                </div>
+                
+                <div class="restore-options">
+                    <h4 class="options-title">恢复选项</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="createBackupBeforeRestore" checked>
+                            <span class="checkbox-label">恢复前创建当前数据备份</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="restoreWithVerification" checked>
+                            <span class="checkbox-label">验证恢复后的数据完整性</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-enhanced btn-outline" id="cancelRestore">取消</button>
+                <button type="button" class="btn-enhanced btn-danger" id="confirmRestore">
+                    <span class="btn__text">确认恢复</span>
+                    <span class="btn__loading" style="display: none;">
+                        <span class="loading-spinner"></span>
+                        恢复中...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-enhanced" id="deleteBackupModal" role="dialog" aria-labelledby="deleteBackupModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="deleteBackupModalTitle">确认删除</h2>
+                <button class="modal-close" id="deleteBackupModalClose" aria-label="关闭对话框">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="delete-warning">
+                    <div class="warning-icon">🗑️</div>
+                    <div class="warning-content">
+                        <h4 class="warning-title">删除确认</h4>
+                        <p class="warning-text">您确定要删除备份 <strong id="deleteBackupName"></strong> 吗？</p>
+                        <p class="warning-note">此操作不可撤销，删除的备份无法恢复。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-enhanced btn-outline" id="cancelDelete">取消</button>
+                <button type="button" class="btn-enhanced btn-danger" id="confirmDelete">
+                    <span class="btn__text">确认删除</span>
+                    <span class="btn__loading" style="display: none;">
+                        <span class="loading-spinner"></span>
+                        删除中...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced JavaScript -->
+    <script src="/static/js/base.js"></script>
+    <script src="/static/js/components.js"></script>
+    <script src="/static/js/backup-management.js"></script>
+    
+    <script>
+        // Initialize backup management when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof BackupManagement === 'function') {
+                window.backupManager = new BackupManagement({
+                    apiEndpoint: '/api/backups',
+                    autoRefresh: 60000,
+                    enableRealTimeUpdates: true
+                });
+            }
+        });
+    </script>
+</body>
+</html>

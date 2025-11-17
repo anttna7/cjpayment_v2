@@ -1,0 +1,429 @@
+/**
+ * CJPayment 全局防换行布局系统
+ * 确保所有页面内容在合适的屏幕尺寸下不换行显示
+ */
+
+/* ==========================================================================
+   全局防换行规则
+   ========================================================================== */
+
+/* 主要内容区域 - 确保有足够宽度 */
+.app__main {
+    min-width: 1200px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+@media (max-width: 1199px) {
+    .app__main {
+        min-width: 100% !important;
+        padding: var(--space-4, 16px) !important;
+    }
+}
+
+/* ==========================================================================
+   卡片网格系统 - 防换行
+   ========================================================================== */
+
+/* 统计卡片网格 - 强制横向排列 */
+.stats-grid,
+.dashboard__stats .card-grid,
+.card-grid--fixed-4 {
+    display: flex !important;
+    gap: var(--space-6, 24px) !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 0 var(--space-4, 16px) !important;
+    scroll-snap-type: x mandatory !important;
+}
+
+.stats-grid .stat-card,
+.stats-grid .card--stat {
+    flex: 0 0 280px !important;
+    min-width: 280px !important;
+    scroll-snap-align: start !important;
+}
+
+/* 大屏幕优化 */
+@media (min-width: 1200px) {
+    .stats-grid,
+    .dashboard__stats .card-grid,
+    .card-grid--fixed-4 {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        overflow-x: visible !important;
+        padding: 0 !important;
+    }
+    
+    .stats-grid .stat-card,
+    .stats-grid .card--stat {
+        flex: none !important;
+        min-width: auto !important;
+    }
+}
+
+/* ==========================================================================
+   表格系统 - 防换行
+   ========================================================================== */
+
+/* 表格容器 - 确保横向滚动 */
+.table-container,
+.data-table,
+.management-content {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    min-width: 100% !important;
+}
+
+/* 表格最小宽度 */
+.table,
+.data-table__table {
+    min-width: 800px !important;
+    width: 100% !important;
+}
+
+/* 表格头部工具栏 - 防换行 */
+.table-header,
+.data-table__header,
+.management-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: var(--space-4, 16px) !important;
+    padding: var(--space-4, 16px) var(--space-6, 24px) !important;
+    flex-wrap: nowrap !important;
+    min-width: 100% !important;
+}
+
+.table-title,
+.data-table__title {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+
+.table-actions,
+.data-table__actions,
+.management-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--space-3, 12px) !important;
+    flex-shrink: 0 !important;
+    flex-wrap: nowrap !important;
+}
+
+/* 搜索框和操作按钮 */
+.table-search,
+.data-table__search {
+    min-width: 200px !important;
+    flex-shrink: 0 !important;
+}
+
+.table-search-input,
+.data-table__search-input {
+    min-width: 200px !important;
+}
+
+/* 视图切换器 */
+.view-switcher,
+.data-table__view-toggle {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* ==========================================================================
+   系统管理页面特殊处理
+   ========================================================================== */
+
+/* 系统管理卡片网格 */
+.system-management .management-grid,
+.system-cards-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: var(--space-6, 24px) !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: var(--space-4, 16px) !important;
+    scroll-snap-type: x mandatory !important;
+}
+
+.system-management .management-card,
+.system-card {
+    flex: 0 0 300px !important;
+    min-width: 300px !important;
+    scroll-snap-align: start !important;
+}
+
+/* 大屏幕下系统管理网格 */
+@media (min-width: 1200px) {
+    .system-management .management-grid,
+    .system-cards-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        overflow-x: visible !important;
+        padding: 0 !important;
+    }
+    
+    .system-management .management-card,
+    .system-card {
+        flex: none !important;
+        min-width: auto !important;
+    }
+}
+
+@media (min-width: 1400px) {
+    .system-management .management-grid,
+    .system-cards-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+    }
+}
+
+/* ==========================================================================
+   报表页面特殊处理
+   ========================================================================== */
+
+/* 报表卡片网格 */
+.reports-grid {
+    display: flex !important;
+    gap: var(--space-6, 24px) !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: var(--space-4, 16px) !important;
+}
+
+.reports-card {
+    flex: 0 0 350px !important;
+    min-width: 350px !important;
+}
+
+@media (min-width: 1200px) {
+    .reports-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+        overflow-x: visible !important;
+        padding: 0 !important;
+    }
+    
+    .reports-card {
+        flex: none !important;
+        min-width: auto !important;
+    }
+}
+
+/* ==========================================================================
+   表单页面防换行
+   ========================================================================== */
+
+/* 表单网格 */
+.form-grid,
+.form-section .grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: var(--space-4, 16px) !important;
+}
+
+@media (min-width: 768px) {
+    .form-grid,
+    .form-section .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* 表单操作按钮 */
+.form-actions {
+    display: flex !important;
+    gap: var(--space-3, 12px) !important;
+    justify-content: flex-end !important;
+    flex-wrap: nowrap !important;
+    margin-top: var(--space-6, 24px) !important;
+}
+
+/* ==========================================================================
+   导航栏防换行
+   ========================================================================== */
+
+/* 主导航 */
+.nav__list {
+    display: flex !important;
+    gap: var(--space-2, 8px) !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+.nav__item {
+    flex-shrink: 0 !important;
+}
+
+.nav__link {
+    white-space: nowrap !important;
+}
+
+/* 头部右侧操作区 */
+.header__right {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--space-4, 16px) !important;
+    flex-shrink: 0 !important;
+    flex-wrap: nowrap !important;
+}
+
+/* ==========================================================================
+   移动端适配 - 允许换行
+   ========================================================================== */
+
+@media (max-width: 767px) {
+    /* 移动端恢复换行 */
+    .app__main {
+        min-width: auto !important;
+        overflow-x: visible !important;
+    }
+    
+    .stats-grid,
+    .dashboard__stats .card-grid,
+    .card-grid--fixed-4 {
+        flex-direction: column !important;
+        overflow-x: visible !important;
+        padding: 0 !important;
+    }
+    
+    .stats-grid .stat-card,
+    .stats-grid .card--stat {
+        flex: none !important;
+        min-width: auto !important;
+        width: 100% !important;
+    }
+    
+    .system-management .management-grid,
+    .system-cards-grid {
+        flex-direction: column !important;
+        overflow-x: visible !important;
+        padding: var(--space-3, 12px) !important;
+    }
+    
+    .system-management .management-card,
+    .system-card {
+        flex: none !important;
+        min-width: auto !important;
+        width: 100% !important;
+    }
+    
+    .table-header,
+    .data-table__header,
+    .management-header {
+        flex-wrap: wrap !important;
+        gap: var(--space-3, 12px) !important;
+    }
+    
+    .table-actions,
+    .data-table__actions,
+    .management-actions {
+        flex-wrap: wrap !important;
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    .nav__list {
+        flex-direction: column !important;
+        overflow-x: visible !important;
+    }
+}
+
+/* ==========================================================================
+   滚动条美化
+   ========================================================================== */
+
+.stats-grid::-webkit-scrollbar,
+.system-management .management-grid::-webkit-scrollbar,
+.reports-grid::-webkit-scrollbar,
+.table-container::-webkit-scrollbar,
+.data-table::-webkit-scrollbar {
+    height: 6px !important;
+    width: 6px !important;
+}
+
+.stats-grid::-webkit-scrollbar-track,
+.system-management .management-grid::-webkit-scrollbar-track,
+.reports-grid::-webkit-scrollbar-track,
+.table-container::-webkit-scrollbar-track,
+.data-table::-webkit-scrollbar-track {
+    background: var(--bg-surface-secondary, #f9fafb) !important;
+    border-radius: var(--radius-full, 9999px) !important;
+}
+
+.stats-grid::-webkit-scrollbar-thumb,
+.system-management .management-grid::-webkit-scrollbar-thumb,
+.reports-grid::-webkit-scrollbar-thumb,
+.table-container::-webkit-scrollbar-thumb,
+.data-table::-webkit-scrollbar-thumb {
+    background: var(--border-strong, #9ca3af) !important;
+    border-radius: var(--radius-full, 9999px) !important;
+    transition: background var(--duration-150, 150ms) ease !important;
+}
+
+.stats-grid::-webkit-scrollbar-thumb:hover,
+.system-management .management-grid::-webkit-scrollbar-thumb:hover,
+.reports-grid::-webkit-scrollbar-thumb:hover,
+.table-container::-webkit-scrollbar-thumb:hover,
+.data-table::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-400, #9c7cff) !important;
+}
+
+/* ==========================================================================
+   性能优化
+   ========================================================================== */
+
+/* 启用GPU加速 */
+.stats-grid,
+.system-management .management-grid,
+.reports-grid,
+.table-container,
+.data-table {
+    transform: translateZ(0) !important;
+    will-change: scroll-position !important;
+}
+
+/* 平滑滚动 */
+.stats-grid,
+.system-management .management-grid,
+.reports-grid,
+.table-container,
+.data-table,
+.nav__list {
+    scroll-behavior: smooth !important;
+}
+
+/* ==========================================================================
+   辅助指示器
+   ========================================================================== */
+
+/* 滚动提示阴影 */
+.stats-grid::after,
+.system-management .management-grid::after,
+.reports-grid::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 20px !important;
+    background: linear-gradient(to left, rgba(255,255,255,0.8), transparent) !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    transition: opacity var(--duration-200, 200ms) ease !important;
+}
+
+.stats-grid:hover::after,
+.system-management .management-grid:hover::after,
+.reports-grid:hover::after {
+    opacity: 1 !important;
+}
+
+@media (max-width: 767px) {
+    .stats-grid::after,
+    .system-management .management-grid::after,
+    .reports-grid::after {
+        display: none !important;
+    }
+}

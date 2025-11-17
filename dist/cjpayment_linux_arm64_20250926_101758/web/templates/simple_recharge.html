@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快速充值 - CJPayment 企业支付系统</title>
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/components-unified.css">
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+        }
+
+        .simple-recharge-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding-top: 40px;
+        }
+
+        .recharge-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 32px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recharge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4299e1 0%, #48bb78 100%);
+        }
+
+        .recharge-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .recharge-header .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .recharge-header h1 {
+            color: #1a202c;
+            font-size: 26px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .recharge-header p {
+            color: #718096;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            color: #2d3748;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-label.required::after {
+            content: '*';
+            color: #e53e3e;
+            margin-left: 4px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            background: white;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        .form-input.error, .form-select.error {
+            border-color: #e53e3e;
+            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+        }
+
+        .payment-type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .payment-type-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .payment-type-option:hover {
+            border-color: #cbd5e0;
+            transform: translateY(-1px);
+        }
+
+        .payment-type-option.selected {
+            border-color: #4299e1;
+            background: rgba(66, 153, 225, 0.05);
+        }
+
+        .payment-type-option .icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .payment-type-option .title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .amount-suggestions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .amount-suggestion {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 13px;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .amount-suggestion:hover {
+            background: #4299e1;
+            color: white;
+            border-color: #4299e1;
+        }
+
+        .matched-account-info {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .matched-account-info.show {
+            display: block;
+        }
+
+        .matched-account-info .title {
+            color: #2f855a;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .account-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .account-detail .label {
+            color: #4a5568;
+        }
+
+        .account-detail .value {
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, #4299e1 0%, #48bb78 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(66, 153, 225, 0.3);
+        }
+
+        .submit-button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff33;
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            color: #2f855a;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: none;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 576px) {
+            .simple-recharge-container {
+                padding: 20px;
+                padding-top: 20px;
+            }
+
+            .recharge-card {
+                padding: 32px 24px;
+            }
+
+            .payment-type-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .amount-suggestions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="simple-recharge-container">
+        <div class="recharge-card">
+            <div class="recharge-header">
+                <div class="icon">💰</div>
+                <h1>快速充值</h1>
+                <p>简单四步，快速完成账户充值</p>
+            </div>
+
+            <form id="simpleRechargeForm">
+                <!-- 成功提示 -->
+                <div class="success-message" id="successMessage">
+                    <div style="font-size: 20px; margin-bottom: 8px;">🎉</div>
+                    <strong>充值申请提交成功！</strong><br>
+                    <small>我们将尽快为您处理，请保持手机畅通</small>
+                </div>
+
+                <!-- 账户ID -->
+                <div class="form-group">
+                    <label class="form-label required">账户ID</label>
+                    <input type="text" class="form-input" id="accountId" name="accountId"
+                           placeholder="请输入要充值的账户ID" required>
+                    <div class="error-message" id="accountIdError">请输入有效的账户ID</div>
+                </div>
+
+                <!-- 卡户主体名称 -->
+                <div class="form-group">
+                    <label class="form-label required">卡户主体名称</label>
+                    <input type="text" class="form-input" id="accountHolder" name="accountHolder"
+                           placeholder="请输入卡户主体名称" required>
+                    <div class="error-message" id="accountHolderError">请输入卡户主体名称</div>
+                </div>
+
+                <!-- 充值金额 -->
+                <div class="form-group">
+                    <label class="form-label required">充值金额 (元)</label>
+                    <input type="number" class="form-input" id="rechargeAmount" name="rechargeAmount"
+                           placeholder="请输入充值金额" min="1" step="0.01" required>
+                    <div class="amount-suggestions">
+                        <div class="amount-suggestion" data-amount="100">100</div>
+                        <div class="amount-suggestion" data-amount="500">500</div>
+                        <div class="amount-suggestion" data-amount="1000">1000</div>
+                        <div class="amount-suggestion" data-amount="5000">5000</div>
+                    </div>
+                    <div class="error-message" id="rechargeAmountError">请输入有效的充值金额</div>
+                </div>
+
+                <!-- 转账类型 -->
+                <div class="form-group">
+                    <label class="form-label required">转账类型</label>
+                    <div class="payment-type-selector">
+                        <div class="payment-type-option" id="businessType" data-type="business">
+                            <div class="icon">🏢</div>
+                            <div class="title">对公转账</div>
+                        </div>
+                        <div class="payment-type-option" id="personalType" data-type="personal">
+                            <div class="icon">👤</div>
+                            <div class="title">对私转账</div>
+                        </div>
+                    </div>
+                    <div class="error-message" id="paymentTypeError">请选择转账类型</div>
+                </div>
+
+                <!-- 匹配的收款账户信息 -->
+                <div class="matched-account-info" id="matchedAccountInfo">
+                    <div class="title">📋 匹配收款账户信息</div>
+                    <div class="account-detail">
+                        <span class="label">收款银行:</span>
+                        <span class="value" id="receiverBank">-</span>
+                    </div>
+                    <div class="account-detail">
+                        <span class="label">收款账号:</span>
+                        <span class="value" id="receiverAccount">-</span>
+                    </div>
+                    <div class="account-detail">
+                        <span class="label">收款户名:</span>
+                        <span class="value" id="receiverName">-</span>
+                    </div>
+                    <div class="account-detail">
+                        <span class="label">预计手续费:</span>
+                        <span class="value" id="estimatedFee">-</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitButton">
+                    提交充值申请
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/simple-recharge.js"></script>
+</body>
+</html>

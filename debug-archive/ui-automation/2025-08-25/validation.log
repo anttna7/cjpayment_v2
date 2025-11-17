@@ -1,0 +1,11 @@
+internal/handler/data_export_handler.go:10:2: package cjpayment/internal/service is not in std (/opt/homebrew/Cellar/go/1.24.1/libexec/src/cjpayment/internal/service)
+internal/handler/health_handler.go:13:2: package cjpayment/pkg/logger is not in std (/opt/homebrew/Cellar/go/1.24.1/libexec/src/cjpayment/pkg/logger)
+internal/handler/health_handler.go:14:2: package cjpayment/pkg/monitoring is not in std (/opt/homebrew/Cellar/go/1.24.1/libexec/src/cjpayment/pkg/monitoring)
+internal/middleware/response_cache.go:14:2: package cjpayment/pkg/cache is not in std (/opt/homebrew/Cellar/go/1.24.1/libexec/src/cjpayment/pkg/cache)
+internal/service/metrics_collector.go:7:2: package cjpayment/internal/repository is not in std (/opt/homebrew/Cellar/go/1.24.1/libexec/src/cjpayment/internal/repository)
+internal/service/security_service.go:13:2: package cjpayment/pkg/security is not in std (/opt/homebrew/Cellar/go/1.24.1/libexec/src/cjpayment/pkg/security)
+package command-line-arguments
+	imports github.com/company/cjpayment/internal/handler from main.go
+	imports github.com/company/cjpayment/internal/middleware from handler.go
+	imports github.com/company/cjpayment/internal/service from account_permission.go
+	imports github.com/company/cjpayment/internal/middleware from monitoring_integration.go: import cycle not allowed

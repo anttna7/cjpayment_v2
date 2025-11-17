@@ -1,0 +1,165 @@
+# Alertmanager Configuration
+global:
+  smtp_smarthost: '${SMTP_HOST:-localhost:587}'
+  smtp_from: '${SMTP_FROM:-alerts@cjpayment.com}'
+  smtp_auth_username: '${SMTP_USERNAME:-}'
+  smtp_auth_password: '${SMTP_PASSWORD:-}'
+
+# Templates for notifications
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'
+
+# Route tree for alerts
+route:
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'web.hook'
+  routes:
+    # Critical alerts go to multiple channels
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      group_wait: 5s
+      repeat_interval: 30m
+    
+    # Warning alerts
+    - match:
+        severity: warning
+      receiver: 'warning-alerts'
+      repeat_interval: 2h
+    
+    # Business logic alerts
+    - match:
+        service: business
+      receiver: 'business-alerts'
+      repeat_interval: 1h
+    
+    # Database alerts
+    - match:
+        service: database
+      receiver: 'database-alerts'
+      repeat_interval: 30m
+    
+    # System alerts
+    - match:
+        service: system
+      receiver: 'system-alerts'
+      repeat_interval: 1h
+
+# Inhibition rules
+inhibit_rules:
+  # Inhibit warning alerts if critical alert is firing
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'cluster', 'service']
+
+# Receivers define how to send notifications
+receivers:
+  # Default webhook receiver
+  - name: 'web.hook'
+    webhook_configs:
+      - url: 'http://cjpayment-api:8080/api/webhooks/alerts'
+        send_resolved: true
+        http_config:
+          basic_auth:
+            username: '${WEBHOOK_USERNAME:-admin}'
+            password: '${WEBHOOK_PASSWORD:-secret}'
+
+  # Critical alerts - multiple channels
+  - name: 'critical-alerts'
+    email_configs:
+      - to: '${CRITICAL_EMAIL:-admin@cjpayment.com}'
+        subject: '[CRITICAL] CJPayment Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Labels: {{ range .Labels.SortedPairs }}{{ .Name }}={{ .Value }} {{ end }}
+          Started: {{ .StartsAt }}
+          {{ end }}
+        headers:
+          Priority: 'high'
+    
+    slack_configs:
+      - api_url: '${SLACK_WEBHOOK_URL:-}'
+        channel: '#alerts-critical'
+        title: 'Critical Alert: {{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          *Started:* {{ .StartsAt }}
+          {{ end }}
+        color: 'danger'
+    
+    webhook_configs:
+      - url: '${TEAMS_WEBHOOK_URL:-}'
+        send_resolved: true
+
+  # Warning alerts
+  - name: 'warning-alerts'
+    email_configs:
+      - to: '${WARNING_EMAIL:-ops@cjpayment.com}'
+        subject: '[WARNING] CJPayment Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Labels: {{ range .Labels.SortedPairs }}{{ .Name }}={{ .Value }} {{ end }}
+          Started: {{ .StartsAt }}
+          {{ end }}
+    
+    slack_configs:
+      - api_url: '${SLACK_WEBHOOK_URL:-}'
+        channel: '#alerts-warning'
+        title: 'Warning Alert: {{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          *Started:* {{ .StartsAt }}
+          {{ end }}
+        color: 'warning'
+
+  # Business alerts
+  - name: 'business-alerts'
+    email_configs:
+      - to: '${BUSINESS_EMAIL:-business@cjpayment.com}'
+        subject: '[BUSINESS] CJPayment Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Labels: {{ range .Labels.SortedPairs }}{{ .Name }}={{ .Value }} {{ end }}
+          Started: {{ .StartsAt }}
+          {{ end }}
+
+  # Database alerts
+  - name: 'database-alerts'
+    email_configs:
+      - to: '${DBA_EMAIL:-dba@cjpayment.com}'
+        subject: '[DATABASE] CJPayment Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Labels: {{ range .Labels.SortedPairs }}{{ .Name }}={{ .Value }} {{ end }}
+          Started: {{ .StartsAt }}
+          {{ end }}
+
+  # System alerts
+  - name: 'system-alerts'
+    email_configs:
+      - to: '${SYSADMIN_EMAIL:-sysadmin@cjpayment.com}'
+        subject: '[SYSTEM] CJPayment Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Labels: {{ range .Labels.SortedPairs }}{{ .Name }}={{ .Value }} {{ end }}
+          Started: {{ .StartsAt }}
+          {{ end }}

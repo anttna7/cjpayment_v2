@@ -1,0 +1,656 @@
+/**
+ * CJPayment 统一交互效果系统
+ * 统一所有页面的悬停、点击、聚焦等交互效果
+ */
+
+/* ==========================================================================
+   全局交互状态
+   ========================================================================== */
+
+/* 选择文本时的背景色 */
+::selection {
+  background: var(--primary-200);
+  color: var(--primary-800);
+}
+
+::-moz-selection {
+  background: var(--primary-200);
+  color: var(--primary-800);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-surface-secondary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
+  transition: background var(--duration-150) var(--ease-out);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-400);
+}
+
+/* Firefox 滚动条 */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) var(--bg-surface-secondary);
+}
+
+/* ==========================================================================
+   统一焦点环效果
+   ========================================================================== */
+
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color var(--duration-150) var(--ease-out);
+}
+
+.focus-ring:focus {
+  outline-color: var(--primary-500);
+}
+
+.focus-ring:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* 应用到所有可交互元素 */
+button:focus,
+[role="button"]:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus,
+[tabindex]:focus {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+button:focus:not(:focus-visible),
+[role="button"]:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+a:focus:not(:focus-visible),
+[tabindex]:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ==========================================================================
+   按钮交互效果 - 完全按照您要求的规范
+   ========================================================================== */
+
+/* 基础按钮交互 */
+.btn-interactive {
+  position: relative;
+  overflow: hidden;
+  transition: all var(--duration-200) var(--ease-out);
+  cursor: pointer;
+}
+
+/* 悬停效果 - 完全按照您的规范 */
+.btn-interactive:hover {
+  color: #8b5cf6; /* 紫色 */
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15);
+}
+
+/* 选中高亮效果 - 完全按照您的规范 */
+.btn-interactive--active,
+.btn-interactive.active {
+  color: white;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-interactive--active:hover,
+.btn-interactive.active:hover {
+  color: white;
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+/* 点击效果 */
+.btn-interactive:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(139, 92, 246, 0.2);
+}
+
+/* 禁用状态 */
+.btn-interactive:disabled,
+.btn-interactive[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+  background: var(--state-disabled-bg) !important;
+  color: var(--state-disabled-text) !important;
+}
+
+/* 加载状态 */
+.btn-interactive--loading {
+  pointer-events: none;
+  position: relative;
+}
+
+.btn-interactive--loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: btn-loading-spin 1s linear infinite;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes btn-loading-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ==========================================================================
+   导航链接交互效果
+   ========================================================================== */
+
+.nav-link-interactive {
+  position: relative;
+  overflow: hidden;
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+/* 悬停效果 */
+.nav-link-interactive:hover {
+  color: #8b5cf6;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%);
+  transform: translateY(-1px);
+}
+
+/* 活跃状态 */
+.nav-link-interactive--active,
+.nav-link-interactive.active {
+  color: white;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+}
+
+/* 底部指示器动效 */
+.nav-link-interactive::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+  transition: all var(--duration-300) var(--ease-out);
+  transform: translateX(-50%);
+}
+
+.nav-link-interactive:hover::before {
+  width: 80%;
+}
+
+.nav-link-interactive--active::before,
+.nav-link-interactive.active::before {
+  width: 100%;
+  background: white;
+}
+
+/* ==========================================================================
+   卡片交互效果
+   ========================================================================== */
+
+.card-interactive {
+  transition: all var(--duration-200) var(--ease-out);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 悬停效果 */
+.card-interactive:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(139, 92, 246, 0.1);
+  border-color: var(--primary-200);
+}
+
+/* 选中状态 */
+.card-interactive--selected,
+.card-interactive.selected {
+  border-color: var(--primary-500);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+  transform: translateY(-2px);
+}
+
+.card-interactive--selected::before,
+.card-interactive.selected::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+}
+
+/* 点击涟漪效果 */
+.card-interactive::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width var(--duration-300) var(--ease-out), height var(--duration-300) var(--ease-out);
+}
+
+.card-interactive:active::after {
+  width: 200px;
+  height: 200px;
+}
+
+/* ==========================================================================
+   表格行交互效果
+   ========================================================================== */
+
+.table-row-interactive {
+  transition: all var(--duration-150) var(--ease-out);
+  cursor: pointer;
+  position: relative;
+}
+
+.table-row-interactive:hover {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.04) 0%, rgba(124, 58, 237, 0.08) 100%);
+  transform: translateX(2px);
+}
+
+.table-row-interactive:hover td:first-child {
+  border-left: 3px solid var(--primary-500);
+  padding-left: calc(var(--space-4) - 3px);
+}
+
+/* 选中行 */
+.table-row-interactive--selected,
+.table-row-interactive.selected {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%);
+  transform: translateX(4px);
+}
+
+.table-row-interactive--selected td:first-child,
+.table-row-interactive.selected td:first-child {
+  border-left: 3px solid var(--primary-600);
+  padding-left: calc(var(--space-4) - 3px);
+}
+
+/* ==========================================================================
+   输入框交互效果
+   ========================================================================== */
+
+.input-interactive {
+  transition: all var(--duration-200) var(--ease-out);
+  position: relative;
+}
+
+.input-interactive:hover {
+  border-color: var(--primary-300);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.1);
+}
+
+.input-interactive:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  outline: none;
+}
+
+/* 输入框标签动画 */
+.input-group {
+  position: relative;
+}
+
+.input-floating-label {
+  position: absolute;
+  left: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  transition: all var(--duration-200) var(--ease-out);
+  pointer-events: none;
+  background: var(--bg-surface);
+  padding: 0 var(--space-1);
+  font-size: var(--text-base);
+}
+
+.input-interactive:focus + .input-floating-label,
+.input-interactive:not(:placeholder-shown) + .input-floating-label {
+  top: 0;
+  font-size: var(--text-xs);
+  color: var(--primary-600);
+  transform: translateY(-50%);
+}
+
+/* ==========================================================================
+   下拉菜单交互效果
+   ========================================================================== */
+
+.dropdown-interactive {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.95);
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.dropdown-interactive--open,
+.dropdown-interactive.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.dropdown-item-interactive {
+  transition: all var(--duration-150) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.dropdown-item-interactive:hover {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%);
+  color: var(--primary-700);
+  transform: translateX(4px);
+}
+
+.dropdown-item-interactive::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: linear-gradient(180deg, #8b5cf6, #7c3aed);
+  transition: width var(--duration-200) var(--ease-out);
+}
+
+.dropdown-item-interactive:hover::before {
+  width: 3px;
+}
+
+/* ==========================================================================
+   模态框交互效果
+   ========================================================================== */
+
+.modal-overlay-interactive {
+  opacity: 0;
+  visibility: hidden;
+  backdrop-filter: blur(0px);
+  transition: all var(--duration-300) var(--ease-out);
+}
+
+.modal-overlay-interactive--open,
+.modal-overlay-interactive.open {
+  opacity: 1;
+  visibility: visible;
+  backdrop-filter: blur(4px);
+}
+
+.modal-interactive {
+  transform: translateY(20px) scale(0.95);
+  transition: all var(--duration-300) var(--ease-out);
+}
+
+.modal-overlay-interactive--open .modal-interactive,
+.modal-overlay-interactive.open .modal-interactive {
+  transform: translateY(0) scale(1);
+}
+
+/* ==========================================================================
+   通知提示交互效果
+   ========================================================================== */
+
+.toast-interactive {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all var(--duration-300) var(--ease-out);
+}
+
+.toast-interactive--show,
+.toast-interactive.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toast-interactive--hide,
+.toast-interactive.hide {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+/* 进度条动画 */
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--primary-500);
+  transition: width var(--duration-100) linear;
+}
+
+/* ==========================================================================
+   加载动画效果
+   ========================================================================== */
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-light);
+  border-top-color: var(--primary-500);
+  border-radius: 50%;
+  animation: loading-spin 1s linear infinite;
+}
+
+.loading-spinner--lg {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
+}
+
+.loading-spinner--sm {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+@keyframes loading-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 脉冲加载效果 */
+.loading-pulse {
+  animation: loading-pulse-anim 1.5s ease-in-out infinite;
+}
+
+@keyframes loading-pulse-anim {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* 骨架屏加载 */
+.loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface-secondary) 25%,
+    var(--bg-surface-tertiary) 50%,
+    var(--bg-surface-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading-skeleton-anim 1.5s infinite;
+  border-radius: var(--radius-base);
+}
+
+@keyframes loading-skeleton-anim {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ==========================================================================
+   页面切换动画
+   ========================================================================== */
+
+.page-transition {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all var(--duration-300) var(--ease-out);
+}
+
+.page-transition--enter {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-fade-enter {
+  opacity: 0;
+  transition: opacity var(--duration-300) var(--ease-out);
+}
+
+.page-fade-enter-active {
+  opacity: 1;
+}
+
+.page-slide-enter {
+  transform: translateX(100%);
+  transition: transform var(--duration-300) var(--ease-out);
+}
+
+.page-slide-enter-active {
+  transform: translateX(0);
+}
+
+/* ==========================================================================
+   滚动动画效果
+   ========================================================================== */
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all var(--duration-500) var(--ease-out);
+}
+
+.scroll-reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-reveal--delay-100 {
+  transition-delay: 100ms;
+}
+
+.scroll-reveal--delay-200 {
+  transition-delay: 200ms;
+}
+
+.scroll-reveal--delay-300 {
+  transition-delay: 300ms;
+}
+
+/* ==========================================================================
+   微交互动画
+   ========================================================================== */
+
+/* 心跳动画 */
+.heartbeat {
+  animation: heartbeat-anim 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat-anim {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.1); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.1); }
+  70% { transform: scale(1); }
+}
+
+/* 摇摆动画 */
+.shake {
+  animation: shake-anim 0.5s ease-in-out;
+}
+
+@keyframes shake-anim {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+/* 弹跳动画 */
+.bounce {
+  animation: bounce-anim 1s ease-in-out;
+}
+
+@keyframes bounce-anim {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+/* 旋转动画 */
+.rotate {
+  animation: rotate-anim 1s ease-in-out;
+}
+
+@keyframes rotate-anim {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   实用交互类
+   ========================================================================== */
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  transition: transform var(--duration-200) var(--ease-out);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  transition: box-shadow var(--duration-200) var(--ease-out);
+}
+
+.hover-rotate:hover {
+  transform: rotate(5deg);
+  transition: transform var(--duration-200) var(--ease-out);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+  transition: transform var(--duration-200) var(--ease-out);
+}
+
+.clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.no-pointer-events {
+  pointer-events: none;
+}
+
+.pointer-events-auto {
+  pointer-events: auto;
+}

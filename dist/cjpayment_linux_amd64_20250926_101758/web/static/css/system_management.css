@@ -1,0 +1,1308 @@
+/* System Management Styles - Enhanced Design System */
+@import url('./foundation/reset.css');
+@import url('./tokens/colors.css');
+@import url('./tokens/typography.css');
+@import url('./tokens/spacing.css');
+@import url('./components/button.css');
+@import url('./components/card.css');
+@import url('./components/form.css');
+@import url('./components/table.css');
+@import url('./components/modal.css');
+@import url('./components/badge.css');
+
+/* 完全模仿Chrome图标环境的系统管理背景 */
+.system-management {
+    padding: var(--spacing-xl, 32px);
+    max-width: 1800px;
+    margin: 0 auto;
+    /* Chrome图标的白色纸质背景质感 */
+    background: 
+        linear-gradient(135deg, #ffffff 0%, #fafbfc 30%, #f5f6f7 100%),
+        radial-gradient(ellipse at top right, rgba(234, 67, 53, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom left, rgba(52, 168, 83, 0.04) 0%, transparent 50%);
+    min-height: calc(100vh - 80px);
+    position: relative;
+}
+
+/* Chrome图标式的纸张折角效果 - 左上角变化 */
+.system-management::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 60px;
+    background: 
+        linear-gradient(45deg, transparent 0%, transparent 40%, #e5e7eb 40%, #e5e7eb 60%, #d1d5db 60%);
+    border-bottom-right-radius: 8px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+}
+
+/* Chrome图标的完整四色渐变装饰 */
+.system-management::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(234, 67, 53, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(66, 133, 244, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(52, 168, 83, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(251, 188, 5, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(154, 160, 166, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.system-management > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Enhanced Page Header */
+.page-header {
+    background: var(--color-bg-surface, white);
+    border-radius: var(--border-radius-lg, 12px);
+    padding: var(--spacing-xl, 32px);
+    margin-bottom: var(--spacing-xl, 32px);
+    box-shadow: var(--card-shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
+    border: 1px solid var(--color-border-light, #e5e7eb);
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.header-title {
+    flex: 1;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+    margin: 0 0 var(--spacing-sm, 8px);
+    background: var(--primary-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+/* Enhanced Tab Navigation */
+.tab-navigation {
+    background: var(--color-surface);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
+}
+
+.tab-container {
+    display: flex;
+    gap: var(--spacing-xs);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.tab-container::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: none;
+    background: transparent;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    position: relative;
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+}
+
+.tab-btn:hover {
+    background: var(--color-background);
+    color: var(--color-text-primary);
+    transform: translateY(-1px);
+}
+
+.tab-btn.active {
+    background: var(--color-primary);
+    color: var(--color-white);
+    box-shadow: var(--shadow-md);
+}
+
+.tab-btn.active .tab-badge {
+    background: var(--color-white);
+    color: var(--color-primary);
+}
+
+.tab-icon {
+    font-size: var(--font-size-lg);
+}
+
+.tab-text {
+    font-size: var(--font-size-sm);
+}
+
+.tab-badge {
+    background: var(--color-gray-200);
+    color: var(--color-text-secondary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    min-width: 20px;
+    text-align: center;
+}
+
+.tab-badge.warning {
+    background: var(--color-warning);
+    color: var(--color-white);
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    animation: fadeIn var(--transition-normal) ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section Styles */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--color-surface);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-border);
+}
+
+.section-header h2 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.section-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Search and Filter Controls */
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-sm);
+    width: 250px;
+    transition: all var(--transition-fast);
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.filter-group {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+
+.filter-select {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-sm);
+    background: var(--color-surface);
+    cursor: pointer;
+}
+
+/* View Toggle */
+.view-toggle {
+    display: flex;
+    background: var(--color-gray-100);
+    border-radius: var(--border-radius-md);
+    padding: 2px;
+}
+
+.view-btn {
+    padding: var(--spacing-sm);
+    border: none;
+    background: transparent;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: var(--color-text-secondary);
+}
+
+.view-btn.active {
+    background: var(--color-white);
+    color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.view-icon {
+    font-size: var(--font-size-md);
+}
+
+/* Bulk Actions */
+.bulk-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-warning-light);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-warning);
+}
+
+/* Grid and Card Views */
+.merchants-grid,
+.accounts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.merchant-card,
+.account-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.merchant-card:hover,
+.account-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary-light);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-md);
+}
+
+.card-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.card-status {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+.card-status.active {
+    background: var(--color-success-light);
+    color: var(--color-success);
+}
+
+.card-status.inactive {
+    background: var(--color-error-light);
+    color: var(--color-error);
+}
+
+.card-body {
+    margin-bottom: var(--spacing-md);
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--font-size-sm);
+}
+
+.info-label {
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+}
+
+.info-value {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.card-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--spacing-md);
+}
+
+/* Table Views */
+.merchants-table,
+.accounts-table,
+.limits-table {
+    background: var(--color-surface);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+}
+
+.merchants-table table,
+.accounts-table table,
+.limits-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.merchants-table th,
+.accounts-table th,
+.limits-table th {
+    background: var(--color-gray-50);
+    padding: var(--spacing-md);
+    text-align: left;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.merchants-table td,
+.accounts-table td,
+.limits-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+}
+
+.merchants-table tr:hover,
+.accounts-table tr:hover,
+.limits-table tr:hover {
+    background: var(--color-gray-50);
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg);
+}
+
+.pagination-btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    color: var(--color-text-primary);
+}
+
+.pagination-btn:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}
+
+.pagination-btn.active {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Stats Overview */
+.limits-overview {
+    margin-bottom: var(--spacing-lg);
+}
+
+.limit-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.stat-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    transition: all var(--transition-fast);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-number {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.stat-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Rotation Rules */
+.rotation-rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.rotation-rule-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    transition: all var(--transition-fast);
+}
+
+.rotation-rule-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Form Styles */
+.system-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.form-label {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+}
+
+.form-input {
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-fast);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.form-error {
+    color: var(--color-error);
+    font-size: var(--font-size-xs);
+    margin-top: var(--spacing-xs);
+}
+
+.amount-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.amount-input .currency {
+    position: absolute;
+    right: var(--spacing-md);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .system-management {
+        padding: var(--spacing-md);
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+    
+    .tab-container {
+        flex-wrap: wrap;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+    
+    .section-actions {
+        justify-content: center;
+    }
+    
+    .merchants-grid,
+    .accounts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-box input {
+        width: 100%;
+    }
+}
+
+/* Loading States */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-xl);
+    color: var(--color-text-secondary);
+}
+
+.loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-border);
+    border-top: 2px solid var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: var(--spacing-sm);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Empty States */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-xl);
+    color: var(--color-text-secondary);
+}
+
+.empty-state-icon {
+    font-size: var(--font-size-4xl);
+    margin-bottom: var(--spacing-md);
+    opacity: 0.5;
+}
+
+.empty-state-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.empty-state-description {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* ========== 系统管理卡片增强样式 ========== */
+
+/* 管理功能网格 */
+/* 管理功能网格布局 */
+.management-grid, .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg, 24px);
+    margin: var(--spacing-xl, 32px) 0;
+}
+
+/* 3列固定布局用于系统管理 */
+.card-grid--fixed-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg, 24px);
+    margin: var(--spacing-xl, 32px) 0;
+}
+
+/* 完全按照Chrome图标风格的系统管理卡片 */
+.management-card, .system-card {
+    background: 
+        linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #fdfdfd 100%),
+        radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.8) 0%, transparent 50%);
+    border-radius: 24px;
+    padding: var(--spacing-xl, 32px);
+    border: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: visible;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+    
+    /* Chrome图标的精确立体阴影层次 */
+    box-shadow: 
+        /* 内部高光 */
+        inset 0 2px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+        /* 外部阴影层次 */
+        0 1px 3px rgba(0, 0, 0, 0.05),
+        0 4px 8px rgba(0, 0, 0, 0.08),
+        0 8px 16px rgba(0, 0, 0, 0.08),
+        0 16px 32px rgba(0, 0, 0, 0.06),
+        /* 材质感边缘阴影 */
+        0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+.management-card:hover, .system-card:hover {
+    transform: translateY(-16px) scale(1.03) rotate(0.5deg);
+    text-decoration: none;
+    color: inherit;
+    
+    /* 悬停时的Chrome级立体效果 */
+    box-shadow: 
+        /* 增强内部高光 */
+        inset 0 3px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.03),
+        /* 强化外部阴影 */
+        0 2px 6px rgba(0, 0, 0, 0.08),
+        0 8px 16px rgba(0, 0, 0, 0.12),
+        0 16px 32px rgba(0, 0, 0, 0.12),
+        0 32px 64px rgba(0, 0, 0, 0.10),
+        0 48px 96px rgba(0, 0, 0, 0.08),
+        /* 发光边缘效果 */
+        0 0 0 1px rgba(255, 255, 255, 0.9),
+        0 0 20px rgba(66, 133, 244, 0.1);
+}
+
+/* Chrome图标风格的精确高光效果 */
+.management-card::after, .system-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: 
+        linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.15) 30%, rgba(255,255,255,0.05) 70%, transparent 100%),
+        radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.3) 0%, transparent 60%);
+    border-radius: 24px 24px 0 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 额外的玻璃质感层 */
+.management-card::before, .system-card::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.3) 100%);
+    border-radius: 25px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Chrome图标风格的专属彩色分割线 - 替代单调的顶部边框 */
+.management-card .card-color-divider, .system-card .card-color-divider {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+    z-index: 2;
+}
+
+/* 为不同功能模块设置独特的Chrome色彩分割 */
+.management-card.users .card-color-divider,
+#userManagementCard .card-color-divider {
+    background: 
+        linear-gradient(90deg, 
+            #4285f4 0%, #4285f4 33.33%, 
+            rgba(255,255,255,0.3) 33.33%, rgba(255,255,255,0.3) 33.66%,
+            #34a853 33.66%, #34a853 66.33%,
+            rgba(255,255,255,0.3) 66.33%, rgba(255,255,255,0.3) 66.66%,
+            #fbbc05 66.66%, #fbbc05 100%
+        );
+}
+
+.management-card.security .card-color-divider,
+#securityCard .card-color-divider {
+    background: 
+        linear-gradient(90deg, 
+            #ea4335 0%, #ea4335 33.33%, 
+            rgba(255,255,255,0.3) 33.33%, rgba(255,255,255,0.3) 33.66%,
+            #fbbc05 33.66%, #fbbc05 66.33%,
+            rgba(255,255,255,0.3) 66.33%, rgba(255,255,255,0.3) 66.66%,
+            #34a853 66.66%, #34a853 100%
+        );
+}
+
+.management-card.api .card-color-divider,
+#apiManagementCard .card-color-divider {
+    background: 
+        linear-gradient(90deg, 
+            #34a853 0%, #34a853 33.33%, 
+            rgba(255,255,255,0.3) 33.33%, rgba(255,255,255,0.3) 33.66%,
+            #ea4335 33.66%, #ea4335 66.33%,
+            rgba(255,255,255,0.3) 66.33%, rgba(255,255,255,0.3) 66.66%,
+            #fbbc05 66.66%, #fbbc05 100%
+        );
+}
+
+.management-card.monitoring .card-color-divider,
+#monitoringCard .card-color-divider {
+    background: 
+        linear-gradient(90deg, 
+            #fbbc05 0%, #fbbc05 33.33%, 
+            rgba(255,255,255,0.3) 33.33%, rgba(255,255,255,0.3) 33.66%,
+            #ea4335 33.66%, #ea4335 66.33%,
+            rgba(255,255,255,0.3) 66.33%, rgba(255,255,255,0.3) 66.66%,
+            #34a853 66.66%, #34a853 100%
+        );
+}
+
+.management-card.config .card-color-divider,
+#systemConfigCard .card-color-divider {
+    background: 
+        linear-gradient(90deg, 
+            #4285f4 0%, #4285f4 25%, 
+            rgba(255,255,255,0.3) 25%, rgba(255,255,255,0.3) 25.5%,
+            #34a853 25.5%, #34a853 50%,
+            rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.3) 50.5%,
+            #fbbc05 50.5%, #fbbc05 75%,
+            rgba(255,255,255,0.3) 75%, rgba(255,255,255,0.3) 75.5%,
+            #ea4335 75.5%, #ea4335 100%
+        );
+}
+
+.management-card.backup .card-color-divider,
+#backupCard .card-color-divider {
+    background: 
+        linear-gradient(90deg, 
+            #9aa0a6 0%, #9aa0a6 33.33%, 
+            rgba(255,255,255,0.3) 33.33%, rgba(255,255,255,0.3) 33.66%,
+            #34a853 33.66%, #34a853 66.33%,
+            rgba(255,255,255,0.3) 66.33%, rgba(255,255,255,0.3) 66.66%,
+            #5f6368 66.66%, #5f6368 100%
+        );
+}
+
+/* Chrome风格色彩主题 - 对应Chrome图标的四色 + 扩展色彩 */
+.management-card.users::before, .system-card.users::before {
+    background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%); /* Chrome蓝 */
+}
+
+.management-card.security::before, .system-card.security::before {
+    background: linear-gradient(135deg, #ea4335 0%, #c5221f 100%); /* Chrome红 */
+}
+
+.management-card.api::before, .system-card.api::before {
+    background: linear-gradient(135deg, #34a853 0%, #137333 100%); /* Chrome绿 */
+}
+
+.management-card.monitoring::before, .system-card.monitoring::before {
+    background: linear-gradient(135deg, #fbbc05 0%, #f29900 100%); /* Chrome黄 */
+}
+
+.management-card.backup::before, .system-card.backup::before {
+    background: linear-gradient(135deg, #9aa0a6 0%, #5f6368 100%); /* Chrome灰 */
+}
+
+.management-card.config::before, .system-card.config::before {
+    background: linear-gradient(135deg, #ab47bc 0%, #8e24aa 100%); /* 扩展紫色 */
+}
+
+/* 卡片头部 */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg, 24px);
+    margin-bottom: var(--spacing-lg, 24px);
+}
+
+/* 完美复刻Chrome图标结构的系统管理图标 */
+.card-icon {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    flex-shrink: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    
+    /* Chrome图标的完美立体阴影系统 */
+    box-shadow: 
+        /* 内部立体感 */
+        inset 0 2px 4px rgba(255, 255, 255, 0.4),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+        /* 外部投影层次 */
+        0 1px 2px rgba(0, 0, 0, 0.15),
+        0 2px 4px rgba(0, 0, 0, 0.15),
+        0 4px 8px rgba(0, 0, 0, 0.12),
+        0 8px 16px rgba(0, 0, 0, 0.08),
+        0 12px 24px rgba(0, 0, 0, 0.06),
+        /* 材质边缘光晕 */
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* 用户管理 - Chrome蓝色主导 */
+.management-card.users .card-icon,
+#userManagementCard .card-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #4285f4 0deg, #4285f4 120deg, transparent 120deg, transparent 240deg, #fbbc05 240deg, #fbbc05 360deg),
+        conic-gradient(from 120deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        #ffffff;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 安全中心 - Chrome红色主导 */
+.management-card.security .card-icon,
+#securityCard .card-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg, transparent 240deg, #34a853 240deg, #34a853 360deg),
+        conic-gradient(from 120deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        #ffffff;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* API管理 - Chrome绿色主导 */
+.management-card.api .card-icon,
+#apiManagementCard .card-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #34a853 0deg, #34a853 120deg, transparent 120deg, transparent 240deg, #ea4335 240deg, #ea4335 360deg),
+        conic-gradient(from 120deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        #ffffff;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 监控告警 - Chrome黄色主导 */
+.management-card.monitoring .card-icon,
+#monitoringCard .card-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg, transparent 240deg, #ea4335 240deg, #ea4335 360deg),
+        conic-gradient(from 120deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        #ffffff;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 系统配置 - 完整Chrome四色 */
+.management-card.config .card-icon,
+#systemConfigCard .card-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #4285f4 0deg, #4285f4 90deg, #34a853 90deg, #34a853 180deg, #fbbc05 180deg, #fbbc05 270deg, #ea4335 270deg, #ea4335 360deg),
+        #ffffff;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 数据备份 - Chrome灰色搭配 */
+.management-card.backup .card-icon,
+#backupCard .card-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #9aa0a6 0deg, #9aa0a6 120deg, transparent 120deg, transparent 240deg, #5f6368 240deg, #5f6368 360deg),
+        conic-gradient(from 120deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        #ffffff;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Chrome图标的精细分割线和内边框系统 */
+.card-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+    /* Chrome图标的特征性白色分割线 */
+    background: 
+        /* 水平分割线 */
+        linear-gradient(0deg, transparent 48.5%, rgba(255,255,255,0.8) 49%, rgba(255,255,255,0.8) 51%, transparent 51.5%),
+        /* 120度分割线 */
+        linear-gradient(60deg, transparent 48.5%, rgba(255,255,255,0.8) 49%, rgba(255,255,255,0.8) 51%, transparent 51.5%),
+        /* -120度分割线 */
+        linear-gradient(-60deg, transparent 48.5%, rgba(255,255,255,0.8) 49%, rgba(255,255,255,0.8) 51%, transparent 51.5%),
+        /* 内部边框 */
+        radial-gradient(circle at center, transparent 28%, rgba(255,255,255,0.6) 29%, rgba(255,255,255,0.6) 31%, transparent 32%),
+        /* 外部边框 */
+        radial-gradient(circle at center, transparent 88%, rgba(255,255,255,0.4) 89%, rgba(255,255,255,0.4) 91%, transparent 92%);
+}
+
+/* 悬停时的Chrome级动态效果 */
+.management-card:hover .card-icon {
+    transform: scale(1.2) rotate(15deg);
+    box-shadow: 
+        /* 增强内部立体感 */
+        inset 0 3px 6px rgba(255, 255, 255, 0.5),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.08),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.3),
+        /* 强化外部投影 */
+        0 2px 4px rgba(0, 0, 0, 0.2),
+        0 4px 8px rgba(0, 0, 0, 0.18),
+        0 8px 16px rgba(0, 0, 0, 0.16),
+        0 12px 24px rgba(0, 0, 0, 0.14),
+        0 16px 32px rgba(0, 0, 0, 0.12),
+        0 20px 40px rgba(0, 0, 0, 0.10),
+        /* 发光效果 */
+        0 0 0 2px rgba(255, 255, 255, 0.15),
+        0 0 30px rgba(66, 133, 244, 0.15);
+}
+
+/* 图标内部的Chrome式镜面反射效果 */
+.card-icon::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 20%;
+    width: 35%;
+    height: 30%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.1) 70%, transparent 100%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10;
+    filter: blur(0.5px);
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+    margin: 0 0 var(--spacing-sm, 8px);
+}
+
+.card-description {
+    font-size: 14px;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* 卡片底部操作区域 */
+.card-footer {
+    margin-top: var(--spacing-lg, 24px);
+    padding-top: var(--spacing-md, 16px);
+    border-top: 1px solid var(--color-border-light, #e5e7eb);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md, 16px);
+    color: var(--color-text-tertiary, #9ca3af);
+    font-size: 12px);
+}
+
+.card-action {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm, 8px);
+    color: var(--color-primary, #667eea);
+    font-size: 14px;
+    font-weight: 600;
+    transition: all var(--transition-fast, 0.2s ease);
+}
+
+.card-action:hover {
+    color: var(--color-primary-dark, #5a67d8);
+    transform: translateX(4px);
+}
+
+/* 管理功能状态指示器 */
+.status-indicator {
+    position: absolute;
+    top: var(--spacing-md, 16px);
+    right: var(--spacing-md, 16px);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-success, #10b981);
+    box-shadow: 0 0 0 2px white, 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+.status-indicator.warning {
+    background: var(--color-warning, #f59e0b);
+    box-shadow: 0 0 0 2px white, 0 0 8px rgba(245, 158, 11, 0.3);
+}
+
+.status-indicator.error {
+    background: var(--color-error, #ef4444);
+    box-shadow: 0 0 0 2px white, 0 0 8px rgba(239, 68, 68, 0.3);
+}
+
+/* ========== 系统管理响应式设计 ========== */
+
+/* 大屏幕 (1440px+) */
+@media (min-width: 1440px) {
+    .system-management {
+        padding: var(--spacing-2xl, 48px);
+    }
+    
+    .management-grid, .card-grid, .card-grid--fixed-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 桌面端 (1024px - 1439px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
+    .management-grid, .card-grid, .card-grid--fixed-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 平板端 (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .system-management {
+        padding: var(--spacing-lg, 24px);
+    }
+    
+    .page-header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-lg, 24px);
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .management-grid, .card-grid, .card-grid--fixed-3 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md, 16px);
+    }
+    
+    .management-card, .system-card {
+        padding: var(--spacing-lg, 24px);
+    }
+    
+    .card-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 24px;
+    }
+}
+
+/* 手机端 (480px - 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+    .system-management {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .page-header {
+        padding: var(--spacing-lg, 24px);
+        text-align: center;
+    }
+    
+    .page-title {
+        font-size: 24px;
+    }
+    
+    .management-grid, .card-grid, .card-grid--fixed-3 {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md, 16px);
+    }
+    
+    .management-card, .system-card {
+        padding: var(--spacing-lg, 24px);
+    }
+    
+    .card-header {
+        gap: var(--spacing-md, 16px);
+    }
+    
+    .card-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+    
+    .card-title {
+        font-size: 18px;
+    }
+    
+    .card-description {
+        font-size: 13px;
+    }
+}
+
+/* 小屏手机端 (320px - 479px) */
+@media (max-width: 479px) {
+    .system-management {
+        padding: var(--spacing-sm, 8px);
+    }
+    
+    .page-header {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .page-title {
+        font-size: 20px;
+    }
+    
+    .page-subtitle {
+        font-size: 14px;
+    }
+    
+    .management-card, .system-card {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .card-header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm, 8px);
+    }
+    
+    .card-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        margin: 0 auto;
+    }
+    
+    .card-title {
+        font-size: 16px;
+        text-align: center;
+    }
+    
+    .card-description {
+        font-size: 12px;
+        text-align: center;
+    }
+    
+    .card-footer {
+        flex-direction: column;
+        gap: var(--spacing-sm, 8px);
+        text-align: center;
+    }
+    
+    .card-meta {
+        justify-content: center;
+        gap: var(--spacing-sm, 8px);
+    }
+    
+    .status-indicator {
+        position: static;
+        margin: 0 auto var(--spacing-sm, 8px);
+    }
+}

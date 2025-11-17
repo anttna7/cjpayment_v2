@@ -1,0 +1,131 @@
+<!-- 统一导航头部组件 - 基于仪表板页面的完美布局 -->
+<header class="app__header" id="appHeader">
+    <div class="header">
+        <!-- Logo Section -->
+        <div class="header__left">
+            <a href="/dashboard" class="logo">
+                <div class="logo__icon">💎</div>
+                <div>
+                    <h1 class="logo__text">CJPayment</h1>
+                    <span class="logo__version">v2.0</span>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Main Navigation -->
+        <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+            <ul class="nav__list">
+                <li class="nav__item">
+                    <a href="/dashboard" class="nav__link" data-route="dashboard">
+                        <span class="nav__icon">📊</span>
+                        <span class="nav__text">仪表板</span>
+                    </a>
+                </li>
+                <li class="nav__item">
+                    <a href="/merchant" class="nav__link" data-route="merchant">
+                        <span class="nav__icon">🏪</span>
+                        <span class="nav__text">商户管理</span>
+                    </a>
+                </li>
+                <li class="nav__item">
+                    <a href="/accounts" class="nav__link" data-route="accounts">
+                        <span class="nav__icon">💰</span>
+                        <span class="nav__text">账户管理</span>
+                    </a>
+                </li>
+                <li class="nav__item">
+                    <a href="/audit" class="nav__link" data-route="audit">
+                        <span class="nav__icon">📋</span>
+                        <span class="nav__text">财务审核</span>
+                    </a>
+                </li>
+                <li class="nav__item">
+                    <a href="/reports" class="nav__link" data-route="reports">
+                        <span class="nav__icon">📈</span>
+                        <span class="nav__text">数据报表</span>
+                    </a>
+                </li>
+                <li class="nav__item">
+                    <a href="/system_management" class="nav__link" data-route="system">
+                        <span class="nav__icon">⚙️</span>
+                        <span class="nav__text">系统管理</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Header Right -->
+        <div class="header__right">
+            <!-- Theme Toggle -->
+            <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+                <span class="theme-icon">🌙</span>
+            </button>
+            
+            <!-- Notifications -->
+            <div class="notifications" id="notifications">
+                <button class="notifications__trigger" id="notificationButton" aria-label="查看通知">
+                    <span class="notifications__icon">🔔</span>
+                    <span class="notifications__badge" id="notificationBadge">3</span>
+                </button>
+                <div class="notifications__dropdown" id="notificationDropdown">
+                    <div class="notifications__header">
+                        <h4>最新通知</h4>
+                        <button class="notifications__clear" id="clearNotifications">全部标记为已读</button>
+                    </div>
+                    <div class="notifications__list" id="notificationsList">
+                        <!-- 通知列表将通过JavaScript动态加载 -->
+                        <div class="notification-item notification-unread">
+                            <div class="notification-icon unread"></div>
+                            <div class="notification-content">
+                                <div class="notification-title">系统维护通知</div>
+                                <div class="notification-text">系统将在今晚22:00-24:00进行例行维护</div>
+                                <div class="notification-meta">
+                                    <span class="notification-time">2小时前</span>
+                                    <span class="notification-new">新</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Menu -->
+            <div class="user-menu" id="userMenu">
+                <button class="user-menu__trigger" id="userButton" aria-expanded="false" aria-haspopup="true">
+                    <div class="user-menu__avatar">👤</div>
+                    <div class="user-menu__info">
+                        <span class="user-menu__name" id="userName">管理员</span>
+                        <span class="user-menu__role">超级管理员</span>
+                    </div>
+                    <span class="user-menu__arrow">▼</span>
+                </button>
+                <div class="user-menu__dropdown" id="userDropdown" role="menu">
+                    <a href="/profile" class="user-menu__item" role="menuitem">
+                        <span class="user-menu__item-icon">👤</span>
+                        个人资料
+                    </a>
+                    <a href="/settings" class="user-menu__item" role="menuitem">
+                        <span class="user-menu__item-icon">⚙️</span>
+                        账户设置
+                    </a>
+                    <a href="/help" class="user-menu__item" role="menuitem">
+                        <span class="user-menu__item-icon">❓</span>
+                        帮助中心
+                    </a>
+                    <div class="user-menu__divider"></div>
+                    <a href="#" class="user-menu__item user-menu__item--danger" role="menuitem" id="logoutLink">
+                        <span class="user-menu__item-icon">🚪</span>
+                        退出登录
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="nav__toggle" id="mobileMenuToggle" aria-label="切换导航菜单">
+                <span class="nav__toggle-line"></span>
+                <span class="nav__toggle-line"></span>
+                <span class="nav__toggle-line"></span>
+            </button>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,148 @@
+{
+  "summary": {
+    "total": 17,
+    "passed": 13,
+    "failed": 4,
+    "skipped": 0,
+    "duration": 64846,
+    "screenshots": 11
+  },
+  "tests": [
+    {
+      "name": "浏览器启动",
+      "status": "pass",
+      "details": "成功启动Chrome浏览器",
+      "screenshot": null,
+      "timestamp": "2025-08-20T10:52:55.260Z",
+      "duration": 1607
+    },
+    {
+      "name": "登录页面加载",
+      "status": "pass",
+      "details": "页面成功加载",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/01-login-page.png",
+      "timestamp": "2025-08-20T10:52:57.649Z",
+      "duration": 3995
+    },
+    {
+      "name": "仪表板访问",
+      "status": "pass",
+      "details": "仪表板页面正常显示",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/02-dashboard.png",
+      "timestamp": "2025-08-20T10:52:58.679Z",
+      "duration": 5025
+    },
+    {
+      "name": "商户管理按钮悬停",
+      "status": "pass",
+      "details": "按钮悬停效果正常，找到127个按钮",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/04-商户管理-button-hover.png",
+      "timestamp": "2025-08-20T10:53:02.845Z",
+      "duration": 9191
+    },
+    {
+      "name": "账户管理按钮悬停",
+      "status": "pass",
+      "details": "按钮悬停效果正常，找到59个按钮",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/04-账户管理-button-hover.png",
+      "timestamp": "2025-08-20T10:53:05.019Z",
+      "duration": 11365
+    },
+    {
+      "name": "财务审计按钮悬停",
+      "status": "pass",
+      "details": "按钮悬停效果正常，找到104个按钮",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/04-财务审计-button-hover.png",
+      "timestamp": "2025-08-20T10:53:07.164Z",
+      "duration": 13510
+    },
+    {
+      "name": "商户模态框测试",
+      "status": "fail",
+      "details": "模态框测试失败: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.modal, .modal-dialog') to be visible\u001b[22m\n",
+      "screenshot": null,
+      "timestamp": "2025-08-20T10:53:13.865Z",
+      "duration": 20211
+    },
+    {
+      "name": "账户模态框测试",
+      "status": "fail",
+      "details": "模态框测试失败: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.modal, .modal-dialog') to be visible\u001b[22m\n",
+      "screenshot": null,
+      "timestamp": "2025-08-20T10:53:20.576Z",
+      "duration": 26922
+    },
+    {
+      "name": "账户页面数据",
+      "status": "pass",
+      "details": "账户页面数据区域截图完成",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/12-accounts-data.png",
+      "timestamp": "2025-08-20T10:53:24.538Z",
+      "duration": 30884
+    },
+    {
+      "name": "收款账户标签页",
+      "status": "pass",
+      "details": "收款账户标签页切换正常",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/13-收款账户-tab.png",
+      "timestamp": "2025-08-20T10:53:26.468Z",
+      "duration": 32814
+    },
+    {
+      "name": "数据显示测试",
+      "status": "fail",
+      "details": "数据显示测试失败: locator.isVisible: Error: strict mode violation: locator('button:has-text(\"付款账户\"), .tab:has-text(\"付款账户\")') resolved to 2 elements:\n    1) <button class=\"account-tab\" id=\"paymentAccountsTab\" data-tab=\"payment-accounts\">…</button> aka getByRole('button', { name: '💳 付款账户' })\n    2) <button id=\"addPaymentAccount\" class=\"btn-enhanced btn-primary\">…</button> aka getByText('➕ 添加付款账户')\n\nCall log:\n\u001b[2m    - checking visibility of locator('button:has-text(\"付款账户\"), .tab:has-text(\"付款账户\")')\u001b[22m\n",
+      "screenshot": null,
+      "timestamp": "2025-08-20T10:53:26.485Z",
+      "duration": 32831
+    },
+    {
+      "name": "主题切换功能",
+      "status": "pass",
+      "details": "主题从light切换到dark",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/14-theme-switched.png",
+      "timestamp": "2025-08-20T10:53:49.883Z",
+      "duration": 56229
+    },
+    {
+      "name": "响应式设计-桌面",
+      "status": "pass",
+      "details": "桌面视图 (1920x1080)",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/15-responsive-桌面.png",
+      "timestamp": "2025-08-20T10:53:50.536Z",
+      "duration": 56882
+    },
+    {
+      "name": "响应式设计-平板",
+      "status": "pass",
+      "details": "平板视图 (768x1024)",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/15-responsive-平板.png",
+      "timestamp": "2025-08-20T10:53:51.131Z",
+      "duration": 57477
+    },
+    {
+      "name": "响应式设计-手机",
+      "status": "pass",
+      "details": "手机视图 (375x667)",
+      "screenshot": "/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/mcp-screenshots/15-responsive-手机.png",
+      "timestamp": "2025-08-20T10:53:51.699Z",
+      "duration": 58045
+    },
+    {
+      "name": "表单验证测试",
+      "status": "fail",
+      "details": "表单验证测试失败: page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.modal') to be visible\u001b[22m\n",
+      "screenshot": null,
+      "timestamp": "2025-08-20T10:53:58.413Z",
+      "duration": 64759
+    },
+    {
+      "name": "清理资源",
+      "status": "pass",
+      "details": "浏览器已关闭",
+      "screenshot": null,
+      "timestamp": "2025-08-20T10:53:58.500Z",
+      "duration": 64846
+    }
+  ]
+}

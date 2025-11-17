@@ -1,0 +1,173 @@
+/* 充值支付管理中心终极核武器级修复 */
+
+/* ================== 核武器级强制修复 ================== */
+
+/* 终极强制统计卡片布局 - 使用所有可能的选择器组合 */
+.page-recharge-payment .stats-row,
+body.page-recharge-payment .stats-row,
+html body.page-recharge-payment .stats-row,
+.page-recharge-payment div.stats-row,
+body.page-recharge-payment div.stats-row,
+html body.page-recharge-payment div.stats-row,
+.stats-row.stats-row.stats-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+    margin: 0 0 2rem 0 !important;
+    position: static !important;
+    max-width: none !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    z-index: auto !important;
+    flex-flow: row wrap !important;
+    /* 调试边框 */
+    border: 3px solid red !important;
+    background: rgba(255, 0, 0, 0.2) !important;
+    padding: 10px !important;
+}
+
+/* 使用内联样式级别的强制修复 */
+.page-recharge-payment .stats-row[style],
+body.page-recharge-payment .stats-row[style],
+html body.page-recharge-payment .stats-row[style] {
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+/* 终极强制统计卡片样式 */
+.page-recharge-payment .stat-card,
+body.page-recharge-payment .stat-card,
+html body.page-recharge-payment .stat-card,
+.page-recharge-payment div.stat-card,
+body.page-recharge-payment div.stat-card,
+html body.page-recharge-payment div.stat-card,
+.stat-card.stat-card.stat-card {
+    flex: 1 !important;
+    min-width: 200px !important;
+    max-width: 280px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    border: 2px solid blue !important;
+    display: flex !important;
+    align-items: center !important;
+    transition: transform 0.3s ease !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 5px !important;
+    position: static !important;
+    text-align: left !important;
+    float: none !important;
+    clear: none !important;
+}
+
+/* JavaScript动态修改防护 */
+.page-recharge-payment .stats-row > * {
+    flex: 1 !important;
+    min-width: 200px !important;
+    max-width: 280px !important;
+    display: flex !important;
+}
+
+/* 强制覆盖所有可能的flex相关属性 */
+.page-recharge-payment .stats-row {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    flex-flow: row wrap !important;
+    align-items: stretch !important;
+    justify-content: space-between !important;
+    align-content: flex-start !important;
+}
+
+/* ================== 使用CSS Grid作为备选方案 ================== */
+.page-recharge-payment .stats-row.fallback-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    grid-gap: 1rem !important;
+    gap: 1rem !important;
+}
+
+/* ================== 页面其他元素修复 ================== */
+
+.page-recharge-payment,
+body.page-recharge-payment {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+    min-height: 100vh !important;
+}
+
+.page-recharge-payment .container,
+body.page-recharge-payment .container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 1rem !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+.page-recharge-payment .page__title-section,
+body.page-recharge-payment .page__title-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    padding: 2rem !important;
+    border-radius: 16px !important;
+    margin-bottom: 2rem !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+.page-recharge-payment .content-tabs,
+body.page-recharge-payment .content-tabs {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(10px) !important;
+    margin: 0 !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+/* ================== 响应式设计 ================== */
+@media (max-width: 768px) {
+    .page-recharge-payment .stats-row,
+    body.page-recharge-payment .stats-row {
+        flex-direction: column !important;
+        grid-template-columns: 1fr !important;
+    }
+
+    .page-recharge-payment .stat-card,
+    body.page-recharge-payment .stat-card {
+        max-width: 100% !important;
+        min-width: 100% !important;
+    }
+}
+
+/* ================== 终极保险措施 ================== */
+/* 如果Flexbox完全失效，强制使用浮动布局 */
+.page-recharge-payment .stats-row.force-float {
+    display: block !important;
+    width: 100% !important;
+    overflow: hidden !important;
+}
+
+.page-recharge-payment .stats-row.force-float .stat-card {
+    float: left !important;
+    width: calc(25% - 15px) !important;
+    margin-right: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.page-recharge-payment .stats-row.force-float .stat-card:last-child {
+    margin-right: 0 !important;
+}
+
+/* 清除浮动 */
+.page-recharge-payment .stats-row.force-float::after {
+    content: "" !important;
+    display: table !important;
+    clear: both !important;
+}

@@ -1,0 +1,55 @@
+{
+  "timestamp": "2025-08-25T09:13:39.345Z",
+  "tests": [
+    {
+      "name": "Canvas元素存在性检查",
+      "status": "FAIL",
+      "details": {
+        "trendCanvas": true,
+        "statusCanvas": false,
+        "trendContainer": true,
+        "statusContainer": true
+      }
+    },
+    {
+      "name": "Chart.js加载检查",
+      "status": "PASS",
+      "details": {
+        "chartJSLoaded": true
+      }
+    },
+    {
+      "name": "图表创建状态检查",
+      "status": "FAIL",
+      "details": {
+        "error": "图表管理器未初始化"
+      }
+    },
+    {
+      "name": "Canvas内容渲染检查",
+      "status": "FAIL",
+      "details": {
+        "trendHasContent": false,
+        "statusHasContent": false,
+        "trendSize": "300x150",
+        "statusSize": "N/A"
+      }
+    },
+    {
+      "name": "布局优化效果检查",
+      "status": "PASS",
+      "details": {
+        "dualRowDisplay": "flex",
+        "trendWidth": 58,
+        "statusWidth": 46,
+        "gap": true,
+        "totalUtilization": 104
+      }
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 3,
+    "total": 5
+  }
+}

@@ -1,0 +1,112 @@
+server:
+  port: "8080"
+  read_timeout: 60
+  write_timeout: 60
+  debug: false
+
+database:
+  host: "${DATABASE_HOST}"
+  port: ${DATABASE_PORT}
+  user: "${DATABASE_USER}"
+  password: "${DATABASE_PASSWORD}"
+  dbname: "${DATABASE_DBNAME}"
+  sslmode: "require"
+  max_open_conns: 100
+  max_idle_conns: 20
+  conn_max_lifetime: 600
+  conn_max_idle_time: 300
+  query_timeout: 30
+  connection_timeout: 10
+  retry:
+    max_retries: 5
+    initial_delay: 1
+    max_delay: 30
+    backoff_factor: 2.0
+  metrics:
+    enabled: true
+    collection_interval: 30
+
+redis:
+  host: "${REDIS_HOST}"
+  port: ${REDIS_PORT}
+  password: "${REDIS_PASSWORD}"
+  db: 0
+  pool_size: 50
+  min_idle_conns: 10
+  max_retries: 3
+  retry_delay: 100ms
+  dial_timeout: 5s
+  read_timeout: 3s
+  write_timeout: 3s
+  pool_timeout: 4s
+  idle_timeout: 300s
+  idle_check_frequency: 60s
+  cache:
+    default_ttl: 300s
+    accounts_ttl: 600s
+    merchants_ttl: 1800s
+    reports_ttl: 3600s
+
+jwt:
+  secret: "${JWT_SECRET}"
+  expire_time: 7200
+
+log_level: "info"
+
+cors:
+  allowed_origins: ["${ALLOWED_ORIGINS}"]
+  allowed_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+  allowed_headers: ["Authorization", "Content-Type", "X-Requested-With"]
+  allow_credentials: true
+
+file_upload:
+  max_size: 52428800  # 50MB
+  allowed_types: ["image/jpeg", "image/png", "image/gif", "application/pdf"]
+  upload_path: "/app/uploads"
+
+monitoring:
+  enabled: true
+  port: "9090"
+  path: "/metrics"
+  health_path: "/health"
+  collection_interval: 30s
+  
+  # Prometheus configuration
+  prometheus:
+    enabled: true
+    namespace: "cjpayment"
+    subsystem: "api"
+    
+  # Health checks
+  health_checks:
+    database:
+      enabled: true
+      timeout: 5s
+      interval: 30s
+    redis:
+      enabled: true
+      timeout: 3s
+      interval: 30s
+    system:
+      enabled: true
+      memory_threshold: 90
+      disk_threshold: 90
+      interval: 60s
+  
+  # Alerting
+  alerting:
+    enabled: true
+    webhook_url: "${ALERT_WEBHOOK_URL}"
+    rules_file: "/app/configs/alerting-rules.yaml"
+    
+  # Logging
+  logging:
+    level: "info"
+    format: "json"
+    structured: true
+    
+  # Tracing (optional)
+  tracing:
+    enabled: false
+    jaeger_endpoint: "${JAEGER_ENDPOINT}"
+    sampling_rate: 0.1

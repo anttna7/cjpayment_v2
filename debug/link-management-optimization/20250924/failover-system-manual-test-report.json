@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-09-23T09:14:50.514Z",
+  "total": 6,
+  "passed": 1,
+  "failed": 5,
+  "details": [
+    {
+      "name": "基本页面访问",
+      "status": "FAILED",
+      "error": "页面 首页 访问失败: 500",
+      "timestamp": "2025-09-23T09:14:50.572Z"
+    },
+    {
+      "name": "API端点测试",
+      "status": "FAILED",
+      "error": "API 域名管理API 响应失败: 404",
+      "timestamp": "2025-09-23T09:14:50.574Z"
+    },
+    {
+      "name": "健康检查",
+      "status": "FAILED",
+      "error": "健康检查端点响应失败: 404",
+      "timestamp": "2025-09-23T09:14:50.575Z"
+    },
+    {
+      "name": "错误处理",
+      "status": "PASSED",
+      "timestamp": "2025-09-23T09:14:50.576Z"
+    },
+    {
+      "name": "域名API数据",
+      "status": "FAILED",
+      "error": "域名API响应失败: 404",
+      "timestamp": "2025-09-23T09:14:50.578Z"
+    },
+    {
+      "name": "网关API数据",
+      "status": "FAILED",
+      "error": "网关API响应失败: 404",
+      "timestamp": "2025-09-23T09:14:50.579Z"
+    }
+  ],
+  "summary": "测试完成: 1/6 通过",
+  "success_rate": "16.67%",
+  "generated_at": "2025-09-23T09:14:50.579Z"
+}

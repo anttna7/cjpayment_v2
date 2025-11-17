@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对私充值 - CJPayment</title>
+    <link rel="stylesheet" href="/static/css/private_recharge.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>对私充值系统</h1>
+            <p>请填写完整的充值信息，系统将为您分配合适的收款账户</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Step 1: Recharge Information Form -->
+            <div class="step-section" id="step1">
+                <h2>第一步：填写充值信息</h2>
+                <form id="rechargeForm" class="recharge-form">
+                    <div class="form-group">
+                        <label for="payerName">付款人姓名 *</label>
+                        <input type="text" id="payerName" name="payer_name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="payerAccount">付款账号 *</label>
+                        <input type="text" id="payerAccount" name="payer_account" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">充值金额 *</label>
+                        <input type="number" id="amount" name="amount" step="0.01" min="0.01" required>
+                        <span class="currency">元</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="merchantName">商户名称 *</label>
+                        <input type="text" id="merchantName" name="merchant_name" required autocomplete="off">
+                        <div id="merchantSuggestions" class="suggestions"></div>
+                        <input type="hidden" id="merchantId" name="merchant_id">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adAccount">广告账户名称 *</label>
+                        <input type="text" id="adAccount" name="ad_account" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="remark">备注信息</label>
+                        <textarea id="remark" name="remark" rows="3" placeholder="请输入备注信息（可选）"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">创建充值订单</button>
+                </form>
+            </div>
+
+            <!-- Step 2: Receive Account Information -->
+            <div class="step-section" id="step2" style="display: none;">
+                <h2>第二步：收款账户信息</h2>
+                <div class="receive-info">
+                    <div class="info-card">
+                        <h3>请向以下账户转账</h3>
+                        <div class="account-details">
+                            <div class="detail-item">
+                                <label>收款人姓名：</label>
+                                <span id="receiverName" class="value"></span>
+                                <button class="copy-btn" onclick="copyToClipboard('receiverName')">复制</button>
+                            </div>
+                            <div class="detail-item">
+                                <label>收款账号：</label>
+                                <span id="receiverAccount" class="value"></span>
+                                <button class="copy-btn" onclick="copyToClipboard('receiverAccount')">复制</button>
+                            </div>
+                            <div class="detail-item">
+                                <label>账户类型：</label>
+                                <span id="accountType" class="value"></span>
+                            </div>
+                            <div class="detail-item" id="bankInfo" style="display: none;">
+                                <label>开户银行：</label>
+                                <span id="bankName" class="value"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>转账金额：</label>
+                                <span id="transferAmount" class="value amount"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>订单号：</label>
+                                <span id="orderNumber" class="value"></span>
+                                <button class="copy-btn" onclick="copyToClipboard('orderNumber')">复制</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>⚠️ 重要提醒</h4>
+                        <ul>
+                            <li>请确保转账金额与显示金额完全一致</li>
+                            <li>转账时请备注订单号，便于财务核对</li>
+                            <li>完成转账后，请上传付款凭证</li>
+                            <li>如有疑问，请联系客服</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Upload Payment Voucher -->
+            <div class="step-section" id="step3" style="display: none;">
+                <h2>第三步：上传付款凭证</h2>
+                <div class="voucher-upload">
+                    <form id="voucherForm" enctype="multipart/form-data">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-icon">📁</div>
+                            <p>点击选择文件或拖拽文件到此处</p>
+                            <p class="upload-hint">支持 JPG、PNG、PDF 格式，文件大小不超过 10MB</p>
+                            <input type="file" id="voucherFile" name="voucher" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+                        </div>
+                        
+                        <div id="filePreview" class="file-preview" style="display: none;">
+                            <div class="preview-item">
+                                <span class="file-name"></span>
+                                <span class="file-size"></span>
+                                <button type="button" class="remove-file" onclick="removeFile()">×</button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success" id="uploadBtn" disabled>
+                            上传凭证并确认付款
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Step 4: Completion -->
+            <div class="step-section" id="step4" style="display: none;">
+                <h2>充值申请已提交</h2>
+                <div class="success-message">
+                    <div class="success-icon">✅</div>
+                    <h3>付款凭证上传成功！</h3>
+                    <p>您的充值申请已提交，财务人员将在 1-2 个工作日内完成审核。</p>
+                    <p>审核完成后，系统将自动为您的广告账户充值。</p>
+                    
+                    <div class="order-summary">
+                        <h4>订单信息</h4>
+                        <div class="summary-item">
+                            <label>订单号：</label>
+                            <span id="finalOrderNumber"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>充值金额：</label>
+                            <span id="finalAmount"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>状态：</label>
+                            <span class="status pending">待财务审核</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="createNewOrder()">创建新订单</button>
+                        <button class="btn btn-primary" onclick="checkOrderStatus()">查看订单状态</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="progress-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">填写信息</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">收款信息</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">上传凭证</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">完成</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>处理中，请稍候...</p>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>错误提示</h3>
+                <button class="close-btn" onclick="closeErrorModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeErrorModal()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/components.js"></script>
+    <script src="/static/js/form-enhancements.js"></script>
+    <script src="/static/js/private_recharge.js"></script>
+    
+    <!-- Keyboard shortcuts help -->
+    <div id="shortcuts-help" class="shortcuts-help" style="display: none;">
+        <div class="shortcuts-overlay">
+            <div class="shortcuts-dialog">
+                <div class="shortcuts-header">
+                    <h3>键盘快捷键</h3>
+                    <button class="close-btn" onclick="toggleShortcutsHelp()">&times;</button>
+                </div>
+                <div class="shortcuts-body">
+                    <div class="shortcut-item">
+                        <kbd>Ctrl</kbd> + <kbd>S</kbd>
+                        <span>提交充值表单</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Ctrl</kbd> + <kbd>R</kbd>
+                        <span>创建新订单</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Ctrl</kbd> + <kbd>1-4</kbd>
+                        <span>跳转到对应步骤</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>Esc</kbd>
+                        <span>关闭下拉菜单</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <kbd>?</kbd>
+                        <span>显示/隐藏快捷键帮助</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .shortcuts-help {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10001;
+        }
+        .shortcuts-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .shortcuts-dialog {
+            background: white;
+            border-radius: 8px;
+            min-width: 400px;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .shortcuts-header {
+            padding: 20px 20px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .shortcuts-header h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+        .shortcuts-body {
+            padding: 20px;
+        }
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .shortcut-item:last-child {
+            border-bottom: none;
+        }
+        kbd {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        /* Form auto-save indicator */
+        .form-auto-save-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #28a745;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        .form-auto-save-indicator.show {
+            opacity: 1;
+        }
+    </style>
+
+    <script>
+        // Global functions for shortcuts help
+        function toggleShortcutsHelp() {
+            const help = document.getElementById('shortcuts-help');
+            help.style.display = help.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Register global shortcut for help
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '?' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                const activeElement = document.activeElement;
+                if (activeElement.tagName !== 'INPUT' && activeElement.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    toggleShortcutsHelp();
+                }
+            }
+        });
+
+        // Close shortcuts help on overlay click
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('shortcuts-overlay')) {
+                toggleShortcutsHelp();
+            }
+        });
+    </script>
+</body>
+</html>

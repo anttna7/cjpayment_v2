@@ -1,0 +1,244 @@
+/* 仪表板交易表格溢出修复 */
+
+/* 主容器修复 - 确保不会超出预期范围 */
+.dashboard__table {
+    margin-bottom: var(--space-8);
+    /* 移除固定高度限制，允许内容自适应 */
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.dashboard__table:last-child {
+    margin-bottom: 0;
+}
+
+/* 交易记录卡片容器修复 */
+#recentTransactionsCard {
+    /* 确保卡片能够适应内容高度 */
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+#recentTransactionsCard .card__body {
+    /* 卡片主体区域修复 */
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: var(--space-6) !important;
+}
+
+/* 表格容器修复 - 控制表格在合适的范围内滚动 */
+.dashboard__table .table-container {
+    /* 设置合理的最大高度并启用垂直滚动 */
+    max-height: 600px !important;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    border-radius: var(--radius-lg) !important;
+    border: 1px solid var(--border-light) !important;
+    background: var(--bg-surface) !important;
+    box-shadow: var(--shadow-sm) !important;
+    position: relative !important;
+}
+
+/* 表格本身修复 */
+.dashboard__table .table {
+    /* 确保表格正确显示 */
+    width: 100% !important;
+    min-width: 800px !important; /* 设置最小宽度确保所有列都能显示 */
+    border-collapse: collapse !important;
+    font-size: var(--text-sm) !important;
+    margin: 0 !important;
+}
+
+/* 表格头部固定 */
+.dashboard__table .table thead {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+    background: var(--bg-surface) !important;
+}
+
+.dashboard__table .table thead th {
+    background: var(--bg-surface-secondary) !important;
+    padding: var(--space-3) var(--space-4) !important;
+    border-bottom: 2px solid var(--border-light) !important;
+    font-weight: var(--font-semibold) !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+}
+
+/* 表格行修复 */
+.dashboard__table .table tbody tr {
+    border-bottom: 1px solid var(--border-light) !important;
+    transition: background-color var(--duration-200) var(--ease-out) !important;
+}
+
+.dashboard__table .table tbody tr:hover {
+    background: var(--bg-surface-secondary) !important;
+}
+
+.dashboard__table .table tbody td {
+    padding: var(--space-3) var(--space-4) !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid var(--border-light) !important;
+}
+
+/* 特定列宽度优化 */
+.dashboard__table .table th:nth-child(1),
+.dashboard__table .table td:nth-child(1) {
+    /* 订单号列 */
+    width: 140px !important;
+    min-width: 140px !important;
+}
+
+.dashboard__table .table th:nth-child(2),
+.dashboard__table .table td:nth-child(2) {
+    /* 付款人列 */
+    width: 120px !important;
+    min-width: 120px !important;
+}
+
+.dashboard__table .table th:nth-child(3),
+.dashboard__table .table td:nth-child(3) {
+    /* 金额列 */
+    width: 100px !important;
+    min-width: 100px !important;
+    text-align: right !important;
+}
+
+.dashboard__table .table th:nth-child(4),
+.dashboard__table .table td:nth-child(4) {
+    /* 商户列 */
+    width: 120px !important;
+    min-width: 120px !important;
+}
+
+.dashboard__table .table th:nth-child(5),
+.dashboard__table .table td:nth-child(5) {
+    /* 状态列 */
+    width: 80px !important;
+    min-width: 80px !important;
+}
+
+.dashboard__table .table th:nth-child(6),
+.dashboard__table .table td:nth-child(6) {
+    /* 时间列 */
+    width: 160px !important;
+    min-width: 160px !important;
+}
+
+.dashboard__table .table th:nth-child(7),
+.dashboard__table .table td:nth-child(7) {
+    /* 操作列 */
+    width: 80px !important;
+    min-width: 80px !important;
+}
+
+/* 滚动条样式优化 */
+.dashboard__table .table-container::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+.dashboard__table .table-container::-webkit-scrollbar-track {
+    background: var(--bg-surface-secondary) !important;
+    border-radius: var(--radius-full) !important;
+}
+
+.dashboard__table .table-container::-webkit-scrollbar-thumb {
+    background: var(--border-strong) !important;
+    border-radius: var(--radius-full) !important;
+    transition: background var(--duration-200) var(--ease-out) !important;
+}
+
+.dashboard__table .table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary) !important;
+}
+
+/* 加载和错误状态样式 */
+.dashboard__table .table__loading,
+.dashboard__table .table__empty,
+.dashboard__table .table__error {
+    text-align: center !important;
+    padding: var(--space-8) !important;
+    color: var(--text-secondary) !important;
+}
+
+.dashboard__table .table__loading {
+    background: var(--bg-surface) !important;
+}
+
+.dashboard__table .table__empty {
+    background: var(--bg-surface-secondary) !important;
+}
+
+.dashboard__table .table__error {
+    background: var(--bg-danger-subtle) !important;
+    color: var(--text-danger) !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .dashboard__table .table-container {
+        max-height: 500px !important;
+    }
+    
+    .dashboard__table .table {
+        min-width: 700px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard__table .table-container {
+        max-height: 400px !important;
+        margin: 0 calc(-1 * var(--space-4)) !important;
+        border-radius: 0 !important;
+    }
+    
+    .dashboard__table .table {
+        min-width: 600px !important;
+    }
+    
+    .dashboard__table .table th,
+    .dashboard__table .table td {
+        padding: var(--space-2) var(--space-3) !important;
+        font-size: var(--text-xs) !important;
+    }
+}
+
+/* 卡片头部和操作区域的布局修复 */
+#recentTransactionsCard .card__header {
+    flex-shrink: 0 !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    padding: var(--space-6) !important;
+    background: var(--bg-surface) !important;
+}
+
+#recentTransactionsCard .card__actions {
+    display: flex !important;
+    gap: var(--space-3) !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+}
+
+/* 分页区域修复 */
+.dashboard__table .table-pagination {
+    flex-shrink: 0 !important;
+    padding: var(--space-4) var(--space-6) !important;
+    border-top: 1px solid var(--border-light) !important;
+    background: var(--bg-surface) !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+/* 确保整个仪表板容器的布局平衡 */
+.dashboard-content .dashboard__table {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+}

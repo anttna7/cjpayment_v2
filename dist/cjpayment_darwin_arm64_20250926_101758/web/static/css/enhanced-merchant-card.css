@@ -1,0 +1,672 @@
+/**
+ * 增强商户卡片样式
+ * 支持多账户展示和现代化设计
+ */
+
+/* ==========================================================================
+   卡片网格布局
+   ========================================================================== */
+
+#merchantGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 24px;
+    padding: 24px 0;
+}
+
+/* ==========================================================================
+   增强卡片基础样式
+   ========================================================================== */
+
+.enhanced-card {
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-xl, 16px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.enhanced-card:hover,
+.enhanced-card.merchant-card--hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-300, #b8a7ff);
+}
+
+.enhanced-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.enhanced-card:hover::before,
+.enhanced-card.merchant-card--hover::before {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   卡片头部
+   ========================================================================== */
+
+.merchant-card__header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border-lightest, #f3f4f6);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+.merchant-card__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.merchant-card__name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary, #111827);
+    margin: 0 0 8px 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.merchant-card__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.merchant-card__id {
+    font-family: var(--font-mono, 'SF Mono', 'Monaco', 'Consolas', monospace);
+    font-size: 0.75rem;
+    color: var(--text-secondary, #6b7280);
+    background: var(--bg-surface-secondary, #f9fafb);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm, 6px);
+    align-self: flex-start;
+}
+
+.merchant-card__industry {
+    font-size: 0.75rem;
+    color: var(--primary-600, #7c3aed);
+    background: var(--primary-50, #f5f3ff);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm, 6px);
+    align-self: flex-start;
+    font-weight: 500;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: var(--radius-full, 999px);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+/* 状态颜色 */
+.status-badge--pending {
+    background: var(--warning-100, #fef3c7);
+    color: var(--warning-800, #92400e);
+}
+
+.status-badge--pending .status-dot {
+    background: var(--warning-500, #f59e0b);
+}
+
+.status-badge--active {
+    background: var(--success-100, #dcfce7);
+    color: var(--success-800, #166534);
+}
+
+.status-badge--active .status-dot {
+    background: var(--success-500, #10b981);
+}
+
+.status-badge--disabled {
+    background: var(--danger-100, #fee2e2);
+    color: var(--danger-800, #991b1b);
+}
+
+.status-badge--disabled .status-dot {
+    background: var(--danger-500, #ef4444);
+}
+
+/* ==========================================================================
+   卡片内容区域
+   ========================================================================== */
+
+.merchant-card__content {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-lightest, #f3f4f6);
+}
+
+.card-section:last-child {
+    border-bottom: none;
+}
+
+.card-section--compact {
+    padding: 16px 24px;
+}
+
+/* 区域标题 */
+.section-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary, #111827);
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-icon {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.count-badge {
+    background: var(--primary-100, #ede9fe);
+    color: var(--primary-700, #6d28d9);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm, 6px);
+    margin-left: 4px;
+}
+
+/* 展开/收起按钮 */
+.expand-btn {
+    background: var(--bg-surface-secondary, #f9fafb);
+    border: 1px solid var(--border-light, #d1d5db);
+    border-radius: var(--radius-sm, 6px);
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    color: var(--text-secondary, #6b7280);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.expand-btn:hover {
+    background: var(--bg-surface-tertiary, #f3f4f6);
+    border-color: var(--border-medium, #9ca3af);
+}
+
+.expand-icon {
+    transition: transform 0.2s ease;
+    font-size: 0.7rem;
+}
+
+.expand-btn.expanded .expand-icon {
+    transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   商户详情
+   ========================================================================== */
+
+.merchant-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.merchant-detail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.detail-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--text-secondary, #6b7280);
+    font-weight: 500;
+    min-width: 80px;
+}
+
+.detail-icon {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.detail-value {
+    font-size: 0.85rem;
+    color: var(--text-primary, #111827);
+    flex: 1;
+    word-break: break-all;
+}
+
+/* ==========================================================================
+   充值链接区域
+   ========================================================================== */
+
+.recharge-link-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary-50, #f5f3ff);
+    border: 1px solid var(--primary-200, #ddd6fe);
+    border-radius: var(--radius-md, 8px);
+    padding: 8px 12px;
+}
+
+.recharge-link-text {
+    flex: 1;
+    font-family: var(--font-mono, 'SF Mono', 'Monaco', 'Consolas', monospace);
+    font-size: 0.75rem;
+    color: var(--primary-700, #6d28d9);
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+.copy-btn {
+    background: var(--primary-100, #ede9fe);
+    border: 1px solid var(--primary-300, #b8a7ff);
+    border-radius: var(--radius-sm, 6px);
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    color: var(--primary-700, #6d28d9);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+    background: var(--primary-200, #ddd6fe);
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   账户容器
+   ========================================================================== */
+
+.accounts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.accounts-container:not(.expanded) {
+    max-height: 100px;
+    overflow: hidden;
+}
+
+.account-card {
+    background: var(--bg-surface-secondary, #f9fafb);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-md, 8px);
+    padding: 12px;
+    transition: all 0.2s ease;
+}
+
+.account-card:hover {
+    border-color: var(--border-medium, #9ca3af);
+    transform: translateY(-1px);
+}
+
+.ad-account-card {
+    border-left: 3px solid var(--success-400, #10b981);
+}
+
+.payment-account-card {
+    border-left: 3px solid var(--warning-400, #f59e0b);
+}
+
+.account-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.account-id,
+.account-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary, #111827);
+}
+
+.account-id {
+    font-family: var(--font-mono, 'SF Mono', 'Monaco', 'Consolas', monospace);
+}
+
+.account-status {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: var(--radius-xs, 4px);
+    font-weight: 500;
+}
+
+.account-status--active {
+    background: var(--success-100, #dcfce7);
+    color: var(--success-700, #15803d);
+}
+
+.account-status--inactive {
+    background: var(--danger-100, #fee2e2);
+    color: var(--danger-700, #b91c1c);
+}
+
+.account-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.account-platform,
+.account-number,
+.account-bank {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #6b7280);
+}
+
+.account-number {
+    font-family: var(--font-mono, 'SF Mono', 'Monaco', 'Consolas', monospace);
+}
+
+/* ==========================================================================
+   统计信息
+   ========================================================================== */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.stat-item {
+    text-align: center;
+    background: var(--bg-surface-secondary, #f9fafb);
+    border-radius: var(--radius-md, 8px);
+    padding: 12px;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #6b7280);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: var(--font-mono, 'SF Mono', 'Monaco', 'Consolas', monospace);
+}
+
+.stat-value--primary {
+    color: var(--primary-600, #7c3aed);
+}
+
+.stat-value--success {
+    color: var(--success-600, #059669);
+}
+
+/* ==========================================================================
+   时间信息
+   ========================================================================== */
+
+.time-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.time-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.time-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--text-secondary, #6b7280);
+    font-weight: 500;
+}
+
+.time-value {
+    font-size: 0.8rem;
+    color: var(--text-primary, #111827);
+    font-family: var(--font-mono, 'SF Mono', 'Monaco', 'Consolas', monospace);
+}
+
+/* ==========================================================================
+   备注区域
+   ========================================================================== */
+
+.remark-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.remark-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--text-secondary, #6b7280);
+    font-weight: 500;
+}
+
+.remark-text {
+    font-size: 0.8rem;
+    color: var(--text-primary, #111827);
+    line-height: 1.5;
+    background: var(--bg-surface-secondary, #f9fafb);
+    padding: 8px;
+    border-radius: var(--radius-sm, 6px);
+    border-left: 3px solid var(--primary-400, #a78bfa);
+}
+
+/* ==========================================================================
+   卡片底部操作
+   ========================================================================== */
+
+.merchant-card__actions {
+    padding: 16px 24px;
+    background: var(--bg-surface-secondary, #f9fafb);
+    border-top: 1px solid var(--border-lightest, #f3f4f6);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.merchant-card__actions .btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 0.8rem;
+    padding: 8px 12px;
+}
+
+/* ==========================================================================
+   响应式设计
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+    #merchantGrid {
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    #merchantGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px 0;
+    }
+    
+    .enhanced-card {
+        border-radius: var(--radius-lg, 12px);
+    }
+    
+    .merchant-card__header {
+        padding: 16px 20px 12px;
+    }
+    
+    .card-section {
+        padding: 16px 20px;
+    }
+    
+    .card-section--compact {
+        padding: 12px 20px;
+    }
+    
+    .merchant-card__actions {
+        padding: 12px 20px;
+        flex-direction: column;
+    }
+    
+    .merchant-card__actions .btn {
+        width: 100%;
+        flex: none;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .merchant-details {
+        gap: 10px;
+    }
+    
+    .merchant-detail {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .detail-label {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .merchant-card__header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .merchant-card__meta {
+        flex-direction: row;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+/* ==========================================================================
+   加载状态
+   ========================================================================== */
+
+.merchant-card--loading {
+    pointer-events: none;
+}
+
+.loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: var(--radius-sm, 6px);
+    height: 20px;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ==========================================================================
+   空状态
+   ========================================================================== */
+
+.merchant-empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary, #6b7280);
+}
+
+.empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.6;
+}
+
+.empty-state-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary, #111827);
+}
+
+.empty-state-description {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.empty-state-actions {
+    display: flex;
+    justify-content: center;
+}

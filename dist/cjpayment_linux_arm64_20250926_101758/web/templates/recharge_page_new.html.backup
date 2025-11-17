@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>充值页面 - CJPayment</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/dashboard-enhanced.css">
+    <link rel="stylesheet" href="../static/css/account-management-enhanced.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/recharge_page.css" rel="stylesheet">
+    
+    <!-- 用户行为统计脚本 -->
+    <script>
+        // 用户行为统计数据收集
+        const userBehaviorStats = {
+            visitTime: new Date(),
+            pageViews: 0,
+            timeSpent: 0,
+            steps: [],
+            errors: [],
+            payments: [],
+            exitType: null,
+            deviceInfo: {
+                userAgent: navigator.userAgent,
+                screen: `${screen.width}x${screen.height}`,
+                language: navigator.language,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            },
+            referrer: document.referrer,
+            linkType: new URLSearchParams(window.location.search).get('type') || 'general', // 通用或专用链接
+            merchantId: new URLSearchParams(window.location.search).get('merchant_id') || null
+        };
+        
+        // 页面加载时开始统计
+        window.addEventListener('load', function() {
+            userBehaviorStats.pageViews = 1;
+            userBehaviorStats.loadTime = Date.now() - performance.timing.navigationStart;
+            recordBehavior('page_loaded', { 
+                loadTime: userBehaviorStats.loadTime,
+                linkType: userBehaviorStats.linkType,
+                merchantId: userBehaviorStats.merchantId
+            });
+            
+            // 定期发送心跳数据
+            setInterval(sendHeartbeat, 30000);
+        });
+        
+        // 页面卸载时发送统计数据
+        window.addEventListener('beforeunload', function() {
+            userBehaviorStats.timeSpent = Date.now() - userBehaviorStats.visitTime.getTime();
+            userBehaviorStats.exitType = 'beforeunload';
+            sendBehaviorData();
+        });
+        
+        // 记录用户行为
+        function recordBehavior(action, data = {}) {
+            userBehaviorStats.steps.push({
+                action: action,
+                timestamp: new Date(),
+                data: data
+            });
+            
+            // 显示行为指示器
+            showBehaviorIndicator(action);
+        }
+        
+        // 显示行为指示器
+        function showBehaviorIndicator(action) {
+            const indicator = document.getElementById('behaviorIndicator') || createBehaviorIndicator();
+            const actionTexts = {
+                'page_loaded': '页面已加载',
+                'amount_entered': '输入金额',
+                'account_id_entered': '输入账户ID',
+                'payment_type_selected': '选择支付类型',
+                'account_selected': '选择收款账户',
+                'order_submitted': '提交订单',
+                'step_changed': '切换步骤'
+            };
+            
+            indicator.textContent = actionTexts[action] || action;
+            indicator.classList.add('show');
+            
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 2000);
+        }
+        
+        // 创建行为指示器
+        function createBehaviorIndicator() {
+            const indicator = document.createElement('div');
+            indicator.id = 'behaviorIndicator';
+            indicator.className = 'behavior-indicator';
+            document.body.appendChild(indicator);
+            return indicator;
+        }
+        
+        // 发送心跳数据
+        function sendHeartbeat() {
+            recordBehavior('heartbeat', { 
+                currentStep: window.currentStep || 1,
+                timeSpent: Date.now() - userBehaviorStats.visitTime.getTime()
+            });
+        }
+        
+        // 发送统计数据
+        function sendBehaviorData() {
+            const data = {
+                ...userBehaviorStats,
+                url: window.location.href,
+                finalTimeSpent: Date.now() - userBehaviorStats.visitTime.getTime()
+            };
+            
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon('/api/analytics/behavior', JSON.stringify(data));
+            } else {
+                fetch('/api/analytics/behavior', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                    keepalive: true
+                }).catch(console.error);
+            }
+        }
+    </script>
+</head>
+<body>
+    <style>
+        /* 新充值流程样式 */
+        .bot-notification-status {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .bot-icon {
+            font-size: 3rem;
+            color: #0ea5e9;
+            margin-bottom: 1rem;
+        }
+        
+        .bot-status {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+        
+        .bot-details {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .currency-credit-section {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .credit-progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .step-icon.completed {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .step-icon.processing {
+            background: #f59e0b;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        
+        .step-icon.pending {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+        
+        .result-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .result-card.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+        }
+        
+        .result-card.failed {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        /* 行为统计指示器 */
+        .behavior-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .behavior-indicator.show {
+            opacity: 1;
+        }
+        
+        .order-summary {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .summary-row:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            color: #1e40af;
+        }
+        
+        .recharge-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--account-bg-primary);
+        }
+        
+        .recharge-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--account-bg-secondary);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--account-shadow-card);
+        }
+        
+        .recharge-title {
+            font-size: 2.5rem;
+            color: var(--account-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .recharge-subtitle {
+            color: var(--dashboard-text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .recharge-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .step-card {
+            background: var(--account-bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--account-shadow-card);
+            border-left: 5px solid var(--account-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .step-card.active {
+            border-left-color: var(--rule-active);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.15);
+        }
+        
+        .step-card.completed {
+            border-left-color: var(--rule-active);
+            background: rgba(34, 197, 94, 0.02);
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--account-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .step-card.active .step-number {
+            background: var(--rule-active);
+            animation: pulse 2s infinite;
+        }
+        
+        .step-card.completed .step-number {
+            background: var(--rule-active);
+        }
+        
+        .step-card.completed .step-number::before {
+            content: "✓";
+            font-size: 1.2rem;
+        }
+        
+        .step-title {
+            color: var(--dashboard-text-primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .step-content {
+            display: none;
+        }
+        
+        .step-card.active .step-content {
+            display: block;
+        }
+        
+        .receiving-accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .receiving-account-card {
+            background: var(--account-bg-tertiary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .receiving-account-card:hover {
+            border-color: var(--account-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .receiving-account-card.selected {
+            border-color: var(--rule-active);
+            background: rgba(34, 197, 94, 0.05);
+        }
+        
+        .account-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .type-银行卡 {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        
+        .type-支付宝 {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--rule-active);
+        }
+        
+        .type-微信 {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--rule-active);
+        }
+        
+        .type-其它 {
+            background: rgba(156, 163, 175, 0.1);
+            color: #6b7280;
+        }
+        
+        .account-info {
+            margin-bottom: 1rem;
+        }
+        
+        .account-name {
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .account-number {
+            color: var(--dashboard-text-secondary);
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+        
+        .account-limits {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--dashboard-border-primary);
+        }
+        
+        .limit-item {
+            text-align: center;
+        }
+        
+        .limit-label {
+            font-size: 0.75rem;
+            color: var(--dashboard-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .limit-value {
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+        }
+        
+        .recharge-form {
+            background: var(--account-bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--account-shadow-card);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .amount-input-group {
+            position: relative;
+        }
+        
+        .amount-input-group .form-input-enhanced {
+            padding-left: 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .currency-symbol {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--account-primary);
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @media (max-width: 768px) {
+            .recharge-steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .receiving-accounts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <div class="recharge-container">
+        <!-- 页面标题 -->
+        <div class="recharge-header">
+            <h1 class="recharge-title">💰 充值页面</h1>
+            <p class="recharge-subtitle">快速便捷的账户充值服务</p>
+        </div>
+        
+        <!-- 充值步骤 -->
+        <div class="recharge-steps">
+            <!-- 步骤1：充值信息填写 -->
+            <div class="step-card active" id="step1">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">充值信息填写</h3>
+                </div>
+                <div class="step-content">
+                    <form id="rechargeInfoForm">
+                        <div class="form-section">
+                            <h4 class="form-section-title">💰 充值详情</h4>
+                            
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label for="rechargeAmount" class="form-label-enhanced required">充值金额</label>
+                                    <div class="amount-input-group">
+                                        <span class="currency-symbol">¥</span>
+                                        <input type="number" id="rechargeAmount" name="rechargeAmount" 
+                                               class="form-input-enhanced" 
+                                               placeholder="0.00"
+                                               step="0.01"
+                                               min="0.01"
+                                               onchange="recordBehavior('amount_entered', {amount: this.value})"
+                                               required>
+                                    </div>
+                                    <div class="form-error" id="rechargeAmountError"></div>
+                                    <div class="form-help">请输入充值金额，最小金额为0.01元</div>
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label for="adAccountId" class="form-label-enhanced required">广告账户ID</label>
+                                    <input type="text" id="adAccountId" name="adAccountId" 
+                                           class="form-input-enhanced" 
+                                           placeholder="例如：123456789012"
+                                           onchange="recordBehavior('account_id_entered', {accountId: this.value})"
+                                           required>
+                                    <div class="form-error" id="adAccountIdError"></div>
+                                    <div class="form-help">请输入需要充值的广告账户ID</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label for="companyName" class="form-label-enhanced">付款账户名称</label>
+                                    <input type="text" id="companyName" name="companyName" 
+                                           class="form-input-enhanced" 
+                                           placeholder="例如：上海创迹优先公司">
+                                    <div class="form-help">可选填写付款账户名称，便于财务记录</div>
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label for="paymentType" class="form-label-enhanced required">支付类型</label>
+                                    <select id="paymentType" name="paymentType" 
+                                            class="form-input-enhanced" 
+                                            onchange="recordBehavior('payment_type_selected', {type: this.value}); loadReceivingAccounts()"
+                                            required>
+                                        <option value="">请选择支付类型</option>
+                                        <option value="business">对公转账</option>
+                                        <option value="personal">对私转账</option>
+                                    </select>
+                                    <div class="form-error" id="paymentTypeError"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group-enhanced full-width">
+                                    <label for="rechargeRemark" class="form-label-enhanced">充值备注</label>
+                                    <textarea id="rechargeRemark" name="rechargeRemark" 
+                                              class="form-input-enhanced" 
+                                              placeholder="请输入充值备注（可选）"
+                                              rows="3"></textarea>
+                                    <div class="form-help">可选填写充值相关备注信息</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <div></div>
+                            <button type="button" class="btn-enhanced btn-primary" onclick="nextStep(2)">
+                                下一步：选择收款账户
+                                <span class="btn__icon">→</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 步骤2：选择收款账户 -->
+            <div class="step-card" id="step2">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">选择收款账户</h3>
+                </div>
+                <div class="step-content">
+                    <p style="color: var(--dashboard-text-secondary); margin-bottom: 1.5rem;">
+                        根据您的支付类型，系统为您匹配了以下收款账户：
+                    </p>
+                    
+                    <div class="receiving-accounts-grid" id="receivingAccountsGrid">
+                        <!-- 收款账户将通过JavaScript动态加载 -->
+                    </div>
+                    
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-enhanced btn-outline" onclick="prevStep(1)">
+                            <span class="btn__icon">←</span>
+                            上一步
+                        </button>
+                        <button type="button" class="btn-enhanced btn-primary" onclick="nextStep(3)" id="selectAccountBtn" disabled>
+                            下一步：订单确认
+                            <span class="btn__icon">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 步骤3：订单确认与处理 -->
+            <div class="step-card" id="step3">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">订单确认与处理</h3>
+                </div>
+                <div class="step-content">
+                    <form id="orderConfirmForm" class="recharge-form">
+                        <!-- 订单信息确认 -->
+                        <div class="form-section">
+                            <h4 class="form-section-title">📋 订单信息确认</h4>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                请确认以下充值信息无误后提交订单
+                            </div>
+                            
+                            <div class="order-summary" id="orderSummary">
+                                <!-- 订单摘要将通过JavaScript生成 -->
+                            </div>
+                        </div>
+                        
+                        <!-- 机器人通知状态 -->
+                        <div class="form-section" id="botNotificationSection" style="display: none;">
+                            <h4 class="form-section-title">🤖 机器人通知状态</h4>
+                            <div class="bot-notification-status" id="botNotificationStatus">
+                                <div class="bot-icon">🤖</div>
+                                <div class="bot-status">正在发送充值通知...</div>
+                                <div class="bot-details">系统正在向相关机器人发送充值通知</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 账户币加值处理 -->
+                        <div class="form-section" id="currencyCreditSection" style="display: none;">
+                            <h4 class="form-section-title">💳 账户币加值处理</h4>
+                            <div class="currency-credit-section">
+                                <div class="credit-progress" id="creditProgress">
+                                    <div class="progress-step">
+                                        <div class="step-icon processing" id="step-verify">1</div>
+                                        <span>验证订单</span>
+                                    </div>
+                                    <div class="progress-step">
+                                        <div class="step-icon pending" id="step-credit">2</div>
+                                        <span>账户加值</span>
+                                    </div>
+                                    <div class="progress-step">
+                                        <div class="step-icon pending" id="step-confirm">3</div>
+                                        <span>确认完成</span>
+                                    </div>
+                                </div>
+                                <div class="credit-details" id="creditDetails">
+                                    <p>正在为您的账户进行币值充值，请稍候...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <button type="button" class="btn-enhanced btn-outline" onclick="prevStep(2)">
+                                <span class="btn__icon">←</span>
+                                上一步
+                            </button>
+                            <button type="submit" class="btn-enhanced btn-primary btn-success" id="submitOrderBtn">
+                                <span class="btn__icon">💰</span>
+                                确认提交订单
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 步骤4：处理结果 -->
+        <div class="step-card" id="step4">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h3 class="step-title">处理结果</h3>
+            </div>
+            <div class="step-content">
+                <div class="process-result-section">
+                    <div class="result-card" id="processResultCard">
+                        <!-- 处理结果将通过JavaScript动态显示 -->
+                    </div>
+                    
+                    <div class="result-actions">
+                        <button type="button" class="btn-enhanced btn-outline" onclick="resetForm()">
+                            <span class="btn__icon">🔄</span>
+                            重新充值
+                        </button>
+                        <button type="button" class="btn-enhanced btn-primary" id="downloadReceiptBtn" style="display: none;">
+                            <span class="btn__icon">📄</span>
+                            下载收据
+                        </button>
+                        <button type="button" class="btn-enhanced btn-secondary" id="viewOrderBtn" style="display: none;">
+                            <span class="btn__icon">📋</span>
+                            查看订单详情
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 支付信息模态框 -->
+    <div class="modal fade" id="paymentInfoModal" tabindex="-1" aria-labelledby="paymentInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="paymentInfoModalLabel">
+                        <i class="fas fa-check-circle me-2"></i>充值订单已生成
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>订单号：</strong><span id="orderNumber"></span>
+                    </div>
+                    
+                    <div class="payment-info-section">
+                        <h6 class="mb-3">
+                            <i class="fas fa-university me-2"></i>收款账号信息
+                        </h6>
+                        
+                        <div class="account-info-card">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">收款人姓名</label>
+                                    <div class="info-display" id="accountName">
+                                        <span class="info-text"></span>
+                                        <button class="btn btn-sm btn-outline-secondary copy-btn" type="button">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">机构名称</label>
+                                    <div class="info-display" id="institutionName">
+                                        <span class="info-text"></span>
+                                        <button class="btn btn-sm btn-outline-secondary copy-btn" type="button">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">收款账号</label>
+                                    <div class="info-display" id="accountNumber">
+                                        <span class="info-text"></span>
+                                        <button class="btn btn-sm btn-outline-secondary copy-btn" type="button">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">转账金额</label>
+                                    <div class="amount-display">
+                                        <span class="amount-text" id="transferAmount"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-instructions mt-4">
+                            <h6><i class="fas fa-exclamation-triangle me-2 text-warning"></i>付款注意事项</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>请确保转账金额与显示金额完全一致</li>
+                                <li><i class="fas fa-check text-success me-2"></i>转账完成后系统将自动处理</li>
+                                <li><i class="fas fa-check text-success me-2"></i>如有疑问请联系客服</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="checkStatusBtn">查看订单状态</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 全局变量
+        let currentStep = 1;
+        let selectedReceivingAccount = null;
+        let rechargeOrderId = null;
+        
+        // 步骤导航
+        function nextStep(step) {
+            recordBehavior('step_changed', { from: currentStep, to: step });
+            
+            if (step === 2) {
+                // 验证充值信息
+                if (!validateRechargeInfo()) {
+                    return;
+                }
+                loadReceivingAccounts();
+            } else if (step === 3) {
+                // 验证是否选择了收款账户
+                if (!selectedReceivingAccount) {
+                    showToast('请选择一个收款账户', 'warning');
+                    return;
+                }
+                generateOrderSummary();
+            } else if (step === 4) {
+                // 进入结果页面
+            }
+            
+            // 更新步骤状态
+            if (currentStep <= 3) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                document.getElementById(`step${currentStep}`).classList.add('completed');
+            }
+            
+            currentStep = step;
+            window.currentStep = currentStep;
+            document.getElementById(`step${currentStep}`).classList.add('active');
+        }
+        
+        function prevStep(step) {
+            recordBehavior('step_changed', { from: currentStep, to: step });
+            
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('completed');
+            }
+            
+            currentStep = step;
+            window.currentStep = currentStep;
+            document.getElementById(`step${currentStep}`).classList.remove('completed');
+            document.getElementById(`step${currentStep}`).classList.add('active');
+        }
+        
+        function validateRechargeInfo() {
+            const rechargeAmount = document.getElementById('rechargeAmount').value;
+            const adAccountId = document.getElementById('adAccountId').value;
+            const paymentType = document.getElementById('paymentType').value;
+            
+            if (!rechargeAmount || parseFloat(rechargeAmount) <= 0) {
+                showError('rechargeAmountError', '请输入有效的充值金额');
+                return false;
+            }
+            
+            if (!adAccountId) {
+                showError('adAccountIdError', '请输入广告账户ID');
+                return false;
+            }
+            
+            if (!paymentType) {
+                showError('paymentTypeError', '请选择支付类型');
+                return false;
+            }
+            
+            clearErrors();
+            return true;
+        }
+        
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.form-error');
+            errorElements.forEach(element => {
+                element.textContent = '';
+                element.style.display = 'none';
+            });
+        }
+        
+        // 模拟收款账户数据
+        const mockReceivingAccounts = {
+            business: [
+                {
+                    id: 'R001',
+                    accountName: '北京科技有限公司',
+                    accountNumber: '6214830012345678',
+                    accountType: '银行卡',
+                    institutionName: '中国工商银行',
+                    singleLimit: 50000,
+                    dailyLimit: 200000,
+                    priority: 1,
+                    status: '启用'
+                },
+                {
+                    id: 'R002',
+                    accountName: '上海贸易有限公司',
+                    accountNumber: '6228480012345678',
+                    accountType: '银行卡',
+                    institutionName: '中国建设银行',
+                    singleLimit: 30000,
+                    dailyLimit: 150000,
+                    priority: 2,
+                    status: '启用'
+                }
+            ],
+            personal: [
+                {
+                    id: 'P001',
+                    accountName: '张三',
+                    accountNumber: 'zhangsan@alipay.com',
+                    accountType: '支付宝',
+                    institutionName: '',
+                    singleLimit: 10000,
+                    dailyLimit: 50000,
+                    priority: 1,
+                    status: '启用'
+                },
+                {
+                    id: 'P002',
+                    accountName: '李四',
+                    accountNumber: 'wx_lisi_123',
+                    accountType: '微信',
+                    institutionName: '',
+                    singleLimit: 5000,
+                    dailyLimit: 20000,
+                    priority: 2,
+                    status: '启用'
+                }
+            ]
+        };
+        
+        function loadReceivingAccounts() {
+            const paymentType = document.getElementById('paymentType').value;
+            const grid = document.getElementById('receivingAccountsGrid');
+            grid.innerHTML = '';
+            
+            const accounts = mockReceivingAccounts[paymentType] || [];
+            
+            if (accounts.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; color: #718096;">暂无可用的收款账户</div>';
+                return;
+            }
+            
+            accounts.forEach(account => {
+                const accountCard = createAccountCard(account);
+                grid.appendChild(accountCard);
+            });
+        }
+        
+        function createAccountCard(account) {
+            const card = document.createElement('div');
+            card.className = 'receiving-account-card';
+            card.dataset.accountId = account.id;
+            
+            const maskedNumber = maskAccountNumber(account.accountNumber);
+            const institutionDisplay = account.institutionName || account.accountType;
+            
+            card.innerHTML = `
+                <div class="account-type-badge type-${account.accountType}">${account.accountType}</div>
+                <div class="account-info">
+                    <div class="account-name">${account.accountName}</div>
+                    <div class="account-number">${maskedNumber}</div>
+                    ${institutionDisplay ? `<div class="bank-name" style="color: var(--dashboard-text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">${institutionDisplay}</div>` : ''}
+                </div>
+                <div class="account-limits">
+                    <div class="limit-item">
+                        <div class="limit-label">单笔限额</div>
+                        <div class="limit-value">¥${account.singleLimit.toLocaleString()}</div>
+                    </div>
+                    <div class="limit-item">
+                        <div class="limit-label">单日限额</div>
+                        <div class="limit-value">¥${account.dailyLimit.toLocaleString()}</div>
+                    </div>
+                </div>
+            `;
+            
+            card.addEventListener('click', () => selectReceivingAccount(account, card));
+            
+            return card;
+        }
+        
+        function selectReceivingAccount(account, cardElement) {
+            recordBehavior('account_selected', { 
+                accountId: account.id, 
+                accountType: account.accountType 
+            });
+            
+            // 清除其他选中状态
+            document.querySelectorAll('.receiving-account-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 选中当前账户
+            cardElement.classList.add('selected');
+            selectedReceivingAccount = account;
+            
+            // 启用下一步按钮
+            document.getElementById('selectAccountBtn').disabled = false;
+        }
+        
+        function maskAccountNumber(accountNumber) {
+            if (accountNumber.includes('@')) {
+                // 邮箱格式（支付宝）
+                const parts = accountNumber.split('@');
+                const username = parts[0];
+                const domain = parts[1];
+                return username.slice(0, 2) + '***' + username.slice(-2) + '@' + domain;
+            } else if (accountNumber.length > 8) {
+                // 银行卡号
+                return accountNumber.slice(0, 4) + ' **** **** ' + accountNumber.slice(-4);
+            } else {
+                // 其他格式
+                return accountNumber.slice(0, 2) + '***' + accountNumber.slice(-2);
+            }
+        }
+        
+        function generateOrderSummary() {
+            const summaryDiv = document.getElementById('orderSummary');
+            const rechargeAmount = document.getElementById('rechargeAmount').value;
+            const adAccountId = document.getElementById('adAccountId').value;
+            const companyName = document.getElementById('companyName').value;
+            const paymentType = document.getElementById('paymentType').value;
+            const rechargeRemark = document.getElementById('rechargeRemark').value;
+            
+            const paymentTypeText = paymentType === 'business' ? '对公转账' : '对私转账';
+            
+            summaryDiv.innerHTML = `
+                <div class="summary-row">
+                    <span>充值金额:</span>
+                    <span>¥${parseFloat(rechargeAmount).toLocaleString()}</span>
+                </div>
+                <div class="summary-row">
+                    <span>广告账户ID:</span>
+                    <span>${adAccountId}</span>
+                </div>
+                ${companyName ? `<div class="summary-row">
+                    <span>开户主体:</span>
+                    <span>${companyName}</span>
+                </div>` : ''}
+                <div class="summary-row">
+                    <span>支付类型:</span>
+                    <span>${paymentTypeText}</span>
+                </div>
+                <div class="summary-row">
+                    <span>收款账户:</span>
+                    <span>${selectedReceivingAccount.accountName}</span>
+                </div>
+                ${rechargeRemark ? `<div class="summary-row">
+                    <span>备注:</span>
+                    <span>${rechargeRemark}</span>
+                </div>` : ''}
+                <div class="summary-row">
+                    <span>总计:</span>
+                    <span>¥${parseFloat(rechargeAmount).toLocaleString()}</span>
+                </div>
+            `;
+        }
+        
+        // 订单提交
+        document.getElementById('orderConfirmForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            recordBehavior('order_submitted', {
+                amount: document.getElementById('rechargeAmount').value,
+                accountId: document.getElementById('adAccountId').value,
+                paymentType: document.getElementById('paymentType').value,
+                receivingAccountId: selectedReceivingAccount?.id
+            });
+            
+            const submitBtn = document.getElementById('submitOrderBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="btn__icon">⏳</span>提交中...';
+            
+            // 生成订单号
+            rechargeOrderId = 'cj' + (document.getElementById('paymentType').value === 'business' ? '1' : '0') + 
+                              new Date().toISOString().slice(2, 10).replace(/-/g, '') +
+                              new Date().toTimeString().slice(0, 8).replace(/:/g, '') +
+                              String(Math.floor(Math.random() * 99999)).padStart(5, '0');
+            
+            // 显示机器人通知
+            showBotNotification();
+            
+            setTimeout(() => {
+                showCurrencyCredit();
+            }, 2000);
+        });
+        
+        function showBotNotification() {
+            const section = document.getElementById('botNotificationSection');
+            const status = document.getElementById('botNotificationStatus');
+            
+            section.style.display = 'block';
+            
+            setTimeout(() => {
+                status.innerHTML = `
+                    <div class="bot-icon">✅</div>
+                    <div class="bot-status">机器人通知已发送</div>
+                    <div class="bot-details">充值通知已成功发送到飞书和企业微信</div>
+                `;
+            }, 3000);
+        }
+        
+        function showCurrencyCredit() {
+            const section = document.getElementById('currencyCreditSection');
+            section.style.display = 'block';
+            
+            // 模拟处理流程
+            setTimeout(() => {
+                document.getElementById('step-verify').className = 'step-icon completed';
+                document.getElementById('step-credit').className = 'step-icon processing';
+                document.getElementById('creditDetails').innerHTML = '<p>正在进行账户币值加值...</p>';
+            }, 2000);
+            
+            setTimeout(() => {
+                document.getElementById('step-credit').className = 'step-icon completed';
+                document.getElementById('step-confirm').className = 'step-icon processing';
+                document.getElementById('creditDetails').innerHTML = '<p>正在确认充值完成...</p>';
+            }, 4000);
+            
+            setTimeout(() => {
+                document.getElementById('step-confirm').className = 'step-icon completed';
+                document.getElementById('creditDetails').innerHTML = '<p>✅ 充值处理完成！</p>';
+                
+                // 进入结果页面
+                setTimeout(() => {
+                    nextStep(4);
+                    showProcessResult(true);
+                }, 1000);
+            }, 6000);
+        }
+        
+        function showProcessResult(isSuccess) {
+            const resultCard = document.getElementById('processResultCard');
+            const downloadBtn = document.getElementById('downloadReceiptBtn');
+            const viewOrderBtn = document.getElementById('viewOrderBtn');
+            
+            if (isSuccess) {
+                resultCard.className = 'result-card success';
+                resultCard.innerHTML = `
+                    <div class="success-icon" style="font-size: 4rem; color: #10b981; margin-bottom: 1rem;">✅</div>
+                    <h3 style="color: #10b981; margin-bottom: 1rem;">充值处理成功！</h3>
+                    <div class="result-details">
+                        <p><strong>订单号：</strong>${rechargeOrderId}</p>
+                        <p><strong>充值金额：</strong>¥${document.getElementById('rechargeAmount').value}</p>
+                        <p><strong>广告账户：</strong>${document.getElementById('adAccountId').value}</p>
+                        <p><strong>状态：</strong><span class="badge bg-success">已完成</span></p>
+                        <p><strong>完成时间：</strong>${new Date().toLocaleString()}</p>
+                    </div>
+                    <div class="next-steps mt-3">
+                        <h5>处理流程：</h5>
+                        <ul class="list-unstyled">
+                            <li>✓ 充值信息验证</li>
+                            <li>✓ 收款账户匹配</li>
+                            <li>✓ 机器人通知发送</li>
+                            <li>✓ 账户币值加值</li>
+                            <li>✓ 充值流程完成</li>
+                        </ul>
+                    </div>
+                `;
+                downloadBtn.style.display = 'inline-block';
+                viewOrderBtn.style.display = 'inline-block';
+            }
+            
+            // 记录最终结果
+            recordBehavior('process_completed', {
+                success: isSuccess,
+                orderId: rechargeOrderId,
+                amount: document.getElementById('rechargeAmount').value
+            });
+        }
+        
+        function resetForm() {
+            // 记录重置行为
+            recordBehavior('form_reset', {});
+            
+            // 重置所有状态
+            currentStep = 1;
+            selectedReceivingAccount = null;
+            rechargeOrderId = null;
+            
+            // 重置步骤显示
+            document.querySelectorAll('.step-card').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index === 0) {
+                    step.classList.add('active');
+                }
+            });
+            
+            // 清空表单
+            document.getElementById('rechargeInfoForm').reset();
+            document.getElementById('orderConfirmForm').reset();
+            
+            // 隐藏相关部分
+            document.getElementById('botNotificationSection').style.display = 'none';
+            document.getElementById('currencyCreditSection').style.display = 'none';
+            
+            // 重置按钮状态
+            document.getElementById('submitOrderBtn').innerHTML = '<span class="btn__icon">💰</span>确认提交订单';
+            document.getElementById('submitOrderBtn').disabled = false;
+            document.getElementById('selectAccountBtn').disabled = true;
+        }
+        
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info'} position-fixed`;
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'warning' ? 'exclamation-triangle' : 'info'}-circle me-2"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+        
+        function downloadReceipt() {
+            recordBehavior('receipt_downloaded', { orderId: rechargeOrderId });
+            
+            const receiptData = `
+充值收据
+==================
+订单号：${rechargeOrderId}
+充值时间：${new Date().toLocaleString()}
+充值金额：¥${document.getElementById('rechargeAmount').value}
+广告账户：${document.getElementById('adAccountId').value}
+状态：已完成
+==================
+CJPayment 充值系统
+            `;
+            
+            const blob = new Blob([receiptData], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `充值收据_${rechargeOrderId}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // 绑定事件
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('downloadReceiptBtn')?.addEventListener('click', downloadReceipt);
+            
+            // 根据URL参数预设表单
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('merchant_id')) {
+                const companyField = document.getElementById('companyName');
+                // 这里可以根据merchant_id查询并预设公司名
+                recordBehavior('merchant_link_accessed', { merchantId: urlParams.get('merchant_id') });
+            }
+            
+            console.log('新版充值页面已加载，当前步骤：', currentStep);
+        });
+    </script>
+    
+    <script src="../static/js/components.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

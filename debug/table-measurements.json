@@ -1,0 +1,126 @@
+{
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "dashboardTable": {
+    "name": "dashboard__table",
+    "exists": true,
+    "width": 1152,
+    "height": 481,
+    "scrollWidth": 1152,
+    "scrollHeight": 966,
+    "offsetWidth": 1152,
+    "offsetHeight": 481,
+    "overflow": {
+      "x": "visible",
+      "y": "visible"
+    },
+    "padding": {
+      "left": "0px",
+      "right": "0px",
+      "top": "0px",
+      "bottom": "0px"
+    },
+    "margin": {
+      "left": "0px",
+      "right": "0px",
+      "top": "0px",
+      "bottom": "0px"
+    },
+    "isOverflowing": {
+      "horizontal": false,
+      "vertical": true
+    }
+  },
+  "card": {
+    "name": "recentTransactionsCard",
+    "exists": true,
+    "width": 1152,
+    "height": 481,
+    "scrollWidth": 1150,
+    "scrollHeight": 965,
+    "offsetWidth": 1152,
+    "offsetHeight": 481,
+    "overflow": {
+      "x": "visible",
+      "y": "visible"
+    },
+    "padding": {
+      "left": "32px",
+      "right": "32px",
+      "top": "32px",
+      "bottom": "32px"
+    },
+    "margin": {
+      "left": "0px",
+      "right": "0px",
+      "top": "0px",
+      "bottom": "0px"
+    },
+    "isOverflowing": {
+      "horizontal": false,
+      "vertical": true
+    }
+  },
+  "tableContainer": {
+    "name": "table-container",
+    "exists": true,
+    "width": 1038,
+    "height": 706.3984375,
+    "scrollWidth": 1036,
+    "scrollHeight": 704,
+    "offsetWidth": 1038,
+    "offsetHeight": 706,
+    "overflow": {
+      "x": "hidden",
+      "y": "hidden"
+    },
+    "padding": {
+      "left": "0px",
+      "right": "0px",
+      "top": "0px",
+      "bottom": "0px"
+    },
+    "margin": {
+      "left": "0px",
+      "right": "0px",
+      "top": "0px",
+      "bottom": "24px"
+    },
+    "isOverflowing": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  "table": {
+    "name": "recentTransactionsTable",
+    "exists": true,
+    "width": 1036,
+    "height": 704.3984375,
+    "scrollWidth": 1036,
+    "scrollHeight": 704,
+    "offsetWidth": 1036,
+    "offsetHeight": 704,
+    "overflow": {
+      "x": "visible",
+      "y": "visible"
+    },
+    "padding": {
+      "left": "0px",
+      "right": "0px",
+      "top": "0px",
+      "bottom": "0px"
+    },
+    "margin": {
+      "left": "0px",
+      "right": "0px",
+      "top": "0px",
+      "bottom": "0px"
+    },
+    "isOverflowing": {
+      "horizontal": false,
+      "vertical": false
+    }
+  }
+}

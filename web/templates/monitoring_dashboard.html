@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>监控仪表板 - 充值测试系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .metric-card {
+            transition: transform 0.2s;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+        .status-healthy {
+            color: #28a745;
+        }
+        .status-warning {
+            color: #ffc107;
+        }
+        .status-critical {
+            color: #dc3545;
+        }
+        .alert-item {
+            border-left: 4px solid;
+        }
+        .alert-warning {
+            border-left-color: #ffc107;
+        }
+        .alert-critical {
+            border-left-color: #dc3545;
+        }
+        .alert-info {
+            border-left-color: #17a2b8;
+        }
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-chart-line me-2"></i>
+                监控仪表板
+            </span>
+            <div class="d-flex">
+                <span class="navbar-text me-3" id="lastUpdate">
+                    最后更新: --
+                </span>
+                <button class="btn btn-outline-light btn-sm" onclick="refreshDashboard()">
+                    <i class="fas fa-sync-alt"></i> 刷新
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <!-- 系统状态概览 -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-heartbeat me-2"></i>
+                            系统状态概览
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="systemStatus">
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <i class="fas fa-server fa-2x mb-2" id="systemStatusIcon"></i>
+                                    <h6>系统状态</h6>
+                                    <span class="badge" id="systemStatusBadge">检查中...</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <i class="fas fa-database fa-2x mb-2" id="dbStatusIcon"></i>
+                                    <h6>数据库</h6>
+                                    <span class="badge" id="dbStatusBadge">检查中...</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <i class="fas fa-memory fa-2x mb-2" id="redisStatusIcon"></i>
+                                    <h6>Redis缓存</h6>
+                                    <span class="badge" id="redisStatusBadge">检查中...</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center">
+                                    <i class="fas fa-clock fa-2x mb-2"></i>
+                                    <h6>运行时间</h6>
+                                    <span class="text-muted" id="uptime">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 业务指标 -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card metric-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shopping-cart fa-2x text-primary mb-2"></i>
+                        <h3 class="text-primary" id="totalOrders">--</h3>
+                        <p class="text-muted mb-0">今日订单总数</p>
+                        <small class="text-success" id="ordersGrowth">--</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card metric-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                        <h3 class="text-success" id="successRate">--%</h3>
+                        <p class="text-muted mb-0">成功率</p>
+                        <small class="text-muted" id="successCount">--</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card metric-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-dollar-sign fa-2x text-warning mb-2"></i>
+                        <h3 class="text-warning" id="totalAmount">--</h3>
+                        <p class="text-muted mb-0">今日交易金额</p>
+                        <small class="text-info" id="avgAmount">--</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card metric-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-2x text-info mb-2"></i>
+                        <h3 class="text-info" id="activeMerchants">--</h3>
+                        <p class="text-muted mb-0">活跃商户</p>
+                        <small class="text-muted" id="totalMerchants">--</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表和告警 -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-area me-2"></i>
+                            订单趋势
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="ordersChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            最近告警
+                        </h5>
+                    </div>
+                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                        <div id="alertsList">
+                            <div class="text-center text-muted">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                加载中...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 系统性能指标 -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            系统性能
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">平均响应时间</label>
+                                    <div class="progress">
+                                        <div class="progress-bar" id="responseTimeBar" style="width: 0%"></div>
+                                    </div>
+                                    <small class="text-muted" id="responseTimeText">-- ms</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">错误率</label>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-danger" id="errorRateBar" style="width: 0%"></div>
+                                    </div>
+                                    <small class="text-muted" id="errorRateText">--%</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">活跃连接数</label>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" id="connectionsBar" style="width: 0%"></div>
+                                    </div>
+                                    <small class="text-muted" id="connectionsText">--</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label class="form-label">内存使用率</label>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" id="memoryBar" style="width: 0%"></div>
+                                    </div>
+                                    <small class="text-muted" id="memoryText">--%</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-credit-card me-2"></i>
+                            账号状态
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="accountsChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 刷新按钮 -->
+    <button class="btn btn-primary refresh-btn" onclick="refreshDashboard()" title="刷新数据">
+        <i class="fas fa-sync-alt"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let ordersChart, accountsChart;
+        let refreshInterval;
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            refreshDashboard();
+            
+            // 设置自动刷新
+            refreshInterval = setInterval(refreshDashboard, 30000); // 30秒刷新一次
+        });
+
+        // 初始化图表
+        function initCharts() {
+            // 订单趋势图表
+            const ordersCtx = document.getElementById('ordersChart').getContext('2d');
+            ordersChart = new Chart(ordersCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: '订单数量',
+                        data: [],
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // 账号状态饼图
+            const accountsCtx = document.getElementById('accountsChart').getContext('2d');
+            accountsChart = new Chart(accountsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['正常', '警告', '限额'],
+                    datasets: [{
+                        data: [0, 0, 0],
+                        backgroundColor: [
+                            'rgba(40, 167, 69, 0.8)',
+                            'rgba(255, 193, 7, 0.8)',
+                            'rgba(220, 53, 69, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // 刷新仪表板数据
+        async function refreshDashboard() {
+            try {
+                // 显示加载状态
+                showLoading();
+
+                // 获取监控数据
+                const response = await fetch('/monitoring/dashboard');
+                const data = await response.json();
+
+                // 更新系统状态
+                updateSystemStatus(data.system_status);
+
+                // 更新业务指标
+                updateBusinessMetrics(data.metrics_summary);
+
+                // 更新告警列表
+                updateAlertsList(data.alert_history);
+
+                // 更新图表
+                updateCharts(data.metrics_summary);
+
+                // 更新最后更新时间
+                document.getElementById('lastUpdate').textContent = 
+                    '最后更新: ' + new Date().toLocaleTimeString();
+
+            } catch (error) {
+                console.error('刷新数据失败:', error);
+                showError('数据刷新失败，请稍后重试');
+            }
+        }
+
+        // 显示加载状态
+        function showLoading() {
+            // 可以添加加载动画
+        }
+
+        // 更新系统状态
+        function updateSystemStatus(systemStatus) {
+            const isHealthy = systemStatus.healthy;
+            
+            // 更新系统状态图标和徽章
+            const systemIcon = document.getElementById('systemStatusIcon');
+            const systemBadge = document.getElementById('systemStatusBadge');
+            
+            if (isHealthy) {
+                systemIcon.className = 'fas fa-server fa-2x mb-2 status-healthy';
+                systemBadge.className = 'badge bg-success';
+                systemBadge.textContent = '正常';
+            } else {
+                systemIcon.className = 'fas fa-server fa-2x mb-2 status-critical';
+                systemBadge.className = 'badge bg-danger';
+                systemBadge.textContent = '异常';
+            }
+
+            // 更新数据库状态
+            const dbCheck = systemStatus.checks?.database;
+            const dbIcon = document.getElementById('dbStatusIcon');
+            const dbBadge = document.getElementById('dbStatusBadge');
+            
+            if (dbCheck?.healthy) {
+                dbIcon.className = 'fas fa-database fa-2x mb-2 status-healthy';
+                dbBadge.className = 'badge bg-success';
+                dbBadge.textContent = '正常';
+            } else {
+                dbIcon.className = 'fas fa-database fa-2x mb-2 status-critical';
+                dbBadge.className = 'badge bg-danger';
+                dbBadge.textContent = '异常';
+            }
+
+            // 更新Redis状态
+            const redisCheck = systemStatus.checks?.redis;
+            const redisIcon = document.getElementById('redisStatusIcon');
+            const redisBadge = document.getElementById('redisStatusBadge');
+            
+            if (redisCheck?.healthy) {
+                redisIcon.className = 'fas fa-memory fa-2x mb-2 status-healthy';
+                redisBadge.className = 'badge bg-success';
+                redisBadge.textContent = '正常';
+            } else {
+                redisIcon.className = 'fas fa-memory fa-2x mb-2 status-critical';
+                redisBadge.className = 'badge bg-danger';
+                redisBadge.textContent = '异常';
+            }
+
+            // 更新运行时间
+            document.getElementById('uptime').textContent = systemStatus.uptime || '--';
+        }
+
+        // 更新业务指标
+        function updateBusinessMetrics(metrics) {
+            if (!metrics) return;
+
+            const orders = metrics.orders || {};
+            const accounts = metrics.accounts || {};
+            const merchants = metrics.merchants || {};
+            const system = metrics.system || {};
+
+            // 更新订单指标
+            document.getElementById('totalOrders').textContent = orders.total_today || '--';
+            document.getElementById('successRate').textContent = 
+                ((orders.success_rate || 0) * 100).toFixed(1) + '%';
+            document.getElementById('totalAmount').textContent = 
+                '¥' + (orders.total_amount || 0).toLocaleString();
+            document.getElementById('activeMerchants').textContent = merchants.total_active || '--';
+
+            // 更新系统性能指标
+            updatePerformanceMetrics(system);
+        }
+
+        // 更新性能指标
+        function updatePerformanceMetrics(system) {
+            // 响应时间
+            const responseTime = system.response_time_avg || 0;
+            const responseTimePercent = Math.min((responseTime / 5) * 100, 100); // 5秒为100%
+            document.getElementById('responseTimeBar').style.width = responseTimePercent + '%';
+            document.getElementById('responseTimeText').textContent = (responseTime * 1000).toFixed(0) + ' ms';
+
+            // 错误率
+            const errorRate = (system.error_rate || 0) * 100;
+            document.getElementById('errorRateBar').style.width = Math.min(errorRate * 20, 100) + '%'; // 5%为100%
+            document.getElementById('errorRateText').textContent = errorRate.toFixed(2) + '%';
+
+            // 连接数
+            const connections = system.active_connections || 0;
+            const connectionsPercent = Math.min((connections / 100) * 100, 100); // 100为100%
+            document.getElementById('connectionsBar').style.width = connectionsPercent + '%';
+            document.getElementById('connectionsText').textContent = connections;
+
+            // 内存使用率（模拟数据）
+            const memoryUsage = Math.random() * 80 + 10; // 10-90%
+            document.getElementById('memoryBar').style.width = memoryUsage + '%';
+            document.getElementById('memoryText').textContent = memoryUsage.toFixed(1) + '%';
+        }
+
+        // 更新告警列表
+        function updateAlertsList(alerts) {
+            const alertsList = document.getElementById('alertsList');
+            
+            if (!alerts || alerts.length === 0) {
+                alertsList.innerHTML = '<div class="text-center text-muted">暂无告警</div>';
+                return;
+            }
+
+            let html = '';
+            alerts.slice(0, 10).forEach(alert => {
+                const levelClass = alert.level === 'critical' ? 'alert-critical' : 
+                                 alert.level === 'warning' ? 'alert-warning' : 'alert-info';
+                const levelText = alert.level === 'critical' ? '严重' : 
+                                alert.level === 'warning' ? '警告' : '信息';
+                const timeAgo = getTimeAgo(new Date(alert.timestamp));
+
+                html += `
+                    <div class="alert-item ${levelClass} p-2 mb-2 bg-light rounded">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <strong>${alert.title}</strong>
+                                <br>
+                                <small class="text-muted">${alert.message}</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-secondary">${levelText}</span>
+                                <br>
+                                <small class="text-muted">${timeAgo}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            alertsList.innerHTML = html;
+        }
+
+        // 更新图表
+        function updateCharts(metrics) {
+            // 更新订单趋势图表（模拟数据）
+            const now = new Date();
+            const labels = [];
+            const data = [];
+            
+            for (let i = 23; i >= 0; i--) {
+                const time = new Date(now.getTime() - i * 60 * 60 * 1000);
+                labels.push(time.getHours() + ':00');
+                data.push(Math.floor(Math.random() * 20) + 5);
+            }
+
+            ordersChart.data.labels = labels;
+            ordersChart.data.datasets[0].data = data;
+            ordersChart.update();
+
+            // 更新账号状态图表
+            const accounts = metrics?.accounts || {};
+            accountsChart.data.datasets[0].data = [
+                accounts.total_active - accounts.high_utilization || 0,
+                accounts.high_utilization || 0,
+                accounts.limit_warnings || 0
+            ];
+            accountsChart.update();
+        }
+
+        // 获取相对时间
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            
+            if (minutes < 1) return '刚刚';
+            if (minutes < 60) return minutes + '分钟前';
+            
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return hours + '小时前';
+            
+            const days = Math.floor(hours / 24);
+            return days + '天前';
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            // 可以使用Toast或其他方式显示错误
+            console.error(message);
+        }
+
+        // 页面卸载时清理定时器
+        window.addEventListener('beforeunload', function() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+        });
+    </script>
+</body>
+</html>

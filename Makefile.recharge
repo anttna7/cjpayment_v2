@@ -1,0 +1,314 @@
+# Makefile for Recharge Testing System
+# This Makefile provides commands for building, testing, and deploying the recharge testing system
+
+.PHONY: help build test clean docker-build docker-run deploy health-check
+
+# Variables
+APP_NAME := recharge-system
+VERSION := $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
+BUILD_TIME := $(shell date -u '+%Y-%m-%d_%H:%M:%S')
+GIT_COMMIT := $(shell git rev-parse HEAD 2>/dev/null || echo "unknown")
+LDFLAGS := -ldflags "-X main.Version=$(VERSION) -X main.BuildTime=$(BUILD_TIME) -X main.GitCommit=$(GIT_COMMIT) -w -s"
+
+# Go related variables
+GOCMD := go
+GOBUILD := $(GOCMD) build
+GOCLEAN := $(GOCMD) clean
+GOTEST := $(GOCMD) test
+GOGET := $(GOCMD) get
+GOMOD := $(GOCMD) mod
+GOFMT := $(GOCMD) fmt
+
+# Docker related variables
+DOCKER_IMAGE := $(APP_NAME)
+DOCKER_TAG := $(VERSION)
+DOCKERFILE := Dockerfile.recharge
+
+# Environment
+ENV := development
+CONFIG_FILE := configs/config.recharge.$(ENV).yaml
+
+# Directories
+BUILD_DIR := build
+DIST_DIR := dist
+LOGS_DIR := logs
+
+# Default target
+help: ## Show this help message
+	@echo "Recharge Testing System - Available commands:"
+	@echo ""
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@echo ""
+
+# Build targets
+build: ## Build the application binary
+	@echo "Building $(APP_NAME) version $(VERSION)..."
+	@mkdir -p $(BUILD_DIR)
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(APP_NAME) ./cmd/api
+	@echo "Build completed: $(BUILD_DIR)/$(APP_NAME)"
+
+build-local: ## Build for local development
+	@echo "Building $(APP_NAME) for local development..."
+	@mkdir -p $(BUILD_DIR)
+	$(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(APP_NAME) ./cmd/api
+	@echo "Local build completed: $(BUILD_DIR)/$(APP_NAME)"
+
+build-all: ## Build for all platforms
+	@echo "Building $(APP_NAME) for all platforms..."
+	@mkdir -p $(DIST_DIR)
+	
+	# Linux AMD64
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(DIST_DIR)/$(APP_NAME)-linux-amd64 ./cmd/api
+	
+	# Linux ARM64
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 $(GOBUILD) $(LDFLAGS) -o $(DIST_DIR)/$(APP_NAME)-linux-arm64 ./cmd/api
+	
+	# macOS AMD64
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(DIST_DIR)/$(APP_NAME)-darwin-amd64 ./cmd/api
+	
+	# macOS ARM64
+	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 $(GOBUILD) $(LDFLAGS) -o $(DIST_DIR)/$(APP_NAME)-darwin-arm64 ./cmd/api
+	
+	# Windows AMD64
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(DIST_DIR)/$(APP_NAME)-windows-amd64.exe ./cmd/api
+	
+	@echo "Multi-platform build completed in $(DIST_DIR)/"
+
+# Test targets
+test: ## Run all tests
+	@echo "Running tests..."
+	$(GOTEST) -v -race -coverprofile=coverage.out ./...
+	@echo "Tests completed"
+
+test-unit: ## Run unit tests only
+	@echo "Running unit tests..."
+	$(GOTEST) -v -short ./...
+
+test-integration: ## Run integration tests
+	@echo "Running integration tests..."
+	$(GOTEST) -v -tags=integration ./tests/integration/...
+
+test-performance: ## Run performance tests
+	@echo "Running performance tests..."
+	$(GOTEST) -v -bench=. -benchmem ./tests/performance/...
+
+test-coverage: ## Generate test coverage report
+	@echo "Generating coverage report..."
+	$(GOTEST) -coverprofile=coverage.out ./...
+	$(GOCMD) tool cover -html=coverage.out -o coverage.html
+	@echo "Coverage report generated: coverage.html"
+
+# Code quality targets
+fmt: ## Format Go code
+	@echo "Formatting code..."
+	$(GOFMT) ./...
+
+vet: ## Run go vet
+	@echo "Running go vet..."
+	$(GOCMD) vet ./...
+
+lint: ## Run golangci-lint
+	@echo "Running linter..."
+	@if command -v golangci-lint >/dev/null 2>&1; then \
+		golangci-lint run; \
+	else \
+		echo "golangci-lint not installed. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest"; \
+	fi
+
+# Dependency management
+deps: ## Download dependencies
+	@echo "Downloading dependencies..."
+	$(GOMOD) download
+	$(GOMOD) tidy
+
+deps-update: ## Update dependencies
+	@echo "Updating dependencies..."
+	$(GOGET) -u ./...
+	$(GOMOD) tidy
+
+deps-vendor: ## Vendor dependencies
+	@echo "Vendoring dependencies..."
+	$(GOMOD) vendor
+
+# Database targets
+migrate-up: ## Run database migrations up
+	@echo "Running database migrations up..."
+	@if [ -f "$(BUILD_DIR)/$(APP_NAME)" ]; then \
+		./$(BUILD_DIR)/$(APP_NAME) migrate up --config $(CONFIG_FILE); \
+	else \
+		echo "Binary not found. Run 'make build' first."; \
+	fi
+
+migrate-down: ## Run database migrations down
+	@echo "Running database migrations down..."
+	@if [ -f "$(BUILD_DIR)/$(APP_NAME)" ]; then \
+		./$(BUILD_DIR)/$(APP_NAME) migrate down --config $(CONFIG_FILE); \
+	else \
+		echo "Binary not found. Run 'make build' first."; \
+	fi
+
+migrate-status: ## Check migration status
+	@echo "Checking migration status..."
+	@if [ -f "$(BUILD_DIR)/$(APP_NAME)" ]; then \
+		./$(BUILD_DIR)/$(APP_NAME) migrate status --config $(CONFIG_FILE); \
+	else \
+		echo "Binary not found. Run 'make build' first."; \
+	fi
+
+# Docker targets
+docker-build: ## Build Docker image
+	@echo "Building Docker image $(DOCKER_IMAGE):$(DOCKER_TAG)..."
+	docker build -f $(DOCKERFILE) -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
+	docker tag $(DOCKER_IMAGE):$(DOCKER_TAG) $(DOCKER_IMAGE):latest
+	@echo "Docker image built: $(DOCKER_IMAGE):$(DOCKER_TAG)"
+
+docker-run: ## Run Docker container
+	@echo "Running Docker container..."
+	docker run -d \
+		--name $(APP_NAME) \
+		-p 8080:8080 \
+		-e ENVIRONMENT=$(ENV) \
+		-v $(PWD)/configs:/app/configs:ro \
+		-v $(PWD)/uploads:/app/uploads \
+		$(DOCKER_IMAGE):$(DOCKER_TAG)
+	@echo "Container started: $(APP_NAME)"
+
+docker-stop: ## Stop Docker container
+	@echo "Stopping Docker container..."
+	docker stop $(APP_NAME) || true
+	docker rm $(APP_NAME) || true
+
+docker-logs: ## Show Docker container logs
+	docker logs -f $(APP_NAME)
+
+docker-compose-dev: ## Start development environment with Docker Compose
+	@echo "Starting development environment..."
+	docker-compose -f docker-compose.recharge.development.yml up -d
+	@echo "Development environment started"
+
+docker-compose-prod: ## Start production environment with Docker Compose
+	@echo "Starting production environment..."
+	docker-compose -f docker-compose.recharge.production.yml up -d
+	@echo "Production environment started"
+
+docker-compose-down: ## Stop Docker Compose environment
+	@echo "Stopping Docker Compose environment..."
+	docker-compose -f docker-compose.recharge.$(ENV).yml down
+	@echo "Environment stopped"
+
+# Development targets
+dev: build-local ## Build and run for development
+	@echo "Starting development server..."
+	@mkdir -p $(LOGS_DIR)
+	./$(BUILD_DIR)/$(APP_NAME) --config $(CONFIG_FILE) --env $(ENV)
+
+dev-watch: ## Run with file watching (requires air)
+	@echo "Starting development server with hot reload..."
+	@if command -v air >/dev/null 2>&1; then \
+		air -c .air.toml; \
+	else \
+		echo "Air not installed. Install with: go install github.com/cosmtrek/air@latest"; \
+		echo "Falling back to regular dev mode..."; \
+		make dev; \
+	fi
+
+# Deployment targets
+deploy-dev: ## Deploy to development environment
+	@echo "Deploying to development environment..."
+	./scripts/deploy-recharge-system.sh --environment development
+
+deploy-staging: ## Deploy to staging environment
+	@echo "Deploying to staging environment..."
+	./scripts/deploy-recharge-system.sh --environment staging
+
+deploy-prod: ## Deploy to production environment
+	@echo "Deploying to production environment..."
+	./scripts/deploy-recharge-system.sh --environment production
+
+# Utility targets
+clean: ## Clean build artifacts
+	@echo "Cleaning build artifacts..."
+	$(GOCLEAN)
+	rm -rf $(BUILD_DIR)
+	rm -rf $(DIST_DIR)
+	rm -f coverage.out coverage.html
+	@echo "Clean completed"
+
+health-check: ## Perform health check
+	@echo "Performing health check..."
+	./scripts/health-check.sh --verbose
+
+logs: ## Show application logs
+	@echo "Showing application logs..."
+	@if [ -f "/var/log/$(APP_NAME)/app.log" ]; then \
+		tail -f /var/log/$(APP_NAME)/app.log; \
+	elif [ -f "$(LOGS_DIR)/app.log" ]; then \
+		tail -f $(LOGS_DIR)/app.log; \
+	else \
+		echo "Log file not found"; \
+	fi
+
+status: ## Show application status
+	@echo "Application Status:"
+	@echo "=================="
+	@if systemctl is-active --quiet $(APP_NAME); then \
+		echo "Service: Running"; \
+		systemctl status $(APP_NAME) --no-pager -l; \
+	else \
+		echo "Service: Not running"; \
+	fi
+	@echo ""
+	@echo "Health Check:"
+	@curl -s http://localhost:8080/health | jq . 2>/dev/null || echo "Health endpoint not accessible"
+
+# Security targets
+security-scan: ## Run security scan
+	@echo "Running security scan..."
+	@if command -v gosec >/dev/null 2>&1; then \
+		gosec ./...; \
+	else \
+		echo "gosec not installed. Install with: go install github.com/securecodewarrior/gosec/v2/cmd/gosec@latest"; \
+	fi
+
+# Documentation targets
+docs: ## Generate documentation
+	@echo "Generating documentation..."
+	@if command -v godoc >/dev/null 2>&1; then \
+		echo "Starting documentation server at http://localhost:6060"; \
+		godoc -http=:6060; \
+	else \
+		echo "godoc not installed. Install with: go install golang.org/x/tools/cmd/godoc@latest"; \
+	fi
+
+# Release targets
+release: clean test build-all ## Create a release
+	@echo "Creating release $(VERSION)..."
+	@mkdir -p $(DIST_DIR)/$(VERSION)
+	@cp -r $(DIST_DIR)/$(APP_NAME)-* $(DIST_DIR)/$(VERSION)/
+	@cp README.md LICENSE $(DIST_DIR)/$(VERSION)/ 2>/dev/null || true
+	@cd $(DIST_DIR) && tar -czf $(APP_NAME)-$(VERSION).tar.gz $(VERSION)/
+	@echo "Release created: $(DIST_DIR)/$(APP_NAME)-$(VERSION).tar.gz"
+
+# Environment setup
+setup-dev: ## Setup development environment
+	@echo "Setting up development environment..."
+	@echo "Installing development dependencies..."
+	go install github.com/cosmtrek/air@latest
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+	go install github.com/securecodewarrior/gosec/v2/cmd/gosec@latest
+	go install golang.org/x/tools/cmd/godoc@latest
+	@echo "Creating necessary directories..."
+	@mkdir -p $(BUILD_DIR) $(DIST_DIR) $(LOGS_DIR) uploads
+	@echo "Development environment setup completed"
+
+# Show current configuration
+config: ## Show current configuration
+	@echo "Current Configuration:"
+	@echo "====================="
+	@echo "App Name: $(APP_NAME)"
+	@echo "Version: $(VERSION)"
+	@echo "Environment: $(ENV)"
+	@echo "Config File: $(CONFIG_FILE)"
+	@echo "Build Time: $(BUILD_TIME)"
+	@echo "Git Commit: $(GIT_COMMIT)"
+	@echo "Docker Image: $(DOCKER_IMAGE):$(DOCKER_TAG)"

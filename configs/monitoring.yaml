@@ -1,0 +1,156 @@
+# Monitoring Configuration
+monitoring:
+  enabled: true
+  port: 9090
+  path: "/metrics"
+  
+  # Prometheus metrics configuration
+  prometheus:
+    enabled: true
+    namespace: "cjpayment"
+    subsystem: "api"
+    
+    # Custom metrics
+    custom_metrics:
+      - name: "http_requests_total"
+        type: "counter"
+        help: "Total number of HTTP requests"
+        labels: ["method", "endpoint", "status"]
+      
+      - name: "http_request_duration_seconds"
+        type: "histogram"
+        help: "HTTP request duration in seconds"
+        labels: ["method", "endpoint"]
+        buckets: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10]
+      
+      - name: "database_connections_active"
+        type: "gauge"
+        help: "Number of active database connections"
+      
+      - name: "database_query_duration_seconds"
+        type: "histogram"
+        help: "Database query duration in seconds"
+        labels: ["query_type"]
+        buckets: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5]
+      
+      - name: "redis_operations_total"
+        type: "counter"
+        help: "Total number of Redis operations"
+        labels: ["operation", "status"]
+      
+      - name: "recharge_orders_total"
+        type: "counter"
+        help: "Total number of recharge orders"
+        labels: ["status", "payment_type"]
+      
+      - name: "recharge_amount_total"
+        type: "counter"
+        help: "Total recharge amount processed"
+        labels: ["currency", "payment_type"]
+      
+      - name: "webhook_notifications_total"
+        type: "counter"
+        help: "Total webhook notifications sent"
+        labels: ["status", "retry_count"]
+
+  # Health check configuration
+  health:
+    enabled: true
+    path: "/health"
+    checks:
+      - name: "database"
+        enabled: true
+        timeout: "5s"
+        interval: "30s"
+      
+      - name: "redis"
+        enabled: true
+        timeout: "3s"
+        interval: "30s"
+      
+      - name: "disk_space"
+        enabled: true
+        threshold: 90  # percentage
+        interval: "60s"
+      
+      - name: "memory"
+        enabled: true
+        threshold: 90  # percentage
+        interval: "60s"
+
+# Logging Configuration
+logging:
+  level: "info"  # debug, info, warn, error
+  format: "json"  # json, text
+  output: "stdout"  # stdout, file, both
+  
+  # File logging (when output includes file)
+  file:
+    path: "/app/logs/app.log"
+    max_size: 100  # MB
+    max_backups: 5
+    max_age: 30  # days
+    compress: true
+  
+  # Structured logging fields
+  fields:
+    service: "cjpayment"
+    version: "${VERSION}"
+    environment: "${APP_ENV}"
+  
+  # Log sampling (to reduce log volume in production)
+  sampling:
+    enabled: true
+    initial: 100
+    thereafter: 100
+
+# Alerting Configuration
+alerting:
+  enabled: true
+  
+  # Alert rules
+  rules:
+    - name: "high_error_rate"
+      condition: "error_rate > 0.05"  # 5% error rate
+      duration: "5m"
+      severity: "warning"
+      message: "High error rate detected"
+    
+    - name: "high_response_time"
+      condition: "avg_response_time > 2s"
+      duration: "5m"
+      severity: "warning"
+      message: "High response time detected"
+    
+    - name: "database_connection_failure"
+      condition: "database_health == 0"
+      duration: "1m"
+      severity: "critical"
+      message: "Database connection failure"
+    
+    - name: "redis_connection_failure"
+      condition: "redis_health == 0"
+      duration: "1m"
+      severity: "critical"
+      message: "Redis connection failure"
+    
+    - name: "high_memory_usage"
+      condition: "memory_usage > 90"
+      duration: "5m"
+      severity: "warning"
+      message: "High memory usage"
+    
+    - name: "high_disk_usage"
+      condition: "disk_usage > 90"
+      duration: "5m"
+      severity: "warning"
+      message: "High disk usage"
+
+# Tracing Configuration (optional)
+tracing:
+  enabled: false
+  jaeger:
+    endpoint: "http://jaeger:14268/api/traces"
+    service_name: "cjpayment"
+    sampler_type: "probabilistic"
+    sampler_param: 0.1  # 10% sampling rate

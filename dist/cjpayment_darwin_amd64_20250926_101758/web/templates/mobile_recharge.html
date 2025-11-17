@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CJ充值">
+    <meta name="theme-color" content="#667eea">
+    <meta name="format-detection" content="telephone=no">
+    
+    <title id="pageTitle">{{.Title}} - CJ充值</title>
+    
+    <!-- 预连接和DNS预解析 -->
+    <link rel="preconnect" href="{{.CDNHost}}">
+    <link rel="dns-prefetch" href="{{.APIHost}}">
+    
+    <!-- 图标和PWA配置 -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/icon-16x16.png">
+    <link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+    <link rel="manifest" href="/static/manifest.json">
+    
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="/static/css/mobile_recharge_enhanced.css">
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="/static/js/mobile_recharge_enhanced.js" as="script">
+    <link rel="preload" href="/static/fonts/icons.woff2" as="font" type="font/woff2" crossorigin>
+</head>
+<body class="mobile-recharge-body">
+    <!-- 网络状态指示器 -->
+    <div class="network-indicator" id="networkIndicator">
+        <i class="icon-wifi"></i>
+    </div>
+    
+    <!-- 下拉刷新指示器 -->
+    <div class="refresh-indicator" id="refreshIndicator">
+        <div class="refresh-spinner"></div>
+        <span class="refresh-text">下拉刷新</span>
+    </div>
+    
+    <!-- 顶部导航栏 -->
+    <header class="mobile-nav" id="mobileNav">
+        <div class="nav-content">
+            <button class="nav-back touch-target" id="navBack" aria-label="返回">
+                <i class="icon-arrow-left"></i>
+            </button>
+            <h1 class="nav-title" id="navTitle">{{.PageTitle}}</h1>
+            <div class="nav-actions">
+                <button class="nav-share touch-target" id="navShare" aria-label="分享" style="display: none;">
+                    <i class="icon-share"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 进度指示器 -->
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" style="width: 0%"></div>
+        </div>
+    </header>
+    
+    <!-- 主要内容区域 -->
+    <main class="mobile-main" id="mainContent">
+        <!-- 商户信息卡片 -->
+        <section class="merchant-card slide-in" id="merchantCard">
+            <div class="merchant-info">
+                <div class="merchant-icon">
+                    <i class="icon-store"></i>
+                </div>
+                <div class="merchant-details">
+                    <h2 id="merchantName">{{.MerchantName}}</h2>
+                    <p id="merchantDesc">{{.MerchantDescription}}</p>
+                </div>
+            </div>
+            
+            <!-- 安全认证标识 -->
+            <div class="security-badges">
+                <span class="badge security-badge">
+                    <i class="icon-shield"></i>
+                    银行级安全
+                </span>
+                <span class="badge verified-badge">
+                    <i class="icon-verified"></i>
+                    实名认证
+                </span>
+                <span class="badge encryption-badge">
+                    <i class="icon-lock"></i>
+                    SSL加密
+                </span>
+            </div>
+        </section>
+        
+        <!-- 充值表单 -->
+        <section class="form-container slide-in" id="rechargeForm">
+            <form id="mobileRechargeForm" novalidate>
+                <!-- 付款人信息 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="icon-user"></i>
+                        付款人信息
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="payerName">
+                            <i class="icon-person"></i>
+                            付款人姓名
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="payerName" 
+                            name="payer_name" 
+                            class="form-control touch-target" 
+                            placeholder="请输入付款人真实姓名"
+                            required
+                            autocomplete="name"
+                            data-validate="name"
+                        >
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="payerAccount">
+                            <i class="icon-credit-card"></i>
+                            付款账号
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="payerAccount" 
+                            name="payer_account" 
+                            class="form-control touch-target" 
+                            placeholder="请输入银行卡号或支付宝账号"
+                            required
+                            autocomplete="off"
+                            data-validate="account"
+                        >
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                
+                <!-- 充值信息 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="icon-dollar"></i>
+                        充值信息
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="amount">
+                            <i class="icon-money"></i>
+                            充值金额
+                            <span class="required">*</span>
+                        </label>
+                        <div class="amount-input-group">
+                            <span class="currency-symbol">¥</span>
+                            <input 
+                                type="number" 
+                                id="amount" 
+                                name="amount" 
+                                class="form-control touch-target" 
+                                placeholder="0.00"
+                                step="0.01" 
+                                min="0.01" 
+                                max="999999.99"
+                                required
+                                data-validate="amount"
+                            >
+                        </div>
+                        <div class="amount-suggestions" id="amountSuggestions">
+                            <button type="button" class="amount-btn" data-amount="100">100</button>
+                            <button type="button" class="amount-btn" data-amount="500">500</button>
+                            <button type="button" class="amount-btn" data-amount="1000">1000</button>
+                            <button type="button" class="amount-btn" data-amount="5000">5000</button>
+                        </div>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="adAccount">
+                            <i class="icon-target"></i>
+                            广告账户
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="adAccount" 
+                            name="ad_account" 
+                            class="form-control touch-target" 
+                            placeholder="请输入广告账户名称"
+                            required
+                            autocomplete="off"
+                            data-validate="adAccount"
+                        >
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                
+                <!-- 付款方式选择 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="icon-payment"></i>
+                        付款方式
+                    </h3>
+                    
+                    <div class="payment-options">
+                        <div class="payment-option">
+                            <input type="radio" id="bankTransfer" name="payment_type" value="bank" checked>
+                            <label class="payment-label touch-target" for="bankTransfer">
+                                <div class="payment-icon">
+                                    <i class="icon-bank"></i>
+                                </div>
+                                <div class="payment-info">
+                                    <div class="payment-title">银行转账</div>
+                                    <div class="payment-desc">支持所有银行卡转账</div>
+                                </div>
+                                <div class="payment-check">
+                                    <i class="icon-check"></i>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="payment-option">
+                            <input type="radio" id="alipay" name="payment_type" value="alipay">
+                            <label class="payment-label touch-target" for="alipay">
+                                <div class="payment-icon">
+                                    <i class="icon-alipay"></i>
+                                </div>
+                                <div class="payment-info">
+                                    <div class="payment-title">支付宝转账</div>
+                                    <div class="payment-desc">快速到账，便捷安全</div>
+                                </div>
+                                <div class="payment-check">
+                                    <i class="icon-check"></i>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="payment-option">
+                            <input type="radio" id="wechat" name="payment_type" value="wechat">
+                            <label class="payment-label touch-target" for="wechat">
+                                <div class="payment-icon">
+                                    <i class="icon-wechat"></i>
+                                </div>
+                                <div class="payment-info">
+                                    <div class="payment-title">微信转账</div>
+                                    <div class="payment-desc">微信扫码即可转账</div>
+                                </div>
+                                <div class="payment-check">
+                                    <i class="icon-check"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 备注信息 -->
+                <div class="form-section">
+                    <div class="form-group">
+                        <label class="form-label" for="remark">
+                            <i class="icon-note"></i>
+                            备注信息
+                        </label>
+                        <textarea 
+                            id="remark" 
+                            name="remark" 
+                            class="form-control touch-target" 
+                            placeholder="请输入备注信息（选填）"
+                            rows="3"
+                            maxlength="200"
+                        ></textarea>
+                        <div class="char-count">
+                            <span id="remarkCount">0</span>/200
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 提交按钮 -->
+                <button type="submit" class="submit-btn touch-target" id="submitBtn">
+                    <i class="icon-send"></i>
+                    创建充值订单
+                    <div class="btn-loading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </button>
+            </form>
+        </section>
+    </main>
+    
+    <!-- 收款信息底部弹窗 -->
+    <div class="bottom-sheet" id="paymentSheet">
+        <div class="sheet-backdrop"></div>
+        <div class="sheet-content">
+            <div class="sheet-header">
+                <div class="sheet-handle"></div>
+                <h3>
+                    <i class="icon-bank"></i>
+                    收款信息
+                </h3>
+                <button class="sheet-close touch-target" id="closePaymentSheet">
+                    <i class="icon-close"></i>
+                </button>
+            </div>
+            
+            <div class="sheet-body">
+                <!-- 订单信息 -->
+                <div class="order-info">
+                    <div class="order-number">
+                        <span class="label">订单号：</span>
+                        <span class="value" id="orderNumber">-</span>
+                        <button class="copy-btn touch-target" data-copy="orderNumber">
+                            <i class="icon-copy"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 金额显示 -->
+                <div class="amount-section">
+                    <div class="amount-label">应付金额</div>
+                    <div class="amount-value" id="paymentAmount">¥0.00</div>
+                </div>
+                
+                <!-- 收款账户信息 -->
+                <div class="account-section">
+                    <h4>
+                        <i class="icon-bank"></i>
+                        收款账户
+                    </h4>
+                    
+                    <div class="account-item">
+                        <span class="account-label">收款人</span>
+                        <div class="account-value">
+                            <span id="receiverName">-</span>
+                            <button class="copy-btn touch-target" data-copy="receiverName">
+                                <i class="icon-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="account-item">
+                        <span class="account-label">收款账号</span>
+                        <div class="account-value">
+                            <span id="receiverAccount">-</span>
+                            <button class="copy-btn touch-target" data-copy="receiverAccount">
+                                <i class="icon-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="account-item">
+                        <span class="account-label">开户银行</span>
+                        <div class="account-value">
+                            <span id="bankName">-</span>
+                            <button class="copy-btn touch-target" data-copy="bankName">
+                                <i class="icon-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="account-item">
+                        <span class="account-label">支行信息</span>
+                        <div class="account-value">
+                            <span id="bankBranch">-</span>
+                            <button class="copy-btn touch-target" data-copy="bankBranch">
+                                <i class="icon-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 付款说明 -->
+                <div class="instructions">
+                    <h4>
+                        <i class="icon-info"></i>
+                        付款说明
+                    </h4>
+                    <ul>
+                        <li>请确保付款账户与填写的付款人信息一致</li>
+                        <li>转账时请务必核对收款账户信息</li>
+                        <li>付款完成后请及时上传付款凭证</li>
+                        <li>如有疑问请联系客服：400-123-4567</li>
+                    </ul>
+                </div>
+                
+                <!-- 上传付款凭证 -->
+                <div class="upload-section">
+                    <h4>
+                        <i class="icon-camera"></i>
+                        上传付款凭证
+                    </h4>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="proofFile" accept="image/*" capture="environment">
+                        <div class="upload-content">
+                            <i class="icon-upload"></i>
+                            <p>点击上传或拍照</p>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-buttons">
+                        <button type="button" class="camera-btn touch-target" id="cameraBtn">
+                            <i class="icon-camera"></i>
+                            拍照
+                        </button>
+                        <button type="button" class="gallery-btn touch-target" id="galleryBtn">
+                            <i class="icon-image"></i>
+                            相册
+                        </button>
+                    </div>
+                    
+                    <div class="upload-preview" id="uploadPreview" style="display: none;">
+                        <img id="proofImage" alt="付款凭证">
+                        <button class="remove-btn touch-target" id="removeProof">
+                            <i class="icon-close"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 操作按钮 -->
+                <div class="action-buttons">
+                    <button class="btn-secondary touch-target" id="laterBtn">
+                        <i class="icon-clock"></i>
+                        稍后处理
+                    </button>
+                    <button class="btn-primary touch-target" id="confirmBtn">
+                        <i class="icon-check"></i>
+                        确认提交
+                    </button>
+                    <button class="share-btn touch-target" id="shareBtn" style="display: none;">
+                        <i class="icon-share"></i>
+                        分享订单
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 相机拍照模态框 -->
+    <div class="camera-modal" id="cameraModal" style="display: none;">
+        <div class="camera-container">
+            <video id="cameraVideo" autoplay playsinline></video>
+            <canvas id="cameraCanvas" style="display: none;"></canvas>
+            
+            <div class="camera-controls">
+                <button class="camera-control" id="cameraCancel">
+                    <i class="icon-close"></i>
+                </button>
+                <button class="camera-capture" id="cameraCapture">
+                    <i class="icon-camera"></i>
+                </button>
+                <button class="camera-control" id="cameraFlip">
+                    <i class="icon-flip"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 加载覆盖层 -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p id="loadingText">处理中...</p>
+        </div>
+    </div>
+    
+    <!-- Toast 容器 -->
+    <div class="toast-container" id="toastContainer"></div>
+    
+    <!-- PWA安装提示 -->
+    <div class="pwa-install-prompt" id="pwaInstallPrompt">
+        <div class="pwa-install-content">
+            <div class="pwa-install-icon">
+                <i class="icon-download"></i>
+            </div>
+            <div class="pwa-install-text">
+                <h3>安装应用</h3>
+                <p>添加到主屏幕，获得更好的使用体验</p>
+            </div>
+        </div>
+        <div class="pwa-install-actions">
+            <button class="pwa-dismiss-btn" id="pwaDismiss">稍后</button>
+            <button class="pwa-install-btn" id="pwaInstall">安装</button>
+        </div>
+    </div>
+    
+    <!-- 复制成功提示 -->
+    <div class="copy-success" id="copySuccess" style="display: none;">
+        已复制到剪贴板
+    </div>
+    
+    <!-- 预加载下一步所需资源 -->
+    <link rel="prefetch" href="/static/css/payment_result.css">
+    <link rel="prefetch" href="/static/js/payment_result.js">
+    
+    <!-- 无障碍支持 -->
+    <div class="sr-only" aria-live="polite" id="announcements"></div>
+    
+    <!-- 主脚本 -->
+    <script>
+        // 内联关键配置，避免额外请求
+        window.MobileRechargeConfig = {
+            apiBase: '{{.APIBase}}',
+            merchantId: '{{.MerchantID}}',
+            sessionToken: '{{.SessionToken}}',
+            maxAmount: {{.MaxAmount}},
+            supportedPayments: {{.SupportedPayments}},
+            features: {
+                camera: {{.EnableCamera}},
+                offline: {{.EnableOffline}},
+                pwa: {{.EnablePWA}},
+                vibration: {{.EnableVibration}},
+                share: {{.EnableShare}}
+            }
+        };
+    </script>
+    <script src="/static/js/mobile_recharge_enhanced.js" defer></script>
+</body>
+</html>

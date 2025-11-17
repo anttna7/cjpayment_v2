@@ -1,0 +1,212 @@
+# Prometheus Alert Rules
+groups:
+  - name: cjpayment.rules
+    rules:
+      # Application Health Alerts
+      - alert: ApplicationDown
+        expr: up{job="cjpayment-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: cjpayment
+        annotations:
+          summary: "CJPayment application is down"
+          description: "CJPayment application has been down for more than 1 minute"
+
+      - alert: HighErrorRate
+        expr: rate(cjpayment_http_requests_total{status=~"5.."}[5m]) / rate(cjpayment_http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: cjpayment
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value | humanizePercentage }} for the last 5 minutes"
+
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(cjpayment_http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: cjpayment
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is {{ $value }}s for the last 5 minutes"
+
+      # Database Alerts
+      - alert: DatabaseDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: database
+        annotations:
+          summary: "PostgreSQL database is down"
+          description: "PostgreSQL database has been down for more than 1 minute"
+
+      - alert: DatabaseConnectionsHigh
+        expr: cjpayment_database_connections_active > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "High number of database connections"
+          description: "Database has {{ $value }} active connections"
+
+      - alert: DatabaseSlowQueries
+        expr: histogram_quantile(0.95, rate(cjpayment_database_query_duration_seconds_bucket[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "Slow database queries detected"
+          description: "95th percentile query time is {{ $value }}s"
+
+      # Redis Alerts
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: redis
+        annotations:
+          summary: "Redis is down"
+          description: "Redis has been down for more than 1 minute"
+
+      - alert: RedisHighMemoryUsage
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          service: redis
+        annotations:
+          summary: "Redis high memory usage"
+          description: "Redis memory usage is {{ $value | humanizePercentage }}"
+
+      # System Resource Alerts
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage is {{ $value }}% on {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value }}% on {{ $labels.instance }}"
+
+      - alert: HighDiskUsage
+        expr: (1 - (node_filesystem_avail_bytes{fstype!="tmpfs"} / node_filesystem_size_bytes{fstype!="tmpfs"})) * 100 > 90
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High disk usage"
+          description: "Disk usage is {{ $value }}% on {{ $labels.instance }} ({{ $labels.mountpoint }})"
+
+      - alert: DiskSpaceLow
+        expr: (1 - (node_filesystem_avail_bytes{fstype!="tmpfs"} / node_filesystem_size_bytes{fstype!="tmpfs"})) * 100 > 95
+        for: 2m
+        labels:
+          severity: critical
+          service: system
+        annotations:
+          summary: "Disk space critically low"
+          description: "Disk usage is {{ $value }}% on {{ $labels.instance }} ({{ $labels.mountpoint }})"
+
+      # Business Logic Alerts
+      - alert: HighRechargeFailureRate
+        expr: rate(cjpayment_recharge_orders_total{status="failed"}[10m]) / rate(cjpayment_recharge_orders_total[10m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: business
+        annotations:
+          summary: "High recharge failure rate"
+          description: "Recharge failure rate is {{ $value | humanizePercentage }} for the last 10 minutes"
+
+      - alert: WebhookNotificationFailures
+        expr: rate(cjpayment_webhook_notifications_total{status="failed"}[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: webhook
+        annotations:
+          summary: "High webhook notification failure rate"
+          description: "Webhook notification failure rate is {{ $value }} per second"
+
+      - alert: NoRechargeOrders
+        expr: rate(cjpayment_recharge_orders_total[30m]) == 0
+        for: 30m
+        labels:
+          severity: warning
+          service: business
+        annotations:
+          summary: "No recharge orders processed"
+          description: "No recharge orders have been processed in the last 30 minutes"
+
+  - name: cjpayment.infrastructure
+    rules:
+      # Container Alerts
+      - alert: ContainerKilled
+        expr: time() - container_last_seen > 60
+        for: 0m
+        labels:
+          severity: warning
+          service: container
+        annotations:
+          summary: "Container killed"
+          description: "A container has disappeared"
+
+      - alert: ContainerCpuUsage
+        expr: (sum(rate(container_cpu_usage_seconds_total[3m])) BY (instance, name) * 100) > 80
+        for: 2m
+        labels:
+          severity: warning
+          service: container
+        annotations:
+          summary: "Container CPU usage"
+          description: "Container CPU usage is above 80%"
+
+      - alert: ContainerMemoryUsage
+        expr: (sum(container_memory_working_set_bytes) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 80
+        for: 2m
+        labels:
+          severity: warning
+          service: container
+        annotations:
+          summary: "Container Memory usage"
+          description: "Container Memory usage is above 80%"
+
+      # Network Alerts
+      - alert: HighNetworkReceive
+        expr: sum by (instance) (rate(node_network_receive_bytes_total[2m])) / 1024 / 1024 > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: network
+        annotations:
+          summary: "High network receive"
+          description: "Network interface is receiving {{ $value }} MB/s"
+
+      - alert: HighNetworkTransmit
+        expr: sum by (instance) (rate(node_network_transmit_bytes_total[2m])) / 1024 / 1024 > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: network
+        annotations:
+          summary: "High network transmit"
+          description: "Network interface is transmitting {{ $value }} MB/s"

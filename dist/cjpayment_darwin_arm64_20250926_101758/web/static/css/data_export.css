@@ -1,0 +1,655 @@
+/* 数据导出页面样式 */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-heading {
+    font-size: .875rem;
+    text-transform: uppercase;
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    margin: 0.125rem 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar .nav-link:hover {
+    color: #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+    color: #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.sidebar .nav-link i {
+    margin-right: 0.5rem;
+    width: 16px;
+    text-align: center;
+}
+
+main {
+    margin-left: 240px;
+    padding-top: 48px;
+}
+
+@media (max-width: 767.98px) {
+    .sidebar {
+        position: relative;
+        height: auto;
+        padding: 0;
+    }
+    
+    main {
+        margin-left: 0;
+        padding-top: 0;
+    }
+}
+
+/* 快速导出卡片 */
+.quick-export-card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.quick-export-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.quick-export-card .card-body {
+    padding: 2rem;
+}
+
+.quick-export-card .card-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.quick-export-card .card-text {
+    margin-bottom: 1.5rem;
+}
+
+/* 表格样式 */
+.table th {
+    background-color: #f8f9fa;
+    border-top: none;
+    font-weight: 600;
+    color: #495057;
+    white-space: nowrap;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* 状态标签 */
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-processing {
+    background-color: #cff4fc;
+    color: #055160;
+}
+
+.status-completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-failed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* 文件大小显示 */
+.file-size {
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+/* 导出类型图标 */
+.export-type-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+}
+
+.export-type-orders {
+    background-color: #e7f3ff;
+    color: #0066cc;
+}
+
+.export-type-merchants {
+    background-color: #fff2e7;
+    color: #cc6600;
+}
+
+.export-type-accounts {
+    background-color: #f0f9ff;
+    color: #0891b2;
+}
+
+.export-type-statistics {
+    background-color: #f3e8ff;
+    color: #7c3aed;
+}
+
+/* 字段选择 */
+.field-checkbox {
+    margin-bottom: 0.5rem;
+}
+
+.field-checkbox .form-check-input {
+    margin-top: 0.125rem;
+}
+
+.field-checkbox .form-check-label {
+    font-size: 0.875rem;
+    color: #495057;
+}
+
+.field-group {
+    background-color: #f8f9fa;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.field-group-title {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* 进度条样式 */
+.progress {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-bar-animated {
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+    0% {
+        background-position: 1rem 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+/* 模态框样式 */
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-title {
+    color: #495057;
+    font-weight: 600;
+}
+
+.modal-xl {
+    max-width: 1200px;
+}
+
+/* 数据预览 */
+.preview-table {
+    font-size: 0.875rem;
+}
+
+.preview-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    white-space: nowrap;
+    padding: 0.5rem;
+}
+
+.preview-table td {
+    padding: 0.5rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.preview-json {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* 视图切换 */
+.btn-check:checked + .btn {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+/* 操作按钮 */
+.btn-action {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin: 0 0.125rem;
+}
+
+.btn-group-sm > .btn, .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+}
+
+/* 下载链接 */
+.download-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.download-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.download-link i {
+    margin-right: 0.25rem;
+}
+
+/* 分页样式 */
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-link {
+    color: #007bff;
+    border-color: #dee2e6;
+}
+
+.page-link:hover {
+    color: #0056b3;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* 加载状态 */
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+}
+
+.loading .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* 空状态 */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .quick-export-card .card-body {
+        padding: 1.5rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .btn-action {
+        padding: 0.125rem 0.25rem;
+        font-size: 0.75rem;
+    }
+    
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .field-group {
+        padding: 0.75rem;
+    }
+}
+
+/* 工具提示 */
+.tooltip-inner {
+    background-color: #333;
+    color: #fff;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+/* 动画效果 */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 成功/错误消息 */
+.alert {
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+/* 定时任务卡片 */
+.schedule-card {
+    border-left: 4px solid #007bff;
+    background-color: #f8f9fa;
+}
+
+.schedule-card .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.schedule-card .schedule-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.schedule-card .schedule-name {
+    font-weight: 600;
+    color: #495057;
+}
+
+.schedule-card .schedule-frequency {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.schedule-card .schedule-next-run {
+    font-size: 0.875rem;
+    color: #007bff;
+}
+
+/* 导出统计 */
+.export-stats {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.export-stats .stats-item {
+    text-align: center;
+}
+
+.export-stats .stats-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.export-stats .stats-label {
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+/* 文件格式图标 */
+.file-format-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.format-xlsx {
+    background-color: #217346;
+    color: #fff;
+}
+
+.format-csv {
+    background-color: #0078d4;
+    color: #fff;
+}
+
+.format-pdf {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* 导出队列 */
+.export-queue {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.export-queue-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+    transition: background-color 0.2s ease;
+}
+
+.export-queue-item:hover {
+    background-color: #f8f9fa;
+}
+
+.export-queue-item:last-child {
+    border-bottom: none;
+}
+
+.export-queue-item .queue-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+}
+
+.export-queue-item .queue-info {
+    flex: 1;
+}
+
+.export-queue-item .queue-name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.export-queue-item .queue-details {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.export-queue-item .queue-progress {
+    width: 60px;
+    text-align: right;
+}
+
+/* 高级筛选 */
+.advanced-filters {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+}
+
+.advanced-filters .filter-group {
+    margin-bottom: 1rem;
+}
+
+.advanced-filters .filter-group:last-child {
+    margin-bottom: 0;
+}
+
+.advanced-filters .filter-title {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+}
+
+/* 数据脱敏提示 */
+.mask-info {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.mask-info .mask-icon {
+    color: #856404;
+    margin-right: 0.5rem;
+}
+
+.mask-info .mask-text {
+    font-size: 0.875rem;
+    color: #856404;
+    margin: 0;
+}
+
+/* 导出预设 */
+.export-preset {
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.export-preset:hover {
+    border-color: #007bff;
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.export-preset.selected {
+    border-color: #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.export-preset .preset-name {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.25rem;
+}
+
+.export-preset .preset-description {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin: 0;
+}

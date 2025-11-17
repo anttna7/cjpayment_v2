@@ -1,0 +1,690 @@
+/**
+ * 移动端优化样式
+ * 提供移动设备特有的样式和交互优化
+ */
+
+/* ==========================================================================
+   移动端基础样式
+   ========================================================================== */
+
+/* 移动端容器优化 */
+.is-mobile .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100%;
+}
+
+.is-mobile .container-fluid {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+/* 移动端网格优化 */
+.is-mobile .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+}
+
+.is-mobile .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
+/* 平板设备网格 */
+.is-tablet .grid-cols-3,
+.is-tablet .grid-cols-4,
+.is-tablet .grid-cols-6,
+.is-tablet .grid-cols-12 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+/* ==========================================================================
+   触摸优化
+   ========================================================================== */
+
+/* 触摸目标最小尺寸 */
+.is-touch .btn,
+.is-touch .form-input,
+.is-touch .nav-link,
+.is-touch .card-action {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* 触摸反馈 */
+.is-touch .touch-interactive {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    tap-highlight-color: rgba(0, 0, 0, 0.1);
+}
+
+.touch-active {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    transform: scale(0.98);
+    transition: all 0.1s ease;
+}
+
+/* 禁用文本选择（在某些交互元素上） */
+.is-touch .btn,
+.is-touch .nav-link,
+.is-touch .card-header {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* ==========================================================================
+   移动端导航
+   ========================================================================== */
+
+/* 移动端导航栏 */
+.is-mobile .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.is-mobile .navbar-hidden {
+    transform: translateY(-100%);
+}
+
+/* 导航切换按钮 */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.is-mobile .nav-toggle {
+    display: flex;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: currentColor;
+    margin: 2px 0;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.nav-toggle-active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-toggle-active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle-active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* 移动端菜单 */
+.nav-menu {
+    transition: transform 0.3s ease;
+}
+
+.is-mobile .nav-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    transform: translateX(-100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.is-mobile .nav-menu-open {
+    transform: translateX(0);
+}
+
+.is-mobile .nav-link {
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 1.125rem;
+}
+
+/* 菜单遮罩 */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.overlay-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 防止菜单打开时页面滚动 */
+.nav-open {
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   移动端表单优化
+   ========================================================================== */
+
+/* 表单输入框优化 */
+.is-mobile .form-input,
+.is-mobile .form-select,
+.is-mobile .form-textarea {
+    font-size: 16px; /* 防止iOS缩放 */
+    padding: 0.875rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.is-mobile .form-label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* 表单组优化 */
+.is-mobile .form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* 表单按钮优化 */
+.is-mobile .form-actions {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+    margin: 0 -1rem -1rem;
+}
+
+.is-mobile .form-actions .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.is-mobile .form-actions .btn:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   移动端卡片优化
+   ========================================================================== */
+
+/* 卡片间距优化 */
+.is-mobile .card {
+    margin-bottom: 1rem;
+    border-radius: 0.75rem;
+}
+
+.is-mobile .card-body {
+    padding: 1.25rem;
+}
+
+.is-mobile .card-header,
+.is-mobile .card-footer {
+    padding: 1rem 1.25rem;
+}
+
+/* 可滑动卡片 */
+.swipeable-card {
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.swipeable-card.swiped-left {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.swipeable-card.swiped-right {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+/* 可展开卡片 */
+.card-expandable-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.card-expanded .card-expandable-content {
+    max-height: none;
+}
+
+/* ==========================================================================
+   移动端表格优化
+   ========================================================================== */
+
+/* 响应式表格 */
+.is-mobile .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.is-mobile .table {
+    min-width: 600px;
+}
+
+/* 卡片式表格（移动端友好） */
+.is-mobile .table-card-view .table,
+.is-mobile .table-card-view thead,
+.is-mobile .table-card-view tbody,
+.is-mobile .table-card-view th,
+.is-mobile .table-card-view td,
+.is-mobile .table-card-view tr {
+    display: block;
+}
+
+.is-mobile .table-card-view thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+.is-mobile .table-card-view tr {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.is-mobile .table-card-view td {
+    border: none;
+    position: relative;
+    padding: 0.5rem 0;
+    padding-left: 40%;
+}
+
+.is-mobile .table-card-view td:before {
+    content: attr(data-label) ": ";
+    position: absolute;
+    left: 0;
+    width: 35%;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* ==========================================================================
+   移动端模态框优化
+   ========================================================================== */
+
+.is-mobile .modal-content {
+    margin: 1rem;
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100vh - 2rem);
+    border-radius: 1rem;
+}
+
+.is-mobile .modal-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.is-mobile .modal-body {
+    padding: 1.25rem;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.is-mobile .modal-footer {
+    padding: 1.25rem;
+    border-top: 1px solid #e5e7eb;
+    flex-direction: column;
+}
+
+.is-mobile .modal-footer .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.is-mobile .modal-footer .btn:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   移动端分页优化
+   ========================================================================== */
+
+.is-mobile .pagination {
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.is-mobile .pagination-info {
+    text-align: center;
+    order: 2;
+}
+
+.is-mobile .pagination-controls {
+    order: 1;
+    justify-content: center;
+}
+
+.is-mobile .page-btn {
+    min-width: 44px;
+    min-height: 44px;
+}
+
+/* ==========================================================================
+   移动端Toast通知优化
+   ========================================================================== */
+
+.is-mobile .toast-container {
+    top: auto;
+    bottom: 2rem;
+    left: 1rem;
+    right: 1rem;
+    max-width: none;
+}
+
+.is-mobile .toast {
+    margin-bottom: 0.75rem;
+    border-radius: 0.75rem;
+}
+
+/* ==========================================================================
+   iOS特定优化
+   ========================================================================== */
+
+/* iOS安全区域适配 */
+.is-ios {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+}
+
+.is-ios .navbar {
+    top: env(safe-area-inset-top);
+}
+
+.is-ios .form-actions {
+    bottom: env(safe-area-inset-bottom);
+}
+
+/* iOS滚动优化 */
+.is-ios .scrollable {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* iOS输入框优化 */
+.is-ios .form-input {
+    border-radius: 0.5rem; /* iOS默认圆角 */
+}
+
+/* ==========================================================================
+   Android特定优化
+   ========================================================================== */
+
+/* Android Material Design风格 */
+.is-android .btn {
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.is-android .card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Android状态栏颜色 */
+.is-android {
+    /* 通过meta标签设置，这里仅作标记 */
+}
+
+/* ==========================================================================
+   方向变化优化
+   ========================================================================== */
+
+/* 横屏模式 */
+.landscape .is-mobile .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.landscape .is-mobile .form-actions {
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.landscape .is-mobile .form-actions .btn {
+    width: auto;
+    flex: 1;
+    margin-bottom: 0;
+}
+
+/* 竖屏模式 */
+.portrait .is-mobile .navbar {
+    /* 竖屏特定样式 */
+}
+
+/* ==========================================================================
+   性能优化
+   ========================================================================== */
+
+/* 减少动画（低端设备） */
+.reduce-animations * {
+    animation-duration: 0.1s !important;
+    transition-duration: 0.1s !important;
+}
+
+.reduce-animations .card:hover {
+    transform: none !important;
+}
+
+.reduce-animations .btn:hover {
+    transform: none !important;
+}
+
+/* 硬件加速 */
+.is-mobile .card,
+.is-mobile .btn,
+.is-mobile .modal-content {
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* ==========================================================================
+   滚动优化
+   ========================================================================== */
+
+/* 滚动进度指示器 */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    z-index: 1001;
+    transition: width 0.1s ease;
+}
+
+/* 回到顶部按钮 */
+.scroll-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 56px;
+    height: 56px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+.is-mobile .scroll-to-top {
+    bottom: calc(2rem + env(safe-area-inset-bottom));
+    right: calc(2rem + env(safe-area-inset-right));
+}
+
+/* ==========================================================================
+   手势支持
+   ========================================================================== */
+
+/* 侧边栏滑动 */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100vh;
+    background: white;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar-open .sidebar {
+    left: 0;
+}
+
+.sidebar-open::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* 下拉刷新 */
+.pull-to-refresh {
+    position: relative;
+    overflow: hidden;
+}
+
+.pull-to-refresh-indicator {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: top 0.3s ease;
+}
+
+.pull-to-refresh.pulling .pull-to-refresh-indicator {
+    top: 20px;
+}
+
+/* ==========================================================================
+   可访问性优化
+   ========================================================================== */
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+    .is-mobile .btn {
+        border-width: 2px;
+    }
+    
+    .is-mobile .card {
+        border-width: 2px;
+    }
+    
+    .is-mobile .form-input {
+        border-width: 2px;
+    }
+}
+
+/* 减少动画模式 */
+@media (prefers-reduced-motion: reduce) {
+    .is-mobile * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 大字体支持 */
+@media (prefers-font-size: large) {
+    .is-mobile {
+        font-size: 1.125rem;
+    }
+    
+    .is-mobile .btn {
+        font-size: 1.125rem;
+        padding: 1rem 1.5rem;
+    }
+}
+
+/* ==========================================================================
+   调试和开发工具
+   ========================================================================== */
+
+/* 开发模式下显示设备信息 */
+.debug-mode::before {
+    content: 'Mobile: ' attr(data-is-mobile) ' | Touch: ' attr(data-is-touch) ' | Orientation: ' attr(data-orientation);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #f59e0b;
+    color: white;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    text-align: center;
+    z-index: 9999;
+}
+
+/* 触摸区域可视化（调试用） */
+.debug-touch .touch-interactive {
+    outline: 2px dashed #f59e0b;
+    outline-offset: 2px;
+}
+
+.debug-touch .touch-interactive::after {
+    content: '44x44';
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #f59e0b;
+    color: white;
+    font-size: 0.625rem;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0 0 0 0.25rem;
+}

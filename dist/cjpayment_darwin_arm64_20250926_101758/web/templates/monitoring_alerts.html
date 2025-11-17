@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>监控告警 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard-enhanced.css">
+    
+    <!-- Monitoring Specific CSS -->
+    <link rel="stylesheet" href="/static/css/monitoring-alerts.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+<body class="page-monitoring">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link nav__link--active" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">5</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>监控告警通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">内存使用率过高</div>
+                                    <div class="notification-text">当前内存使用率达到92.3%，请及时处理</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">3分钟前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">CPU使用率警告</div>
+                                    <div class="notification-text">CPU使用率持续超过75%</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">8分钟前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton" aria-expanded="false" aria-haspopup="true">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">系统管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown" role="menu">
+                        <a href="/profile" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="#" class="user-menu__item user-menu__item--danger" role="menuitem" id="logoutLink">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="monitoring-alerts">
+            <!-- Page Header -->
+            <div class="page__header">
+                <div class="page__title">
+                    <div class="breadcrumb">
+                        <a href="/system_management" class="breadcrumb__item">系统管理</a>
+                        <span class="breadcrumb__separator">›</span>
+                        <span class="breadcrumb__item breadcrumb__item--current">监控告警</span>
+                    </div>
+                    <h1>📊 监控告警</h1>
+                    <p class="page__subtitle">系统性能监控、告警规则和通知管理</p>
+                </div>
+                
+                <div class="page__actions">
+                    <button class="btn btn-outline" id="refreshMonitoring" title="刷新监控数据">
+                        <span class="btn__icon">🔄</span>
+                        <span class="btn__text">刷新数据</span>
+                    </button>
+                    <button class="btn btn-outline" id="exportReport" title="导出监控报告">
+                        <span class="btn__icon">📊</span>
+                        <span class="btn__text">导出报告</span>
+                    </button>
+                    <button class="btn btn-primary" id="createAlert" title="创建告警规则">
+                        <span class="btn__icon">⚠️</span>
+                        <span class="btn__text">创建告警</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Alert Status Cards -->
+            <div class="alert-status">
+                <div class="status-grid">
+                    <div class="status-card status-card--critical">
+                        <div class="status-icon">🔴</div>
+                        <div class="status-content">
+                            <div class="status-label">严重告警</div>
+                            <div class="status-value" id="criticalAlerts">2</div>
+                            <div class="status-change">需要立即处理</div>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card status-card--warning">
+                        <div class="status-icon">🟡</div>
+                        <div class="status-content">
+                            <div class="status-label">警告告警</div>
+                            <div class="status-value" id="warningAlerts">5</div>
+                            <div class="status-change">建议关注</div>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card status-card--info">
+                        <div class="status-icon">🔵</div>
+                        <div class="status-content">
+                            <div class="status-label">信息告警</div>
+                            <div class="status-value" id="infoAlerts">12</div>
+                            <div class="status-change">普通提醒</div>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card status-card--resolved">
+                        <div class="status-icon">🟢</div>
+                        <div class="status-content">
+                            <div class="status-label">已解决</div>
+                            <div class="status-value" id="resolvedAlerts">48</div>
+                            <div class="status-change">过去24小时</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monitoring Tabs -->
+            <div class="monitoring-tabs">
+                <div class="tab-list" role="tablist">
+                    <button class="tab-button tab-button--active" data-tab="overview" role="tab" aria-selected="true">
+                        <span class="tab-icon">📈</span>
+                        监控概览
+                    </button>
+                    <button class="tab-button" data-tab="alerts" role="tab">
+                        <span class="tab-icon">⚠️</span>
+                        当前告警
+                    </button>
+                    <button class="tab-button" data-tab="rules" role="tab">
+                        <span class="tab-icon">📋</span>
+                        告警规则
+                    </button>
+                    <button class="tab-button" data-tab="notifications" role="tab">
+                        <span class="tab-icon">🔔</span>
+                        通知设置
+                    </button>
+                    <button class="tab-button" data-tab="history" role="tab">
+                        <span class="tab-icon">📜</span>
+                        历史记录
+                    </button>
+                </div>
+            </div>
+
+            <!-- Monitoring Content -->
+            <div class="monitoring-content">
+                <!-- Overview Panel -->
+                <div class="tab-panel tab-panel--active" id="overviewPanel" role="tabpanel">
+                    <div class="overview-grid">
+                        <!-- Real-time Metrics -->
+                        <div class="metrics-section">
+                            <h3 class="section-title">实时监控指标</h3>
+                            <div class="metrics-grid">
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <h4 class="metric-title">系统负载</h4>
+                                        <span class="metric-status status-normal">正常</span>
+                                    </div>
+                                    <div class="metric-value">1.25</div>
+                                    <div class="metric-chart" id="loadChart">
+                                        <div class="chart-placeholder">📊 负载趋势图</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <h4 class="metric-title">CPU使用率</h4>
+                                        <span class="metric-status status-warning">警告</span>
+                                    </div>
+                                    <div class="metric-value">78.5%</div>
+                                    <div class="metric-chart" id="cpuChart">
+                                        <div class="chart-placeholder">📊 CPU使用率图</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <h4 class="metric-title">内存使用率</h4>
+                                        <span class="metric-status status-critical">严重</span>
+                                    </div>
+                                    <div class="metric-value">92.3%</div>
+                                    <div class="metric-chart" id="memoryChart">
+                                        <div class="chart-placeholder">📊 内存使用率图</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="metric-card">
+                                    <div class="metric-header">
+                                        <h4 class="metric-title">网络流量</h4>
+                                        <span class="metric-status status-normal">正常</span>
+                                    </div>
+                                    <div class="metric-value">125MB/s</div>
+                                    <div class="metric-chart" id="networkChart">
+                                        <div class="chart-placeholder">📊 网络流量图</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Service Status -->
+                        <div class="services-section">
+                            <h3 class="section-title">服务状态监控</h3>
+                            <div class="services-list" id="servicesList">
+                                <!-- Services will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Alerts Panel -->
+                <div class="tab-panel" id="alertsPanel" role="tabpanel">
+                    <div class="section-header">
+                        <h3 class="section-title">当前活跃告警</h3>
+                        <div class="section-actions">
+                            <select id="alertSeverityFilter" class="form-select">
+                                <option value="">全部级别</option>
+                                <option value="critical">严重</option>
+                                <option value="warning">警告</option>
+                                <option value="info">信息</option>
+                            </select>
+                            <select id="alertStatusFilter" class="form-select">
+                                <option value="">全部状态</option>
+                                <option value="firing">触发中</option>
+                                <option value="pending">待处理</option>
+                                <option value="resolved">已解决</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="alerts-list" id="alertsList">
+                        <!-- Alerts will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Alert Rules Panel -->
+                <div class="tab-panel" id="rulesPanel" role="tabpanel">
+                    <div class="section-header">
+                        <h3 class="section-title">告警规则管理</h3>
+                        <div class="section-actions">
+                            <button class="btn btn-outline btn--sm" id="importRules">
+                                <span class="btn__icon">📥</span>
+                                导入规则
+                            </button>
+                            <button class="btn btn-outline btn--sm" id="exportRules">
+                                <span class="btn__icon">📤</span>
+                                导出规则
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="rules-list" id="rulesList">
+                        <!-- Rules will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Notifications Panel -->
+                <div class="tab-panel" id="notificationsPanel" role="tabpanel">
+                    <div class="section-header">
+                        <h3 class="section-title">通知渠道配置</h3>
+                        <div class="section-actions">
+                            <button class="btn btn-primary btn--sm" id="addNotificationChannel">
+                                <span class="btn__icon">➕</span>
+                                添加通知渠道
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="notifications-grid">
+                        <div class="notification-card">
+                            <div class="notification-header">
+                                <h4 class="notification-title">邮件通知</h4>
+                                <div class="notification-toggle">
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="switch-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="notification-config">
+                                <div class="form-group">
+                                    <label class="form-label">收件人</label>
+                                    <input type="email" class="form-input" value="admin@cjpayment.com" placeholder="邮箱地址">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">告警级别</label>
+                                    <select class="form-select">
+                                        <option value="all">全部级别</option>
+                                        <option value="critical" selected>仅严重告警</option>
+                                        <option value="warning_above">警告及以上</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="notification-card">
+                            <div class="notification-header">
+                                <h4 class="notification-title">短信通知</h4>
+                                <div class="notification-toggle">
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="switch-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="notification-config">
+                                <div class="form-group">
+                                    <label class="form-label">手机号码</label>
+                                    <input type="tel" class="form-input" value="138****8888" placeholder="手机号码">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">发送时间</label>
+                                    <select class="form-select">
+                                        <option value="always">24小时</option>
+                                        <option value="business" selected>工作时间</option>
+                                        <option value="emergency">仅紧急情况</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="notification-card">
+                            <div class="notification-header">
+                                <h4 class="notification-title">钉钉通知</h4>
+                                <div class="notification-toggle">
+                                    <label class="switch">
+                                        <input type="checkbox">
+                                        <span class="switch-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="notification-config">
+                                <div class="form-group">
+                                    <label class="form-label">Webhook URL</label>
+                                    <input type="url" class="form-input" placeholder="钉钉机器人Webhook地址">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">@成员</label>
+                                    <input type="text" class="form-input" placeholder="@指定成员（可选）">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Panel -->
+                <div class="tab-panel" id="historyPanel" role="tabpanel">
+                    <div class="section-header">
+                        <h3 class="section-title">告警历史记录</h3>
+                        <div class="section-actions">
+                            <input type="date" id="historyDateFrom" class="form-input">
+                            <span>至</span>
+                            <input type="date" id="historyDateTo" class="form-input">
+                            <button class="btn btn-outline btn--sm" id="searchHistory">
+                                <span class="btn__icon">🔍</span>
+                                查询
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="history-list" id="historyList">
+                        <!-- History will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="history-pagination">
+                        <div class="pagination-info">
+                            显示 <span id="historyStart">1</span>-<span id="historyEnd">20</span> 
+                            共 <span id="historyTotal">156</span> 条记录
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="btn btn-outline btn--sm" id="prevHistoryPage">上一页</button>
+                            <button class="btn btn-outline btn--sm" id="nextHistoryPage">下一页</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | Monitoring & Alerts</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Alert Rule Modal -->
+    <div class="modal" id="alertRuleModal" aria-hidden="true">
+        <div class="modal__overlay">
+            <div class="modal__content">
+                <div class="modal__header">
+                    <h3 class="modal__title" id="alertRuleModalTitle">创建告警规则</h3>
+                    <button class="modal__close" id="alertRuleModalClose" aria-label="关闭">&times;</button>
+                </div>
+                
+                <div class="modal__body">
+                    <form id="alertRuleForm">
+                        <div class="form-group">
+                            <label for="ruleName" class="form-label">规则名称</label>
+                            <input type="text" id="ruleName" class="form-input" required>
+                            <div class="form-help">用于标识此告警规则的名称</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ruleDescription" class="form-label">规则描述</label>
+                            <textarea id="ruleDescription" class="form-textarea" rows="3"></textarea>
+                            <div class="form-help">详细描述此规则的用途和触发条件</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ruleMetric" class="form-label">监控指标</label>
+                            <select id="ruleMetric" class="form-select" required>
+                                <option value="">选择监控指标</option>
+                                <option value="cpu_usage">CPU使用率</option>
+                                <option value="memory_usage">内存使用率</option>
+                                <option value="disk_usage">磁盘使用率</option>
+                                <option value="network_in">网络入流量</option>
+                                <option value="network_out">网络出流量</option>
+                                <option value="response_time">响应时间</option>
+                                <option value="error_rate">错误率</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ruleCondition" class="form-label">触发条件</label>
+                            <div class="condition-builder">
+                                <select id="ruleOperator" class="form-select">
+                                    <option value="gt">大于</option>
+                                    <option value="gte">大于等于</option>
+                                    <option value="lt">小于</option>
+                                    <option value="lte">小于等于</option>
+                                    <option value="eq">等于</option>
+                                </select>
+                                <input type="number" id="ruleThreshold" class="form-input" placeholder="阈值" required>
+                                <select id="ruleUnit" class="form-select">
+                                    <option value="%">%</option>
+                                    <option value="MB">MB</option>
+                                    <option value="GB">GB</option>
+                                    <option value="ms">ms</option>
+                                    <option value="count">次数</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ruleSeverity" class="form-label">告警级别</label>
+                            <select id="ruleSeverity" class="form-select" required>
+                                <option value="info">信息</option>
+                                <option value="warning" selected>警告</option>
+                                <option value="critical">严重</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ruleDuration" class="form-label">持续时间</label>
+                            <input type="number" id="ruleDuration" class="form-input" value="5" min="1" required>
+                            <div class="form-help">连续超过阈值多少分钟后触发告警</div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" id="cancelAlertRuleBtn">取消</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn__icon">⚠️</span>
+                                创建规则
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">正在处理...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="globalToast" class="toast-container" aria-live="polite"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/components.js"></script>
+    <script src="/static/js/monitoring-alerts.js"></script>
+    
+    <!-- Initialize Monitoring -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load user information from localStorage
+            const userInfo = localStorage.getItem('userInfo');
+            const authToken = localStorage.getItem('authToken');
+            
+            // 临时移除认证检查以便测试
+            // if (!authToken) {
+            //     window.location.href = '/login';
+            //     return;
+            // }
+            
+            if (userInfo) {
+                try {
+                    const user = JSON.parse(userInfo);
+                    document.getElementById('userName').textContent = user.name || user.username;
+                    document.querySelector('.user-menu__role').textContent = user.role;
+                } catch (error) {
+                    console.error('Failed to parse user info:', error);
+                }
+            } else {
+                // 设置默认用户信息用于测试
+                document.getElementById('userName').textContent = '测试用户';
+                document.querySelector('.user-menu__role').textContent = '系统管理员';
+            }
+            
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const html = document.documentElement;
+            
+            const savedTheme = localStorage.getItem('system-theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('system-theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+            
+            function updateThemeIcon(theme) {
+                themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+                themeToggle.setAttribute('title', 
+                    theme === 'light' ? '切换到深色主题' : '切换到浅色主题'
+                );
+            }
+            
+            // Logout functionality
+            document.getElementById('logoutLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('确定要退出登录吗？')) {
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userInfo');
+                    window.location.href = '/login';
+                }
+            });
+            
+            console.log('Monitoring alerts initialized successfully');
+        });
+    </script>
+</body>
+</html>

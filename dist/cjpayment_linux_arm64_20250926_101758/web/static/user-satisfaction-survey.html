@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户满意度调查 - CJPayment管理后台</title>
+    <link rel="stylesheet" href="/static/css/design-tokens.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <style>
+        .survey-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--space-6);
+            background: white;
+            min-height: 100vh;
+        }
+
+        .survey-header {
+            text-align: center;
+            margin-bottom: var(--space-12);
+            padding-bottom: var(--space-8);
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .survey-title {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary-600);
+            margin-bottom: var(--space-4);
+        }
+
+        .survey-subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--neutral-600);
+            margin-bottom: var(--space-6);
+        }
+
+        .survey-progress {
+            background: var(--neutral-200);
+            border-radius: var(--radius-full);
+            height: 8px;
+            margin-bottom: var(--space-4);
+        }
+
+        .survey-progress-bar {
+            background: var(--primary-500);
+            height: 100%;
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .survey-progress-text {
+            text-align: center;
+            font-size: var(--font-size-sm);
+            color: var(--neutral-600);
+        }
+
+        .survey-section {
+            margin-bottom: var(--space-10);
+            padding: var(--space-8);
+            background: var(--neutral-50);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--primary-500);
+        }
+
+        .survey-section-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--neutral-900);
+            margin-bottom: var(--space-6);
+        }
+
+        .survey-question {
+            margin-bottom: var(--space-8);
+        }
+
+        .survey-question:last-child {
+            margin-bottom: 0;
+        }
+
+        .survey-question-title {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            color: var(--neutral-800);
+            margin-bottom: var(--space-4);
+        }
+
+        .survey-question-required {
+            color: var(--error-500);
+        }
+
+        .survey-rating {
+            display: flex;
+            gap: var(--space-3);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .survey-rating-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-2);
+            cursor: pointer;
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            min-width: 80px;
+        }
+
+        .survey-rating-option:hover {
+            background: var(--primary-50);
+        }
+
+        .survey-rating-option.selected {
+            background: var(--primary-100);
+            border: 2px solid var(--primary-500);
+        }
+
+        .survey-rating-circle {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--neutral-300);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-weight-bold);
+            transition: all 0.2s ease;
+        }
+
+        .survey-rating-option.selected .survey-rating-circle {
+            background: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
+        }
+
+        .survey-rating-label {
+            font-size: var(--font-size-xs);
+            color: var(--neutral-600);
+            text-align: center;
+        }
+
+        .survey-rating-option.selected .survey-rating-label {
+            color: var(--primary-700);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .survey-checkbox-group,
+        .survey-radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .survey-checkbox-option,
+        .survey-radio-option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .survey-checkbox-option:hover,
+        .survey-radio-option:hover {
+            background: var(--neutral-100);
+        }
+
+        .survey-checkbox,
+        .survey-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--neutral-400);
+            border-radius: var(--radius-base);
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .survey-radio {
+            border-radius: 50%;
+        }
+
+        .survey-checkbox:checked,
+        .survey-radio:checked {
+            background: var(--primary-500);
+            border-color: var(--primary-500);
+        }
+
+        .survey-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .survey-radio:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .survey-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: var(--space-4);
+            border: 1px solid var(--neutral-300);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.2s ease;
+        }
+
+        .survey-textarea:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .survey-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--space-12);
+            padding-top: var(--space-8);
+            border-top: 1px solid var(--neutral-200);
+        }
+
+        .survey-btn {
+            padding: var(--space-4) var(--space-6);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+
+        .survey-btn-primary {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .survey-btn-primary:hover {
+            background: var(--primary-600);
+            transform: translateY(-1px);
+        }
+
+        .survey-btn-secondary {
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            border: 1px solid var(--neutral-300);
+        }
+
+        .survey-btn-secondary:hover {
+            background: var(--neutral-200);
+        }
+
+        .survey-completion {
+            text-align: center;
+            padding: var(--space-16);
+            display: none;
+        }
+
+        .survey-completion.show {
+            display: block;
+        }
+
+        .survey-completion-icon {
+            font-size: 4rem;
+            color: var(--success-500);
+            margin-bottom: var(--space-6);
+        }
+
+        .survey-completion-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--neutral-900);
+            margin-bottom: var(--space-4);
+        }
+
+        .survey-completion-text {
+            font-size: var(--font-size-base);
+            color: var(--neutral-600);
+            margin-bottom: var(--space-8);
+            line-height: var(--line-height-relaxed);
+        }
+
+        .survey-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-6);
+            margin-top: var(--space-8);
+        }
+
+        .survey-stat-card {
+            background: white;
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+        }
+
+        .survey-stat-value {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary-600);
+            margin-bottom: var(--space-2);
+        }
+
+        .survey-stat-label {
+            font-size: var(--font-size-sm);
+            color: var(--neutral-600);
+        }
+
+        .survey-error {
+            background: var(--error-50);
+            border: 1px solid var(--error-200);
+            color: var(--error-700);
+            padding: var(--space-4);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-6);
+            display: none;
+        }
+
+        .survey-error.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .survey-container {
+                padding: var(--space-4);
+            }
+
+            .survey-rating {
+                justify-content: center;
+            }
+
+            .survey-actions {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+
+            .survey-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="survey-container">
+        <div class="survey-header">
+            <h1 class="survey-title">用户满意度调查</h1>
+            <p class="survey-subtitle">您的反馈对我们改进CJPayment管理后台非常重要</p>
+            <div class="survey-progress">
+                <div class="survey-progress-bar" id="progressBar"></div>
+            </div>
+            <div class="survey-progress-text">
+                <span id="progressText">第 1 步，共 6 步</span>
+            </div>
+        </div>
+
+        <div class="survey-error" id="errorMessage"></div>
+
+        <form id="satisfactionSurvey">
+            <!-- 第1部分：总体满意度 -->
+            <div class="survey-section" data-section="1">
+                <h2 class="survey-section-title">总体评价</h2>
+                
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        1. 您对新版CJPayment管理后台的总体满意度如何？
+                        <span class="survey-question-required">*</span>
+                    </div>
+                    <div class="survey-rating">
+                        <div class="survey-rating-option" data-value="1">
+                            <div class="survey-rating-circle">1</div>
+                            <div class="survey-rating-label">非常不满意</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="2">
+                            <div class="survey-rating-circle">2</div>
+                            <div class="survey-rating-label">不满意</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="3">
+                            <div class="survey-rating-circle">3</div>
+                            <div class="survey-rating-label">一般</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="4">
+                            <div class="survey-rating-circle">4</div>
+                            <div class="survey-rating-label">满意</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="5">
+                            <div class="survey-rating-circle">5</div>
+                            <div class="survey-rating-label">非常满意</div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="overall_satisfaction" required>
+                </div>
+
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        2. 与旧版本相比，您认为新版本如何？
+                        <span class="survey-question-required">*</span>
+                    </div>
+                    <div class="survey-radio-group">
+                        <label class="survey-radio-option">
+                            <input type="radio" name="comparison" value="much_better" class="survey-radio" required>
+                            <span>比旧版本好很多</span>
+                        </label>
+                        <label class="survey-radio-option">
+                            <input type="radio" name="comparison" value="better" class="survey-radio">
+                            <span>比旧版本好一些</span>
+                        </label>
+                        <label class="survey-radio-option">
+                            <input type="radio" name="comparison" value="same" class="survey-radio">
+                            <span>差不多</span>
+                        </label>
+                        <label class="survey-radio-option">
+                            <input type="radio" name="comparison" value="worse" class="survey-radio">
+                            <span>比旧版本差一些</span>
+                        </label>
+                        <label class="survey-radio-option">
+                            <input type="radio" name="comparison" value="much_worse" class="survey-radio">
+                            <span>比旧版本差很多</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第2部分：界面设计 -->
+            <div class="survey-section" data-section="2">
+                <h2 class="survey-section-title">界面设计</h2>
+                
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        3. 您对新界面的视觉设计满意度如何？
+                        <span class="survey-question-required">*</span>
+                    </div>
+                    <div class="survey-rating">
+                        <div class="survey-rating-option" data-value="1">
+                            <div class="survey-rating-circle">1</div>
+                            <div class="survey-rating-label">很差</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="2">
+                            <div class="survey-rating-circle">2</div>
+                            <div class="survey-rating-label">较差</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="3">
+                            <div class="survey-rating-circle">3</div>
+                            <div class="survey-rating-label">一般</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="4">
+                            <div class="survey-rating-circle">4</div>
+                            <div class="survey-rating-label">较好</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="5">
+                            <div class="survey-rating-circle">5</div>
+                            <div class="survey-rating-label">很好</div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="design_satisfaction" required>
+                </div>
+
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        4. 您最喜欢新界面的哪些特点？（可多选）
+                    </div>
+                    <div class="survey-checkbox-group">
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="design_likes" value="card_layout" class="survey-checkbox">
+                            <span>卡片式布局</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="design_likes" value="color_scheme" class="survey-checkbox">
+                            <span>配色方案</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="design_likes" value="typography" class="survey-checkbox">
+                            <span>字体和排版</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="design_likes" value="icons" class="survey-checkbox">
+                            <span>图标设计</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="design_likes" value="animations" class="survey-checkbox">
+                            <span>动画效果</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="design_likes" value="responsive" class="survey-checkbox">
+                            <span>响应式设计</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="design_likes" value="themes" class="survey-checkbox">
+                            <span>主题切换</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第3部分：易用性 -->
+            <div class="survey-section" data-section="3">
+                <h2 class="survey-section-title">易用性评价</h2>
+                
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        5. 您认为新界面的易用性如何？
+                        <span class="survey-question-required">*</span>
+                    </div>
+                    <div class="survey-rating">
+                        <div class="survey-rating-option" data-value="1">
+                            <div class="survey-rating-circle">1</div>
+                            <div class="survey-rating-label">很难用</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="2">
+                            <div class="survey-rating-circle">2</div>
+                            <div class="survey-rating-label">较难用</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="3">
+                            <div class="survey-rating-circle">3</div>
+                            <div class="survey-rating-label">一般</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="4">
+                            <div class="survey-rating-circle">4</div>
+                            <div class="survey-rating-label">较好用</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="5">
+                            <div class="survey-rating-circle">5</div>
+                            <div class="survey-rating-label">很好用</div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="usability_satisfaction" required>
+                </div>
+
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        6. 您在使用新界面时遇到过哪些困难？（可多选）
+                    </div>
+                    <div class="survey-checkbox-group">
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="usability_issues" value="navigation" class="survey-checkbox">
+                            <span>导航不够清晰</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="usability_issues" value="card_layout" class="survey-checkbox">
+                            <span>卡片布局不习惯</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="usability_issues" value="loading_speed" class="survey-checkbox">
+                            <span>加载速度慢</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="usability_issues" value="mobile_experience" class="survey-checkbox">
+                            <span>移动端体验不好</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="usability_issues" value="search_function" class="survey-checkbox">
+                            <span>搜索功能不好用</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="usability_issues" value="form_filling" class="survey-checkbox">
+                            <span>表单填写复杂</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="usability_issues" value="none" class="survey-checkbox">
+                            <span>没有遇到困难</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第4部分：功能评价 -->
+            <div class="survey-section" data-section="4">
+                <h2 class="survey-section-title">功能评价</h2>
+                
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        7. 您最常使用的功能模块有哪些？（可多选）
+                    </div>
+                    <div class="survey-checkbox-group">
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="frequently_used" value="dashboard" class="survey-checkbox">
+                            <span>仪表板</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="frequently_used" value="recharge_management" class="survey-checkbox">
+                            <span>充值管理</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="frequently_used" value="user_management" class="survey-checkbox">
+                            <span>用户管理</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="frequently_used" value="system_config" class="survey-checkbox">
+                            <span>系统配置</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="frequently_used" value="reports" class="survey-checkbox">
+                            <span>报表分析</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="frequently_used" value="financial_audit" class="survey-checkbox">
+                            <span>财务审计</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        8. 您认为哪些新功能最有用？（可多选）
+                    </div>
+                    <div class="survey-checkbox-group">
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="useful_features" value="global_search" class="survey-checkbox">
+                            <span>全局搜索</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="useful_features" value="batch_operations" class="survey-checkbox">
+                            <span>批量操作</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="useful_features" value="data_visualization" class="survey-checkbox">
+                            <span>数据可视化</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="useful_features" value="real_time_validation" class="survey-checkbox">
+                            <span>实时表单验证</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="useful_features" value="auto_save" class="survey-checkbox">
+                            <span>自动保存</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="useful_features" value="keyboard_shortcuts" class="survey-checkbox">
+                            <span>键盘快捷键</span>
+                        </label>
+                        <label class="survey-checkbox-option">
+                            <input type="checkbox" name="useful_features" value="theme_switching" class="survey-checkbox">
+                            <span>主题切换</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第5部分：推荐度 -->
+            <div class="survey-section" data-section="5">
+                <h2 class="survey-section-title">推荐度</h2>
+                
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        9. 您是否愿意向同事推荐使用新版界面？
+                        <span class="survey-question-required">*</span>
+                    </div>
+                    <div class="survey-rating">
+                        <div class="survey-rating-option" data-value="1">
+                            <div class="survey-rating-circle">1</div>
+                            <div class="survey-rating-label">绝对不会</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="2">
+                            <div class="survey-rating-circle">2</div>
+                            <div class="survey-rating-label">可能不会</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="3">
+                            <div class="survey-rating-circle">3</div>
+                            <div class="survey-rating-label">中性</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="4">
+                            <div class="survey-rating-circle">4</div>
+                            <div class="survey-rating-label">可能会</div>
+                        </div>
+                        <div class="survey-rating-option" data-value="5">
+                            <div class="survey-rating-circle">5</div>
+                            <div class="survey-rating-label">绝对会</div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="recommendation" required>
+                </div>
+
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        10. 您认为新界面最需要改进的地方是什么？
+                    </div>
+                    <textarea class="survey-textarea" name="improvement_suggestions" placeholder="请详细描述您的建议..."></textarea>
+                </div>
+            </div>
+
+            <!-- 第6部分：其他反馈 -->
+            <div class="survey-section" data-section="6">
+                <h2 class="survey-section-title">其他反馈</h2>
+                
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        11. 您还有其他意见或建议吗？
+                    </div>
+                    <textarea class="survey-textarea" name="additional_feedback" placeholder="请分享您的任何其他想法..."></textarea>
+                </div>
+
+                <div class="survey-question">
+                    <div class="survey-question-title">
+                        12. 您的主要工作角色是？
+                    </div>
+                    <div class="survey-radio-group">
+                        <label class="survey-radio-option">
+                            <input type="radio" name="role" value="admin" class="survey-radio">
+                            <span>系统管理员</span>
+                        </label>
+                        <label class="survey-radio-option">
+                            <input type="radio" name="role" value="finance" class="survey-radio">
+                            <span>财务人员</span>
+                        </label>
+                        <label class="survey-radio-option">
+                            <input type="radio" name="role" value="operations" class="survey-radio">
+                            <span>运营人员</span>
+                        </label>
+                        <label class="survey-radio-option">
+                            <input type="radio" name="role" value="customer_service" class="survey-radio">
+                            <span>客服人员</span>
+                        </label>
+                        <label class="survey-radio-option">
+                            <input type="radio" name="role" value="other" class="survey-radio">
+                            <span>其他</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="survey-actions">
+                <button type="button" class="survey-btn survey-btn-secondary" onclick="window.history.back()">
+                    返回系统
+                </button>
+                <button type="submit" class="survey-btn survey-btn-primary">
+                    提交调查
+                </button>
+            </div>
+        </form>
+
+        <!-- 完成页面 -->
+        <div class="survey-completion" id="completionPage">
+            <div class="survey-completion-icon">🎉</div>
+            <h2 class="survey-completion-title">感谢您的参与！</h2>
+            <p class="survey-completion-text">
+                您的反馈对我们改进CJPayment管理后台非常重要。我们会认真考虑您的建议，持续优化用户体验。
+            </p>
+            
+            <div class="survey-stats">
+                <div class="survey-stat-card">
+                    <div class="survey-stat-value">2,468</div>
+                    <div class="survey-stat-label">已参与用户</div>
+                </div>
+                <div class="survey-stat-card">
+                    <div class="survey-stat-value">4.2/5</div>
+                    <div class="survey-stat-label">平均满意度</div>
+                </div>
+                <div class="survey-stat-card">
+                    <div class="survey-stat-value">89%</div>
+                    <div class="survey-stat-label">推荐率</div>
+                </div>
+            </div>
+
+            <div class="survey-actions" style="justify-content: center; margin-top: var(--space-8);">
+                <button class="survey-btn survey-btn-primary" onclick="window.close()">
+                    关闭页面
+                </button>
+                <button class="survey-btn survey-btn-secondary" onclick="window.location.href='/dashboard'">
+                    返回系统
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/user-satisfaction-survey.js"></script>
+</body>
+</html>

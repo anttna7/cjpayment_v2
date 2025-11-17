@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>安全中心 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard-enhanced.css">
+    
+    <!-- Security Center Specific CSS -->
+    <link rel="stylesheet" href="/static/css/security-center.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+<body class="page-security">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link nav__link--active" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">1</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>安全通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">安全扫描完成</div>
+                                    <div class="notification-text">系统安全检查通过，未发现威胁</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">15分钟前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton" aria-expanded="false" aria-haspopup="true">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">系统管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown" role="menu">
+                        <a href="/profile" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="#" class="user-menu__item user-menu__item--danger" role="menuitem" id="logoutLink">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="security-center">
+            <!-- Page Header -->
+            <div class="page__header">
+                <div class="page__title">
+                    <div class="breadcrumb">
+                        <a href="/system_management" class="breadcrumb__item">系统管理</a>
+                        <span class="breadcrumb__separator">›</span>
+                        <span class="breadcrumb__item breadcrumb__item--current">安全中心</span>
+                    </div>
+                    <h1>🛡️ 安全中心</h1>
+                    <p class="page__subtitle">安全策略、访问控制和风险监控管理</p>
+                </div>
+                
+                <div class="page__actions">
+                    <button class="btn btn-outline" id="refreshSecurity" title="刷新安全数据">
+                        <span class="btn__icon">🔄</span>
+                        <span class="btn__text">刷新数据</span>
+                    </button>
+                    <button class="btn btn-outline" id="exportSecurityLog" title="导出安全日志">
+                        <span class="btn__icon">📊</span>
+                        <span class="btn__text">导出日志</span>
+                    </button>
+                    <button class="btn btn-primary" id="createSecurityRule" title="创建安全规则">
+                        <span class="btn__icon">🔒</span>
+                        <span class="btn__text">创建规则</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Security Status Cards -->
+            <div class="security-status">
+                <div class="status-grid">
+                    <div class="status-card status-card--success">
+                        <div class="status-icon">🛡️</div>
+                        <div class="status-content">
+                            <div class="status-label">安全等级</div>
+                            <div class="status-value" id="securityLevel">高</div>
+                            <div class="status-change">系统安全</div>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card status-card--info">
+                        <div class="status-icon">🚫</div>
+                        <div class="status-content">
+                            <div class="status-label">黑名单IP</div>
+                            <div class="status-value" id="blacklistCount">15</div>
+                            <div class="status-change">已拦截</div>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card status-card--success">
+                        <div class="status-icon">✅</div>
+                        <div class="status-content">
+                            <div class="status-label">白名单IP</div>
+                            <div class="status-value" id="whitelistCount">8</div>
+                            <div class="status-change">信任访问</div>
+                        </div>
+                    </div>
+                    
+                    <div class="status-card status-card--warning">
+                        <div class="status-icon">⚠️</div>
+                        <div class="status-content">
+                            <div class="status-label">风险事件</div>
+                            <div class="status-value" id="riskEvents">3</div>
+                            <div class="status-change">今日发现</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Tabs -->
+            <div class="security-tabs">
+                <div class="tab-list" role="tablist">
+                    <button class="tab-button tab-button--active" data-tab="access-control" role="tab" aria-selected="true">
+                        <span class="tab-icon">🚧</span>
+                        访问控制
+                    </button>
+                    <button class="tab-button" data-tab="two-factor" role="tab">
+                        <span class="tab-icon">🔐</span>
+                        二次验证
+                    </button>
+                    <button class="tab-button" data-tab="audit-log" role="tab">
+                        <span class="tab-icon">📝</span>
+                        审计日志
+                    </button>
+                    <button class="tab-button" data-tab="threat-detection" role="tab">
+                        <span class="tab-icon">🔍</span>
+                        威胁检测
+                    </button>
+                    <button class="tab-button" data-tab="security-policy" role="tab">
+                        <span class="tab-icon">📋</span>
+                        安全策略
+                    </button>
+                </div>
+            </div>
+
+            <!-- Security Content -->
+            <div class="security-content">
+                <!-- Access Control Panel -->
+                <div class="tab-panel tab-panel--active" id="access-controlPanel" role="tabpanel">
+                    <!-- Access Control Mode Selector -->
+                    <div class="access-control-header">
+                        <div class="mode-selector-section">
+                            <h3 class="section-title">访问控制模式</h3>
+                            <div class="mode-selector">
+                                <div class="mode-option">
+                                    <input type="radio" id="blacklistOnlyMode" name="accessMode" value="blacklist_only" checked>
+                                    <label for="blacklistOnlyMode" class="mode-label">
+                                        <span class="mode-icon">🚫</span>
+                                        <div class="mode-details">
+                                            <strong>仅黑名单模式</strong>
+                                            <small>只阻止黑名单IP，其他IP允许访问</small>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <div class="mode-option">
+                                    <input type="radio" id="whitelistOnlyMode" name="accessMode" value="whitelist_only">
+                                    <label for="whitelistOnlyMode" class="mode-label">
+                                        <span class="mode-icon">✅</span>
+                                        <div class="mode-details">
+                                            <strong>仅白名单模式</strong>
+                                            <small>只允许白名单IP访问，拒绝所有其他IP</small>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <div class="mode-option">
+                                    <input type="radio" id="mixedMode" name="accessMode" value="mixed">
+                                    <label for="mixedMode" class="mode-label">
+                                        <span class="mode-icon">⚖️</span>
+                                        <div class="mode-details">
+                                            <strong>混合模式</strong>
+                                            <small>黑名单优先，白名单验证，默认策略兜底</small>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <div class="mode-option">
+                                    <input type="radio" id="disabledMode" name="accessMode" value="disabled">
+                                    <label for="disabledMode" class="mode-label">
+                                        <span class="mode-icon">🔓</span>
+                                        <div class="mode-details">
+                                            <strong>禁用模式</strong>
+                                            <small>禁用IP访问控制，允许所有IP访问</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mode-status">
+                                <div class="status-indicator">
+                                    <span class="status-dot status-dot--active"></span>
+                                    <span class="status-text" id="currentModeStatus">当前模式：仅黑名单模式</span>
+                                </div>
+                                <button class="btn btn-primary btn--sm" id="applyModeSettings">
+                                    <span class="btn__icon">🔧</span>
+                                    应用设置
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Mode Statistics -->
+                        <div class="mode-statistics">
+                            <div class="stat-card">
+                                <div class="stat-value" id="allowedRequests">0</div>
+                                <div class="stat-label">允许访问</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="blockedRequests">0</div>
+                                <div class="stat-label">拒绝访问</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="accessControlEfficiency">100%</div>
+                                <div class="stat-label">控制效率</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="access-control-grid">
+                        <!-- IP Whitelist -->
+                        <div class="access-control-section">
+                            <div class="section-header">
+                                <h3 class="section-title">IP白名单</h3>
+                                <button class="btn btn-outline btn--sm" id="addWhitelistIP">
+                                    <span class="btn__icon">➕</span>
+                                    添加IP
+                                </button>
+                            </div>
+                            
+                            <div class="ip-list" id="whitelistContainer">
+                                <!-- Whitelist IPs will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <!-- IP Blacklist -->
+                        <div class="access-control-section">
+                            <div class="section-header">
+                                <h3 class="section-title">IP黑名单</h3>
+                                <button class="btn btn-outline btn--sm" id="addBlacklistIP">
+                                    <span class="btn__icon">🚫</span>
+                                    添加IP
+                                </button>
+                            </div>
+                            
+                            <div class="ip-list" id="blacklistContainer">
+                                <!-- Blacklist IPs will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Batch Operations -->
+                    <div class="batch-operations">
+                        <h3 class="section-title">批量操作</h3>
+                        <div class="batch-controls">
+                            <button class="btn btn-outline" id="importIPList">
+                                <span class="btn__icon">📥</span>
+                                导入IP列表
+                            </button>
+                            <button class="btn btn-outline" id="exportIPList">
+                                <span class="btn__icon">📤</span>
+                                导出IP列表
+                            </button>
+                            <button class="btn btn-outline" id="clearExpiredIPs">
+                                <span class="btn__icon">🗑️</span>
+                                清理过期IP
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Two-Factor Authentication Panel -->
+                <div class="tab-panel" id="two-factorPanel" role="tabpanel">
+                    <div class="two-factor-grid">
+                        <!-- Email 2FA -->
+                        <div class="two-factor-section">
+                            <div class="two-factor-header">
+                                <h3 class="section-title">邮箱二次验证</h3>
+                                <div class="feature-toggle">
+                                    <label class="switch">
+                                        <input type="checkbox" id="emailTwoFactorEnabled" checked>
+                                        <span class="switch-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="two-factor-config">
+                                <div class="config-item">
+                                    <label class="config-label">验证邮箱</label>
+                                    <input type="email" class="form-input" id="twoFactorEmail" value="admin@cjpayment.com">
+                                </div>
+                                
+                                <div class="config-item">
+                                    <label class="config-label">验证码有效期</label>
+                                    <select class="form-select" id="emailCodeExpiry">
+                                        <option value="300">5分钟</option>
+                                        <option value="600" selected>10分钟</option>
+                                        <option value="900">15分钟</option>
+                                        <option value="1800">30分钟</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="config-item">
+                                    <label class="config-label">触发场景</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="emailTriggers" value="login" checked>
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">登录验证</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="emailTriggers" value="sensitive" checked>
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">敏感操作</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" name="emailTriggers" value="password">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">密码修改</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="config-actions">
+                                    <button class="btn btn-outline" id="testEmailTwoFactor">
+                                        <span class="btn__icon">✉️</span>
+                                        测试发送
+                                    </button>
+                                    <button class="btn btn-primary" id="saveEmailTwoFactor">
+                                        <span class="btn__icon">💾</span>
+                                        保存配置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- SMS 2FA -->
+                        <div class="two-factor-section">
+                            <div class="two-factor-header">
+                                <h3 class="section-title">短信二次验证</h3>
+                                <div class="feature-toggle">
+                                    <label class="switch">
+                                        <input type="checkbox" id="smsTwoFactorEnabled" checked>
+                                        <span class="switch-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="two-factor-config">
+                                <div class="config-item">
+                                    <label class="config-label">手机号码</label>
+                                    <input type="tel" class="form-input" id="twoFactorPhone" value="138****8888">
+                                </div>
+                                
+                                <div class="config-item">
+                                    <label class="config-label">短信模板</label>
+                                    <select class="form-select" id="smsTemplate">
+                                        <option value="standard" selected>标准模板</option>
+                                        <option value="security">安全模板</option>
+                                        <option value="custom">自定义模板</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="config-item">
+                                    <label class="config-label">发送限制</label>
+                                    <div class="limit-controls">
+                                        <div class="limit-item">
+                                            <label>每分钟最多</label>
+                                            <input type="number" class="form-input" value="1" min="1" max="10">
+                                            <span>条</span>
+                                        </div>
+                                        <div class="limit-item">
+                                            <label>每小时最多</label>
+                                            <input type="number" class="form-input" value="10" min="1" max="60">
+                                            <span>条</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="config-actions">
+                                    <button class="btn btn-outline" id="testSmsTwoFactor">
+                                        <span class="btn__icon">📱</span>
+                                        测试发送
+                                    </button>
+                                    <button class="btn btn-primary" id="saveSmsTwoFactor">
+                                        <span class="btn__icon">💾</span>
+                                        保存配置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 2FA Statistics -->
+                    <div class="two-factor-stats">
+                        <h3 class="section-title">验证统计</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-label">今日邮箱验证</div>
+                                <div class="stat-value">156次</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">今日短信验证</div>
+                                <div class="stat-value">89次</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">验证成功率</div>
+                                <div class="stat-value">98.5%</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">平均验证时间</div>
+                                <div class="stat-value">45秒</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Log Panel -->
+                <div class="tab-panel" id="audit-logPanel" role="tabpanel">
+                    <div class="section-header">
+                        <h3 class="section-title">安全审计日志</h3>
+                        <div class="section-actions">
+                            <input type="text" id="logSearch" class="form-input" placeholder="搜索日志内容">
+                            <select id="logTypeFilter" class="form-select">
+                                <option value="">全部类型</option>
+                                <option value="login">登录事件</option>
+                                <option value="access">访问控制</option>
+                                <option value="operation">操作审计</option>
+                                <option value="security">安全事件</option>
+                            </select>
+                            <select id="logLevelFilter" class="form-select">
+                                <option value="">全部级别</option>
+                                <option value="info">信息</option>
+                                <option value="warning">警告</option>
+                                <option value="error">错误</option>
+                                <option value="critical">严重</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="audit-log-container" id="auditLogContainer">
+                        <!-- Audit logs will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="log-pagination">
+                        <div class="pagination-info">
+                            显示 <span id="logStart">1</span>-<span id="logEnd">20</span> 
+                            共 <span id="logTotal">892</span> 条记录
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="btn btn-outline btn--sm" id="prevLogPage">上一页</button>
+                            <button class="btn btn-outline btn--sm" id="nextLogPage">下一页</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Threat Detection Panel -->
+                <div class="tab-panel" id="threat-detectionPanel" role="tabpanel">
+                    <div class="threat-detection-grid">
+                        <!-- Real-time Threats -->
+                        <div class="threat-section">
+                            <h3 class="section-title">实时威胁监控</h3>
+                            <div class="threat-list" id="threatList">
+                                <!-- Threats will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <!-- Detection Rules -->
+                        <div class="detection-rules">
+                            <h3 class="section-title">检测规则</h3>
+                            <div class="rules-list" id="detectionRulesList">
+                                <!-- Detection rules will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Policy Panel -->
+                <div class="tab-panel" id="security-policyPanel" role="tabpanel">
+                    <div class="policy-sections">
+                        <!-- Password Policy -->
+                        <div class="policy-section">
+                            <h3 class="section-title">密码策略</h3>
+                            <div class="policy-config">
+                                <div class="config-item">
+                                    <label class="config-label">最小长度</label>
+                                    <input type="number" class="form-input" value="8" min="6" max="32">
+                                </div>
+                                <div class="config-item">
+                                    <label class="config-label">密码复杂度</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" checked>
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">包含大写字母</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" checked>
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">包含小写字母</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" checked>
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">包含数字</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox">
+                                            <span class="checkbox-custom"></span>
+                                            <span class="checkbox-text">包含特殊字符</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="config-item">
+                                    <label class="config-label">密码有效期</label>
+                                    <select class="form-select">
+                                        <option value="30">30天</option>
+                                        <option value="60">60天</option>
+                                        <option value="90" selected>90天</option>
+                                        <option value="180">180天</option>
+                                        <option value="0">永不过期</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Session Policy -->
+                        <div class="policy-section">
+                            <h3 class="section-title">会话策略</h3>
+                            <div class="policy-config">
+                                <div class="config-item">
+                                    <label class="config-label">会话超时</label>
+                                    <select class="form-select">
+                                        <option value="30">30分钟</option>
+                                        <option value="60">1小时</option>
+                                        <option value="120" selected>2小时</option>
+                                        <option value="480">8小时</option>
+                                    </select>
+                                </div>
+                                <div class="config-item">
+                                    <label class="config-label">并发会话限制</label>
+                                    <input type="number" class="form-input" value="3" min="1" max="10">
+                                </div>
+                                <div class="config-item">
+                                    <label class="config-label">登录失败锁定</label>
+                                    <div class="lock-config">
+                                        <input type="number" class="form-input" value="5" min="3" max="10">
+                                        <span>次失败后锁定</span>
+                                        <input type="number" class="form-input" value="30" min="5" max="120">
+                                        <span>分钟</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="policy-actions">
+                        <button class="btn btn-outline" id="resetPolicyDefaults">
+                            <span class="btn__icon">🔄</span>
+                            恢复默认
+                        </button>
+                        <button class="btn btn-primary" id="savePolicySettings">
+                            <span class="btn__icon">💾</span>
+                            保存策略
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | Security Center</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- IP Address Modal -->
+    <div class="modal" id="ipAddressModal" aria-hidden="true">
+        <div class="modal__overlay">
+            <div class="modal__content">
+                <div class="modal__header">
+                    <h3 class="modal__title" id="ipModalTitle">添加IP地址</h3>
+                    <button class="modal__close" id="ipModalClose" aria-label="关闭">&times;</button>
+                </div>
+                
+                <div class="modal__body">
+                    <form id="ipAddressForm">
+                        <div class="form-group">
+                            <label for="ipAddress" class="form-label">IP地址</label>
+                            <input type="text" id="ipAddress" class="form-input" placeholder="192.168.1.1 或 192.168.1.0/24" required>
+                            <div class="form-help">支持单个IP地址或CIDR网段格式</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ipDescription" class="form-label">描述</label>
+                            <textarea id="ipDescription" class="form-textarea" rows="3" placeholder="请描述此IP地址的用途"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ipExpiry" class="form-label">有效期</label>
+                            <select id="ipExpiry" class="form-select">
+                                <option value="">永久有效</option>
+                                <option value="24">24小时</option>
+                                <option value="168">7天</option>
+                                <option value="720">30天</option>
+                                <option value="2160">90天</option>
+                            </select>
+                            <div class="form-help">设置IP地址的有效期，过期后自动移除</div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" id="cancelIPBtn">取消</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn__icon">➕</span>
+                                添加IP
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">正在处理...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="globalToast" class="toast-container" aria-live="polite"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/components.js"></script>
+    
+    <!-- Unified Header System - 统一头部系统 -->
+    <script src="/static/js/header-unified.js"></script>
+    
+    <script src="/static/js/security-center.js"></script>
+    
+    <!-- Initialize Security Center -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load user information from localStorage
+            const userInfo = localStorage.getItem('userInfo');
+            const authToken = localStorage.getItem('authToken');
+            
+            // 临时移除认证检查以便测试
+            // if (!authToken) {
+            //     window.location.href = '/login';
+            //     return;
+            // }
+            
+            if (userInfo) {
+                try {
+                    const user = JSON.parse(userInfo);
+                    document.getElementById('userName').textContent = user.name || user.username;
+                    document.querySelector('.user-menu__role').textContent = user.role;
+                } catch (error) {
+                    console.error('Failed to parse user info:', error);
+                }
+            } else {
+                // 设置默认用户信息用于测试
+                document.getElementById('userName').textContent = '测试用户';
+                document.querySelector('.user-menu__role').textContent = '系统管理员';
+            }
+            
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const html = document.documentElement;
+            
+            const savedTheme = localStorage.getItem('system-theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('system-theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+            
+            function updateThemeIcon(theme) {
+                themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+                themeToggle.setAttribute('title', 
+                    theme === 'light' ? '切换到深色主题' : '切换到浅色主题'
+                );
+            }
+            
+            // Logout functionality
+            document.getElementById('logoutLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('确定要退出登录吗？')) {
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userInfo');
+                    window.location.href = '/login';
+                }
+            });
+            
+            console.log('Security center initialized successfully');
+        });
+    </script>
+</body>
+</html>

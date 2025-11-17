@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据导出 - 充值测试系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/data_export.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 侧边栏 -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky pt-3">
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>充值测试系统</span>
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#merchants">
+                                <i class="fas fa-store"></i> 商户管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#accounts">
+                                <i class="fas fa-credit-card"></i> 账号管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#orders">
+                                <i class="fas fa-list-alt"></i> 订单管理
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#export">
+                                <i class="fas fa-download"></i> 数据导出
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- 主内容区 -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">数据导出</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button type="button" class="btn btn-outline-secondary me-2" id="refreshBtn">
+                            <i class="fas fa-sync-alt"></i> 刷新
+                        </button>
+                        <button type="button" class="btn btn-primary" id="scheduleExportBtn">
+                            <i class="fas fa-clock"></i> 定时导出
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 快速导出卡片 -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card quick-export-card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-calendar-day fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">今日订单</h5>
+                                <p class="card-text text-muted">导出今天的所有订单数据</p>
+                                <button type="button" class="btn btn-primary" onclick="dataExport.quickExport('today')">
+                                    <i class="fas fa-download"></i> 立即导出
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card quick-export-card">
+                            <div class="card-body text-center">
+                                <i class="fas fa-calendar-minus fa-3x text-success mb-3"></i>
+                                <h5 class="card-title">昨日订单</h5>
+                                <p class="card-text text-muted">导出昨天的所有订单数据</p>
+                                <button type="button" class="btn btn-success" onclick="dataExport.quickExport('yesterday')">
+                                    <i class="fas fa-download"></i> 立即导出
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 自定义导出 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">自定义导出</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="customExportForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="exportType" class="form-label">导出类型 <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="exportType" name="export_type" required>
+                                            <option value="">请选择导出类型</option>
+                                            <option value="orders">订单数据</option>
+                                            <option value="merchants">商户数据</option>
+                                            <option value="accounts">账号数据</option>
+                                            <option value="statistics">统计报表</option>
+                                        </select>
+                                        <div class="invalid-feedback">请选择导出类型</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="exportFormat" class="form-label">导出格式</label>
+                                        <select class="form-select" id="exportFormat" name="export_format">
+                                            <option value="xlsx">Excel (.xlsx)</option>
+                                            <option value="csv">CSV (.csv)</option>
+                                            <option value="pdf">PDF (.pdf)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dateFrom" class="form-label">开始日期</label>
+                                        <input type="date" class="form-control" id="dateFrom" name="date_from">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dateTo" class="form-label">结束日期</label>
+                                        <input type="date" class="form-control" id="dateTo" name="date_to">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="merchantFilter" class="form-label">商户筛选</label>
+                                        <select class="form-select" id="merchantFilter" name="merchant_id">
+                                            <option value="">全部商户</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="statusFilter" class="form-label">状态筛选</label>
+                                        <select class="form-select" id="statusFilter" name="status">
+                                            <option value="">全部状态</option>
+                                            <option value="pending">待付款</option>
+                                            <option value="paid">已付款</option>
+                                            <option value="confirmed">已确认</option>
+                                            <option value="completed">已完成</option>
+                                            <option value="cancelled">已取消</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">导出字段</label>
+                                <div class="row" id="exportFields">
+                                    <!-- 字段选择将通过JavaScript动态生成 -->
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="maskSensitiveData" name="mask_sensitive" checked>
+                                    <label class="form-check-label" for="maskSensitiveData">
+                                        脱敏敏感数据（账号、手机号等）
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-secondary me-2" id="previewBtn">
+                                    <i class="fas fa-eye"></i> 预览数据
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="exportBtn">
+                                    <i class="fas fa-download"></i> 开始导出
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 导出历史 -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">导出历史</h5>
+                        <button type="button" class="btn btn-outline-danger btn-sm" id="clearHistoryBtn">
+                            <i class="fas fa-trash"></i> 清空历史
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="exportHistoryTable">
+                                <thead>
+                                    <tr>
+                                        <th>导出时间</th>
+                                        <th>导出类型</th>
+                                        <th>文件格式</th>
+                                        <th>数据范围</th>
+                                        <th>记录数</th>
+                                        <th>文件大小</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="exportHistoryTableBody">
+                                    <!-- 数据将通过JavaScript动态加载 -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- 分页 -->
+                        <nav aria-label="导出历史分页" class="mt-3">
+                            <ul class="pagination justify-content-center" id="historyPagination">
+                                <!-- 分页将通过JavaScript动态生成 -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- 数据预览模态框 -->
+    <div class="modal fade" id="dataPreviewModal" tabindex="-1" aria-labelledby="dataPreviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dataPreviewModalLabel">数据预览</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted" id="previewInfo">预览前100条记录</span>
+                            <div class="btn-group" role="group">
+                                <input type="radio" class="btn-check" name="previewFormat" id="previewTable" autocomplete="off" checked>
+                                <label class="btn btn-outline-secondary btn-sm" for="previewTable">
+                                    <i class="fas fa-table"></i> 表格
+                                </label>
+                                <input type="radio" class="btn-check" name="previewFormat" id="previewJson" autocomplete="off">
+                                <label class="btn btn-outline-secondary btn-sm" for="previewJson">
+                                    <i class="fas fa-code"></i> JSON
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 表格预览 -->
+                    <div id="previewTableContainer">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped" id="previewTable">
+                                <thead id="previewTableHead">
+                                    <!-- 表头将通过JavaScript动态生成 -->
+                                </thead>
+                                <tbody id="previewTableBody">
+                                    <!-- 数据将通过JavaScript动态生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- JSON预览 -->
+                    <div id="previewJsonContainer" style="display: none;">
+                        <pre><code id="previewJsonContent"></code></pre>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="confirmExportBtn">
+                        <i class="fas fa-download"></i> 确认导出
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 定时导出设置模态框 -->
+    <div class="modal fade" id="scheduleExportModal" tabindex="-1" aria-labelledby="scheduleExportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="scheduleExportModalLabel">定时导出设置</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="scheduleExportForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="scheduleName" class="form-label">任务名称 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="scheduleName" name="name" required placeholder="请输入任务名称">
+                            <div class="invalid-feedback">请输入任务名称</div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="scheduleType" class="form-label">导出类型 <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="scheduleType" name="export_type" required>
+                                        <option value="">请选择导出类型</option>
+                                        <option value="orders">订单数据</option>
+                                        <option value="statistics">统计报表</option>
+                                    </select>
+                                    <div class="invalid-feedback">请选择导出类型</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="scheduleFormat" class="form-label">导出格式</label>
+                                    <select class="form-select" id="scheduleFormat" name="export_format">
+                                        <option value="xlsx">Excel (.xlsx)</option>
+                                        <option value="csv">CSV (.csv)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="scheduleFrequency" class="form-label">执行频率 <span class="text-danger">*</span></label>
+                            <select class="form-select" id="scheduleFrequency" name="frequency" required>
+                                <option value="">请选择执行频率</option>
+                                <option value="daily">每日</option>
+                                <option value="weekly">每周</option>
+                                <option value="monthly">每月</option>
+                            </select>
+                            <div class="invalid-feedback">请选择执行频率</div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="scheduleTime" class="form-label">执行时间 <span class="text-danger">*</span></label>
+                                    <input type="time" class="form-control" id="scheduleTime" name="execute_time" required>
+                                    <div class="invalid-feedback">请选择执行时间</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="scheduleEmail" class="form-label">接收邮箱</label>
+                                    <input type="email" class="form-control" id="scheduleEmail" name="email" placeholder="导出完成后发送邮件通知">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="scheduleEnabled" name="enabled" checked>
+                                <label class="form-check-label" for="scheduleEnabled">
+                                    启用定时任务
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="scheduleDescription" class="form-label">任务描述</label>
+                            <textarea class="form-control" id="scheduleDescription" name="description" rows="3" placeholder="请输入任务描述"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary" id="scheduleSubmitBtn">
+                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            保存任务
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导出进度模态框 -->
+    <div class="modal fade" id="exportProgressModal" tabindex="-1" aria-labelledby="exportProgressModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportProgressModalLabel">导出进度</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-download fa-3x text-primary"></i>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span id="progressText">准备导出...</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                        <div class="progress mt-2">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                 role="progressbar" 
+                                 style="width: 0%" 
+                                 id="progressBar">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <small class="text-muted" id="progressDetails">正在处理数据，请稍候...</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelExportBtn">取消导出</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/data_export.js"></script>
+</body>
+</html>

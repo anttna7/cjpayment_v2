@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{.Title}} - CJPayment</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/static/css/critical.css" as="style">
+    <link rel="preload" href="/static/js/utils.js" as="script">
+    <link rel="preload" href="/static/js/api.js" as="script">
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    
+    <!-- Header Critical Fix CSS - 最高优先级修复 -->
+    <link rel="stylesheet" href="/static/css/header-critical-fix.css">
+    
+    <!-- Header Fix CSS -->
+    <link rel="stylesheet" href="/static/css/header-fix.css">
+    
+    <!-- Critical CSS - Inlined for First Paint -->
+    <style>
+        /* Critical CSS will be inlined here by the CSS loader */
+        
+        /* Emergency Color Fix - Inline for immediate effect */
+        * {
+            background-color: #fafafa !important;
+            color: #171717 !important;
+        }
+        
+        html, body {
+            background-color: #fafafa !important;
+            color: #171717 !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+        }
+        
+        .card, .merchant-card, .account-card, .stat-card {
+            background-color: #ffffff !important;
+            color: #171717 !important;
+            border: 1px solid #e5e5e5 !important;
+        }
+        
+        .table, .merchants-table, .accounts-table {
+            background-color: #ffffff !important;
+            color: #171717 !important;
+        }
+        
+        .table th {
+            background-color: #f9fafb !important;
+            color: #171717 !important;
+        }
+        
+        .nav-link {
+            color: #737373 !important;
+        }
+        
+        .nav-link.active {
+            background-color: #0ea5e9 !important;
+            color: #ffffff !important;
+        }
+        
+        .btn-primary {
+            background-color: #0ea5e9 !important;
+            color: #ffffff !important;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            color: #171717 !important;
+        }
+        
+        /* Override any dark theme */
+        [data-theme="dark"], [data-theme="auto"], .dark, .theme-dark {
+            background-color: #fafafa !important;
+            color: #171717 !important;
+        }
+        
+        [data-theme="dark"] *, [data-theme="auto"] *, .dark *, .theme-dark * {
+            background-color: inherit !important;
+            color: inherit !important;
+        }
+    </style>
+    
+    <!-- Emergency Color Fix - Synchronous Load -->
+    <link rel="stylesheet" href="/static/css/admin-page-fix.css">
+    
+    <!-- Preload Main CSS Bundle -->
+    <link rel="preload" href="/static/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/static/css/main.css"></noscript>
+    
+    <!-- Page-specific CSS - Loaded Asynchronously -->
+    {{range .CSS}}
+    <link rel="preload" href="/static/css/{{.}}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/static/css/{{.}}"></noscript>
+    {{end}}
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <!-- Emergency Color Fix Script - Execute immediately -->
+    <script src="/static/js/emergency-color-fix.js"></script>
+</head>
+<body class="{{.BodyClass}}" data-page="{{.PageType}}">
+    <!-- Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="nav" id="headerNav">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/recharge" class="nav__link" data-route="recharge">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">充值管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchants" class="nav__link" data-route="merchants">
+                            <span class="nav__icon">🏢</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">🏦</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">3</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationDropdown">
+                        <div class="notifications__header">
+                            <h4>最新通知</h4>
+                            <button class="notifications__clear">全部标记为已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationList">
+                            <!-- 通知列表将通过JavaScript动态加载 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton" aria-expanded="false" aria-haspopup="true">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">{{if .User}}{{.User.Name}}{{else}}管理员{{end}}</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown" role="menu">
+                        <a href="/profile" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="/help" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">❓</span>
+                            帮助中心
+                        </a>
+                        <div class="user-menu__divider"></div>
+                        <a href="#" class="user-menu__item user-menu__item--danger" role="menuitem" id="logoutLink">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+                
+                <button class="nav__toggle" id="mobileMenuToggle">
+                    <span class="nav__toggle-line"></span>
+                    <span class="nav__toggle-line"></span>
+                    <span class="nav__toggle-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app__main" id="appMain">
+        <div class="page">
+            <!-- Breadcrumb Navigation -->
+            {{if .Breadcrumbs}}
+            <nav class="page__header">
+                <ol class="breadcrumb">
+                    {{range .Breadcrumbs}}
+                    <li class="breadcrumb__item">
+                        {{if .URL}}
+                        <a href="{{.URL}}" class="breadcrumb__link">{{.Title}}</a>
+                        {{else}}
+                        <span class="breadcrumb__current">{{.Title}}</span>
+                        {{end}}
+                    </li>
+                    {{end}}
+                </ol>
+            </nav>
+            {{end}}
+
+            <!-- Page Content -->
+            <div class="page__content" id="pageContent">
+                {{template "content" .}}
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version {{.Version}} | Build {{.BuildTime}}</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Global Modals and Overlays -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">处理中，请稍候...</p>
+    </div>
+
+    <div id="globalModal" class="modal" style="display: none;">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-dialog" id="modalDialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modalTitle"></h3>
+                    <button class="modal-close" id="modalClose">&times;</button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+                <div class="modal-footer" id="modalFooter"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="globalToast" class="toast-container"></div>
+
+    <!-- Critical JavaScript - Load immediately -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    
+    <!-- Header Interaction - 修复通知和用户菜单 -->
+    <script src="/static/js/header-interaction.js"></script>
+    
+    <!-- Performance Loader - Load optimization system -->
+    <script src="/static/js/performance-loader.js"></script>
+    
+    <!-- Non-critical JavaScript - Load asynchronously -->
+    <script async src="/static/js/css-loader.js"></script>
+    <script async src="/static/js/theme-system.js"></script>
+    <script async src="/static/js/store.js"></script>
+    <script async src="/static/js/router.js"></script>
+    <script async src="/static/js/components.js"></script>
+    <script async src="/static/js/app.js"></script>
+    
+    <!-- Page-specific JavaScript -->
+    {{range .JS}}
+    <script src="/static/js/{{.}}"></script>
+    {{end}}
+    
+    <!-- Initialize Application -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize global app
+            window.CJPaymentApp = new CJPaymentApp({
+                user: {{.User}},
+                permissions: {{.Permissions}},
+                config: {{.Config}}
+            });
+            
+            // Initialize page-specific functionality
+            if (typeof initPage === 'function') {
+                initPage();
+            }
+        });
+    </script>
+</body>
+</html>

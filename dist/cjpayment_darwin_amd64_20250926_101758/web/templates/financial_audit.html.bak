@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>财务审核 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- 页面特定样式 -->
+    <link rel="stylesheet" href="/static/css/financial-audit-enhanced.css">
+    
+    <!-- Header Dropdown 修复 - 解决通知和用户菜单默认打开状态问题 -->
+    <link rel="stylesheet" href="/static/css/header-dropdown-fix.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="CJPayment企业内部支付管理系统财务审核和订单处理">
+    <meta name="keywords" content="财务审核,订单处理,支付管理,企业系统">
+</head>
+<body class="page-financial-audit">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link nav__link--active" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">3</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>商户通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">紧急审核订单</div>
+                                    <div class="notification-text">有5笔大额订单待紧急审核</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">刚刚</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name">管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown">
+                        <a href="/profile" class="user-menu__item">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/settings" class="user-menu__item">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="/help" class="user-menu__item">
+                            <span class="user-menu__item-icon">❓</span>
+                            帮助中心
+                        </a>
+                        <div class="user-menu__divider"></div>
+                        <a href="/logout" class="user-menu__item user-menu__item--danger">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="audit-management">
+            <!-- Enhanced Header -->
+            <div class="audit-header">
+                <div class="audit-header__left">
+                    <h1 class="audit-header__title">财务审核中心</h1>
+                    <p class="audit-header__subtitle">高效处理充值订单，确保资金安全和合规性</p>
+                </div>
+                
+                <div class="audit-header__right">
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <button class="btn-enhanced btn-outline" id="exportAuditBtn">
+                            <span class="btn__icon">📊</span>
+                            <span class="btn__text">导出报表</span>
+                        </button>
+                        <button class="btn-enhanced btn-primary" id="refreshDataBtn">
+                            <span class="btn__icon">🔄</span>
+                            <span class="btn__text">刷新数据</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Statistics Dashboard -->
+            <div class="audit-stats">
+                <div class="stat-card stat-card--pending">
+                    <div class="stat-card__icon">⏳</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__value" id="pendingCount">0</div>
+                        <div class="stat-card__label">待审核订单</div>
+                        <div class="stat-card__trend">
+                            <span class="trend-icon">📈</span>
+                            <span class="trend-text">较昨日 +5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card--amount">
+                    <div class="stat-card__icon">💰</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__value" id="pendingAmount">¥0.00</div>
+                        <div class="stat-card__label">待审核金额</div>
+                        <div class="stat-card__trend">
+                            <span class="trend-icon">💹</span>
+                            <span class="trend-text">¥125,680.50</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card--processed">
+                    <div class="stat-card__icon">✅</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__value" id="todayProcessed">0</div>
+                        <div class="stat-card__label">今日已处理</div>
+                        <div class="stat-card__trend">
+                            <span class="trend-icon">⚡</span>
+                            <span class="trend-text">平均 2.3min/单</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card--efficiency">
+                    <div class="stat-card__icon">📊</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__value" id="approvalRate">98.5%</div>
+                        <div class="stat-card__label">审核通过率</div>
+                        <div class="stat-card__trend">
+                            <span class="trend-icon">🎯</span>
+                            <span class="trend-text">月度目标 95%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Filter Section -->
+            <div class="audit-filters">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="pending">
+                        <span class="filter-tab__icon">⏳</span>
+                        <span class="filter-tab__text">待审核 (<span id="pendingTabCount">0</span>)</span>
+                    </button>
+                    <button class="filter-tab" data-filter="urgent">
+                        <span class="filter-tab__icon">🚨</span>
+                        <span class="filter-tab__text">紧急处理 (<span id="urgentTabCount">0</span>)</span>
+                    </button>
+                    <button class="filter-tab" data-filter="large">
+                        <span class="filter-tab__icon">💎</span>
+                        <span class="filter-tab__text">大额订单 (<span id="largeTabCount">0</span>)</span>
+                    </button>
+                    <button class="filter-tab" data-filter="processed">
+                        <span class="filter-tab__icon">✅</span>
+                        <span class="filter-tab__text">已处理</span>
+                    </button>
+                </div>
+
+                <div class="advanced-filters">
+                    <div class="filter-group">
+                        <label class="filter-label">支付类型</label>
+                        <select class="filter-select" id="paymentTypeFilter">
+                            <option value="">全部类型</option>
+                            <option value="private">对私充值</option>
+                            <option value="public">对公充值</option>
+                            <option value="third_party">第三方支付</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">金额范围</label>
+                        <select class="filter-select" id="amountRangeFilter">
+                            <option value="">全部金额</option>
+                            <option value="small">小额 (&lt; ¥1,000)</option>
+                            <option value="medium">中额 (¥1,000 - ¥10,000)</option>
+                            <option value="large">大额 (&gt; ¥10,000)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">日期范围</label>
+                        <select class="filter-select" id="dateRangeFilter">
+                            <option value="today">今天</option>
+                            <option value="yesterday">昨天</option>
+                            <option value="week">本周</option>
+                            <option value="month">本月</option>
+                            <option value="custom">自定义</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <button class="btn-enhanced btn-primary" id="applyFiltersBtn">
+                            <span class="btn__icon">🔍</span>
+                            <span class="btn__text">应用筛选</span>
+                        </button>
+                        <button class="btn-enhanced btn-outline" id="resetFiltersBtn">
+                            <span class="btn__icon">🔄</span>
+                            <span class="btn__text">重置</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Orders Table -->
+            <div class="audit-orders">
+                <div class="orders-header">
+                    <div class="orders-header__left">
+                        <h3 class="orders-title">审核订单列表</h3>
+                        <div class="bulk-actions" id="bulkActions" style="display: none;">
+                            <button class="btn-enhanced btn-success btn-sm" id="bulkApproveBtn">
+                                <span class="btn__icon">✅</span>
+                                批量通过 (<span id="selectedCount">0</span>)
+                            </button>
+                            <button class="btn-enhanced btn-danger btn-sm" id="bulkRejectBtn">
+                                <span class="btn__icon">❌</span>
+                                批量拒绝
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="orders-header__right">
+                        <div class="view-controls">
+                            <button class="view-btn active" data-view="table">
+                                <span class="view-icon">☰</span>
+                                表格视图
+                            </button>
+                            <button class="view-btn" data-view="cards">
+                                <span class="view-icon">⊞</span>
+                                卡片视图
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table View -->
+                <div class="orders-table-view" id="tableView">
+                    <div class="orders-table-container">
+                        <table class="enhanced-table" id="ordersTable">
+                            <thead>
+                                <tr>
+                                    <th class="checkbox-column">
+                                        <input type="checkbox" id="selectAll" aria-label="全选">
+                                    </th>
+                                    <th class="sortable" data-sort="order_number">
+                                        订单号
+                                        <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="sortable" data-sort="amount">
+                                        充值金额
+                                        <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th>商户名称</th>
+                                    <th>付款账户</th>
+                                    <th>收款账户</th>
+                                    <th class="sortable" data-sort="created_at">
+                                        提交时间
+                                        <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th>审核状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody">
+                                <!-- Loading skeleton -->
+                                <tr class="loading-row">
+                                    <td colspan="9" class="loading-cell">
+                                        <div class="loading-skeleton-table">
+                                            <div class="loading-spinner"></div>
+                                            <span>正在加载审核订单...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Cards View -->
+                <div class="orders-cards-view" id="cardsView">
+                    <div class="orders-grid" id="ordersGrid">
+                        <!-- Loading skeleton cards -->
+                        <div class="order-card order-card--loading">
+                            <div class="order-card__header">
+                                <div class="order-card__info">
+                                    <div class="order-card__number loading-skeleton"></div>
+                                    <div class="order-card__status loading-skeleton" style="width: 80px; height: 24px;"></div>
+                                </div>
+                                <div class="order-card__amount loading-skeleton" style="width: 100px; height: 28px;"></div>
+                            </div>
+                            <div class="order-card__details">
+                                <div class="order-detail">
+                                    <div class="order-detail__label">商户</div>
+                                    <div class="order-detail__value loading-skeleton"></div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail__label">提交时间</div>
+                                    <div class="order-detail__value loading-skeleton"></div>
+                                </div>
+                            </div>
+                            <div class="order-card__actions">
+                                <div class="loading-skeleton" style="width: 60px; height: 32px; margin-right: 8px;"></div>
+                                <div class="loading-skeleton" style="width: 60px; height: 32px;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Repeat loading skeleton cards -->
+                        <div class="order-card order-card--loading">
+                            <div class="order-card__header">
+                                <div class="order-card__info">
+                                    <div class="order-card__number loading-skeleton"></div>
+                                    <div class="order-card__status loading-skeleton" style="width: 80px; height: 24px;"></div>
+                                </div>
+                                <div class="order-card__amount loading-skeleton" style="width: 100px; height: 28px;"></div>
+                            </div>
+                            <div class="order-card__details">
+                                <div class="order-detail">
+                                    <div class="order-detail__label">商户</div>
+                                    <div class="order-detail__value loading-skeleton"></div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail__label">提交时间</div>
+                                    <div class="order-detail__value loading-skeleton"></div>
+                                </div>
+                            </div>
+                            <div class="order-card__actions">
+                                <div class="loading-skeleton" style="width: 60px; height: 32px; margin-right: 8px;"></div>
+                                <div class="loading-skeleton" style="width: 60px; height: 32px;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-card order-card--loading">
+                            <div class="order-card__header">
+                                <div class="order-card__info">
+                                    <div class="order-card__number loading-skeleton"></div>
+                                    <div class="order-card__status loading-skeleton" style="width: 80px; height: 24px;"></div>
+                                </div>
+                                <div class="order-card__amount loading-skeleton" style="width: 100px; height: 28px;"></div>
+                            </div>
+                            <div class="order-card__details">
+                                <div class="order-detail">
+                                    <div class="order-detail__label">商户</div>
+                                    <div class="order-detail__value loading-skeleton"></div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail__label">提交时间</div>
+                                    <div class="order-detail__value loading-skeleton"></div>
+                                </div>
+                            </div>
+                            <div class="order-card__actions">
+                                <div class="loading-skeleton" style="width: 60px; height: 32px; margin-right: 8px;"></div>
+                                <div class="loading-skeleton" style="width: 60px; height: 32px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Pagination -->
+                <div class="orders-pagination" id="ordersPagination">
+                    <div class="pagination-info">
+                        显示 <span id="pageStart">1</span>-<span id="pageEnd">20</span> 条，共 <span id="totalRecords">-</span> 条记录
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="pagination-btn" id="firstPageBtn" disabled>首页</button>
+                        <button class="pagination-btn" id="prevPageBtn" disabled>上一页</button>
+                        <div class="pagination-numbers" id="paginationNumbers">
+                            <!-- Page numbers will be generated dynamically -->
+                        </div>
+                        <button class="pagination-btn" id="nextPageBtn">下一页</button>
+                        <button class="pagination-btn" id="lastPageBtn">末页</button>
+                    </div>
+                    <div class="pagination-size">
+                        <select class="pagination-select" id="pageSizeSelect">
+                            <option value="10">10条/页</option>
+                            <option value="20" selected>20条/页</option>
+                            <option value="50">50条/页</option>
+                            <option value="100">100条/页</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | Financial Audit</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced Order Detail Modal -->
+    <div class="modal-enhanced" id="orderDetailModal" role="dialog" aria-labelledby="orderModalTitle" aria-hidden="true">
+        <div class="modal-content modal-content--large">
+            <div class="modal-header">
+                <h2 class="modal-title" id="orderModalTitle">订单详情审核</h2>
+                <button class="modal-close" id="orderModalClose" aria-label="关闭对话框">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-detail-tabs">
+                    <button class="detail-tab active" data-tab="basic">基本信息</button>
+                    <button class="detail-tab" data-tab="payment">付款详情</button>
+                    <button class="detail-tab" data-tab="merchant">商户信息</button>
+                    <button class="detail-tab" data-tab="voucher">付款凭证</button>
+                    <button class="detail-tab" data-tab="history">操作历史</button>
+                </div>
+
+                <div class="order-detail-content">
+                    <!-- Basic Info Tab -->
+                    <div class="detail-tab-content active" id="basicInfo">
+                        <div class="order-summary">
+                            <div class="summary-item">
+                                <div class="summary-label">订单号</div>
+                                <div class="summary-value" id="detailOrderNumber">-</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">充值金额</div>
+                                <div class="summary-value amount" id="detailAmount">-</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">创建时间</div>
+                                <div class="summary-value" id="detailCreatedAt">-</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">当前状态</div>
+                                <div class="summary-value">
+                                    <span class="status-badge" id="detailStatus">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Info Tab -->
+                    <div class="detail-tab-content" id="paymentInfo">
+                        <div class="payment-details">
+                            <h4>付款人信息</h4>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <label>姓名：</label>
+                                    <span id="payerName">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>账号：</label>
+                                    <span id="payerAccount">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>银行：</label>
+                                    <span id="payerBank">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>支付时间：</label>
+                                    <span id="paymentTime">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Merchant Info Tab -->
+                    <div class="detail-tab-content" id="merchantInfo">
+                        <div class="merchant-details">
+                            <h4>商户信息</h4>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <label>商户名称：</label>
+                                    <span id="merchantName">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>广告账户：</label>
+                                    <span id="adAccount">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>收款账户：</label>
+                                    <span id="receiverAccount">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>收款人：</label>
+                                    <span id="receiverName">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Voucher Tab -->
+                    <div class="detail-tab-content" id="voucherInfo">
+                        <div class="voucher-section">
+                            <h4>付款凭证</h4>
+                            <div class="voucher-container">
+                                <div class="voucher-preview" id="voucherPreview">
+                                    <!-- Voucher will be loaded here -->
+                                </div>
+                                <div class="voucher-actions">
+                                    <button class="btn-enhanced btn-outline" id="downloadVoucherBtn">
+                                        <span class="btn__icon">📥</span>
+                                        下载凭证
+                                    </button>
+                                    <button class="btn-enhanced btn-outline" id="openVoucherBtn">
+                                        <span class="btn__icon">🔗</span>
+                                        新窗口打开
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Tab -->
+                    <div class="detail-tab-content" id="historyInfo">
+                        <div class="history-section">
+                            <h4>操作历史</h4>
+                            <div class="history-timeline" id="orderHistory">
+                                <!-- History items will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-danger" id="rejectOrderBtn">
+                    <span class="btn__icon">❌</span>
+                    <span class="btn__text">拒绝订单</span>
+                </button>
+                <button class="btn-enhanced btn-warning" id="flagOrderBtn">
+                    <span class="btn__icon">🚩</span>
+                    <span class="btn__text">标记异常</span>
+                </button>
+                <button class="btn-enhanced btn-success" id="approveOrderBtn">
+                    <span class="btn__icon">✅</span>
+                    <span class="btn__text">通过审核</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approval Modal -->
+    <div class="modal-enhanced" id="approvalModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">确认审核通过</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="approval-summary">
+                    <div class="approval-info">
+                        <p>确认通过以下订单的审核？</p>
+                        <div class="order-summary-mini">
+                            <span class="order-id">订单号：<span id="approvalOrderId">-</span></span>
+                            <span class="order-amount">金额：<span id="approvalAmount">-</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="approvalRemark">审核备注（可选）</label>
+                    <textarea id="approvalRemark" class="form-textarea" rows="3" placeholder="请输入审核备注..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="autoProcess">
+                        <span class="checkbox-text">自动执行后续处理流程</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeApprovalModal()">取消</button>
+                <button class="btn-enhanced btn-success" id="confirmApprovalBtn">
+                    <span class="btn__icon">✅</span>
+                    确认通过
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rejection Modal -->
+    <div class="modal-enhanced" id="rejectionModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">拒绝订单</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="rejection-form">
+                    <div class="form-group">
+                        <label for="rejectionReason">拒绝原因 *</label>
+                        <select id="rejectionReason" class="form-select" required>
+                            <option value="">请选择拒绝原因</option>
+                            <option value="insufficient_funds">账户余额不足</option>
+                            <option value="invalid_voucher">付款凭证无效</option>
+                            <option value="amount_mismatch">金额不匹配</option>
+                            <option value="suspicious_activity">可疑交易</option>
+                            <option value="merchant_issue">商户问题</option>
+                            <option value="other">其他原因</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rejectionDetails">详细说明 *</label>
+                        <textarea id="rejectionDetails" class="form-textarea" rows="4" 
+                                  placeholder="请详细说明拒绝原因，以便相关人员处理..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notifyMerchant">
+                            <span class="checkbox-text">通知商户处理</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeRejectionModal()">取消</button>
+                <button class="btn-enhanced btn-danger" id="confirmRejectionBtn">
+                    <span class="btn__icon">❌</span>
+                    确认拒绝
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">处理中，请稍候...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="globalToast" class="toast-container" aria-live="polite"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/components.js"></script>
+    
+    <!-- 统一头部组件管理 -->
+    <script src="/static/js/header-unified.js"></script>
+    
+    <script src="/static/js/financial-audit-enhanced.js"></script>
+    
+    <!-- User Analytics & Feedback System -->
+    <script src="/static/js/user-feedback-analytics.js"></script>
+    <script src="/static/js/analytics-init.js"></script>
+    
+    <!-- Mobile Utilities -->
+    <script src="/static/js/mobile-utilities.js"></script>
+    
+    <!-- Interaction Enhancements -->
+    <script src="/static/js/interaction-enhancements.js"></script>
+    
+    <!-- Initialize Financial Audit -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 演示环境认证状态设置
+            const authToken = localStorage.getItem('authToken');
+            if (!authToken) {
+                console.log('FinancialAudit: 演示模式 - 跳过认证检查');
+                // 设置默认认证信息用于演示
+                localStorage.setItem('authToken', 'demo-token');
+                localStorage.setItem('userInfo', JSON.stringify({
+                    name: '系统管理员',
+                    username: 'admin',
+                    role: '超级管理员',
+                    id: 'demo_admin'
+                }));
+            }
+            
+            // Check dependencies
+            const dependencies = ['CJUtils', 'CJApi', 'CJComponents'];
+            const missing = dependencies.filter(dep => typeof window[dep] === 'undefined');
+            
+            if (missing.length > 0) {
+                console.error('Missing dependencies:', missing);
+                return;
+            }
+            
+            try {
+                // Initialize enhanced financial audit
+                window.auditManager = new FinancialAuditEnhanced({
+                    apiEndpoint: '/api/audit',
+                    pageSize: 20,
+                    enableRealTime: true,
+                    autoRefresh: 30000,
+                    enableNotifications: true
+                });
+                
+                console.log('Enhanced financial audit initialized successfully');
+            } catch (error) {
+                console.error('Failed to initialize enhanced financial audit:', error);
+            }
+            
+            // 初始化统一头部组件
+            window.headerUnified = new HeaderUnified();
+        });
+    </script>
+
+    <!-- Additional Styles -->
+    <style>
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            margin: 0;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+        }
+        
+        .loading-spinner {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: 10000;
+        }
+    </style>
+</body>
+</html>

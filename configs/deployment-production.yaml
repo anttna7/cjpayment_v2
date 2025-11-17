@@ -1,0 +1,357 @@
+# 生产环境部署配置
+
+# 渐进式发布配置
+progressive_deployment:
+  enabled: true
+  strategy: "blue_green"  # blue_green, canary, rolling
+  
+  # 蓝绿部署配置
+  blue_green:
+    health_check_timeout: 300  # 5分钟
+    rollback_timeout: 180      # 3分钟
+    traffic_switch_delay: 60   # 1分钟
+    
+  # 金丝雀部署配置
+  canary:
+    initial_traffic: 5         # 5%初始流量
+    increment_step: 10         # 每次增加10%
+    increment_interval: 600    # 10分钟间隔
+    success_threshold: 0.99    # 99%成功率
+    
+  # 滚动更新配置
+  rolling:
+    max_unavailable: 25        # 最多25%不可用
+    max_surge: 25              # 最多25%额外实例
+    batch_size: 2              # 每批更新2个实例
+
+# 功能开关配置
+feature_flags:
+  enabled: true
+  storage: "redis"
+  cache_ttl: 300  # 5分钟缓存
+  
+  # 默认标志
+  default_flags:
+    new_ui_enabled: false
+    new_dashboard: false
+    enhanced_forms: false
+    advanced_charts: false
+    mobile_optimization: false
+    
+  # 用户分组
+  user_segments:
+    - name: "beta_users"
+      criteria:
+        user_type: "admin"
+        account_age: "> 30d"
+      flags:
+        new_ui_enabled: true
+        new_dashboard: true
+        
+    - name: "power_users"
+      criteria:
+        login_frequency: "> 10/month"
+        feature_usage: "high"
+      flags:
+        enhanced_forms: true
+        advanced_charts: true
+
+# A/B测试配置
+ab_testing:
+  enabled: true
+  
+  # 活跃测试
+  active_tests:
+    - id: "dashboard_layout_test"
+      name: "Dashboard Layout Comparison"
+      description: "Compare card-based vs table-based dashboard"
+      start_date: "2025-01-01"
+      end_date: "2025-02-01"
+      traffic_split:
+        control: 50    # 原版本
+        variant_a: 50  # 卡片版本
+      variants:
+        - id: "control"
+          name: "Original Dashboard"
+          config:
+            layout_type: "table"
+            enable_cards: false
+        - id: "variant_a"
+          name: "Card-based Dashboard"
+          config:
+            layout_type: "cards"
+            enable_cards: true
+      conversion_goals:
+        - name: "user_engagement"
+          type: "time_on_page"
+          target: 300  # 5分钟
+        - name: "feature_usage"
+          type: "click_rate"
+          target: 0.1  # 10%点击率
+          
+    - id: "form_optimization_test"
+      name: "Form UX Optimization"
+      description: "Test enhanced form components"
+      start_date: "2025-01-15"
+      end_date: "2025-02-15"
+      traffic_split:
+        control: 70
+        variant_a: 30
+      variants:
+        - id: "control"
+          name: "Standard Forms"
+          config:
+            form_type: "standard"
+            validation: "basic"
+        - id: "variant_a"
+          name: "Enhanced Forms"
+          config:
+            form_type: "enhanced"
+            validation: "real_time"
+            auto_save: true
+      conversion_goals:
+        - name: "form_completion"
+          type: "form_submit"
+          target: 0.8  # 80%完成率
+        - name: "error_reduction"
+          type: "validation_errors"
+          target: 0.1  # 10%错误率
+
+# 回滚配置
+rollback:
+  enabled: true
+  
+  # 自动回滚触发条件
+  auto_rollback:
+    enabled: true
+    triggers:
+      error_rate:
+        threshold: 0.05      # 5%错误率
+        window: "5m"         # 5分钟窗口
+        min_requests: 100    # 最少100个请求
+        
+      response_time:
+        threshold: 3000      # 3秒响应时间
+        percentile: 95       # 95分位数
+        window: "5m"
+        
+      availability:
+        threshold: 0.95      # 95%可用性
+        window: "2m"
+        
+      user_satisfaction:
+        threshold: 0.7       # 70%满意度
+        window: "10m"
+        min_feedback: 20     # 最少20个反馈
+        
+  # 手动回滚
+  manual_rollback:
+    enabled: true
+    require_approval: true
+    approval_timeout: 300    # 5分钟审批超时
+    
+  # 回滚策略
+  strategy:
+    type: "immediate"        # immediate, gradual
+    backup_retention: "7d"   # 备份保留7天
+    verification_timeout: 180 # 3分钟验证超时
+
+# 监控和告警
+monitoring:
+  enabled: true
+  
+  # 部署监控
+  deployment_monitoring:
+    health_check_interval: 30    # 30秒
+    metrics_collection_interval: 60  # 1分钟
+    alert_cooldown: 300          # 5分钟告警冷却
+    
+  # 关键指标
+  key_metrics:
+    - name: "error_rate"
+      type: "gauge"
+      threshold: 0.05
+      alert_severity: "critical"
+      
+    - name: "response_time_p95"
+      type: "histogram"
+      threshold: 2000
+      alert_severity: "warning"
+      
+    - name: "throughput"
+      type: "counter"
+      threshold: 100
+      alert_severity: "info"
+      
+    - name: "user_satisfaction"
+      type: "gauge"
+      threshold: 0.8
+      alert_severity: "warning"
+
+# 流量管理
+traffic_management:
+  enabled: true
+  
+  # 负载均衡
+  load_balancing:
+    algorithm: "round_robin"  # round_robin, least_connections, ip_hash
+    health_check:
+      path: "/health"
+      interval: 30
+      timeout: 5
+      healthy_threshold: 2
+      unhealthy_threshold: 3
+      
+  # 流量分割
+  traffic_splitting:
+    enabled: true
+    rules:
+      - name: "version_split"
+        conditions:
+          - header: "X-Version"
+            value: "v2"
+        target: "new_version"
+        weight: 100
+        
+      - name: "user_segment_split"
+        conditions:
+          - cookie: "user_segment"
+            value: "beta"
+        target: "new_version"
+        weight: 100
+        
+      - name: "default_split"
+        conditions: []
+        target: "current_version"
+        weight: 90
+        fallback: "new_version"
+        fallback_weight: 10
+
+# 安全配置
+security:
+  enabled: true
+  
+  # 部署安全
+  deployment_security:
+    require_signed_images: true
+    vulnerability_scanning: true
+    security_policy_enforcement: true
+    
+  # 运行时安全
+  runtime_security:
+    enable_rbac: true
+    network_policies: true
+    pod_security_policies: true
+    
+  # 数据保护
+  data_protection:
+    encryption_at_rest: true
+    encryption_in_transit: true
+    backup_encryption: true
+
+# 性能优化
+performance:
+  enabled: true
+  
+  # 资源限制
+  resource_limits:
+    cpu_request: "100m"
+    cpu_limit: "500m"
+    memory_request: "128Mi"
+    memory_limit: "512Mi"
+    
+  # 自动扩缩容
+  auto_scaling:
+    enabled: true
+    min_replicas: 2
+    max_replicas: 10
+    target_cpu_utilization: 70
+    target_memory_utilization: 80
+    
+  # 缓存配置
+  caching:
+    enabled: true
+    redis_cluster: true
+    cache_ttl: 3600  # 1小时
+    cache_size: "1Gi"
+
+# 日志和审计
+logging:
+  enabled: true
+  
+  # 部署日志
+  deployment_logs:
+    level: "info"
+    format: "json"
+    retention: "30d"
+    
+  # 审计日志
+  audit_logs:
+    enabled: true
+    events:
+      - "deployment_started"
+      - "deployment_completed"
+      - "rollback_triggered"
+      - "traffic_switched"
+      - "feature_flag_changed"
+    retention: "90d"
+
+# 通知配置
+notifications:
+  enabled: true
+  
+  # 通知渠道
+  channels:
+    - type: "slack"
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+      channel: "#deployments"
+      
+    - type: "email"
+      smtp_server: "${SMTP_SERVER}"
+      recipients:
+        - "devops@company.com"
+        - "team-lead@company.com"
+        
+    - type: "webhook"
+      url: "${WEBHOOK_URL}"
+      headers:
+        Authorization: "Bearer ${WEBHOOK_TOKEN}"
+        
+  # 通知事件
+  events:
+    deployment_started:
+      channels: ["slack"]
+      severity: "info"
+      
+    deployment_completed:
+      channels: ["slack", "email"]
+      severity: "info"
+      
+    rollback_triggered:
+      channels: ["slack", "email", "webhook"]
+      severity: "critical"
+      
+    health_check_failed:
+      channels: ["slack"]
+      severity: "warning"
+
+# 环境变量
+environment:
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+  FEATURE_FLAGS_ENABLED: "true"
+  AB_TESTING_ENABLED: "true"
+  ROLLBACK_ENABLED: "true"
+  MONITORING_ENABLED: "true"
+  
+  # 数据库配置
+  DATABASE_URL: "${DATABASE_URL}"
+  REDIS_URL: "${REDIS_URL}"
+  
+  # 外部服务
+  MONITORING_API_URL: "${MONITORING_API_URL}"
+  ANALYTICS_API_URL: "${ANALYTICS_API_URL}"
+  
+  # 安全配置
+  JWT_SECRET: "${JWT_SECRET}"
+  ENCRYPTION_KEY: "${ENCRYPTION_KEY}"

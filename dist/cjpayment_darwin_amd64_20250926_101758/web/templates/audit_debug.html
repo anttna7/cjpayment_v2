@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>审核表调试页面</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        
+        .debug-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .test-table th,
+        .test-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .test-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .status-success { color: #28a745; }
+        .status-failed { color: #dc3545; }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: black; }
+        
+        .log-area {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 财务审核表调试页面</h1>
+    
+    <div class="debug-panel">
+        <h3>基础检查</h3>
+        <button class="btn btn-primary" onclick="runBasicCheck()">运行基础检查</button>
+        <button class="btn btn-success" onclick="testDataGeneration()">测试数据生成</button>
+        <button class="btn btn-warning" onclick="testDirectRender()">直接渲染测试</button>
+        <button class="btn btn-primary" onclick="clearLog()">清空日志</button>
+    </div>
+    
+    <div class="debug-panel">
+        <h3>调试日志</h3>
+        <div id="logArea" class="log-area"></div>
+    </div>
+    
+    <div class="debug-panel">
+        <h3>测试表格</h3>
+        <table class="test-table" id="debugTable">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>订单号</th>
+                    <th>付款凭证</th>
+                    <th>付款金额</th>
+                    <th>付款账号</th>
+                    <th>付款账户名称</th>
+                    <th>付款账户机构</th>
+                    <th>付款类型</th>
+                    <th>收款账号</th>
+                    <th>收款账户名称</th>
+                    <th>收款账户机构</th>
+                    <th>订单状态</th>
+                    <th>创建时间</th>
+                    <th>付款时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="debugTableBody">
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- 引入原始的JS文件 -->
+    <script src="/static/js/financial-audit-table.js"></script>
+    
+    <script>
+        const logArea = document.getElementById('logArea');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            logArea.textContent += `[${timestamp}] ${message}\n`;
+            logArea.scrollTop = logArea.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLog() {
+            logArea.textContent = '';
+        }
+        
+        function runBasicCheck() {
+            log('🔍 开始基础检查...');
+            
+            // 检查类定义
+            if (typeof FinancialAuditTable !== 'undefined') {
+                log('✅ FinancialAuditTable类已定义');
+                
+                try {
+                    const testInstance = new FinancialAuditTable();
+                    log('✅ 实例创建成功');
+                    
+                    // 检查实例方法
+                    const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(testInstance));
+                    log(`📋 实例方法: ${methods.join(', ')}`);
+                    
+                    // 检查关键方法
+                    if (typeof testInstance.generateMockAuditData === 'function') {
+                        log('✅ generateMockAuditData方法存在');
+                    } else {
+                        log('❌ generateMockAuditData方法不存在');
+                    }
+                    
+                    if (typeof testInstance.renderTableData === 'function') {
+                        log('✅ renderTableData方法存在');
+                    } else {
+                        log('❌ renderTableData方法不存在');
+                    }
+                    
+                } catch (error) {
+                    log(`❌ 实例创建失败: ${error.message}`);
+                }
+            } else {
+                log('❌ FinancialAuditTable类未定义');
+            }
+            
+            // 检查原页面的DOM元素
+            log('\\n🔍 检查原页面DOM元素...');
+            const originalTable = document.getElementById('financialAuditTable');
+            const originalTbody = document.getElementById('financialAuditTableBody');
+            
+            log(`原表格元素: ${originalTable ? '存在' : '不存在'}`);
+            log(`原表体元素: ${originalTbody ? '存在' : '不存在'}`);
+            
+            if (originalTbody) {
+                log(`原表体行数: ${originalTbody.querySelectorAll('tr').length}`);
+            }
+        }
+        
+        function testDataGeneration() {
+            log('\\n📊 测试数据生成...');
+            
+            if (typeof FinancialAuditTable !== 'undefined') {
+                try {
+                    const testInstance = new FinancialAuditTable();
+                    const mockData = testInstance.generateMockAuditData();
+                    
+                    log(`✅ 数据生成成功，共${mockData.length}条`);
+                    log(`样本数据: ${JSON.stringify(mockData[0], null, 2)}`);
+                    
+                    return mockData;
+                } catch (error) {
+                    log(`❌ 数据生成失败: ${error.message}`);
+                    return null;
+                }
+            } else {
+                log('❌ 无法测试，FinancialAuditTable类未定义');
+                return null;
+            }
+        }
+        
+        function testDirectRender() {
+            log('\\n🎨 测试直接渲染...');
+            
+            const mockData = testDataGeneration();
+            if (!mockData || mockData.length === 0) {
+                log('❌ 无测试数据，跳过渲染测试');
+                return;
+            }
+            
+            const debugTbody = document.getElementById('debugTableBody');
+            if (!debugTbody) {
+                log('❌ 调试表格不存在');
+                return;
+            }
+            
+            try {
+                // 清空现有内容
+                debugTbody.innerHTML = '';
+                
+                // 渲染前5条数据
+                const renderData = mockData.slice(0, 5);
+                
+                renderData.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row.serial}</td>
+                        <td>${row.order_number}</td>
+                        <td>${row.payment_voucher}</td>
+                        <td>￥${row.amount}</td>
+                        <td>${row.payer_account_number}</td>
+                        <td>${row.payer_account_name}</td>
+                        <td>${row.payer_bank}</td>
+                        <td>${row.business_type}</td>
+                        <td>${row.receiver_account_number}</td>
+                        <td>${row.receiver_account_name}</td>
+                        <td>${row.receiver_bank}</td>
+                        <td><span class="status-${row.status === '交易成功' ? 'success' : 'failed'}">${row.status}</span></td>
+                        <td>${row.created_time}</td>
+                        <td>${row.payment_time}</td>
+                        <td>
+                            <button class="btn btn-primary">查看详情</button>
+                            <button class="btn btn-success">已到账</button>
+                            <button class="btn btn-warning">未到账</button>
+                        </td>
+                    `;
+                    debugTbody.appendChild(tr);
+                });
+                
+                log(`✅ 直接渲染成功，显示${renderData.length}条数据`);
+                
+            } catch (error) {
+                log(`❌ 直接渲染失败: ${error.message}`);
+            }
+        }
+        
+        // 页面加载完成后自动运行基础检查
+        window.addEventListener('load', () => {
+            log('🚀 调试页面加载完成');
+            setTimeout(() => {
+                runBasicCheck();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

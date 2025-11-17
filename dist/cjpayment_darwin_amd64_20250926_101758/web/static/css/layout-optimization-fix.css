@@ -1,0 +1,144 @@
+/* 基于Playwright分析的精确布局优化 */
+
+/* ================== 容器宽度和间距优化 ================== */
+
+/* 统计卡片容器优化 - 解决宽度约束问题 */
+html body.page-recharge-payment .stats-row,
+.page-recharge-payment .stats-row,
+.stats-row.stats-row.stats-row.stats-row.stats-row.stats-row {
+    /* 扩大容器宽度以更好容纳卡片 */
+    width: 100% !important;
+    max-width: 600px !important;
+    min-width: 500px !important;
+
+    /* 优化布局属性 */
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    align-items: stretch !important;
+
+    /* 优化间距 */
+    gap: 20px !important;
+    margin: 0 auto 2rem auto !important;
+    padding: 20px !important;
+
+    /* 视觉优化 */
+    box-sizing: border-box !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 统计卡片优化 - 基于Playwright测量的224px宽度 */
+html body.page-recharge-payment .stat-card,
+.page-recharge-payment .stat-card,
+.stat-card.stat-card.stat-card.stat-card.stat-card.stat-card {
+    /* 精确的尺寸控制 */
+    flex: 1 1 calc(50% - 10px) !important;
+    min-width: 220px !important;
+    max-width: 260px !important;
+
+    /* 固定高度确保整齐 */
+    height: 110px !important;
+    min-height: 110px !important;
+
+    /* 间距优化 */
+    margin: 0 !important;
+    padding: 1.2rem !important;
+
+    /* 视觉优化 */
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(10px) !important;
+
+    /* 布局属性 */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
+
+    /* 过渡效果 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+
+    /* 移除浮动和定位 */
+    float: none !important;
+    position: static !important;
+
+    /* 强制移除grid属性 */
+    grid-area: unset !important;
+    grid-column: unset !important;
+    grid-row: unset !important;
+}
+
+/* 卡片悬停效果 */
+html body.page-recharge-payment .stat-card:hover,
+.page-recharge-payment .stat-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* 确保父容器不限制宽度 */
+.page-recharge-payment .page__header {
+    max-width: none !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    html body.page-recharge-payment .stats-row,
+    .stats-row.stats-row.stats-row.stats-row.stats-row.stats-row {
+        flex-direction: column !important;
+        max-width: 400px !important;
+        gap: 15px !important;
+    }
+
+    html body.page-recharge-payment .stat-card,
+    .stat-card.stat-card.stat-card.stat-card.stat-card.stat-card {
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* 卡片内容布局优化 */
+.page-recharge-payment .stat-card .stat-card__icon {
+    margin-right: 1rem !important;
+    font-size: 2rem !important;
+    flex-shrink: 0 !important;
+}
+
+.page-recharge-payment .stat-card .stat-card__content {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+}
+
+.page-recharge-payment .stat-card .stat-card__value {
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.25rem !important;
+    color: #1a202c !important;
+}
+
+.page-recharge-payment .stat-card .stat-card__label {
+    font-size: 0.9rem !important;
+    color: #718096 !important;
+    font-weight: 500 !important;
+}
+
+/* 强制覆盖任何内联样式 */
+.stats-row[style*="width"] {
+    width: 100% !important;
+    max-width: 600px !important;
+}
+
+.stat-card[style*="width"] {
+    width: auto !important;
+    flex: 1 1 calc(50% - 10px) !important;
+}

@@ -1,0 +1,117 @@
+{
+  "timestamp": "2025-08-27T06:10:21.818Z",
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "documentWidth": 1382,
+    "documentHeight": 2731
+  },
+  "modalAnalysis": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "backdrop": {
+      "width": 1280,
+      "height": 720,
+      "left": 25,
+      "right": 1305,
+      "top": 1702.453125,
+      "bottom": 2422.453125,
+      "styles": {
+        "width": "1280px",
+        "height": "720px",
+        "position": "fixed",
+        "left": "0px",
+        "top": "0px",
+        "zIndex": "1000"
+      }
+    },
+    "container": {
+      "width": 1088,
+      "height": 612,
+      "left": 121,
+      "right": 1209,
+      "top": 1756.453125,
+      "bottom": 2368.453125,
+      "exceedsViewport": {
+        "right": false,
+        "left": false,
+        "bottom": true,
+        "top": false
+      },
+      "styles": {
+        "width": "1088px",
+        "maxWidth": "1100px",
+        "height": "612px",
+        "maxHeight": "612px",
+        "position": "relative",
+        "left": "0px",
+        "top": "0px",
+        "margin": "0px",
+        "padding": "0px",
+        "boxSizing": "border-box",
+        "overflow": "auto",
+        "overflowX": "auto",
+        "overflowY": "auto"
+      }
+    }
+  },
+  "contentAnalysis": {
+    "filtersContent": {
+      "width": 1088,
+      "height": 584.59375,
+      "styles": {
+        "width": "1088px",
+        "maxWidth": "none",
+        "minWidth": "0px",
+        "padding": "0px",
+        "margin": "0px",
+        "boxSizing": "border-box"
+      }
+    },
+    "tabsContainer": {
+      "width": 1088,
+      "styles": {
+        "width": "1088px",
+        "display": "flex",
+        "flexWrap": "nowrap"
+      }
+    },
+    "tabContent": {
+      "width": 1088,
+      "styles": {
+        "width": "1088px",
+        "padding": "20px 24px"
+      }
+    }
+  },
+  "scrollInfo": {
+    "hasHorizontalScrollbar": true,
+    "hasVerticalScrollbar": true,
+    "scrollWidth": 1382,
+    "scrollHeight": 2731,
+    "clientWidth": 1280,
+    "clientHeight": 720
+  },
+  "issues": [
+    {
+      "type": "modal-exceeds-viewport-height",
+      "message": "模态框超出视口下边界",
+      "details": {
+        "containerHeight": 612,
+        "viewportHeight": 720,
+        "excess": 1648.453125
+      }
+    },
+    {
+      "type": "horizontal-scrollbar-present",
+      "message": "页面出现水平滚动条",
+      "details": {
+        "scrollWidth": 1382,
+        "clientWidth": 1280,
+        "excess": 102
+      }
+    }
+  ]
+}

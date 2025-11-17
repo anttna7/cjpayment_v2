@@ -1,0 +1,608 @@
+/* ==========================================================================
+   CJPayment 统一布局样式系统
+   基于仪表板页面的完美导航和页脚布局
+   ========================================================================== */
+
+/* ==========================================================================
+   统一导航头部样式
+   ========================================================================== */
+
+.app__header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* 由设计令牌统一控制头部高度，确保与内容区 margin-top 一致 */
+    height: var(--header-height);
+}
+
+[data-theme="dark"] .app__header {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-bottom-color: rgba(139, 92, 246, 0.2);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    /* 由外层 .app__header 统一高度，这里保持与父容器一致 */
+    height: 100%;
+    /* 由外层.app__header统一高度，这里不再强制最小高度，避免与其它样式冲突 */
+    /* min-height: 70px; */
+}
+
+/* Logo Section */
+.header__left {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+.logo:hover {
+    transform: translateY(-1px);
+}
+
+.logo__icon {
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 8px rgba(139, 92, 246, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.logo:hover .logo__icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.logo__text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.logo__version {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #64748b;
+    background: rgba(139, 92, 246, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    margin-left: 0.5rem;
+}
+
+/* Navigation */
+.nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 2rem;
+}
+
+.nav__list {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: rgba(248, 250, 252, 0.8);
+    border-radius: 16px;
+    padding: 0.5rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+[data-theme="dark"] .nav__list {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(139, 92, 246, 0.2);
+}
+
+.nav__item {
+    margin: 0;
+}
+
+.nav__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: #64748b;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav__link:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.nav__link:hover:before {
+    left: 100%;
+}
+
+.nav__link:hover {
+    color: #8b5cf6;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+}
+
+.nav__link--active {
+    color: white;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+    transform: translateY(-1px);
+}
+
+.nav__link--active:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.nav__icon {
+    font-size: 1.1rem;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s ease;
+}
+
+.nav__link:hover .nav__icon {
+    transform: scale(1.1);
+}
+
+.nav__link--active .nav__icon {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.nav__text {
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+/* Header Right Section */
+.header__right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+/* Theme Toggle - 已在buttons-unified.css中定义 */
+
+/* Notifications */
+.notifications {
+    position: relative;
+}
+
+.notifications__trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.notifications__trigger:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%);
+    border-color: rgba(139, 92, 246, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.15);
+    color: #8b5cf6;
+}
+
+.notifications__badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.125rem 0.375rem;
+    border-radius: 12px;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.notifications__dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: 320px;
+    background: white;
+    border: 1px solid rgba(139, 92, 246, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 1001;
+}
+
+[data-theme="dark"] .notifications__dropdown {
+    background: #1e293b;
+    border-color: rgba(139, 92, 246, 0.2);
+}
+
+.notifications.active .notifications__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.notifications__header {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notifications__header h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+[data-theme="dark"] .notifications__header h4 {
+    color: #f1f5f9;
+}
+
+.notifications__clear {
+    font-size: 0.875rem;
+    color: #8b5cf6;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.notifications__clear:hover {
+    background: rgba(139, 92, 246, 0.1);
+}
+
+/* User Menu */
+.user-menu {
+    position: relative;
+}
+
+.user-menu__trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #1e293b;
+    min-width: 0;
+}
+
+[data-theme="dark"] .user-menu__trigger {
+    background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    color: #f1f5f9;
+}
+
+.user-menu__trigger:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%);
+    border-color: rgba(139, 92, 246, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.15);
+}
+
+.user-menu__avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.user-menu__info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.user-menu__name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+[data-theme="dark"] .user-menu__name {
+    color: #f1f5f9;
+}
+
+.user-menu__role {
+    font-size: 0.75rem;
+    color: #64748b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-menu__arrow {
+    font-size: 0.75rem;
+    color: #64748b;
+    transition: transform 0.3s ease;
+}
+
+.user-menu.active .user-menu__arrow {
+    transform: rotate(180deg);
+}
+
+.user-menu__dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 200px;
+    background: white;
+    border: 1px solid rgba(139, 92, 246, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 1001;
+    padding: 0.5rem;
+}
+
+[data-theme="dark"] .user-menu__dropdown {
+    background: #1e293b;
+    border-color: rgba(139, 92, 246, 0.2);
+}
+
+.user-menu.active .user-menu__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-menu__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    color: #1e293b;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+[data-theme="dark"] .user-menu__item {
+    color: #f1f5f9;
+}
+
+.user-menu__item:hover {
+    background: rgba(139, 92, 246, 0.08);
+    color: #8b5cf6;
+}
+
+.user-menu__item--danger {
+    color: #ef4444;
+}
+
+.user-menu__item--danger:hover {
+    background: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+}
+
+.user-menu__item-icon {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+.user-menu__divider {
+    height: 1px;
+    background: rgba(139, 92, 246, 0.1);
+    margin: 0.5rem 0;
+}
+
+/* Mobile Menu Toggle */
+.nav__toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.nav__toggle-line {
+    width: 20px;
+    height: 2px;
+    background: #64748b;
+    margin: 2px 0;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+}
+
+/* ==========================================================================
+   统一页脚样式
+   ========================================================================== */
+
+.app__footer {
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    border-top: 1px solid rgba(139, 92, 246, 0.1);
+    padding: 2rem 0 1rem;
+    margin-top: auto;
+}
+
+[data-theme="dark"] .app__footer {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-top-color: rgba(139, 92, 246, 0.2);
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.footer__left,
+.footer__right {
+    display: flex;
+    align-items: center;
+}
+
+.footer__text {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+    font-weight: 400;
+}
+
+[data-theme="dark"] .footer__text {
+    color: #94a3b8;
+}
+
+/* ==========================================================================
+   响应式设计
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .nav {
+        margin: 0 1rem;
+    }
+    
+    .nav__text {
+        display: none;
+    }
+    
+    .nav__link {
+        padding: 0.75rem;
+    }
+    
+    .user-menu__info {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 0 1rem;
+    }
+    
+    .nav {
+        display: none;
+    }
+    
+    .nav__toggle {
+        display: flex;
+    }
+    
+    .header__right {
+        gap: 0.5rem;
+    }
+    
+    .notifications__dropdown,
+    .user-menu__dropdown {
+        width: 280px;
+    }
+    
+    .footer {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        height: 60px;
+        min-height: 60px;
+    }
+    
+    .logo__text {
+        font-size: 1.25rem;
+    }
+    
+    .logo__version {
+        display: none;
+    }
+    
+    .notifications__dropdown,
+    .user-menu__dropdown {
+        width: calc(100vw - 2rem);
+        left: 1rem;
+        right: auto;
+    }
+}

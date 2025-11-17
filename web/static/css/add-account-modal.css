@@ -1,0 +1,425 @@
+/**
+ * 添加收款账户模态框样式
+ * 复用商户模态框的设计风格，保持系统UI一致性
+ */
+
+/* ==========================================================================
+   模态框基础样式 - 复用商户模态框设计
+   ========================================================================== */
+
+.account-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.account-modal-overlay.show {
+    display: flex;
+}
+
+.account-modal-container {
+    background: var(--bg-surface, #ffffff);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    animation: slideIn 0.3s ease-out;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================================================
+   模态框头部样式
+   ========================================================================== */
+
+.account-modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: var(--radius-lg, 12px) var(--radius-lg, 12px) 0 0;
+}
+
+.account-modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.account-modal-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.account-modal-close {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md, 8px);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: -8px;
+}
+
+.account-modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   模态框表单样式
+   ========================================================================== */
+
+.account-modal-body {
+    padding: 32px;
+    max-height: calc(90vh - 140px);
+    overflow-y: auto;
+}
+
+.account-form-section {
+    margin-bottom: 32px;
+}
+
+.account-form-section:last-child {
+    margin-bottom: 0;
+}
+
+.account-section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary, #1f2937);
+    margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border-light, #e5e7eb);
+}
+
+.account-section-icon {
+    font-size: 1.2rem;
+    color: var(--primary-500, #8b5cf6);
+}
+
+.account-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.account-form-grid--single {
+    grid-template-columns: 1fr;
+}
+
+/* ==========================================================================
+   表单字段样式
+   ========================================================================== */
+
+.account-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.account-form-group--required .account-form-label::after {
+    content: ' *';
+    color: var(--error-500, #ef4444);
+    font-weight: 500;
+}
+
+.account-form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary, #6b7280);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.account-form-input,
+.account-form-select,
+.account-form-textarea {
+    padding: 12px 16px;
+    border: 1.5px solid var(--border-color, #d1d5db);
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.875rem;
+    color: var(--text-primary, #1f2937);
+    background: white;
+    transition: all 0.2s ease;
+    min-height: 44px;
+}
+
+.account-form-input:focus,
+.account-form-select:focus,
+.account-form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-500, #8b5cf6);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    transform: translateY(-1px);
+}
+
+.account-form-input:hover,
+.account-form-select:hover,
+.account-form-textarea:hover {
+    border-color: var(--primary-400, #a78bfa);
+}
+
+.account-form-textarea {
+    min-height: 80px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* 表单验证状态 */
+.account-form-group--error .account-form-input,
+.account-form-group--error .account-form-select,
+.account-form-group--error .account-form-textarea {
+    border-color: var(--error-500, #ef4444);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.account-form-error {
+    color: var(--error-500, #ef4444);
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 4px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: all 0.2s ease;
+}
+
+.account-form-group--error .account-form-error {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   特殊输入组件
+   ========================================================================== */
+
+.account-input-with-action {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.account-input-with-action .account-form-input {
+    flex: 1;
+}
+
+.account-generate-btn {
+    padding: 12px 16px;
+    background: var(--primary-500, #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    min-height: 44px;
+}
+
+.account-generate-btn:hover {
+    background: var(--primary-600, #7c3aed);
+    transform: translateY(-1px);
+}
+
+.account-auto-generate-tip {
+    color: var(--success-500, #10b981);
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+/* ==========================================================================
+   模态框底部操作区域
+   ========================================================================== */
+
+.account-modal-footer {
+    padding: 24px 32px;
+    background: var(--bg-surface-secondary, #f9fafb);
+    border-top: 1px solid var(--border-light, #e5e7eb);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    position: sticky;
+    bottom: 0;
+}
+
+.account-btn-secondary {
+    padding: 12px 24px;
+    background: transparent;
+    color: var(--text-secondary, #6b7280);
+    border: 1.5px solid var(--border-color, #d1d5db);
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 44px;
+}
+
+.account-btn-secondary:hover {
+    background: var(--bg-surface-secondary, #f9fafb);
+    border-color: var(--primary-400, #a78bfa);
+    color: var(--text-primary, #1f2937);
+    transform: translateY(-1px);
+}
+
+.account-btn-primary {
+    padding: 12px 32px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md, 8px);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.account-btn-primary:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.account-btn-primary:active {
+    transform: translateY(0);
+}
+
+.account-btn-primary:disabled {
+    background: var(--text-disabled, #9ca3af);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ==========================================================================
+   加载和状态指示
+   ========================================================================== */
+
+.account-loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   响应式设计
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .account-modal-overlay {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 40px;
+    }
+    
+    .account-modal-container {
+        max-width: 100%;
+        max-height: calc(100vh - 60px);
+    }
+    
+    .account-modal-header {
+        padding: 20px 24px;
+    }
+    
+    .account-modal-body {
+        padding: 24px 20px;
+        max-height: calc(100vh - 200px);
+    }
+    
+    .account-form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .account-modal-footer {
+        padding: 20px 24px;
+        flex-direction: column-reverse;
+    }
+    
+    .account-btn-secondary,
+    .account-btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ==========================================================================
+   辅助样式
+   ========================================================================== */
+
+.account-required-mark {
+    color: var(--error-500, #ef4444);
+    font-weight: 500;
+}
+
+.account-form-help {
+    color: var(--text-tertiary, #9ca3af);
+    font-size: 0.75rem;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+.account-section-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-light, #e5e7eb), transparent);
+    margin: 24px 0;
+}

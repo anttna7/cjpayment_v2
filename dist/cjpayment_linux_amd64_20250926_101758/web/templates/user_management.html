@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户权限管理 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard-enhanced.css">
+    
+    <!-- User Management Specific CSS -->
+    <link rel="stylesheet" href="/static/css/user-management.css">
+
+    <!-- Full Permission Selector CSS -->
+    <link rel="stylesheet" href="/static/css/full-permission-selector.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+
+    <!-- Modal Tabs and Enhanced Styles -->
+    <style>
+        /* 权限配置通知样式 */
+        .permission-config-notice {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .notice-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .notice-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .notice-text {
+            flex: 1;
+        }
+
+        .notice-text p {
+            margin: 0;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .notice-text p:first-child {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .notice-text p:last-child {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .permission-config-notice .btn {
+            background: var(--primary);
+            color: white;
+            border: 1px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .permission-config-notice .btn:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* 权限摘要样式 */
+        .permission-summary {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .summary-label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .summary-count {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .summary-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .permission-chip {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .permission-chip.high-level {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body class="page-user-management">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link nav__link--active" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">3</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>系统通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">用户权限更新</div>
+                                    <div class="notification-text">系统管理员角色权限已更新</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">2分钟前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton" aria-expanded="false" aria-haspopup="true">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">系统管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown" role="menu">
+                        <a href="/profile" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="#" class="user-menu__item user-menu__item--danger" role="menuitem" id="logoutLink">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="user-management">
+            <!-- Page Header -->
+            <div class="page__header">
+                <div class="page__title">
+                    <div class="breadcrumb">
+                        <a href="/system_management" class="breadcrumb__item">系统管理</a>
+                        <span class="breadcrumb__separator">›</span>
+                        <span class="breadcrumb__item breadcrumb__item--current">用户权限管理</span>
+                    </div>
+                    <h1>👥 用户权限管理</h1>
+                    <p class="page__subtitle">管理系统用户账户、角色权限和访问控制</p>
+                </div>
+                
+                <div class="page__actions">
+                    <button class="btn btn-outline" id="importUsers" title="批量导入用户">
+                        <span class="btn__icon">📁</span>
+                        <span class="btn__text">导入用户</span>
+                    </button>
+                    <button class="btn btn-primary" id="addUser" title="添加新用户">
+                        <span class="btn__icon">➕</span>
+                        <span class="btn__text">添加用户</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter and Search Section -->
+            <div class="user-filters">
+                <div class="filter-group">
+                    <div class="filter-item">
+                        <label for="roleFilter" class="filter-label">角色筛选</label>
+                        <select id="roleFilter" class="form-select">
+                            <option value="">全部角色</option>
+                            <option value="ADMIN">超级管理员</option>
+                            <option value="MANAGER">管理员</option>
+                            <option value="OPERATOR">操作员</option>
+                            <option value="AUDITOR">审核员</option>
+                            <option value="VIEWER">查看员</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-item">
+                        <label for="statusFilter" class="filter-label">状态筛选</label>
+                        <select id="statusFilter" class="form-select">
+                            <option value="">全部状态</option>
+                            <option value="ACTIVE">正常</option>
+                            <option value="SUSPENDED">暂停</option>
+                            <option value="DISABLED">禁用</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-item">
+                        <label for="userSearch" class="filter-label">搜索用户</label>
+                        <div class="search-input">
+                            <input type="text" id="userSearch" class="form-input" placeholder="输入用户名、姓名或邮箱">
+                            <button class="search-btn" id="searchBtn">
+                                <span>🔍</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-actions">
+                    <button class="btn btn-outline btn--sm" id="resetFilters">
+                        <span class="btn__icon">🔄</span>
+                        重置筛选
+                    </button>
+                </div>
+            </div>
+
+            <!-- Users Grid -->
+            <div class="users-section">
+                <div class="section-header">
+                    <h3 class="section-title">用户列表</h3>
+                    <div class="section-controls">
+                        <div class="view-toggle" id="viewToggle">
+                            <button class="view-btn view-btn--active" data-view="grid" title="网格视图">
+                                <span>⚏</span>
+                            </button>
+                            <button class="view-btn" data-view="table" title="表格视图">
+                                <span>☰</span>
+                            </button>
+                        </div>
+                        <div class="section-stats">
+                            <span class="stat-item">总计: <strong id="totalUsersCount">28</strong></span>
+                            <span class="stat-item">在线: <strong id="onlineUsersCount">12</strong></span>
+                            <span class="stat-item">活跃: <strong id="activeUsersCount">25</strong></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Grid View -->
+                <div class="users-grid" id="usersGrid">
+                    <!-- 用户卡片将通过JavaScript动态生成 -->
+                </div>
+                
+                <!-- Table View -->
+                <div class="users-table-container" id="usersTableContainer" style="display: none;">
+                    <div class="table-wrapper">
+                        <table class="users-table" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th class="col-checkbox">
+                                        <input type="checkbox" id="selectAllUsers" class="table-checkbox">
+                                    </th>
+                                    <th class="col-user sortable" data-sort="username">
+                                        用户信息
+                                        <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="col-role sortable" data-sort="role">
+                                        角色
+                                        <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="col-status sortable" data-sort="status">
+                                        状态
+                                        <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="col-last-login sortable" data-sort="lastLogin">
+                                        最后登录
+                                        <span class="sort-indicator">↕️</span>
+                                    </th>
+                                    <th class="col-permissions">权限</th>
+                                    <th class="col-actions">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <!-- 用户数据行将通过JavaScript动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination-wrapper">
+                    <div class="pagination-info">
+                        显示 <span id="pageStart">1</span>-<span id="pageEnd">20</span> 
+                        共 <span id="totalUsers">28</span> 个用户
+                    </div>
+                    <div class="pagination" id="usersPagination">
+                        <button class="pagination-btn pagination-btn--prev" disabled>‹ 上一页</button>
+                        <button class="pagination-btn pagination-btn--current">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn pagination-btn--next">下一页 ›</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roles Management Section -->
+            <div class="roles-section">
+                <div class="section-header">
+                    <h3 class="section-title">角色权限管理</h3>
+                    <button class="btn btn-outline btn--sm" id="addRole">
+                        <span class="btn__icon">➕</span>
+                        添加角色
+                    </button>
+                </div>
+                
+                <div class="roles-grid" id="rolesGrid">
+                    <!-- 角色卡片将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | User Management</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add/Edit User Modal -->
+    <div class="modal" id="userModal" style="display: none;">
+        <div class="modal__overlay">
+            <div class="modal__content modal__content--large">
+                <div class="modal__header">
+                    <h3 class="modal__title" id="userModalTitle">添加用户</h3>
+                    <button class="modal__close" id="userModalClose" aria-label="关闭">&times;</button>
+                </div>
+                
+                <div class="modal__body">
+                    <!-- 标签页导航 -->
+                    <div class="tab-navigation">
+                        <button class="tab-nav__item tab-nav__item--active" data-tab="basic">
+                            <span class="tab-nav__icon">👤</span>
+                            基本信息
+                        </button>
+                        <button class="tab-nav__item" data-tab="permissions">
+                            <span class="tab-nav__icon">🔐</span>
+                            权限配置
+                        </button>
+                        <button class="tab-nav__item" data-tab="security">
+                            <span class="tab-nav__icon">🔒</span>
+                            安全设置
+                        </button>
+                    </div>
+
+                    <form id="userForm" class="user-form">
+                        <!-- 基本信息标签页 -->
+                        <div class="tab-panel tab-panel--active" id="basicTab" data-tab="basic">
+                            <div class="compact-form-layout">
+                                <!-- 基本信息卡片 -->
+                                <div class="form-card">
+                                    <div class="form-card-header">
+                                        <h4 class="form-card-title">👤 基本信息</h4>
+                                    </div>
+                                    <div class="form-card-body">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="username" class="form-label form-label--required">用户名</label>
+                                                <input type="text" id="username" name="username" class="form-input" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="realName" class="form-label form-label--required">真实姓名</label>
+                                                <input type="text" id="realName" name="realName" class="form-input" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="email" class="form-label form-label--required">邮箱地址</label>
+                                                <input type="email" id="email" name="email" class="form-input" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone" class="form-label">手机号码</label>
+                                                <input type="tel" id="phone" name="phone" class="form-input">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 组织信息卡片 -->
+                                <div class="form-card">
+                                    <div class="form-card-header">
+                                        <h4 class="form-card-title">🏢 组织信息</h4>
+                                    </div>
+                                    <div class="form-card-body">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="department" class="form-label">所属部门</label>
+                                                <select id="department" name="department" class="form-select">
+                                                    <option value="">请选择部门</option>
+                                                    <option value="TECH">技术部</option>
+                                                    <option value="FINANCE">财务部</option>
+                                                    <option value="OPERATION">运营部</option>
+                                                    <option value="BUSINESS">商务部</option>
+                                                    <option value="ADMIN">行政部</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="userStatus" class="form-label">账户状态</label>
+                                                <select id="userStatus" name="status" class="form-select">
+                                                    <option value="ACTIVE">正常</option>
+                                                    <option value="SUSPENDED">暂停</option>
+                                                    <option value="DISABLED">禁用</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 权限配置标签页 -->
+                        <div class="tab-panel" id="permissionsTab" data-tab="permissions">
+                            <div class="tab-content-inner">
+                                <div class="form-section">
+                                    <h4 class="form-section-title">用户权限配置</h4>
+                                    <div class="form-help">
+                                        为用户配置完整的系统权限。可以选择预设角色或自定义权限组合。
+                                    </div>
+                                </div>
+
+                                <div id="fullPermissionSelector" class="full-permission-selector-container">
+                                    <!-- 完整权限选择器将在这里渲染 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 安全设置标签页 -->
+                        <div class="tab-panel" id="securityTab" data-tab="security">
+                            <div class="tab-content-inner">
+                                <div class="form-section">
+                                    <h4 class="form-section-title">登录凭据</h4>
+
+                                    <div class="form-group" id="passwordSection">
+                                        <label for="password" class="form-label">登录密码 *</label>
+                                        <div class="password-input">
+                                            <input type="password" id="password" name="password" class="form-input">
+                                            <button type="button" class="password-toggle" id="passwordToggle">👁️</button>
+                                        </div>
+                                        <div class="form-help">密码长度至少8位，包含字母、数字和特殊字符</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">登录安全</label>
+                                        <div class="security-options">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="requirePasswordChange" id="requirePasswordChange">
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">要求首次登录修改密码</span>
+                                            </label>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="enableTwoFactor" id="enableTwoFactor">
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">启用双因素认证</span>
+                                            </label>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="allowMultipleLogins" id="allowMultipleLogins">
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">允许多设备同时登录</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="sessionTimeout" class="form-label">会话超时 (分钟)</label>
+                                        <select id="sessionTimeout" name="sessionTimeout" class="form-select">
+                                            <option value="30">30分钟</option>
+                                            <option value="60" selected>1小时</option>
+                                            <option value="120">2小时</option>
+                                            <option value="480">8小时</option>
+                                            <option value="0">永不超时</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h4 class="form-section-title">访问限制</h4>
+
+                                    <div class="form-group">
+                                        <label for="allowedIPs" class="form-label">IP白名单</label>
+                                        <textarea id="allowedIPs" name="allowedIPs" class="form-textarea" rows="3"
+                                                  placeholder="每行一个IP地址或IP段，如：192.168.1.1 或 192.168.1.0/24"></textarea>
+                                        <div class="form-help">留空表示不限制IP访问</div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="loginTimeRestriction" class="form-label">登录时间限制</label>
+                                        <div class="time-restriction-options">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="enableTimeRestriction" id="enableTimeRestriction">
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">启用登录时间限制</span>
+                                            </label>
+                                            <div class="time-range-inputs" id="timeRangeInputs" style="display: none;">
+                                                <div class="time-range">
+                                                    <label>允许登录时间：</label>
+                                                    <input type="time" id="loginStartTime" name="loginStartTime" value="09:00">
+                                                    <span>至</span>
+                                                    <input type="time" id="loginEndTime" name="loginEndTime" value="18:00">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" id="cancelUserBtn">取消</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn__icon" id="saveUserIcon">💾</span>
+                                <span id="saveUserText">保存用户</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Management Modal -->
+    <div class="modal" id="roleModal" aria-hidden="true">
+        <div class="modal__overlay">
+            <div class="modal__content">
+                <div class="modal__header">
+                    <h3 class="modal__title" id="roleModalTitle">添加角色</h3>
+                    <button class="modal__close" id="roleModalClose" aria-label="关闭">&times;</button>
+                </div>
+                
+                <div class="modal__body">
+                    <form id="roleForm" class="role-form">
+                        <div class="form-group">
+                            <label for="roleName" class="form-label">角色名称 *</label>
+                            <input type="text" id="roleName" name="roleName" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="roleDescription" class="form-label">角色描述</label>
+                            <textarea id="roleDescription" name="roleDescription" class="form-textarea" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">权限配置</label>
+                            <div class="permission-config-notice">
+                                <div class="notice-content">
+                                    <div class="notice-icon">🎭</div>
+                                    <div class="notice-text">
+                                        <p><strong>使用统一权限管理中心</strong></p>
+                                        <p>角色权限配置请在专门的权限管理中心进行，以确保权限配置的一致性。</p>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline btn--sm" id="configRolePermissions">
+                                    <span class="btn__icon">⚙️</span>
+                                    配置角色权限
+                                </button>
+                            </div>
+                            <div class="permission-summary" id="rolePermissionSummary" style="display: none;">
+                                <div class="summary-header">
+                                    <span class="summary-label">角色权限:</span>
+                                    <span class="summary-count" id="rolePermissionCount">0个权限</span>
+                                </div>
+                                <div class="summary-list" id="rolePermissionList">
+                                    <!-- 角色权限摘要列表 -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" id="cancelRoleBtn">取消</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="btn__icon">💾</span>
+                                保存角色
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Details Modal -->
+    <div class="modal" id="userDetailsModal" style="display: none;">
+        <div class="modal__overlay">
+            <div class="modal__content modal__content--large">
+                <div class="modal__header">
+                    <h3 class="modal__title">用户详情</h3>
+                    <button class="modal__close" id="userDetailsModalClose" aria-label="关闭">&times;</button>
+                </div>
+                
+                <div class="modal__body">
+                    <div class="user-details" id="userDetailsContent">
+                        <!-- 用户详情内容将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">正在处理...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="globalToast" class="toast-container" aria-live="polite"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/components.js"></script>
+    
+    <!-- Unified Header System - 统一头部系统 -->
+    <script src="/static/js/header-unified.js"></script>
+
+    <!-- Permissions Data and Full Permission Selector Components -->
+    <script src="/static/js/permissions-data.js?v=20250922b"></script>
+    <script src="/static/js/full-permission-selector.js?v=20250922-final"></script>
+
+    <script src="/static/js/user-management.js?v=20250922b"></script>
+    
+    <!-- Initialize User Management -->
+    <script>
+        console.log('📄 用户管理模板 JavaScript 开始执行 - 版本 2.0');
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 模板内 DOMContentLoaded 事件触发');
+            // Load user information from localStorage
+            const userInfo = localStorage.getItem('userInfo');
+            const authToken = localStorage.getItem('authToken');
+            
+            // 演示环境跳过认证检查
+            if (!authToken) {
+                console.log('UserManagement: 演示模式 - 跳过认证检查');
+                // 设置默认认证信息用于演示
+                localStorage.setItem('authToken', 'demo-token');
+                localStorage.setItem('userInfo', JSON.stringify({
+                    name: '系统管理员',
+                    username: 'admin',
+                    role: '超级管理员',
+                    id: 'demo_admin'
+                }));
+            }
+            
+            if (userInfo) {
+                try {
+                    const user = JSON.parse(userInfo);
+                    document.getElementById('userName').textContent = user.name || user.username;
+                    document.querySelector('.user-menu__role').textContent = user.role;
+                } catch (error) {
+                    console.error('Failed to parse user info:', error);
+                }
+            }
+            
+            // 主题切换功能已由 header-unified.js 统一处理
+
+            // Logout functionality
+            document.getElementById('logoutLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('确定要退出登录吗？')) {
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userInfo');
+                    window.location.href = '/login';
+                }
+            });
+
+            // 权限配置按钮事件
+            document.getElementById('configUserPermissions')?.addEventListener('click', function() {
+                const userId = document.getElementById('username')?.value || 'new';
+                const userName = document.getElementById('realName')?.value || '新用户';
+
+                // 构建权限管理页面URL，包含返回参数
+                const permissionUrl = `/permission_management?tab=users&action=config&user_id=${userId}&user_name=${encodeURIComponent(userName)}&return_url=${encodeURIComponent(window.location.href)}`;
+
+                // 如果是编辑模式，先保存基本信息再跳转
+                if (userId !== 'new') {
+                    if (window.CJComponents && window.CJComponents.showToast) {
+                        window.CJComponents.showToast('跳转到权限管理中心...', '', 'info');
+                    }
+                    setTimeout(() => {
+                        window.location.href = permissionUrl;
+                    }, 500);
+                } else {
+                    if (window.CJComponents && window.CJComponents.showToast) {
+                        window.CJComponents.showToast('请先保存用户基本信息', '', 'warning');
+                    }
+                }
+            });
+
+            document.getElementById('configRolePermissions')?.addEventListener('click', function() {
+                const roleId = document.getElementById('roleName')?.value || 'new';
+                const roleName = document.getElementById('roleName')?.value || '新角色';
+
+                // 构建权限管理页面URL
+                const permissionUrl = `/permission_management?tab=roles&action=config&role_id=${roleId}&role_name=${encodeURIComponent(roleName)}&return_url=${encodeURIComponent(window.location.href)}`;
+
+                if (roleId !== 'new') {
+                    if (window.CJComponents && window.CJComponents.showToast) {
+                        window.CJComponents.showToast('跳转到权限管理中心...', '', 'info');
+                    }
+                    setTimeout(() => {
+                        window.location.href = permissionUrl;
+                    }, 500);
+                } else {
+                    if (window.CJComponents && window.CJComponents.showToast) {
+                        window.CJComponents.showToast('请先保存角色基本信息', '', 'warning');
+                    }
+                }
+            });
+
+            console.log('User management initialized successfully');
+        });
+    </script>
+</body>
+</html>

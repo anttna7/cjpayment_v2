@@ -1,0 +1,318 @@
+/**
+ * Chrome风格仪表板布局修复
+ * 基于现有HTML结构的Chrome风格优化
+ */
+
+/* 优化仪表板主容器 */
+.dashboard {
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 40px 24px !important;
+}
+
+/* 优化统计卡片网格布局 - 解决拥挤问题 */
+.card-grid--fixed-4 {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    gap: 32px !important;
+    margin-bottom: 60px !important;
+    padding: 0 20px !important;
+}
+
+/* Chrome风格卡片优化 */
+.card.card--stat {
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    padding: 0 !important;
+    border: 1px solid #e8eaed !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06) !important;
+    transition: all 0.2s ease !important;
+    min-height: 200px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.card.card--stat:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08) !important;
+}
+
+.card.card--stat .card__body {
+    padding: 32px 24px !important;
+    width: 100% !important;
+}
+
+.stat-card {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+/* Chrome图标样式 */
+.stat-card__icon {
+    width: 72px !important;
+    height: 72px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    margin: 0 auto 20px !important;
+    position: relative !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    flex-shrink: 0 !important;
+}
+
+/* Chrome图标的分割结构 - 基于现有图标 */
+#totalTransactionsCard .stat-card__icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        conic-gradient(from 120deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        conic-gradient(from 240deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        #ffffff !important;
+}
+
+#totalAmountCard .stat-card__icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        conic-gradient(from 120deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        conic-gradient(from 240deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        #ffffff !important;
+}
+
+#successRateCard .stat-card__icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #4285f4 0deg, #4285f4 120deg, transparent 120deg),
+        conic-gradient(from 120deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        conic-gradient(from 240deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        #ffffff !important;
+}
+
+#activeUsersCard .stat-card__icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 30%, transparent 30%),
+        conic-gradient(from 0deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        conic-gradient(from 120deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        conic-gradient(from 240deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        #ffffff !important;
+}
+
+/* Chrome图标的白色分割线 */
+.stat-card__icon::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    border-radius: 50% !important;
+    background: 
+        conic-gradient(from 0deg, transparent 0deg, transparent 58deg, #ffffff 59deg, #ffffff 61deg, transparent 62deg, transparent 118deg, #ffffff 119deg, #ffffff 121deg, transparent 122deg, transparent 178deg, #ffffff 179deg, #ffffff 181deg, transparent 182deg, transparent 238deg, #ffffff 239deg, #ffffff 241deg, transparent 242deg, transparent 298deg, #ffffff 299deg, #ffffff 301deg, transparent 302deg, transparent 358deg, #ffffff 359deg, #ffffff 361deg, transparent 362deg),
+        radial-gradient(circle at center, transparent 33%, #ffffff 34%, #ffffff 36%, transparent 37%) !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
+
+/* 优化文字内容 */
+.stat-card__content {
+    width: 100% !important;
+}
+
+.stat-card__value {
+    font-size: 28px !important;
+    font-weight: 400 !important;
+    color: #202124 !important;
+    margin: 0 0 8px !important;
+    line-height: 1.1 !important;
+    min-height: 34px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.stat-card__label {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #5f6368 !important;
+    margin: 0 0 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    line-height: 1.2 !important;
+}
+
+.stat-card__trend {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: #34a853 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    padding: 4px 0 !important;
+    min-height: 20px !important;
+}
+
+/* 页面标题优化 */
+.dashboard__title h1 {
+    font-size: 32px !important;
+    font-weight: 400 !important;
+    color: #202124 !important;
+    letter-spacing: -0.5px !important;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+.dashboard__subtitle {
+    color: #5f6368 !important;
+    font-size: 16px !important;
+}
+
+/* 响应式优化 */
+@media (min-width: 1200px) {
+    .card-grid--fixed-4 {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 40px !important;
+        max-width: 1200px !important;
+        margin: 0 auto 60px !important;
+    }
+    
+    .dashboard {
+        padding: 48px 32px !important;
+    }
+}
+
+@media (min-width: 900px) and (max-width: 1199px) {
+    .card-grid--fixed-4 {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 32px !important;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+    .card-grid--fixed-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 24px !important;
+    }
+    
+    .dashboard {
+        padding: 32px 20px !important;
+    }
+    
+    .card.card--stat {
+        min-height: 180px !important;
+    }
+    
+    .card.card--stat .card__body {
+        padding: 28px 20px !important;
+    }
+    
+    .stat-card__icon {
+        width: 64px !important;
+        height: 64px !important;
+        font-size: 18px !important;
+        margin-bottom: 16px !important;
+    }
+    
+    .stat-card__value {
+        font-size: 24px !important;
+    }
+}
+
+@media (max-width: 599px) {
+    .card-grid--fixed-4 {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        max-width: 400px !important;
+        margin: 0 auto 40px !important;
+    }
+    
+    .dashboard {
+        padding: 24px 16px !important;
+    }
+    
+    .card.card--stat {
+        min-height: 160px !important;
+    }
+    
+    .card.card--stat .card__body {
+        padding: 24px 20px !important;
+    }
+    
+    .stat-card__icon {
+        width: 56px !important;
+        height: 56px !important;
+        font-size: 16px !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .stat-card__value {
+        font-size: 22px !important;
+    }
+}
+
+@media (max-width: 479px) {
+    .card-grid--fixed-4 {
+        padding: 0 12px !important;
+        margin-bottom: 32px !important;
+        gap: 16px !important;
+    }
+    
+    .dashboard {
+        padding: 20px 12px !important;
+    }
+    
+    .card.card--stat {
+        min-height: 140px !important;
+    }
+    
+    .card.card--stat .card__body {
+        padding: 20px 16px !important;
+    }
+    
+    .stat-card__icon {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 14px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .stat-card__value {
+        font-size: 20px !important;
+    }
+    
+    .stat-card__label {
+        font-size: 11px !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .stat-card__trend {
+        font-size: 11px !important;
+    }
+}
+
+/* 图表区域优化 */
+.dashboard__charts {
+    margin-top: 60px !important;
+    padding: 0 20px !important;
+}
+
+.chart-card {
+    border-radius: 16px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06) !important;
+    border: 1px solid #e8eaed !important;
+}
+
+@media (max-width: 600px) {
+    .dashboard__charts {
+        margin-top: 40px !important;
+        padding: 0 12px !important;
+    }
+}

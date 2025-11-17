@@ -1,0 +1,80 @@
+{
+  "timestamp": "2025-08-28T17:18:59.308Z",
+  "tests": [
+    {
+      "name": "商户管理页面模态框测试",
+      "url": "http://127.0.0.1:8091/merchant",
+      "steps": [
+        "页面加载完成",
+        "找到添加商户按钮: button:has-text(\"添加商户\")",
+        "点击添加商户按钮",
+        "❌ 模态框未弹出"
+      ],
+      "passed": false,
+      "errors": [
+        "模态框未弹出"
+      ]
+    },
+    {
+      "name": "账户管理页面测试",
+      "url": "http://127.0.0.1:8091/accounts",
+      "steps": [
+        "页面加载完成",
+        "发现 3 个JavaScript错误",
+        "❌ 收款账户tab未默认激活",
+        "表格正常显示: table"
+      ],
+      "passed": false,
+      "errors": [
+        "Unexpected token '?.'",
+        "未找到付款账户表格tbody元素",
+        "未找到付款账户表格tbody元素",
+        "收款账户tab未默认激活"
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "商户管理页面初始状态",
+      "path": "merchant-page-initial-1756401545271.png"
+    },
+    {
+      "name": "商户管理页面模态框状态",
+      "path": "merchant-modal-1756401547215.png"
+    },
+    {
+      "name": "账户管理页面初始状态",
+      "path": "account-page-initial-1756401551034.png"
+    }
+  ],
+  "errors": [
+    {
+      "timestamp": "2025-08-28T17:19:07.472Z",
+      "message": "Unexpected token '?.'",
+      "stack": ""
+    },
+    {
+      "timestamp": "2025-08-28T17:19:07.533Z",
+      "message": "未找到付款账户表格tbody元素",
+      "location": {
+        "url": "http://127.0.0.1:8091/static/js/account-management-new.js",
+        "lineNumber": 263,
+        "columnNumber": 20
+      }
+    },
+    {
+      "timestamp": "2025-08-28T17:19:07.533Z",
+      "message": "未找到付款账户表格tbody元素",
+      "location": {
+        "url": "http://127.0.0.1:8091/static/js/account-management-new.js",
+        "lineNumber": 263,
+        "columnNumber": 20
+      }
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "passed": 0,
+    "failed": 2
+  }
+}

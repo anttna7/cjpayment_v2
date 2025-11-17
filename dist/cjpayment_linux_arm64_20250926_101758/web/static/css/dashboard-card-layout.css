@@ -1,0 +1,473 @@
+/**
+ * CJPayment 仪表板卡片布局优化
+ * 合理的卡片宽度和美观的响应式设计
+ */
+
+/* ==========================================================================
+   仪表板专用响应式网格布局
+   ========================================================================== */
+
+/* 仪表板统计卡片网格 */
+.dashboard__stats .card-grid--responsive {
+    display: grid;
+    gap: var(--space-6, 24px);
+    /* 优化卡片最小宽度，确保内容展示完整 */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    align-items: stretch; /* 确保卡片等高 */
+    margin-bottom: var(--space-8, 32px);
+}
+
+/* 仪表板图表卡片网格 */
+.dashboard__charts .card-grid--responsive {
+    display: grid;
+    gap: var(--space-6, 24px);
+    /* 图表卡片需要更大的最小宽度 */
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+    align-items: stretch;
+    margin-bottom: var(--space-8, 32px);
+}
+
+/* 仪表板小部件网格 */
+.dashboard__widgets .card-grid--responsive {
+    display: grid;
+    gap: var(--space-6, 24px);
+    /* 小部件卡片适中宽度 */
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    align-items: stretch;
+}
+
+/* ==========================================================================
+   统计卡片优化
+   ========================================================================== */
+
+/* 统计卡片基础样式 */
+.dashboard__stats .card--stat {
+    min-height: 160px; /* 增加最小高度 */
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+    transition: all var(--duration-300, 300ms) var(--ease-out);
+    overflow: hidden;
+    position: relative;
+}
+
+/* 统计卡片悬停效果 */
+.dashboard__stats .card--stat:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
+    border-color: var(--primary-200, #ddd6fe);
+}
+
+/* 统计卡片主体内容 */
+.dashboard__stats .card--stat .card__body {
+    padding: var(--space-6, 24px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: var(--space-4, 16px) !important;
+    text-align: center !important;
+    height: 100%;
+    justify-content: center;
+}
+
+/* 统计卡片图标 */
+.dashboard__stats .stat-card__icon {
+    width: 64px !important;
+    height: 64px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 2rem !important;
+    background: linear-gradient(135deg, var(--primary-50, #f5f3ff), var(--primary-100, #ede9fe)) !important;
+    border-radius: var(--radius-lg, 12px) !important;
+    border: 2px solid var(--primary-200, #ddd6fe) !important;
+    flex-shrink: 0 !important;
+    transition: all var(--duration-200, 200ms) ease !important;
+}
+
+.dashboard__stats .card--stat:hover .stat-card__icon {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, var(--primary-100, #ede9fe), var(--primary-200, #ddd6fe)) !important;
+    border-color: var(--primary-300, #c4b5fd) !important;
+}
+
+/* 统计卡片内容区域 */
+.dashboard__stats .stat-card__content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: var(--space-2, 8px) !important;
+    flex: 1 !important;
+    width: 100% !important;
+}
+
+/* 统计数值 */
+.dashboard__stats .stat-card__value {
+    font-size: var(--text-3xl, 1.875rem) !important;
+    font-weight: var(--font-bold, 700) !important;
+    color: var(--text-primary, #111827) !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* 统计标签 */
+.dashboard__stats .stat-card__label {
+    font-size: var(--text-base, 1rem) !important;
+    font-weight: var(--font-semibold, 600) !important;
+    color: var(--text-secondary, #6b7280) !important;
+    margin: 0 !important;
+    line-height: 1.3 !important;
+}
+
+/* 统计趋势 */
+.dashboard__stats .stat-card__trend {
+    font-size: var(--text-sm, 0.875rem) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--space-1, 4px) !important;
+    padding: var(--space-2, 8px) var(--space-3, 12px) !important;
+    background: var(--bg-surface-secondary, #f9fafb) !important;
+    border-radius: var(--radius-base, 6px) !important;
+    margin: 0 !important;
+}
+
+.dashboard__stats .trend-value {
+    font-weight: var(--font-bold, 700) !important;
+    color: var(--color-success, #10b981) !important;
+}
+
+.dashboard__stats .trend-label {
+    color: var(--text-tertiary, #9ca3af) !important;
+}
+
+/* ==========================================================================
+   图表卡片优化
+   ========================================================================== */
+
+/* 图表卡片基础样式 */
+.dashboard__charts .card {
+    min-height: 400px; /* 图表需要足够高度 */
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+    transition: all var(--duration-300, 300ms) var(--ease-out);
+    overflow: hidden;
+}
+
+.dashboard__charts .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
+    border-color: var(--primary-200, #ddd6fe);
+}
+
+/* 图表卡片头部 */
+.dashboard__charts .card__header {
+    padding: var(--space-6, 24px) var(--space-6, 24px) var(--space-4, 16px);
+    border-bottom: 1px solid var(--border-light, #e5e7eb);
+    background: linear-gradient(135deg, var(--bg-surface-secondary, #f9fafb), var(--bg-surface, #ffffff));
+}
+
+.dashboard__charts .card__title {
+    font-size: var(--text-xl, 1.25rem);
+    font-weight: var(--font-bold, 700);
+    color: var(--text-primary, #111827);
+    margin: 0;
+}
+
+.dashboard__charts .card__subtitle {
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--text-secondary, #6b7280);
+    margin: var(--space-1, 4px) 0 0 0;
+}
+
+/* 图表卡片主体 */
+.dashboard__charts .card__body {
+    padding: var(--space-6, 24px);
+    height: 320px; /* 固定图表高度 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   待处理任务区域优化
+   ========================================================================== */
+
+/* 待处理任务容器 */
+.dashboard__pending .card {
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+    margin-bottom: var(--space-6, 24px);
+}
+
+/* 快速操作区域 */
+.dashboard__quick-actions .card {
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+    margin-bottom: var(--space-6, 24px);
+}
+
+/* ==========================================================================
+   响应式断点优化
+   ========================================================================== */
+
+/* 超小屏幕 - 手机竖屏 */
+@media (max-width: 480px) {
+    .dashboard__stats .card-grid--responsive {
+        grid-template-columns: 1fr;
+        gap: var(--space-4, 16px);
+    }
+    
+    .dashboard__charts .card-grid--responsive {
+        grid-template-columns: 1fr;
+        gap: var(--space-4, 16px);
+    }
+    
+    .dashboard__widgets .card-grid--responsive {
+        grid-template-columns: 1fr;
+        gap: var(--space-4, 16px);
+    }
+    
+    /* 统计卡片移动端优化 */
+    .dashboard__stats .card--stat {
+        min-height: 140px;
+    }
+    
+    .dashboard__stats .stat-card__icon {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 1.5rem !important;
+    }
+    
+    .dashboard__stats .stat-card__value {
+        font-size: var(--text-2xl, 1.5rem) !important;
+    }
+    
+    /* 图表卡片移动端优化 */
+    .dashboard__charts .card {
+        min-height: 300px;
+    }
+    
+    .dashboard__charts .card__body {
+        height: 220px;
+    }
+}
+
+/* 小屏幕 - 手机横屏/小平板 */
+@media (min-width: 481px) and (max-width: 768px) {
+    .dashboard__stats .card-grid--responsive {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-5, 20px);
+    }
+    
+    .dashboard__charts .card-grid--responsive {
+        grid-template-columns: 1fr;
+        gap: var(--space-5, 20px);
+    }
+    
+    .dashboard__widgets .card-grid--responsive {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--space-5, 20px);
+    }
+    
+    .dashboard__stats .card--stat {
+        min-height: 150px;
+    }
+}
+
+/* 中等屏幕 - 平板 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .dashboard__stats .card-grid--responsive {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-6, 24px);
+    }
+    
+    .dashboard__charts .card-grid--responsive {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6, 24px);
+    }
+    
+    .dashboard__widgets .card-grid--responsive {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6, 24px);
+    }
+}
+
+/* 大屏幕 - 桌面 */
+@media (min-width: 1025px) and (max-width: 1400px) {
+    .dashboard__stats .card-grid--responsive {
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-6, 24px);
+    }
+    
+    .dashboard__charts .card-grid--responsive {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6, 24px);
+    }
+    
+    .dashboard__widgets .card-grid--responsive {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-6, 24px);
+    }
+}
+
+/* 超大屏幕 - 宽屏桌面 */
+@media (min-width: 1401px) {
+    .dashboard__stats .card-grid--responsive {
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-8, 32px);
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .dashboard__charts .card-grid--responsive {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-8, 32px);
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .dashboard__widgets .card-grid--responsive {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-8, 32px);
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* 超大屏统计卡片优化 */
+    .dashboard__stats .card--stat {
+        min-height: 180px;
+    }
+    
+    .dashboard__stats .stat-card__icon {
+        width: 72px !important;
+        height: 72px !important;
+        font-size: 2.25rem !important;
+    }
+    
+    .dashboard__stats .stat-card__value {
+        font-size: var(--text-4xl, 2.25rem) !important;
+    }
+}
+
+/* ==========================================================================
+   统计卡片主题色彩
+   ========================================================================== */
+
+/* 总交易数卡片 */
+#totalTransactionsCard .stat-card__icon {
+    background: linear-gradient(135deg, #dbeafe, #eff6ff) !important;
+    border-color: #93c5fd !important;
+    color: #1d4ed8 !important;
+}
+
+#totalTransactionsCard:hover .stat-card__icon {
+    background: linear-gradient(135deg, #93c5fd, #dbeafe) !important;
+    border-color: #60a5fa !important;
+}
+
+/* 总交易额卡片 */
+#totalAmountCard .stat-card__icon {
+    background: linear-gradient(135deg, #d1fae5, #ecfdf5) !important;
+    border-color: #86efac !important;
+    color: #059669 !important;
+}
+
+#totalAmountCard:hover .stat-card__icon {
+    background: linear-gradient(135deg, #86efac, #d1fae5) !important;
+    border-color: #4ade80 !important;
+}
+
+/* 成功率卡片 */
+#successRateCard .stat-card__icon {
+    background: linear-gradient(135deg, #fed7aa, #fff7ed) !important;
+    border-color: #fdba74 !important;
+    color: #ea580c !important;
+}
+
+#successRateCard:hover .stat-card__icon {
+    background: linear-gradient(135deg, #fdba74, #fed7aa) !important;
+    border-color: #fb923c !important;
+}
+
+/* 活跃用户卡片 */
+#activeUsersCard .stat-card__icon {
+    background: linear-gradient(135deg, #f3e8ff, #faf5ff) !important;
+    border-color: #d8b4fe !important;
+    color: #7c3aed !important;
+}
+
+#activeUsersCard:hover .stat-card__icon {
+    background: linear-gradient(135deg, #d8b4fe, #f3e8ff) !important;
+    border-color: #c084fc !important;
+}
+
+/* ==========================================================================
+   加载动画和交互优化
+   ========================================================================== */
+
+/* 卡片加载动画 */
+@keyframes dashboardCardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dashboard__stats .card--stat,
+.dashboard__charts .card,
+.dashboard__widgets .card {
+    animation: dashboardCardFadeIn 0.6s ease-out;
+}
+
+/* 统计卡片渐次出现 */
+.dashboard__stats .card--stat:nth-child(1) { animation-delay: 0.1s; }
+.dashboard__stats .card--stat:nth-child(2) { animation-delay: 0.2s; }
+.dashboard__stats .card--stat:nth-child(3) { animation-delay: 0.3s; }
+.dashboard__stats .card--stat:nth-child(4) { animation-delay: 0.4s; }
+
+/* 图表卡片渐次出现 */
+.dashboard__charts .card:nth-child(1) { animation-delay: 0.5s; }
+.dashboard__charts .card:nth-child(2) { animation-delay: 0.6s; }
+
+/* ==========================================================================
+   无障碍和性能优化
+   ========================================================================== */
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+    .dashboard__stats .card--stat,
+    .dashboard__charts .card,
+    .dashboard__widgets .card,
+    .dashboard__stats .stat-card__icon {
+        animation: none;
+        transition: none;
+    }
+    
+    .dashboard__stats .card--stat:hover,
+    .dashboard__charts .card:hover {
+        transform: none;
+    }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+    .dashboard__stats .card--stat,
+    .dashboard__charts .card {
+        border-color: var(--border-strong, #374151);
+        box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.15));
+    }
+}

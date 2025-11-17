@@ -1,0 +1,131 @@
+{
+  "timestamp": "2025-08-27T06:14:52.595Z",
+  "deepAnalysis": {
+    "computed": {
+      "width": "1280px",
+      "height": "720px",
+      "minWidth": "",
+      "minHeight": "",
+      "maxWidth": "",
+      "maxHeight": "",
+      "left": "0px",
+      "top": "0px",
+      "right": "0px",
+      "bottom": "0px",
+      "position": "fixed",
+      "marginLeft": "",
+      "marginRight": "",
+      "marginTop": "",
+      "marginBottom": "",
+      "paddingLeft": "",
+      "paddingRight": "",
+      "paddingTop": "",
+      "paddingBottom": "",
+      "borderLeftWidth": "",
+      "borderRightWidth": "",
+      "borderTopWidth": "",
+      "borderBottomWidth": "",
+      "boxSizing": "",
+      "transform": "none",
+      "transformOrigin": ""
+    },
+    "rect": {
+      "width": 1280,
+      "height": 720,
+      "left": 0,
+      "right": 1280,
+      "top": 0,
+      "bottom": 720,
+      "x": 0,
+      "y": 0
+    },
+    "inline": "display: flex; visibility: visible;",
+    "parents": [
+      {
+        "tagName": "DIV",
+        "id": "",
+        "className": "table-header-advanced",
+        "position": "static",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "width": "1190px",
+        "height": "182.398px"
+      },
+      {
+        "tagName": "DIV",
+        "id": "advancedDataTableContainer",
+        "className": "advanced-data-table-container",
+        "position": "static",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "width": "1232px",
+        "height": "825.398px"
+      },
+      {
+        "tagName": "DIV",
+        "id": "",
+        "className": "dashboard-container",
+        "position": "static",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "width": "1280px",
+        "height": "2506.85px"
+      },
+      {
+        "tagName": "MAIN",
+        "id": "appMain",
+        "className": "app__main",
+        "position": "static",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "width": "1280px",
+        "height": "2595.85px"
+      }
+    ],
+    "viewport": {
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "scrollX": 0,
+      "scrollY": 0,
+      "documentWidth": 1382,
+      "documentHeight": 2731
+    },
+    "actualPosition": {
+      "offsetParent": null,
+      "offsetLeft": 0,
+      "offsetTop": 0,
+      "offsetWidth": 1280,
+      "offsetHeight": 720
+    }
+  },
+  "manualFix": {
+    "before": {
+      "width": "",
+      "height": "",
+      "left": "",
+      "top": "",
+      "right": "",
+      "bottom": "",
+      "position": ""
+    },
+    "after": {
+      "rect": {
+        "width": 1280,
+        "height": 720,
+        "left": 0,
+        "right": 1280,
+        "top": 0,
+        "bottom": 720
+      },
+      "computed": {
+        "width": "1280px",
+        "height": "720px",
+        "left": "0px",
+        "right": "0px",
+        "top": "0px",
+        "bottom": "0px",
+        "position": "fixed"
+      }
+    }
+  }
+}

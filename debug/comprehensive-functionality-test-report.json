@@ -1,0 +1,139 @@
+{
+  "timestamp": "2025-08-27T06:03:29.650Z",
+  "buttonAnalysis": [
+    {
+      "id": "toggleAdvancedFilters",
+      "name": "高级筛选按钮1",
+      "exists": true,
+      "text": "🔍\n                            高级筛选\n                            ▼",
+      "visible": true,
+      "disabled": false,
+      "className": "btn btn--sm btn-outline",
+      "style": {
+        "display": "inline-flex",
+        "visibility": "visible",
+        "pointerEvents": "auto"
+      }
+    },
+    {
+      "id": "advancedFiltersToggle",
+      "name": "高级筛选按钮2",
+      "exists": true,
+      "text": "🔧\n                                    高级筛选",
+      "visible": true,
+      "disabled": false,
+      "className": "btn-enhanced btn-sm btn-outline",
+      "style": {
+        "display": "flex",
+        "visibility": "visible",
+        "pointerEvents": "auto"
+      }
+    },
+    {
+      "id": "columnSettingsBtn",
+      "name": "列设置按钮",
+      "exists": true,
+      "text": "⚙️\n                                    列设置",
+      "visible": true,
+      "disabled": false,
+      "className": "btn-enhanced btn-sm btn-outline",
+      "style": {
+        "display": "flex",
+        "visibility": "visible",
+        "pointerEvents": "auto"
+      }
+    }
+  ],
+  "jsAnalysis": {
+    "orderInfoTable": {
+      "exists": true,
+      "type": "object",
+      "hasToggleFunction": true
+    },
+    "advancedDataTable": {
+      "exists": true,
+      "type": "object",
+      "hasShowColumnSettings": true
+    },
+    "eventListeners": {
+      "toggleAdvancedFilters": "button exists",
+      "advancedFiltersToggle": "button exists",
+      "columnSettingsBtn": "button exists"
+    }
+  },
+  "columnSettingsTest": {
+    "success": true,
+    "modalExists": true,
+    "modalVisible": true,
+    "modalDisplay": "flex",
+    "modalVisibility": "visible"
+  },
+  "advancedFiltersTest1": {
+    "success": true,
+    "backdropExists": true,
+    "hasShowClass": true,
+    "backdropDisplay": "flex",
+    "backdropVisible": true
+  },
+  "advancedFiltersTest2": {
+    "success": true,
+    "backdropExists": true,
+    "hasShowClass": true,
+    "backdropDisplay": "flex",
+    "backdropVisible": true
+  },
+  "consoleMessages": [
+    "[log] 发现 3 个筛选标签页",
+    "[log] 绑定标签页 0: basic",
+    "[log] 绑定标签页 1: advanced",
+    "[log] 绑定标签页 2: custom",
+    "[log] AdvancedDataTable: 检查列设置按钮: JSHandle@node",
+    "[log] AdvancedDataTable: 绑定列设置按钮点击事件",
+    "[log] AdvancedDataTable: 绑定关闭按钮事件",
+    "[log] 高级数据表初始化完成",
+    "[log] 高级数据表初始化成功",
+    "[log] Enhanced report system initialized successfully",
+    "[log] KPI数据加载完成: 52.30ms",
+    "[log] 高级数据表加载完成: 0.00ms",
+    "[log] Initializing Advanced Analytics...",
+    "[warning] Advanced Analytics: No data available",
+    "[log] 图表数据加载完成: 203.40ms",
+    "[log] 表格数据加载完成: 302.00ms",
+    "[log] 报表页面总加载时间: 664.20ms",
+    "[log] OrderInfoTable: 已强制设置 1800 个单元格为可滚动",
+    "[log] OrderInfoTable: 已渲染 150 行数据",
+    "[log] OrderInfoTable: 成功加载 150 条订单记录",
+    "[log] 点击列设置按钮...",
+    "[log] AdvancedDataTable: 列设置按钮被点击",
+    "[log] AdvancedDataTable: showColumnSettings() 被调用",
+    "[log] AdvancedDataTable: 找到列设置模态框，开始显示",
+    "[log] 模态框当前状态: {display: none, visible: false, classes: modal-enhanced}",
+    "[log] AdvancedDataTable: 列设置模态框显示完成",
+    "[log] AdvancedDataTable: 找到可聚焦元素: 13",
+    "[log] AdvancedDataTable: 已聚焦到第一个元素",
+    "[log] 点击toggleAdvancedFilters按钮...",
+    "[log] OrderInfoTable: toggleAdvancedFilters 按钮被点击",
+    "[log] OrderInfoTable: 切换高级筛选面板 - 使用新架构",
+    "[log] OrderInfoTable: 开始显示模态框",
+    "[log] OrderInfoTable: 调用AdvancedDataTable设置事件",
+    "[log] AdvancedDataTable: 设置筛选标签页事件绑定",
+    "[log] 发现 3 个筛选标签页",
+    "[log] 绑定标签页 0: basic",
+    "[log] 绑定标签页 1: advanced",
+    "[log] 绑定标签页 2: custom",
+    "[log] OrderInfoTable: 切换高级筛选面板 - 使用新架构",
+    "[log] OrderInfoTable: 开始关闭模态框",
+    "[log] 点击advancedFiltersToggle按钮...",
+    "[log] OrderInfoTable: advancedFiltersToggle 按钮被点击",
+    "[log] OrderInfoTable: 切换高级筛选面板 - 使用新架构",
+    "[log] OrderInfoTable: 开始显示模态框",
+    "[log] OrderInfoTable: 调用AdvancedDataTable设置事件",
+    "[log] AdvancedDataTable: 设置筛选标签页事件绑定",
+    "[log] 发现 3 个筛选标签页",
+    "[log] 绑定标签页 0: basic",
+    "[log] 绑定标签页 1: advanced",
+    "[log] 绑定标签页 2: custom"
+  ],
+  "jsErrors": [],
+  "issues": []
+}

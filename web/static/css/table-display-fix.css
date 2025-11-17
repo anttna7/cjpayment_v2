@@ -1,0 +1,171 @@
+/**
+ * 表格显示修复CSS - 强制显示表格内容
+ * 此文件专门用于解决表格高度为0的显示问题
+ */
+
+/* 强制表格容器显示 */
+#merchantTableContainer {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 200px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+#merchantTableContainer.active {
+    display: block !important;
+}
+
+/* 强制内部表格容器显示 - 这是关键修复！ */
+.merchant-table-container {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 200px !important;
+    position: relative !important;
+}
+
+.merchant-table-wrapper {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 200px !important;
+    position: relative !important;
+    overflow-x: auto !important;
+}
+
+/* 强制表格显示 */
+.merchant-table {
+    display: table !important;
+    width: 100% !important;
+    table-layout: auto !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 200px !important;
+}
+
+/* 强制表格头部显示 */
+.merchant-table thead {
+    display: table-header-group !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.merchant-table thead tr {
+    display: table-row !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 40px !important;
+}
+
+.merchant-table thead th {
+    display: table-cell !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 12px 8px !important;
+    vertical-align: middle !important;
+    border-bottom: 2px solid #e5e7eb !important;
+    background: #f9fafb !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    color: #374151 !important;
+}
+
+/* 强制表格主体显示 */
+.merchant-table tbody {
+    display: table-row-group !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.merchant-table tbody tr {
+    display: table-row !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 50px !important;
+}
+
+.merchant-table tbody td {
+    display: table-cell !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 12px 8px !important;
+    vertical-align: top !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    font-size: 14px !important;
+    color: #374151 !important;
+    word-wrap: break-word !important;
+    max-width: 200px !important;
+}
+
+/* 修复可能的布局问题 */
+.merchant-table-container {
+    position: relative !important;
+    overflow: visible !important;
+    height: auto !important;
+}
+
+.merchant-table-wrapper {
+    position: relative !important;
+    overflow-x: auto !important;
+    height: auto !important;
+    min-height: 200px !important;
+}
+
+/* 确保账户徽章可见 */
+.account-count-badge {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 4px 8px !important;
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    margin: 2px !important;
+}
+
+/* 多账户容器 */
+.multi-accounts-container {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+/* 账户项 */
+.account-item {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin: 4px 0 !important;
+    padding: 4px !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 4px !important;
+    background: #f9fafb !important;
+}
+
+/* 展开按钮 */
+.expand-toggle {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 4px 8px !important;
+    background: #6b7280 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    margin-top: 4px !important;
+}

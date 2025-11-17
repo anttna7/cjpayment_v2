@@ -1,0 +1,123 @@
+/* ==========================================================================
+   CJPayment Main CSS
+   Modern CSS architecture with proper loading strategy
+   ========================================================================== */
+
+/* ==========================================================================
+   Design Tokens Layer
+   Load design tokens first to establish the design system foundation
+   ========================================================================== */
+
+@import url('./tokens/colors.css');
+@import url('./tokens/spacing.css');
+@import url('./tokens/typography.css');
+@import url('./tokens/layout.css');
+
+/* ==========================================================================
+   Foundation Layer
+   Base styles and resets that depend on design tokens
+   ========================================================================== */
+
+@import url('./foundation/reset.css');
+@import url('./foundation/layout.css');
+@import url('./foundation/responsive.css');
+
+/* ==========================================================================
+   Components Layer
+   Reusable UI components built with BEM methodology
+   ========================================================================== */
+
+@import url('./components/button.css');
+@import url('./components/card.css');
+@import url('./components/form.css');
+@import url('./components/table.css');
+@import url('./components/transitions.css');
+@import url('./components/micro-interactions.css');
+@import url('./components/recharge-wizard.css');
+@import url('./components/accessibility.css');
+
+/* Page-specific styles */
+@import url('./dashboard.css');
+
+/* ==========================================================================
+   Color Fix Layer
+   Unified color fixes to ensure consistent UI across all pages
+   ========================================================================== */
+
+@import url('./unified-color-fix.css');
+@import url('./admin-page-fix.css');
+
+/* ==========================================================================
+   Utilities Layer
+   Single-purpose utility classes for quick styling
+   ========================================================================== */
+
+@import url('./utilities/utilities.css');
+
+/* ==========================================================================
+   Theme Transition Support
+   Smooth transitions when switching themes
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  transition: 
+    background-color var(--duration-200, 200ms) var(--ease-out, ease-out),
+    border-color var(--duration-200, 200ms) var(--ease-out, ease-out),
+    color var(--duration-200, 200ms) var(--ease-out, ease-out),
+    box-shadow var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+/* Disable transitions during theme switching to prevent flash */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}
+
+/* ==========================================================================
+   Print Styles
+   Optimized styles for printing
+   ========================================================================== */
+
+@media print {
+  /* Hide non-essential elements when printing */
+  .app__header,
+  .app__footer,
+  .nav,
+  .user-menu,
+  .btn--fab,
+  .toast-container {
+    display: none !important;
+  }
+  
+  /* Adjust main content for print */
+  .app__main {
+    margin-top: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .page__content {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+    border-radius: 0 !important;
+  }
+  
+  /* Ensure good contrast for print */
+  .card {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+  }
+  
+  /* Optimize text for print */
+  body {
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+  }
+  
+  h1 { font-size: 18pt !important; }
+  h2 { font-size: 16pt !important; }
+  h3 { font-size: 14pt !important; }
+  h4, h5, h6 { font-size: 12pt !important; }
+}

@@ -1,0 +1,628 @@
+/**
+ * CJPayment 仪表板布局重构
+ * 按照BOSS要求重新调整各区域布局结构
+ */
+
+/* ==========================================================================
+   仪表板整体布局重构
+   ========================================================================== */
+
+/* 快捷入口独占整行 - 删除快速操作后的优化 */
+.dashboard__actions-row {
+    margin-bottom: var(--space-8, 32px);
+}
+
+.dashboard__shortcuts {
+    width: 100%;
+}
+
+/* 快捷入口卡片样式 */
+.shortcuts-card {
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+    padding: var(--space-4, 16px) var(--space-6, 24px);
+    transition: all var(--duration-300, 300ms) var(--ease-out);
+}
+
+.shortcuts-card:hover {
+    box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.07));
+    transform: translateY(-1px);
+}
+
+.shortcuts-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4, 16px);
+}
+
+.shortcuts-title {
+    font-size: var(--text-lg, 1.125rem);
+    font-weight: var(--font-semibold, 600);
+    color: var(--text-primary, #111827);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+}
+
+.shortcuts-title::before {
+    content: '🚀';
+    font-size: 1.2em;
+}
+
+.shortcuts-subtitle {
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--text-secondary, #374151);
+    margin: 0;
+}
+
+/* 快捷入口网格 - 优化为占满整行，增大项目尺寸 */
+.shortcuts-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: var(--space-4, 16px);
+    margin-bottom: var(--space-4, 16px);
+}
+
+/* 确保最后一个网格没有下边距 */
+.shortcuts-grid:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   快速操作区域优化 - 确保与快捷入口高度协调
+   ========================================================================== */
+
+/* 快速操作网格 - 优化为4个项目的网格布局 */
+.quick-actions-grid-horizontal {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4, 16px);
+}
+
+/* 快速操作项目样式优化 */
+.quick-action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-5, 20px) var(--space-4, 16px);
+    background: var(--bg-surface-secondary, #f9fafb);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    text-decoration: none;
+    color: inherit;
+    transition: all var(--duration-200, 200ms) ease;
+    min-height: 120px;
+    text-align: center;
+    position: relative;
+}
+
+.quick-action-item:hover {
+    border-color: var(--primary-300, #b8a7ff);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(124, 58, 237, 0.12));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+}
+
+/* 快速操作图标 */
+.quick-action-icon {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-2, 8px);
+    opacity: 0.8;
+    transition: opacity var(--duration-150, 150ms) ease;
+}
+
+.quick-action-item:hover .quick-action-icon {
+    opacity: 1;
+}
+
+/* 快速操作文本 */
+.quick-action-text {
+    font-size: var(--text-base, 1rem);
+    font-weight: var(--font-semibold, 600);
+    color: var(--text-primary, #111827);
+    margin-bottom: var(--space-1, 4px);
+    line-height: 1.4;
+}
+
+/* 快速操作描述 */
+.quick-action-desc {
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--text-secondary, #6b7280);
+    line-height: 1.3;
+}
+
+.shortcut-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2, 8px);
+    padding: var(--space-4, 16px) var(--space-3, 12px);
+    background: var(--bg-surface-secondary, #f9fafb);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-md, 8px);
+    cursor: pointer;
+    transition: all var(--duration-150, 150ms) ease;
+    text-decoration: none;
+    color: inherit;
+    min-width: 80px;
+    min-height: 90px;
+    flex: 0 0 auto;
+    text-align: center;
+    position: relative;
+}
+
+.shortcut-item:hover {
+    border-color: var(--primary-300, #b8a7ff);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(124, 58, 237, 0.12));
+    transform: translateY(-2px);
+    color: var(--primary-700, #6d28d9);
+}
+
+.shortcut-icon {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-1, 4px);
+}
+
+.shortcut-text {
+    font-size: var(--text-sm, 0.875rem);
+    font-weight: var(--font-medium, 500);
+    white-space: nowrap;
+    line-height: 1.3;
+}
+
+/* ==========================================================================
+   图表区域 - 独占行布局优化
+   ========================================================================== */
+
+/* 图表区域整体布局 */
+.dashboard__charts {
+    margin-bottom: var(--space-8, 32px);
+}
+
+/* 图表行布局 - 每个图表独占一行 */
+.dashboard__chart-row {
+    margin-bottom: var(--space-6, 24px);
+}
+
+.dashboard__chart-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 全宽图表卡片 */
+.card--chart-full {
+    width: 100%;
+    min-height: 480px;
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+}
+
+/* 图表卡片body - 占满除header外的所有空间 */
+.card__body--chart-full {
+    padding: var(--space-4, 16px);
+    height: calc(480px - 80px); /* 总高度减去header高度 */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 图表容器 - 占满card body */
+.chart-container--full {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 图表canvas优化 */
+.chart-container--full canvas {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* ==========================================================================
+   状态监控和最近活动 - 单独成行
+   ========================================================================== */
+
+/* 状态监控单独一行 */
+.dashboard__status-monitoring {
+    margin-bottom: var(--space-8, 32px);
+}
+
+.status-monitoring-card {
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+    padding: var(--space-6, 24px);
+}
+
+.status-monitoring-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4, 16px);
+    padding-bottom: var(--space-3, 12px);
+    border-bottom: 1px solid var(--border-light, #e5e7eb);
+}
+
+.status-monitoring-title {
+    font-size: var(--text-xl, 1.25rem);
+    font-weight: var(--font-bold, 700);
+    color: var(--text-primary, #111827);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+}
+
+.status-monitoring-title::before {
+    content: '📊';
+    font-size: 1.2em;
+}
+
+/* 状态监控内容网格 */
+.status-monitoring-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-4, 16px);
+}
+
+.status-monitoring-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3, 12px);
+    padding: var(--space-3, 12px);
+    background: var(--bg-surface-secondary, #f9fafb);
+    border-radius: var(--radius-md, 8px);
+    border: 1px solid var(--border-light, #e5e7eb);
+}
+
+.status-monitoring-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-base, 6px);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.status-monitoring-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.status-monitoring-label {
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--text-secondary, #374151);
+    margin: 0 0 var(--space-1, 4px) 0;
+}
+
+.status-monitoring-value {
+    font-size: var(--text-lg, 1.125rem);
+    font-weight: var(--font-semibold, 600);
+    color: var(--text-primary, #111827);
+    margin: 0;
+}
+
+/* 最近活动单独一行 */
+.dashboard__recent-activities {
+    margin-bottom: var(--space-8, 32px);
+}
+
+.recent-activities-card {
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+    padding: var(--space-6, 24px);
+}
+
+.recent-activities-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4, 16px);
+    padding-bottom: var(--space-3, 12px);
+    border-bottom: 1px solid var(--border-light, #e5e7eb);
+}
+
+.recent-activities-title {
+    font-size: var(--text-xl, 1.25rem);
+    font-weight: var(--font-bold, 700);
+    color: var(--text-primary, #111827);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+}
+
+.recent-activities-title::before {
+    content: '🕒';
+    font-size: 1.2em;
+}
+
+.recent-activities-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3, 12px);
+}
+
+.recent-activity-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3, 12px);
+    padding: var(--space-3, 12px);
+    background: var(--bg-surface-secondary, #f9fafb);
+    border-radius: var(--radius-md, 8px);
+    border-left: 3px solid var(--primary-200, #ddd6fe);
+}
+
+.recent-activity-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-100, #ede9fe);
+    border-radius: var(--radius-base, 6px);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.recent-activity-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.recent-activity-text {
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--text-primary, #111827);
+    margin: 0 0 var(--space-1, 4px) 0;
+}
+
+.recent-activity-time {
+    font-size: var(--text-xs, 0.75rem);
+    color: var(--text-tertiary, #9ca3af);
+    margin: 0;
+}
+
+/* ==========================================================================
+   待处理任务 - pending-category 取消换行限制
+   ========================================================================== */
+
+/* 待处理任务类别容器 - 允许自然换行 */
+.pending-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-4, 16px);
+    width: 100%;
+}
+
+/* pending-category 卡片基础样式 */
+.pending-category {
+    background: var(--bg-surface-secondary, #f9fafb);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-md, 8px);
+    padding: var(--space-4, 16px);
+    min-width: 250px;
+    flex: 1;
+    transition: all var(--duration-200, 200ms) ease;
+}
+
+.pending-category:hover {
+    background: var(--bg-surface, #ffffff);
+    border-color: var(--primary-200, #ddd6fe);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+}
+
+/* pending-category 头部 */
+.pending-category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-3, 12px);
+}
+
+.pending-category-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+}
+
+.pending-category-icon {
+    font-size: 1.125rem;
+}
+
+.pending-category-title {
+    font-size: var(--text-base, 1rem);
+    font-weight: var(--font-semibold, 600);
+    color: var(--text-primary, #111827);
+    margin: 0;
+}
+
+.pending-category-count {
+    font-size: var(--text-lg, 1.125rem);
+    font-weight: var(--font-bold, 700);
+    color: var(--primary-600, #7c3aed);
+    background: var(--primary-50, #f5f3ff);
+    padding: var(--space-1, 4px) var(--space-2, 8px);
+    border-radius: var(--radius-base, 6px);
+    min-width: 32px;
+    text-align: center;
+}
+
+/* pending-category 操作区域 */
+.pending-category-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+}
+
+/* ==========================================================================
+   响应式布局优化
+   ========================================================================== */
+
+/* 中大屏幕 - 优化快速操作网格 */
+@media (max-width: 1200px) {
+    .quick-actions-grid-horizontal {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-3, 12px);
+    }
+}
+
+/* 中小屏幕 - 快捷入口和快速操作垂直排列 */
+@media (max-width: 1024px) {
+    .dashboard__actions-row {
+        flex-direction: column;
+        gap: var(--space-4, 16px);
+    }
+    
+    .shortcuts-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .quick-actions-grid-horizontal {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .status-monitoring-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-3, 12px);
+    }
+}
+
+/* 小屏幕 - 进一步优化 */
+@media (max-width: 768px) {
+    .shortcuts-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-2, 8px);
+    }
+    
+    .quick-actions-grid-horizontal {
+        grid-template-columns: 1fr;
+    }
+    
+    .shortcut-item {
+        min-width: 70px;
+        padding: var(--space-2, 8px);
+        min-height: 70px;
+    }
+    
+    .quick-action-item {
+        min-height: 100px;
+        padding: var(--space-4, 16px);
+    }
+}
+
+/* 超小屏幕 - 单列布局 */
+@media (max-width: 480px) {
+    .shortcuts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .shortcut-item {
+        min-height: 60px;
+        font-size: var(--text-xs, 0.75rem);
+    }
+    
+    .shortcut-icon {
+        font-size: 1rem;
+    }
+}
+
+/* ==========================================================================
+   图表区域响应式优化
+   ========================================================================== */
+
+/* 中屏幕 - 调整图表高度 */
+@media (max-width: 1024px) {
+    .card--chart-full {
+        min-height: 400px;
+    }
+    
+    .card__body--chart-full {
+        height: calc(400px - 70px);
+    }
+}
+
+/* 小屏幕 - 进一步调整图表 */
+@media (max-width: 768px) {
+    .card--chart-full {
+        min-height: 350px;
+        margin: 0 calc(var(--space-4, 16px) * -1);
+        border-radius: 0;
+    }
+    
+    .card__body--chart-full {
+        height: calc(350px - 60px);
+        padding: var(--space-3, 12px);
+    }
+    
+    .dashboard__chart-row {
+        margin-bottom: var(--space-4, 16px);
+    }
+}
+
+/* 超小屏幕 - 最小化图表 */
+@media (max-width: 480px) {
+    .card--chart-full {
+        min-height: 300px;
+    }
+    
+    .card__body--chart-full {
+        height: calc(300px - 50px);
+        padding: var(--space-2, 8px);
+    }
+    
+    .card__header {
+        padding: var(--space-3, 12px);
+    }
+    
+    .card__title {
+        font-size: var(--text-base, 1rem);
+    }
+}
+    
+    .status-monitoring-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .pending-categories {
+        grid-template-columns: 1fr;
+        gap: var(--space-3, 12px);
+    }
+    
+    .pending-category {
+        min-width: auto;
+    }
+}
+
+/* 超大屏幕优化 */
+@media (min-width: 1400px) {
+    .dashboard__actions-row {
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .dashboard__status-monitoring,
+    .dashboard__recent-activities {
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

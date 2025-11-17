@@ -1,0 +1,194 @@
+{
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "document": {
+    "scrollWidth": 1382,
+    "scrollHeight": 2731,
+    "clientWidth": 1280,
+    "clientHeight": 720
+  },
+  "exceedingElements": [
+    {
+      "tagName": "TABLE",
+      "id": "advancedDataTable",
+      "className": "unified-table advanced-table horizontal-scroll-table columns-14",
+      "width": 1960,
+      "right": 2006,
+      "left": 46,
+      "exceedsBy": 726,
+      "styles": {
+        "width": "1960px",
+        "maxWidth": "none",
+        "minWidth": "1960px",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "position": "relative",
+        "display": "table"
+      }
+    },
+    {
+      "tagName": "THEAD",
+      "id": "",
+      "className": "unified-table-header table-head-enhanced-sticky",
+      "width": 1960,
+      "right": 2006,
+      "left": 46,
+      "exceedsBy": 726,
+      "styles": {
+        "width": "1960px",
+        "maxWidth": "none",
+        "minWidth": "0px",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "position": "sticky",
+        "display": "table-header-group"
+      }
+    },
+    {
+      "tagName": "TR",
+      "id": "",
+      "className": "unified-table-header-row table-header-row",
+      "width": 1960,
+      "right": 2006,
+      "left": 46,
+      "exceedsBy": 726,
+      "styles": {
+        "width": "1960px",
+        "maxWidth": "none",
+        "minWidth": "0px",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "position": "static",
+        "display": "table-row"
+      }
+    },
+    {
+      "tagName": "TBODY",
+      "id": "advancedDataTableBody",
+      "className": "",
+      "width": 1960,
+      "right": 2006,
+      "left": 46,
+      "exceedsBy": 726,
+      "styles": {
+        "width": "1960px",
+        "maxWidth": "none",
+        "minWidth": "0px",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "position": "static",
+        "display": "table-row-group"
+      }
+    },
+    {
+      "tagName": "TR",
+      "id": "",
+      "className": "table-row-enhanced",
+      "width": 1960,
+      "right": 2006,
+      "left": 46,
+      "exceedsBy": 726,
+      "styles": {
+        "width": "1960px",
+        "maxWidth": "none",
+        "minWidth": "0px",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "position": "static",
+        "display": "table-row"
+      }
+    },
+    {
+      "tagName": "TR",
+      "id": "",
+      "className": "table-row-enhanced",
+      "width": 1960,
+      "right": 2006,
+      "left": 46,
+      "exceedsBy": 726,
+      "styles": {
+        "width": "1960px",
+        "maxWidth": "none",
+        "minWidth": "0px",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "position": "static",
+        "display": "table-row"
+      }
+    },
+    {
+      "tagName": "TR",
+      "id": "",
+      "className": "table-row-enhanced",
+      "width": 1960,
+      "right": 2006,
+      "left": 46,
+      "exceedsBy": 726,
+      "styles": {
+        "width": "1960px",
+        "maxWidth": "none",
+        "minWidth": "0px",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "position": "static",
+        "display": "table-row"
+      }
+    },
+    {
+      "tagName": "TR",
+      "id": "",
+      "className": "table-row-enhanced",
+      "width": 1960,
+      "right": 2006,
+      "left": 46,
+      "exceedsBy": 726,
+      "styles": {
+        "width": "1960px",
+        "maxWidth": "none",
+        "minWidth": "0px",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "position": "static",
+        "display": "table-row"
+      }
+    },
+    {
+      "tagName": "TR",
+      "id": "",
+      "className": "table-row-enhanced",
+      "width": 1960,
+      "right": 2006,
+      "left": 46,
+      "exceedsBy": 726,
+      "styles": {
+        "width": "1960px",
+        "maxWidth": "none",
+        "minWidth": "0px",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "position": "static",
+        "display": "table-row"
+      }
+    },
+    {
+      "tagName": "TR",
+      "id": "",
+      "className": "table-row-enhanced",
+      "width": 1960,
+      "right": 2006,
+      "left": 46,
+      "exceedsBy": 726,
+      "styles": {
+        "width": "1960px",
+        "maxWidth": "none",
+        "minWidth": "0px",
+        "overflow": "visible",
+        "overflowX": "visible",
+        "position": "static",
+        "display": "table-row"
+      }
+    }
+  ]
+}

@@ -1,0 +1,586 @@
+/**
+ * 浏览器兼容性样式
+ * 提供不同浏览器的特定样式和回退方案
+ */
+
+/* ==========================================================================
+   浏览器特定样式
+   ========================================================================== */
+
+/* Internet Explorer 特定样式 */
+.browser-ie .card {
+    /* IE不支持box-shadow的多重阴影 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.browser-ie .btn {
+    /* IE的按钮边框处理 */
+    border: 1px solid #ccc;
+}
+
+.browser-ie .form-input:focus {
+    /* IE的焦点样式 */
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+}
+
+/* Firefox 特定样式 */
+.browser-firefox .btn {
+    /* Firefox的按钮内边距调整 */
+    padding: calc(0.75rem - 1px) calc(1rem - 1px);
+}
+
+.browser-firefox .form-input {
+    /* Firefox的输入框样式 */
+    -moz-appearance: none;
+}
+
+.browser-firefox .card {
+    /* Firefox的卡片圆角 */
+    -moz-border-radius: 0.5rem;
+}
+
+/* Safari 特定样式 */
+.browser-safari .btn {
+    /* Safari的按钮样式 */
+    -webkit-appearance: none;
+}
+
+.browser-safari .form-input {
+    /* Safari的输入框样式 */
+    -webkit-appearance: none;
+    border-radius: 0.375rem;
+}
+
+.browser-safari .card {
+    /* Safari的卡片阴影 */
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Chrome 特定样式 */
+.browser-chrome .scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.browser-chrome .scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.browser-chrome .scrollbar::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+/* Edge 特定样式 */
+.browser-edge .btn {
+    /* Edge的按钮样式调整 */
+    border: 1px solid transparent;
+}
+
+.browser-edge .form-input {
+    /* Edge的输入框样式 */
+    border: 1px solid #d1d5db;
+}
+
+/* ==========================================================================
+   特性支持回退样式
+   ========================================================================== */
+
+/* CSS Variables 不支持时的回退 */
+.no-cssVariables {
+    /* 定义静态颜色值 */
+    color: #1f2937;
+    background-color: #ffffff;
+}
+
+.no-cssVariables .btn-primary {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+.no-cssVariables .btn-primary:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.no-cssVariables .btn-secondary {
+    background-color: #6b7280;
+    border-color: #6b7280;
+    color: #ffffff;
+}
+
+.no-cssVariables .card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+}
+
+.no-cssVariables .form-input {
+    border: 1px solid #d1d5db;
+    background-color: #ffffff;
+}
+
+.no-cssVariables .form-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.no-cssVariables .navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.no-cssVariables .toast-success {
+    background-color: #d1fae5;
+    border-color: #10b981;
+    color: #065f46;
+}
+
+.no-cssVariables .toast-error {
+    background-color: #fee2e2;
+    border-color: #ef4444;
+    color: #991b1b;
+}
+
+.no-cssVariables .toast-warning {
+    background-color: #fef3c7;
+    border-color: #f59e0b;
+    color: #92400e;
+}
+
+/* CSS Grid 不支持时的回退 */
+.no-cssGrid .grid {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: -0.75rem;
+}
+
+.no-cssGrid .grid > * {
+    padding: 0.75rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.no-cssGrid .grid-cols-1 > * {
+    width: 100%;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+}
+
+.no-cssGrid .grid-cols-2 > * {
+    width: 50%;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+}
+
+.no-cssGrid .grid-cols-3 > * {
+    width: 33.333333%;
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+}
+
+.no-cssGrid .grid-cols-4 > * {
+    width: 25%;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+}
+
+.no-cssGrid .grid-cols-6 > * {
+    width: 16.666667%;
+    -ms-flex: 0 0 16.666667%;
+    flex: 0 0 16.666667%;
+}
+
+.no-cssGrid .grid-cols-12 > * {
+    width: 8.333333%;
+    -ms-flex: 0 0 8.333333%;
+    flex: 0 0 8.333333%;
+}
+
+/* Flexbox 不支持时的回退 */
+.no-flexbox .flex {
+    display: block;
+}
+
+.no-flexbox .flex > * {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.no-flexbox .justify-center {
+    text-align: center;
+}
+
+.no-flexbox .justify-between > *:first-child {
+    float: left;
+}
+
+.no-flexbox .justify-between > *:last-child {
+    float: right;
+}
+
+.no-flexbox .items-center {
+    vertical-align: middle;
+}
+
+/* CSS Transforms 不支持时的回退 */
+.no-transforms .card:hover {
+    /* 使用边框或阴影代替transform */
+    border-color: #3b82f6;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.no-transforms .btn:hover {
+    /* 使用背景色变化代替transform */
+    opacity: 0.9;
+}
+
+.no-transforms .modal-content {
+    /* 移除transform动画 */
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: -300px;
+}
+
+/* CSS Transitions 不支持时的回退 */
+.no-transitions * {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+}
+
+/* CSS Animations 不支持时的回退 */
+.no-animations * {
+    -webkit-animation: none !important;
+    -moz-animation: none !important;
+    -o-animation: none !important;
+    animation: none !important;
+}
+
+.no-animations .loading-spinner {
+    /* 使用静态图标代替动画 */
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJWNk0xMiAxOFYyMk02IDEySDJNMjIgMTJIMThNMTkuMDcgMTkuMDdMMTYuMjQgMTYuMjRNMTYuMjQgNy43Nkw5LjA3IDQuOTNNNC45MyAxOS4wN0w3Ljc2IDE2LjI0TTcuNzYgNy43Nkw0LjkzIDQuOTMiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* ==========================================================================
+   设备类型特定样式
+   ========================================================================== */
+
+/* 移动设备样式 */
+.is-mobile .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.is-mobile .grid {
+    grid-template-columns: 1fr !important;
+}
+
+.is-mobile .btn {
+    min-height: 44px; /* 触摸友好的最小高度 */
+    font-size: 1rem;
+}
+
+.is-mobile .form-input {
+    min-height: 44px;
+    font-size: 16px; /* 防止iOS缩放 */
+}
+
+.is-mobile .modal-content {
+    margin: 1rem;
+    max-width: calc(100vw - 2rem);
+}
+
+.is-mobile .navbar-nav {
+    flex-direction: column;
+}
+
+.is-mobile .card {
+    margin-bottom: 1rem;
+}
+
+/* 平板设备样式 */
+.is-tablet .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.is-tablet .grid-cols-3,
+.is-tablet .grid-cols-4,
+.is-tablet .grid-cols-6,
+.is-tablet .grid-cols-12 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.is-tablet .btn {
+    min-height: 40px;
+}
+
+.is-tablet .form-input {
+    min-height: 40px;
+}
+
+/* 桌面设备样式 */
+.is-desktop .container {
+    max-width: 1200px;
+}
+
+.is-desktop .btn:hover {
+    transform: translateY(-1px);
+}
+
+.is-desktop .card:hover {
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   打印样式
+   ========================================================================== */
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+        break-inside: avoid;
+    }
+    
+    .btn {
+        border: 1px solid #000 !important;
+        background: transparent !important;
+        color: #000 !important;
+    }
+    
+    .navbar,
+    .modal,
+    .toast {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+}
+
+/* ==========================================================================
+   高对比度模式
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+    .card {
+        border-width: 2px;
+        border-color: #000;
+    }
+    
+    .btn {
+        border-width: 2px;
+        font-weight: bold;
+    }
+    
+    .btn-primary {
+        background-color: #000;
+        border-color: #000;
+        color: #fff;
+    }
+    
+    .btn-secondary {
+        background-color: #fff;
+        border-color: #000;
+        color: #000;
+    }
+    
+    .form-input {
+        border-width: 2px;
+        border-color: #000;
+    }
+    
+    .form-input:focus {
+        outline: 3px solid #000;
+        outline-offset: 2px;
+    }
+}
+
+/* ==========================================================================
+   减少动画模式
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ==========================================================================
+   暗色模式偏好
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    .auto-dark {
+        background-color: #1f2937;
+        color: #f9fafb;
+    }
+    
+    .auto-dark .card {
+        background-color: #374151;
+        border-color: #4b5563;
+    }
+    
+    .auto-dark .form-input {
+        background-color: #374151;
+        border-color: #4b5563;
+        color: #f9fafb;
+    }
+    
+    .auto-dark .btn-secondary {
+        background-color: #4b5563;
+        border-color: #6b7280;
+        color: #f9fafb;
+    }
+}
+
+/* ==========================================================================
+   旧版浏览器特定修复
+   ========================================================================== */
+
+/* IE8-9 修复 */
+.lt-ie10 .card {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.lt-ie10 .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #007cba;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.lt-ie10 .form-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.lt-ie10 .grid {
+    width: 100%;
+}
+
+.lt-ie10 .grid > * {
+    float: left;
+    box-sizing: border-box;
+    padding: 0.5rem;
+}
+
+.lt-ie10 .grid-cols-2 > * {
+    width: 50%;
+}
+
+.lt-ie10 .grid-cols-3 > * {
+    width: 33.33%;
+}
+
+.lt-ie10 .grid-cols-4 > * {
+    width: 25%;
+}
+
+/* 清除浮动 */
+.lt-ie10 .grid:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* ==========================================================================
+   触摸设备优化
+   ========================================================================== */
+
+.supports-touchEvents .btn,
+.supports-touchEvents .form-input,
+.supports-touchEvents .nav-link {
+    min-height: 44px; /* Apple推荐的最小触摸目标 */
+    min-width: 44px;
+}
+
+.supports-touchEvents .btn {
+    padding: 0.75rem 1.5rem;
+}
+
+.supports-touchEvents .card {
+    margin-bottom: 1rem; /* 增加卡片间距 */
+}
+
+.supports-touchEvents .modal-content {
+    margin: 1rem; /* 为触摸操作留出空间 */
+}
+
+/* ==========================================================================
+   指针设备优化
+   ========================================================================== */
+
+.supports-pointerEvents .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.supports-pointerEvents .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.supports-pointerEvents .nav-link:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* ==========================================================================
+   无JavaScript回退
+   ========================================================================== */
+
+.no-js .modal {
+    display: none;
+}
+
+.no-js .dropdown-menu {
+    display: block;
+    position: static;
+    box-shadow: none;
+    border: 1px solid #ccc;
+}
+
+.no-js .tab-content > .tab-pane {
+    display: block;
+}
+
+.no-js .collapse {
+    display: block;
+}
+
+.no-js .loading {
+    display: none;
+}
+
+.no-js .js-only {
+    display: none;
+}

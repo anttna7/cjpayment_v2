@@ -1,0 +1,342 @@
+/* 商户充值链接管理样式 */
+
+/* 充值链接模态框样式 */
+.modal-content-large {
+    max-width: 900px;
+    width: 90%;
+}
+
+/* 商户信息显示区域 */
+.merchant-info-display {
+    background: var(--account-bg-tertiary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--dashboard-border-primary);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-label {
+    font-weight: 600;
+    color: var(--dashboard-text-secondary);
+    min-width: 80px;
+}
+
+.info-value {
+    color: var(--dashboard-text-primary);
+    font-weight: 500;
+}
+
+/* 章节标题 */
+.section-title {
+    color: var(--account-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--account-primary);
+}
+
+/* 链接生成区域 */
+.link-generation-section {
+    background: var(--account-bg-secondary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--dashboard-border-primary);
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+/* 链接结果显示区域 */
+.link-result-section {
+    background: rgba(34, 197, 94, 0.02);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.link-display-grid {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.link-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    align-items: center;
+}
+
+.link-label {
+    font-weight: 600;
+    color: var(--dashboard-text-secondary);
+    text-align: right;
+}
+
+.link-input-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.link-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--dashboard-border-primary);
+    border-radius: 6px;
+    background: var(--account-bg-primary);
+    color: var(--dashboard-text-primary);
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+/* 二维码区域 */
+.qr-code-section {
+    background: var(--account-bg-tertiary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.qr-code-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.qr-code-placeholder {
+    width: 200px;
+    height: 200px;
+    border: 2px dashed var(--dashboard-border-primary);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dashboard-text-secondary);
+    background: var(--account-bg-primary);
+}
+
+.qr-code-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+/* 链接验证区域 */
+.link-validation-section {
+    background: var(--account-bg-secondary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--dashboard-border-primary);
+}
+
+.validation-input-group {
+    display: flex;
+    gap: 1rem;
+    align-items: end;
+}
+
+.validation-input-group .form-input-enhanced {
+    flex: 1;
+}
+
+.validation-result {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--dashboard-border-primary);
+}
+
+.validation-result.success {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.3);
+    color: var(--rule-active);
+}
+
+.validation-result.error {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+/* 验证结果详情 */
+.validation-details {
+    margin-top: 1rem;
+}
+
+.validation-detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--dashboard-border-primary);
+}
+
+.validation-detail-item:last-child {
+    border-bottom: none;
+}
+
+.validation-detail-label {
+    font-weight: 600;
+    color: var(--dashboard-text-secondary);
+}
+
+.validation-detail-value {
+    color: var(--dashboard-text-primary);
+}
+
+/* 复选框组样式 */
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-custom {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--account-primary);
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+    background: var(--account-primary);
+    border-color: var(--account-primary);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.checkbox-text {
+    color: var(--dashboard-text-primary);
+    font-weight: 500;
+}
+
+/* 商户卡片中的链接操作按钮 */
+.merchant-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dashboard-border-primary);
+}
+
+.action-btn-link {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    background: var(--account-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.action-btn-link:hover {
+    background: var(--account-hover);
+    transform: translateY(-1px);
+}
+
+.action-btn-link.secondary {
+    background: transparent;
+    color: var(--account-primary);
+    border: 1px solid var(--account-primary);
+}
+
+.action-btn-link.secondary:hover {
+    background: var(--account-primary);
+    color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .modal-content-large {
+        width: 95%;
+        max-width: none;
+        margin: 1rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .link-item {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .link-label {
+        text-align: left;
+        font-size: 0.9rem;
+    }
+    
+    .validation-input-group {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .merchant-card-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .qr-code-placeholder {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .link-input {
+        font-size: 0.8rem;
+    }
+    
+    .qr-code-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+}

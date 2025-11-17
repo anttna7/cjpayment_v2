@@ -1,0 +1,161 @@
+version: '3.8'
+
+services:
+  cjpayment-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.aliyun
+    image: cjpayment:latest
+    container_name: cjpayment-app
+    restart: unless-stopped
+    ports:
+      - "8091:8091"
+    environment:
+      - ENVIRONMENT=production
+      - TZ=Asia/Shanghai
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=cjpayment
+      - DB_USER=cjpayment
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - db
+      - redis
+    networks:
+      - cjpayment-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8091/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  db:
+    image: mysql:8.0
+    container_name: cjpayment-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: cjpayment
+      MYSQL_USER: cjpayment
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      TZ: Asia/Shanghai
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./configs/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./migrations:/docker-entrypoint-initdb.d:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "3306:3306"
+    networks:
+      - cjpayment-network
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: cjpayment-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - redis_data:/data
+      - ./configs/redis/redis.conf:/etc/redis/redis.conf:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - cjpayment-network
+    command: redis-server /etc/redis/redis.conf --requirepass ${REDIS_PASSWORD}
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx:
+    image: nginx:alpine
+    container_name: cjpayment-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./logs/nginx:/var/log/nginx
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - cjpayment-app
+    networks:
+      - cjpayment-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # 可选：Prometheus监控
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: cjpayment-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - cjpayment-network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+    profiles:
+      - monitoring
+
+  # 可选：Grafana监控面板
+  grafana:
+    image: grafana/grafana:latest
+    container_name: cjpayment-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - TZ=Asia/Shanghai
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./configs/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./configs/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - cjpayment-network
+    profiles:
+      - monitoring
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  cjpayment-network:
+    driver: bridge

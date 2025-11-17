@@ -1,0 +1,368 @@
+{
+  "timestamp": "2025-08-27T06:21:58.064Z",
+  "initialState": {
+    "scroll": {
+      "x": 0,
+      "y": 0
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "document": {
+      "scrollWidth": 1382,
+      "scrollHeight": 2731
+    },
+    "backdrop": {
+      "exists": true,
+      "visible": false
+    }
+  },
+  "modalOpenedState": {
+    "scroll": {
+      "x": 0,
+      "y": 1508
+    },
+    "backdrop": {
+      "rect": {
+        "width": 1280,
+        "height": 720,
+        "left": 25,
+        "right": 1305,
+        "top": 192.453125,
+        "bottom": 912.453125
+      },
+      "styles": {
+        "position": "fixed",
+        "left": "0px",
+        "top": "0px",
+        "width": "1280px",
+        "height": "720px",
+        "transform": "none",
+        "zIndex": "1000"
+      },
+      "classes": "modal-backdrop show",
+      "hasShowClass": true
+    },
+    "container": {
+      "rect": {
+        "width": 1088,
+        "height": 612,
+        "left": 121,
+        "right": 1209,
+        "top": 246.453125,
+        "bottom": 858.453125
+      },
+      "inViewport": {
+        "visible": false,
+        "partiallyVisible": true
+      }
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "afterScrollState": {
+    "scroll": {
+      "x": 0,
+      "y": 500
+    },
+    "backdrop": {
+      "rect": {
+        "width": 1280,
+        "height": 720,
+        "left": 0,
+        "right": 1280,
+        "top": 0,
+        "bottom": 720
+      },
+      "exceedsViewport": {
+        "right": false,
+        "bottom": false,
+        "left": false,
+        "top": false
+      }
+    },
+    "container": {
+      "rect": {
+        "width": 1088,
+        "height": 612,
+        "left": 96,
+        "right": 1184,
+        "top": 54,
+        "bottom": 666
+      },
+      "inViewport": {
+        "completelyVisible": true,
+        "partiallyVisible": true
+      }
+    }
+  },
+  "pointerEventsAnalysis": {
+    "backdrop": {
+      "pointerEvents": "none",
+      "cursor": "auto",
+      "zIndex": "1000"
+    },
+    "container": {
+      "pointerEvents": "auto",
+      "cursor": "default",
+      "zIndex": "1001"
+    }
+  },
+  "hoverMessages": [],
+  "allConsoleMessages": [
+    {
+      "type": "log",
+      "text": "🚀 数据报表快速加载器启动",
+      "timestamp": 1756275707776
+    },
+    {
+      "type": "log",
+      "text": "✅ Header interactions initialized",
+      "timestamp": 1756275707796
+    },
+    {
+      "type": "log",
+      "text": "NotificationDataUnified: 通知列表HTML已更新 1757 个通知",
+      "timestamp": 1756275707796
+    },
+    {
+      "type": "log",
+      "text": "NotificationDataUnified: 通知数据已统一渲染",
+      "timestamp": 1756275707796
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 开始初始化...",
+      "timestamp": 1756275707797
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 开始加载订单数据...",
+      "timestamp": 1756275707797
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 初始化完成",
+      "timestamp": 1756275707802
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable 全局实例已创建",
+      "timestamp": 1756275707802
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 用户信息已统一更新 {id: admin_001, name: 系统管理员, role: 超级管理员, avatar: 👤, email: admin@cjpayment.com}",
+      "timestamp": 1756275707806
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 通知UI已更新，未读数量: 2",
+      "timestamp": 1756275707806
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 所有dropdown已强制隐藏",
+      "timestamp": 1756275707807
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 统一头部组件初始化完成",
+      "timestamp": 1756275707807
+    },
+    {
+      "type": "log",
+      "text": "数据报表页面高级数据表导出功能已初始化",
+      "timestamp": 1756275707807
+    },
+    {
+      "type": "log",
+      "text": "User Feedback Analytics: Initializing...",
+      "timestamp": 1756275707853
+    },
+    {
+      "type": "log",
+      "text": "User Feedback Analytics: Initialized successfully",
+      "timestamp": 1756275707891
+    },
+    {
+      "type": "log",
+      "text": "Initializing Report Dashboard...",
+      "timestamp": 1756275707904
+    },
+    {
+      "type": "log",
+      "text": "Report Dashboard initialized successfully",
+      "timestamp": 1756275707906
+    },
+    {
+      "type": "log",
+      "text": "检查AdvancedDataTable类是否存在: true",
+      "timestamp": 1756275707906
+    },
+    {
+      "type": "log",
+      "text": "开始创建AdvancedDataTable实例...",
+      "timestamp": 1756275707906
+    },
+    {
+      "type": "log",
+      "text": "初始化高级数据表...",
+      "timestamp": 1756275707906
+    },
+    {
+      "type": "log",
+      "text": "AdvancedDataTable: 设置筛选标签页事件绑定",
+      "timestamp": 1756275707907
+    },
+    {
+      "type": "log",
+      "text": "发现 3 个筛选标签页",
+      "timestamp": 1756275707907
+    },
+    {
+      "type": "log",
+      "text": "绑定标签页 0: basic",
+      "timestamp": 1756275707908
+    },
+    {
+      "type": "log",
+      "text": "绑定标签页 1: advanced",
+      "timestamp": 1756275707908
+    },
+    {
+      "type": "log",
+      "text": "绑定标签页 2: custom",
+      "timestamp": 1756275707908
+    },
+    {
+      "type": "log",
+      "text": "AdvancedDataTable: 检查列设置按钮: JSHandle@node",
+      "timestamp": 1756275707917
+    },
+    {
+      "type": "log",
+      "text": "AdvancedDataTable: 绑定列设置按钮点击事件",
+      "timestamp": 1756275707917
+    },
+    {
+      "type": "log",
+      "text": "AdvancedDataTable: 绑定关闭按钮事件",
+      "timestamp": 1756275707917
+    },
+    {
+      "type": "log",
+      "text": "高级数据表初始化完成",
+      "timestamp": 1756275707918
+    },
+    {
+      "type": "log",
+      "text": "高级数据表初始化成功",
+      "timestamp": 1756275707918
+    },
+    {
+      "type": "log",
+      "text": "Enhanced report system initialized successfully",
+      "timestamp": 1756275707918
+    },
+    {
+      "type": "log",
+      "text": "KPI数据加载完成: 54.80ms",
+      "timestamp": 1756275707961
+    },
+    {
+      "type": "log",
+      "text": "高级数据表加载完成: 0.00ms",
+      "timestamp": 1756275708262
+    },
+    {
+      "type": "log",
+      "text": "Initializing Advanced Analytics...",
+      "timestamp": 1756275708265
+    },
+    {
+      "type": "warning",
+      "text": "Advanced Analytics: No data available",
+      "timestamp": 1756275708265
+    },
+    {
+      "type": "log",
+      "text": "图表数据加载完成: 203.90ms",
+      "timestamp": 1756275708266
+    },
+    {
+      "type": "log",
+      "text": "表格数据加载完成: 301.50ms",
+      "timestamp": 1756275708564
+    },
+    {
+      "type": "log",
+      "text": "报表页面总加载时间: 659.40ms",
+      "timestamp": 1756275708564
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 已强制设置 1800 个单元格为可滚动",
+      "timestamp": 1756275708811
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 已渲染 150 行数据",
+      "timestamp": 1756275708811
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 成功加载 150 条订单记录",
+      "timestamp": 1756275708811
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: advancedFiltersToggle 按钮被点击",
+      "timestamp": 1756275713299
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 切换高级筛选面板 - 使用新架构",
+      "timestamp": 1756275713299
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 开始显示模态框",
+      "timestamp": 1756275713299
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 调用AdvancedDataTable设置事件",
+      "timestamp": 1756275713400
+    },
+    {
+      "type": "log",
+      "text": "AdvancedDataTable: 设置筛选标签页事件绑定",
+      "timestamp": 1756275713400
+    },
+    {
+      "type": "log",
+      "text": "发现 3 个筛选标签页",
+      "timestamp": 1756275713400
+    },
+    {
+      "type": "log",
+      "text": "绑定标签页 0: basic",
+      "timestamp": 1756275713400
+    },
+    {
+      "type": "log",
+      "text": "绑定标签页 1: advanced",
+      "timestamp": 1756275713400
+    },
+    {
+      "type": "log",
+      "text": "绑定标签页 2: custom",
+      "timestamp": 1756275713400
+    }
+  ],
+  "issues": []
+}

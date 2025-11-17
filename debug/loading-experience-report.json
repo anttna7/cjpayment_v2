@@ -1,0 +1,176 @@
+{
+  "success": true,
+  "initialLoad": {
+    "events": [
+      {
+        "event": "dom_ready",
+        "time": 354
+      },
+      {
+        "event": "page_loaded",
+        "time": 1669
+      },
+      {
+        "event": "dom_ready",
+        "time": 53
+      },
+      {
+        "event": "page_loaded",
+        "time": 80
+      }
+    ],
+    "loadingElements": [
+      {
+        "id": "globalLoading",
+        "className": "loading-overlay",
+        "textContent": "\n        \n        处理中，请稍候...\n    ",
+        "isVisible": false,
+        "tagName": "DIV"
+      },
+      {
+        "id": "trendChartLoading",
+        "className": "chart-loading hidden",
+        "textContent": "\n                                \n                ",
+        "isVisible": false,
+        "tagName": "DIV"
+      },
+      {
+        "id": "",
+        "className": "loading-spinner",
+        "textContent": "",
+        "isVisible": true,
+        "tagName": "DIV"
+      },
+      {
+        "id": "",
+        "className": "loading-text",
+        "textContent": "加载图表中...",
+        "isVisible": true,
+        "tagName": "SPAN"
+      },
+      {
+        "id": "",
+        "className": "table-loading",
+        "textContent": "\n                \n                正在加载数据...\n      ",
+        "isVisible": false,
+        "tagName": "DIV"
+      },
+      {
+        "id": "",
+        "className": "loading-spinner-table",
+        "textContent": "",
+        "isVisible": true,
+        "tagName": "DIV"
+      },
+      {
+        "id": "globalLoading",
+        "className": "loading-overlay",
+        "textContent": "\n        \n        处理中，请稍候...\n    ",
+        "isVisible": false,
+        "tagName": "DIV"
+      },
+      {
+        "id": "",
+        "className": "loading-spinner",
+        "textContent": "",
+        "isVisible": true,
+        "tagName": "DIV"
+      },
+      {
+        "id": "",
+        "className": "loading-text",
+        "textContent": "处理中，请稍候...",
+        "isVisible": true,
+        "tagName": "P"
+      }
+    ],
+    "hasLoadingText": false
+  },
+  "afterRefresh": {
+    "hasLoadingOverlay": false,
+    "hasLoadingText": false,
+    "visibleElements": [
+      {
+        "tagName": "HTML",
+        "className": "",
+        "text": "\n    \n    \n    \n    数据报表中心 - C"
+      },
+      {
+        "tagName": "BODY",
+        "className": "page-report-enhanced",
+        "text": "\n    \n    \n        \n          "
+      },
+      {
+        "tagName": "MAIN",
+        "className": "app__main",
+        "text": "\n        \n            \n       "
+      },
+      {
+        "tagName": "DIV",
+        "className": "dashboard-container",
+        "text": "\n            \n            \n   "
+      },
+      {
+        "tagName": "DIV",
+        "className": "charts-container",
+        "text": "\n                \n            "
+      },
+      {
+        "tagName": "DIV",
+        "className": "chart-card chart-card--expanded",
+        "text": "\n                    \n        "
+      },
+      {
+        "tagName": "DIV",
+        "className": "chart-body",
+        "text": "\n                        \n    "
+      },
+      {
+        "tagName": "DIV",
+        "className": "chart-container chart-container--expanded",
+        "text": "\n                            \n"
+      },
+      {
+        "tagName": "SPAN",
+        "className": "loading-text",
+        "text": "加载图表中..."
+      },
+      {
+        "tagName": "DIV",
+        "className": "advanced-data-table-container",
+        "text": "\n                \n            "
+      },
+      {
+        "tagName": "DIV",
+        "className": "",
+        "text": "正在加载数据..."
+      },
+      {
+        "tagName": "DIV",
+        "className": "table-pagination-advanced",
+        "text": "\n                    \n        "
+      },
+      {
+        "tagName": "DIV",
+        "className": "pagination-right",
+        "text": "\n                        \n    "
+      },
+      {
+        "tagName": "DIV",
+        "className": "pagination-performance",
+        "text": "\n                            \n"
+      },
+      {
+        "tagName": "SPAN",
+        "className": "performance-indicator",
+        "text": "\n                             "
+      },
+      {
+        "tagName": "SPAN",
+        "className": "performance-text",
+        "text": "加载耗时: -ms"
+      }
+    ]
+  },
+  "recommendation": "✅ 成功移除加载中间页面"
+}

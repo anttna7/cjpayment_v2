@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>客户管理</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:20px}
+    h1{font-size:20px;margin-bottom:10px}
+    .toolbar{display:flex;gap:8px;margin-bottom:12px}
+    input,button,select{padding:8px;border:1px solid #ddd;border-radius:4px}
+    table{width:100%;border-collapse:collapse}
+    th,td{border:1px solid #eee;padding:8px;text-align:left}
+    th{background:#f8f8f8}
+    .section{margin-top:20px}
+  </style>
+</head>
+<body>
+  <h1>客户管理</h1>
+  <div class="toolbar">
+    <input id="search" placeholder="搜索名称">
+    <button onclick="loadCustomers()">查询</button>
+    <button onclick="exportCSV()">导出CSV</button>
+    <label>
+      导入CSV
+      <input id="importFile" type="file" accept=".csv" onchange="importCSV(event)" style="display:none">
+    </label>
+    <button onclick="document.getElementById('importFile').click()">选择文件</button>
+  </div>
+
+  <div class="section">
+    <h2 style="font-size:16px">新增客户</h2>
+    <div class="toolbar">
+      <input id="tenantId" placeholder="租户ID">
+      <input id="name" placeholder="名称">
+      <input id="code" placeholder="编码">
+      <input id="person" placeholder="联系人">
+      <input id="phone" placeholder="电话">
+      <input id="email" placeholder="邮箱">
+      <button onclick="createCustomer()">创建</button>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>名称</th><th>编码</th><th>联系人</th><th>电话</th><th>邮箱</th><th>操作</th>
+      </tr>
+    </thead>
+    <tbody id="list"></tbody>
+  </table>
+
+  <script>
+    async function loadCustomers(){
+      const q=document.getElementById('search').value
+      const res=await fetch(`/api/v1/customers?search=${encodeURIComponent(q)}`,{headers:{Authorization:localStorage.getItem('auth')}})
+      const data=await res.json()
+      const tbody=document.getElementById('list')
+      tbody.innerHTML='' 
+      (data.customers||[]).forEach(c=>{
+        const tr=document.createElement('tr')
+        tr.innerHTML=`<td>${c.id}</td><td>${c.name}</td><td>${c.code}</td><td>${c.contact_person||''}</td><td>${c.contact_phone||''}</td><td>${c.contact_email||''}</td>
+          <td><button onclick="del('${c.id}')">删除</button></td>`
+        tbody.appendChild(tr)
+      })
+    }
+    async function createCustomer(){
+      const body={tenant_id:document.getElementById('tenantId').value,name:document.getElementById('name').value,code:document.getElementById('code').value,
+      contact_person:val('person'),contact_phone:val('phone'),contact_email:val('email')}
+      const res=await fetch('/api/v1/customers',{method:'POST',headers:{'Content-Type':'application/json',Authorization:localStorage.getItem('auth')},body:JSON.stringify(body)})
+      if(res.ok){loadCustomers()} else {alert('创建失败')}
+    }
+    async function del(id){
+      const res=await fetch(`/api/v1/customers/${id}`,{method:'DELETE',headers:{Authorization:localStorage.getItem('auth')}})
+      if(res.ok){loadCustomers()} else {alert('删除失败')}
+    }
+    async function exportCSV(){
+      const res=await fetch('/api/v1/customers/export',{headers:{Authorization:localStorage.getItem('auth')}})
+      const text=await res.text()
+      const blob=new Blob([text],{type:'text/csv;charset=utf-8'})
+      const a=document.createElement('a')
+      a.href=URL.createObjectURL(blob)
+      a.download='customers.csv'
+      a.click()
+    }
+    async function importCSV(ev){
+      const f=ev.target.files[0]; if(!f) return;
+      const fd=new FormData(); fd.append('file',f); fd.append('tenant_id',document.getElementById('tenantId').value)
+      const res=await fetch('/api/v1/customers/import',{method:'POST',headers:{Authorization:localStorage.getItem('auth')},body:fd})
+      if(res.ok){loadCustomers()} else {alert('导入失败')}
+    }
+    function val(id){const v=document.getElementById(id).value;return v?v:null}
+    loadCustomers()
+  </script>
+</body>
+</html>

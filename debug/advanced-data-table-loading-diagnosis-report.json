@@ -1,0 +1,309 @@
+{
+  "timestamp": "2025-08-27T05:50:50.927Z",
+  "networkRequests": [
+    {
+      "url": "http://localhost:8091/static/js/utils.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/api.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/components.js",
+      "type": "request"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js",
+      "type": "request"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/report-fast-loader.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/header-interaction.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/header-unified.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/notification-data-unified.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/report_dashboard.js?v=1.5",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/advanced-data-table.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/order-info-table.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/user-feedback-analytics.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/analytics-init.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/mobile-utilities.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/interaction-enhancements.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/report-advanced-export.js",
+      "type": "request"
+    },
+    {
+      "url": "http://localhost:8091/static/js/api.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/utils.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/components.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/header-unified.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/report-fast-loader.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/header-interaction.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/notification-data-unified.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/report_dashboard.js?v=1.5",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/report-advanced-export.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/order-info-table.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/advanced-data-table.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/user-feedback-analytics.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/analytics-init.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/mobile-utilities.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "http://localhost:8091/static/js/interaction-enhancements.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js",
+      "status": 200,
+      "type": "response"
+    },
+    {
+      "url": "https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js",
+      "status": 200,
+      "type": "response"
+    }
+  ],
+  "jsErrors": [
+    {
+      "message": "Identifier 'modal' has already been declared",
+      "stack": ""
+    }
+  ],
+  "consoleMessages": [
+    "[log] 🚀 数据报表快速加载器启动",
+    "[log] ✅ Header interactions initialized",
+    "[log] NotificationDataUnified: 通知列表HTML已更新 1757 个通知",
+    "[log] NotificationDataUnified: 通知数据已统一渲染",
+    "[log] OrderInfoTable: 开始初始化...",
+    "[log] OrderInfoTable: 开始加载订单数据...",
+    "[log] OrderInfoTable: 初始化完成",
+    "[log] OrderInfoTable 全局实例已创建",
+    "[log] HeaderUnified: 用户信息已统一更新 {id: admin_001, name: 系统管理员, role: 超级管理员, avatar: 👤, email: admin@cjpayment.com}",
+    "[log] HeaderUnified: 通知UI已更新，未读数量: 2",
+    "[log] HeaderUnified: 所有dropdown已强制隐藏",
+    "[log] HeaderUnified: 统一头部组件初始化完成",
+    "[log] 数据报表页面高级数据表导出功能已初始化",
+    "[log] User Feedback Analytics: Initializing...",
+    "[log] User Feedback Analytics: Initialized successfully",
+    "[log] Mobile Utilities initialized: {isMobile: false, isTablet: false, isTouch: false, orientation: portrait}",
+    "[log] Interaction Enhancements: Initializing...",
+    "[log] Interaction Enhancements: Initialized successfully",
+    "[log] Initializing Report Dashboard...",
+    "[log] Report Dashboard initialized successfully",
+    "[log] 检查AdvancedDataTable类是否存在: false",
+    "[log] Enhanced report system initialized successfully",
+    "[log] KPI数据加载完成: 52.60ms",
+    "[log] 高级数据表加载完成: 0.10ms",
+    "[log] Initializing Advanced Analytics...",
+    "[warning] Advanced Analytics: No data available",
+    "[log] 图表数据加载完成: 203.80ms",
+    "[log] 表格数据加载完成: 301.10ms",
+    "[log] 报表页面总加载时间: 656.60ms",
+    "[log] OrderInfoTable: 已强制设置 1800 个单元格为可滚动",
+    "[log] OrderInfoTable: 已渲染 150 行数据",
+    "[log] OrderInfoTable: 成功加载 150 条订单记录",
+    "[log] 手动检查：AdvancedDataTable类是否存在: false"
+  ],
+  "scriptTags": [
+    {
+      "src": "https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/report-fast-loader.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/utils.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/api.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/components.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/header-interaction.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/header-unified.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/notification-data-unified.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/report_dashboard.js?v=1.5",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/advanced-data-table.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/order-info-table.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/user-feedback-analytics.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/analytics-init.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/mobile-utilities.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/interaction-enhancements.js",
+      "loaded": "unknown"
+    },
+    {
+      "src": "http://localhost:8091/static/js/report-advanced-export.js",
+      "loaded": "unknown"
+    }
+  ],
+  "advancedDataTableCheck": {
+    "classExists": false,
+    "classType": "undefined",
+    "globalAdvancedDataTable": true,
+    "globalAdvancedDataTableType": "object",
+    "orderInfoTableExists": true,
+    "allGlobalVars": [
+      "OrderInfoTable",
+      "showExportAdvancedTableModal",
+      "closeExportAdvancedTableModal",
+      "getAdvancedTableData",
+      "handleAdvancedTableExport",
+      "exportAdvancedTableToExcel",
+      "exportAdvancedTableToCSV",
+      "exportAdvancedTableToPDF",
+      "orderInfoTable"
+    ]
+  },
+  "manualInitResult": {
+    "success": false,
+    "message": "AdvancedDataTable类不存在"
+  },
+  "columnSettingsCheck": {
+    "button": {
+      "exists": true,
+      "text": "⚙️\n                                    列设置",
+      "onclick": "no onclick",
+      "listeners": "no _listeners property",
+      "clickable": true
+    },
+    "modal": {
+      "exists": true,
+      "display": "none",
+      "visibility": "visible"
+    },
+    "advancedDataTableInstance": {
+      "exists": true,
+      "hasShowColumnSettings": false
+    }
+  }
+}

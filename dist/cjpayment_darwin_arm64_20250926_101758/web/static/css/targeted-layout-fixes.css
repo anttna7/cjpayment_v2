@@ -1,0 +1,230 @@
+/* 针对三个具体问题的精确修复 */
+
+/* ================== 1. 修复breadcrumb换行问题 ================== */
+
+.page__header .breadcrumb {
+    display: flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+    overflow: hidden !important;
+    margin-bottom: 1rem !important;
+}
+
+.breadcrumb__item {
+    display: inline-block !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.breadcrumb__separator {
+    display: inline-block !important;
+    margin: 0 0.5rem !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+
+.breadcrumb__item--current {
+    max-width: 300px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+/* ================== 2. 调整stats-row高度与page__title-section一致 ================== */
+
+/* 首先获取page__title-section的高度并应用到stats-row */
+.page__title-section {
+    /* 保持原有高度不变 */
+    min-height: 120px !important;
+    max-height: 120px !important;
+    height: 120px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+}
+
+/* 调整stats-row高度与page__title-section一致 */
+html body.page-recharge-payment .stats-row,
+.page-recharge-payment .stats-row,
+.stats-row.stats-row.stats-row.stats-row.stats-row.stats-row.stats-row {
+    /* 与page__title-section保持相同高度 */
+    min-height: 120px !important;
+    max-height: 120px !important;
+    height: 120px !important;
+
+    /* 调整布局以适应固定高度 */
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    align-items: stretch !important;
+    align-content: space-between !important;
+
+    /* 优化间距 */
+    gap: 10px !important;
+    padding: 10px !important;
+    margin: 0 auto 2rem auto !important;
+
+    /* 视觉优化 */
+    width: 100% !important;
+    max-width: 600px !important;
+    box-sizing: border-box !important;
+
+    /* 背景和边框 */
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 调整统计卡片以适应新的容器高度 */
+html body.page-recharge-payment .stat-card,
+.page-recharge-payment .stat-card,
+.stat-card.stat-card.stat-card.stat-card.stat-card.stat-card.stat-card {
+    /* 精确的尺寸控制 - 适应120px高度 */
+    flex: 1 1 calc(50% - 5px) !important;
+    min-width: 220px !important;
+    max-width: 280px !important;
+
+    /* 固定高度 - 为120px容器的一半减去间距 */
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+
+    /* 间距优化 */
+    margin: 0 !important;
+    padding: 0.8rem !important;
+
+    /* 布局优化 */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    box-sizing: border-box !important;
+
+    /* 视觉效果 */
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(10px) !important;
+
+    /* 过渡效果 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+
+    /* 移除浮动和定位 */
+    float: none !important;
+    position: static !important;
+
+    /* 强制移除grid属性 */
+    grid-area: unset !important;
+    grid-column: unset !important;
+    grid-row: unset !important;
+}
+
+/* 调整卡片内容布局以适应较小高度 */
+.page-recharge-payment .stat-card .stat-card__icon {
+    margin-right: 0.8rem !important;
+    font-size: 1.5rem !important;
+    flex-shrink: 0 !important;
+}
+
+.page-recharge-payment .stat-card .stat-card__content {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+}
+
+.page-recharge-payment .stat-card .stat-card__value {
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 0.1rem !important;
+    color: #1a202c !important;
+    line-height: 1.2 !important;
+}
+
+.page-recharge-payment .stat-card .stat-card__label {
+    font-size: 0.8rem !important;
+    color: #718096 !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+}
+
+/* ================== 3. 取消顶部导航充值支付按钮的active状态 ================== */
+
+/* 移除充值支付按钮的active状态 */
+.nav__link[data-route="recharge"] {
+    /* 重置为普通状态 */
+    background: transparent !important;
+    color: var(--text-secondary, #666) !important;
+    border-bottom: none !important;
+}
+
+/* 移除active类的所有样式 */
+.nav__link[data-route="recharge"].nav__link--active,
+.nav__link--active[data-route="recharge"] {
+    background: transparent !important;
+    color: var(--text-secondary, #666) !important;
+    border-bottom: none !important;
+    font-weight: normal !important;
+}
+
+/* 确保hover状态仍然正常 */
+.nav__link[data-route="recharge"]:hover {
+    background: rgba(102, 126, 234, 0.1) !important;
+    color: var(--primary, #667eea) !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .page__title-section {
+        min-height: 100px !important;
+        max-height: 100px !important;
+        height: 100px !important;
+    }
+
+    html body.page-recharge-payment .stats-row,
+    .stats-row.stats-row.stats-row.stats-row.stats-row.stats-row.stats-row {
+        min-height: 100px !important;
+        max-height: 100px !important;
+        height: 100px !important;
+        flex-direction: column !important;
+        gap: 5px !important;
+    }
+
+    html body.page-recharge-payment .stat-card,
+    .stat-card.stat-card.stat-card.stat-card.stat-card.stat-card.stat-card {
+        flex: 1 1 calc(50% - 2.5px) !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        max-height: 40px !important;
+        padding: 0.5rem !important;
+    }
+
+    .page-recharge-payment .stat-card .stat-card__icon {
+        font-size: 1.2rem !important;
+        margin-right: 0.5rem !important;
+    }
+
+    .page-recharge-payment .stat-card .stat-card__value {
+        font-size: 1.2rem !important;
+    }
+
+    .page-recharge-payment .stat-card .stat-card__label {
+        font-size: 0.7rem !important;
+    }
+}
+
+/* 强制覆盖任何内联样式 */
+.stats-row[style*="height"] {
+    height: 120px !important;
+    min-height: 120px !important;
+    max-height: 120px !important;
+}
+
+.stat-card[style*="height"] {
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+}

@@ -1,0 +1,715 @@
+/* ==========================================================================
+   Merchant Management Modal Component
+   商户管理模态框组件样式
+   ========================================================================== */
+
+/* ==========================================================================
+   Modal Overlay and Structure
+   ========================================================================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4, 1rem);
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+
+.merchant-modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.merchant-modal-content .modal-body {
+  max-height: calc(90vh - 140px);
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* ==========================================================================
+   Form Structure
+   ========================================================================== */
+
+.merchant-form {
+  padding: 0;
+}
+
+.form-section {
+  margin-bottom: var(--space-6, 1.5rem);
+  padding-bottom: var(--space-4, 1rem);
+  border-bottom: 1px solid var(--color-border-secondary, #e5e5e5);
+}
+
+.form-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.form-section-title {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-text-primary, #171717);
+  margin: 0 0 var(--space-4, 1rem) 0;
+  padding-bottom: var(--space-2, 0.5rem);
+  border-bottom: 2px solid var(--color-interactive-primary, #0ea5e9);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+.form-section-title::before {
+  content: '';
+  width: 4px;
+  height: 20px;
+  background: var(--color-interactive-primary, #0ea5e9);
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   Form Layout
+   ========================================================================== */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4, 1rem);
+  margin-bottom: var(--space-4, 1rem);
+}
+
+.form-row:last-child {
+  margin-bottom: 0;
+}
+
+/* Single column for textarea and special fields */
+.form-group[data-field="remark"] {
+  grid-column: 1 / -1;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-3, 0.75rem);
+  }
+}
+
+/* ==========================================================================
+   Form Section Enhancements
+   ========================================================================== */
+
+.form-section-description {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-text-tertiary, #737373);
+  margin: 0 0 var(--space-4, 1rem) 0;
+  line-height: var(--line-height-normal, 1.5);
+}
+
+.section-icon {
+  font-size: var(--font-size-lg, 1.125rem);
+  margin-right: var(--space-1, 0.25rem);
+}
+
+/* ==========================================================================
+   Form Groups and Fields
+   ========================================================================== */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1, 0.25rem);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-text-secondary, #404040);
+  line-height: var(--line-height-tight, 1.25);
+}
+
+.required-mark {
+  color: var(--color-status-error, #ef4444);
+  font-weight: var(--font-weight-bold, 700);
+}
+
+/* ==========================================================================
+   Form Controls
+   ========================================================================== */
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: var(--space-3, 0.75rem);
+  border: 1px solid var(--color-border-secondary, #d4d4d4);
+  border-radius: var(--radius-base, 0.25rem);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-family: inherit;
+  background: var(--color-bg-surface, #ffffff);
+  color: var(--color-text-primary, #171717);
+  transition: all var(--duration-200, 200ms) var(--ease-out, ease-out);
+  outline: none;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--color-border-focus, #0ea5e9);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+.form-input:hover,
+.form-select:hover,
+.form-textarea:hover {
+  border-color: var(--color-border-primary, #a3a3a3);
+}
+
+/* Disabled state */
+.form-input:disabled,
+.form-select:disabled,
+.form-textarea:disabled {
+  background: var(--color-bg-disabled, #f5f5f5);
+  color: var(--color-text-disabled, #a3a3a3);
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Form Validation States
+   ========================================================================== */
+
+/* Valid state */
+.form-input.valid,
+.form-select.valid,
+.form-textarea.valid {
+  border-color: var(--color-status-success, #22c55e);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+/* Error state */
+.form-input.error,
+.form-select.error,
+.form-textarea.error {
+  border-color: var(--color-status-error, #ef4444);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* ==========================================================================
+   Error Messages
+   ========================================================================== */
+
+.field-error {
+  display: none;
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-status-error, #ef4444);
+  line-height: var(--line-height-tight, 1.25);
+  margin-top: var(--space-1, 0.25rem);
+  padding: var(--space-1, 0.25rem) var(--space-2, 0.5rem);
+  background: var(--color-status-error-bg, #fef2f2);
+  border: 1px solid var(--color-status-error-border, #fecaca);
+  border-radius: var(--radius-sm, 0.125rem);
+}
+
+.field-error:empty {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Character Counter
+   ========================================================================== */
+
+.field-counter {
+  display: flex;
+  justify-content: flex-end;
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-text-tertiary, #737373);
+  margin-top: var(--space-1, 0.25rem);
+}
+
+.counter-current {
+  color: var(--color-text-secondary, #404040);
+  font-weight: var(--font-weight-medium, 500);
+}
+
+.counter-max {
+  color: var(--color-text-tertiary, #737373);
+}
+
+/* Warning state when approaching limit */
+.field-counter.warning .counter-current {
+  color: var(--color-status-warning, #f59e0b);
+}
+
+/* Error state when over limit */
+.field-counter.error .counter-current {
+  color: var(--color-status-error, #ef4444);
+}
+
+/* ==========================================================================
+   Textarea Specific Styles
+   ========================================================================== */
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: var(--line-height-normal, 1.5);
+}
+
+/* ==========================================================================
+   Select Specific Styles
+   ========================================================================== */
+
+.form-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+.form-select:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%230ea5e9' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+/* ==========================================================================
+   Field Help Text
+   ========================================================================== */
+
+.field-help {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-text-tertiary, #737373);
+  line-height: var(--line-height-tight, 1.25);
+  margin-top: var(--space-1, 0.25rem);
+}
+
+/* ==========================================================================
+   Number Input Enhancements
+   ========================================================================== */
+
+.number-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: var(--space-3, 0.75rem);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-tertiary, #737373);
+  font-weight: var(--font-weight-medium, 500);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.currency-input {
+  padding-left: calc(var(--space-3, 0.75rem) + 1rem);
+  text-align: right;
+}
+
+.form-input[type="number"] {
+  text-align: right;
+}
+
+/* ==========================================================================
+   Autocomplete Enhancements
+   ========================================================================== */
+
+.autocomplete-input {
+  position: relative;
+}
+
+.autocomplete-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--color-border-secondary, #d4d4d4);
+  border-top: none;
+  border-radius: 0 0 var(--radius-base, 0.25rem) var(--radius-base, 0.25rem);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.autocomplete-suggestions[aria-hidden="false"] {
+  display: block;
+}
+
+.autocomplete-suggestion {
+  padding: var(--space-3, 0.75rem);
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-border-tertiary, #f5f5f5);
+  transition: background-color var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+.autocomplete-suggestion:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-suggestion:hover,
+.autocomplete-suggestion[aria-selected="true"] {
+  background: var(--color-bg-secondary, #f9fafb);
+}
+
+.autocomplete-suggestion-text {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-text-primary, #171717);
+}
+
+.autocomplete-suggestion-meta {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-text-tertiary, #737373);
+  margin-top: var(--space-1, 0.25rem);
+}
+
+/* ==========================================================================
+   Modal Footer Enhancements
+   ========================================================================== */
+
+.merchant-modal-content .modal-footer {
+  margin-top: var(--space-6, 1.5rem);
+  padding-top: var(--space-4, 1rem);
+  border-top: 1px solid var(--color-border-secondary, #e5e5e5);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3, 0.75rem);
+}
+
+/* ==========================================================================
+   Button States
+   ========================================================================== */
+
+.modal-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-loading {
+  display: none;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Conditional Fields Animation
+   ========================================================================== */
+
+.form-group[data-field] {
+  transition: all var(--duration-300, 300ms) var(--ease-out, ease-out);
+  overflow: hidden;
+}
+
+.form-group[data-field][style*="display: none"] {
+  opacity: 0;
+  max-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   Accessibility Enhancements
+   ========================================================================== */
+
+/* Focus indicators */
+.form-input:focus-visible,
+.form-select:focus-visible,
+.form-textarea:focus-visible {
+  outline: 2px solid var(--color-border-focus, #0ea5e9);
+  outline-offset: 2px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .form-input,
+  .form-select,
+  .form-textarea {
+    border-width: 2px;
+  }
+  
+  .form-section {
+    border-bottom-width: 2px;
+  }
+  
+  .field-error {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .form-input,
+  .form-select,
+  .form-textarea,
+  .form-group[data-field] {
+    transition: none;
+  }
+  
+  .loading-spinner {
+    animation: none;
+    border-top-color: currentColor;
+  }
+}
+
+/* ==========================================================================
+   Select Field Icon Support
+   ========================================================================== */
+
+.form-select option {
+  padding: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
+}
+
+/* ==========================================================================
+   Form Field States
+   ========================================================================== */
+
+.form-group[data-field][style*="display: none"] {
+  opacity: 0;
+  max-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  transition: all var(--duration-300, 300ms) var(--ease-out, ease-out);
+}
+
+.form-group[data-field]:not([style*="display: none"]) {
+  opacity: 1;
+  max-height: none;
+  transition: all var(--duration-300, 300ms) var(--ease-out, ease-out);
+}
+
+/* ==========================================================================
+   Enhanced Field Feedback
+   ========================================================================== */
+
+.field-counter.warning {
+  color: var(--color-status-warning, #f59e0b);
+}
+
+.field-counter.error {
+  color: var(--color-status-error, #ef4444);
+}
+
+.field-counter.warning .counter-current,
+.field-counter.error .counter-current {
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+/* ==========================================================================
+   Dark Theme Support
+   ========================================================================== */
+
+[data-theme="dark"] .form-section {
+  border-bottom-color: var(--color-border-secondary);
+}
+
+[data-theme="dark"] .form-section-title {
+  color: var(--color-text-primary);
+  border-bottom-color: var(--color-interactive-primary);
+}
+
+[data-theme="dark"] .form-section-title::before {
+  background: var(--color-interactive-primary);
+}
+
+[data-theme="dark"] .form-label {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .form-textarea {
+  background: var(--color-bg-surface);
+  border-color: var(--color-border-secondary);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .form-input:disabled,
+[data-theme="dark"] .form-select:disabled,
+[data-theme="dark"] .form-textarea:disabled {
+  background: var(--color-bg-disabled);
+  color: var(--color-text-disabled);
+}
+
+[data-theme="dark"] .field-error {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--color-status-error);
+  color: var(--color-status-error);
+}
+
+[data-theme="dark"] .field-counter {
+  color: var(--color-text-tertiary);
+}
+
+[data-theme="dark"] .counter-current {
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .merchant-modal-content .modal-footer {
+  border-top-color: var(--color-border-secondary);
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  .merchant-modal-content {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  
+  .form-section-title {
+    color: #000;
+    border-bottom-color: #000;
+  }
+  
+  .form-input,
+  .form-select,
+  .form-textarea {
+    border-color: #000;
+    background: #fff;
+    color: #000;
+  }
+  
+  .field-error {
+    background: #fff;
+    border-color: #000;
+    color: #000;
+  }
+  
+  .modal-footer {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Mobile Optimizations
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .merchant-modal-content {
+    max-height: 90vh;
+  }
+  
+  .form-section {
+    margin-bottom: var(--space-4, 1rem);
+    padding-bottom: var(--space-3, 0.75rem);
+  }
+  
+  .form-section-title {
+    font-size: var(--font-size-base, 1rem);
+    margin-bottom: var(--space-3, 0.75rem);
+  }
+  
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: var(--space-4, 1rem);
+    font-size: var(--font-size-base, 1rem);
+  }
+  
+  .merchant-modal-content .modal-footer {
+    flex-direction: column-reverse;
+    gap: var(--space-2, 0.5rem);
+  }
+  
+  .modal-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   Touch Device Optimizations
+   ========================================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .form-input,
+  .form-select,
+  .form-textarea {
+    min-height: 44px; /* Minimum touch target size */
+  }
+  
+  .modal-btn {
+    min-height: 44px;
+    padding: var(--space-3, 0.75rem) var(--space-6, 1.5rem);
+  }
+}
+
+/* ==========================================================================
+   Animation Utilities
+   ========================================================================== */
+
+.fade-in {
+  animation: fadeIn var(--duration-300, 300ms) var(--ease-out, ease-out);
+}
+
+.slide-up {
+  animation: slideUp var(--duration-300, 300ms) var(--ease-out, ease-out);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

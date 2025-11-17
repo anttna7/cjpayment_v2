@@ -1,0 +1,341 @@
+{
+  "timestamp": "2025-08-22T16:23:47.148Z",
+  "testName": "财务审核页面修复验证",
+  "success": false,
+  "errors": [],
+  "steps": [
+    {
+      "step": 1,
+      "description": "访问财务审核页面",
+      "success": true,
+      "details": {
+        "targetUrl": "http://127.0.0.1:8091/audit",
+        "finalUrl": "http://127.0.0.1:8091/audit",
+        "loadTime": "1637ms",
+        "redirected": false
+      }
+    },
+    {
+      "step": 2,
+      "description": "检查页面重定向状态",
+      "success": true,
+      "details": {
+        "isOnLoginPage": false,
+        "isOnAuditPage": true,
+        "currentUrl": "http://127.0.0.1:8091/audit",
+        "redirectToLoginFixed": true
+      }
+    },
+    {
+      "step": 3,
+      "description": "检查页面内容",
+      "success": true,
+      "details": {
+        "pageTitle": "财务审核 - CJPayment 企业内部支付管理系统",
+        "contentLength": 47927,
+        "hasMainContent": true,
+        "errorElementsCount": 0
+      }
+    },
+    {
+      "step": 4,
+      "description": "检查控制台日志",
+      "success": false,
+      "details": {
+        "totalLogs": 15,
+        "demoModeLogsCount": 0,
+        "authLogsCount": 0,
+        "demoModeLogs": [],
+        "authLogs": []
+      }
+    },
+    {
+      "step": 5,
+      "description": "分析网络请求",
+      "success": true,
+      "details": {
+        "totalRequests": 16,
+        "totalResponses": 16,
+        "loginRequestsCount": 0,
+        "apiRequestsCount": 0,
+        "unauthorizedCount": 0,
+        "unauthorizedUrls": []
+      }
+    },
+    {
+      "step": 6,
+      "description": "测试页面交互功能",
+      "success": true,
+      "details": {
+        "buttonsCount": 104,
+        "linksCount": 11,
+        "inputsCount": 25,
+        "interactionPossible": true
+      }
+    }
+  ],
+  "consoleLogs": [
+    {
+      "type": "log",
+      "text": "User Feedback Analytics: Initializing...",
+      "timestamp": "2025-08-22T16:23:47.412Z"
+    },
+    {
+      "type": "log",
+      "text": "User Feedback Analytics: Initialized successfully",
+      "timestamp": "2025-08-22T16:23:47.449Z"
+    },
+    {
+      "type": "log",
+      "text": "Mobile Utilities initialized: {isMobile: false, isTablet: false, isTouch: false, orientation: portrait}",
+      "timestamp": "2025-08-22T16:23:47.453Z"
+    },
+    {
+      "type": "log",
+      "text": "Interaction Enhancements: Initializing...",
+      "timestamp": "2025-08-22T16:23:47.453Z"
+    },
+    {
+      "type": "log",
+      "text": "Interaction Enhancements: Initialized successfully",
+      "timestamp": "2025-08-22T16:23:47.458Z"
+    },
+    {
+      "type": "log",
+      "text": "Caching DOM elements for financial audit...",
+      "timestamp": "2025-08-22T16:23:47.459Z"
+    },
+    {
+      "type": "log",
+      "text": "Enhanced financial audit initialized successfully",
+      "timestamp": "2025-08-22T16:23:47.460Z"
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 用户信息已统一更新 {id: admin_001, name: 系统管理员, role: 超级管理员, avatar: 👤, email: admin@cjpayment.com}",
+      "timestamp": "2025-08-22T16:23:47.460Z"
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 通知UI已更新，未读数量: 2",
+      "timestamp": "2025-08-22T16:23:47.461Z"
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 统一头部组件初始化完成",
+      "timestamp": "2025-08-22T16:23:47.461Z"
+    },
+    {
+      "type": "log",
+      "text": "FinancialAudit: 生成模拟数据 - 总数: 23, 页大小: 20, 当前页: 1, 起始索引: 0",
+      "timestamp": "2025-08-22T16:23:47.561Z"
+    },
+    {
+      "type": "log",
+      "text": "FinancialAudit: 生成了 20 条模拟数据",
+      "timestamp": "2025-08-22T16:23:47.565Z"
+    },
+    {
+      "type": "log",
+      "text": "FinancialAudit: 初始化默认视图模式: table",
+      "timestamp": "2025-08-22T16:23:47.772Z"
+    },
+    {
+      "type": "log",
+      "text": "FinancialAudit: 默认视图初始化完成",
+      "timestamp": "2025-08-22T16:23:47.774Z"
+    },
+    {
+      "type": "log",
+      "text": "Enhanced financial audit initialized successfully",
+      "timestamp": "2025-08-22T16:23:47.774Z"
+    }
+  ],
+  "networkActivity": {
+    "requests": [
+      {
+        "url": "http://127.0.0.1:8091/audit",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.194Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/theme-unified.css",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.269Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/header-unified.css",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/layout-unified.css",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/buttons-unified.css",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/financial-audit-enhanced.css",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/utils.js",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/api.js",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/components.js",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/header-unified.js",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/financial-audit-enhanced.js",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/user-feedback-analytics.js",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/analytics-init.js",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/mobile-utilities.js",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/interaction-enhancements.js",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/design-tokens.css",
+        "method": "GET",
+        "timestamp": "2025-08-22T16:23:47.280Z"
+      }
+    ],
+    "responses": [
+      {
+        "url": "http://127.0.0.1:8091/audit",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.220Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/theme-unified.css",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/header-unified.css",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/buttons-unified.css",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.272Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/layout-unified.css",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.273Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/financial-audit-enhanced.css",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.273Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/components.js",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.273Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/api.js",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.273Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/utils.js",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.273Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/css/design-tokens.css",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.282Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/analytics-init.js",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.283Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/user-feedback-analytics.js",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.283Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/header-unified.js",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.283Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/financial-audit-enhanced.js",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.283Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/mobile-utilities.js",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.283Z"
+      },
+      {
+        "url": "http://127.0.0.1:8091/static/js/interaction-enhancements.js",
+        "status": 200,
+        "statusText": "OK",
+        "timestamp": "2025-08-22T16:23:47.283Z"
+      }
+    ]
+  },
+  "screenshots": [
+    "audit-fix-01-initial-load.png",
+    "audit-fix-02-page-content.png",
+    "audit-fix-03-final-state.png"
+  ]
+}

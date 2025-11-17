@@ -1,0 +1,174 @@
+# Promtail Configuration
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # CJPayment application logs
+  - job_name: cjpayment-app
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: cjpayment-app
+          service: cjpayment
+          environment: ${APP_ENV:-development}
+          __path__: /app/logs/*.log
+    
+    pipeline_stages:
+      # Parse JSON logs
+      - json:
+          expressions:
+            timestamp: time
+            level: level
+            message: msg
+            service: service
+            trace_id: trace_id
+            user_id: user_id
+            request_id: request_id
+      
+      # Extract timestamp
+      - timestamp:
+          source: timestamp
+          format: RFC3339Nano
+      
+      # Add labels
+      - labels:
+          level:
+          service:
+          trace_id:
+          user_id:
+      
+      # Drop debug logs in production
+      - drop:
+          source: level
+          expression: "debug"
+          older_than: 24h
+
+  # System logs
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: system
+          __path__: /var/log/*.log
+    
+    pipeline_stages:
+      - regex:
+          expression: '^(?P<timestamp>\S+\s+\S+\s+\S+)\s+(?P<hostname>\S+)\s+(?P<service>\S+):\s+(?P<message>.*)$'
+      
+      - timestamp:
+          source: timestamp
+          format: Jan 02 15:04:05
+      
+      - labels:
+          hostname:
+          service:
+
+  # Docker container logs
+  - job_name: docker
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: docker
+          __path__: /var/lib/docker/containers/*/*.log
+    
+    pipeline_stages:
+      # Parse Docker JSON logs
+      - json:
+          expressions:
+            log: log
+            stream: stream
+            time: time
+      
+      - timestamp:
+          source: time
+          format: RFC3339Nano
+      
+      - labels:
+          stream:
+      
+      - output:
+          source: log
+
+  # Nginx access logs
+  - job_name: nginx-access
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: nginx-access
+          service: nginx
+          __path__: /var/log/nginx/access.log
+    
+    pipeline_stages:
+      # Parse nginx access log format
+      - regex:
+          expression: '^(?P<remote_addr>\S+)\s+-\s+(?P<remote_user>\S+)\s+\[(?P<time_local>[^\]]+)\]\s+"(?P<request>[^"]+)"\s+(?P<status>\d+)\s+(?P<body_bytes_sent>\d+)\s+"(?P<http_referer>[^"]*)"\s+"(?P<http_user_agent>[^"]*)".*$'
+      
+      - timestamp:
+          source: time_local
+          format: 02/Jan/2006:15:04:05 -0700
+      
+      - labels:
+          status:
+          method:
+      
+      # Extract method from request
+      - regex:
+          source: request
+          expression: '^(?P<method>\S+)\s+'
+      
+      - labels:
+          method:
+
+  # Nginx error logs
+  - job_name: nginx-error
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: nginx-error
+          service: nginx
+          __path__: /var/log/nginx/error.log
+    
+    pipeline_stages:
+      - regex:
+          expression: '^(?P<timestamp>\d{4}/\d{2}/\d{2}\s+\d{2}:\d{2}:\d{2})\s+\[(?P<level>\w+)\]\s+(?P<message>.*)$'
+      
+      - timestamp:
+          source: timestamp
+          format: 2006/01/02 15:04:05
+      
+      - labels:
+          level:
+
+  # PostgreSQL logs
+  - job_name: postgres
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: postgres
+          service: postgres
+          __path__: /var/log/postgresql/*.log
+    
+    pipeline_stages:
+      - regex:
+          expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d{3}\s+\w+)\s+\[(?P<pid>\d+)\]\s+(?P<level>\w+):\s+(?P<message>.*)$'
+      
+      - timestamp:
+          source: timestamp
+          format: 2006-01-02 15:04:05.000 MST
+      
+      - labels:
+          level:
+          pid:

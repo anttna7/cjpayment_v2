@@ -1,0 +1,270 @@
+/**
+ * Header Dropdown 修复 - 解决通知和用户菜单默认打开状态问题
+ * 统一dropdown显示状态控制，确保默认状态下dropdown是隐藏的
+ * 
+ * 问题分析：
+ * 1. header-unified.js 使用 .show 类控制显示
+ * 2. header-fix.css 使用 .active 类选择器
+ * 3. 不同CSS文件中样式定义不一致
+ * 
+ * 解决方案：统一使用 .show 类，确保默认状态opacity=0, visibility=hidden
+ */
+
+/* ==========================================================================
+   通知下拉菜单状态控制
+   ========================================================================== */
+
+/* 默认隐藏状态 - 强制优先级 */
+.notifications__dropdown {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
+    width: 320px !important;
+    max-height: 400px !important;
+    background: var(--color-bg-surface, #ffffff) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+    z-index: 1000 !important;
+    overflow: hidden !important;
+    
+    /* 关键：默认隐藏状态 */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-10px) !important;
+    transition: all 0.3s ease !important;
+    
+    /* 防止意外显示 */
+    pointer-events: none !important;
+}
+
+/* 显示状态 - 当添加.show类时 */
+.notifications__dropdown.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+}
+
+/* 兼容旧的.active类选择器 */
+.notifications.active .notifications__dropdown {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+}
+
+/* ==========================================================================
+   用户菜单下拉状态控制  
+   ========================================================================== */
+
+/* 默认隐藏状态 - 强制优先级 */
+.user-menu__dropdown {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
+    min-width: 200px !important;
+    background: var(--color-bg-surface, #ffffff) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+    z-index: 1000 !important;
+    overflow: hidden !important;
+    
+    /* 关键：默认隐藏状态 */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-10px) !important;
+    transition: all 0.3s ease !important;
+    
+    /* 防止意外显示 */
+    pointer-events: none !important;
+}
+
+/* 显示状态 - 当添加.show类时 */
+.user-menu__dropdown.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+}
+
+/* 兼容旧的.active类选择器 */
+.user-menu.active .user-menu__dropdown {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+}
+
+/* ==========================================================================
+   用户菜单箭头状态控制
+   ========================================================================== */
+
+.user-menu__arrow {
+    font-size: 0.7rem !important;
+    color: #94a3b8 !important;
+    transition: transform 0.2s ease !important;
+    flex-shrink: 0 !important;
+    margin-left: 0.25rem !important;
+}
+
+/* 当菜单打开时旋转箭头 */
+.user-menu__dropdown.show ~ .user-menu__trigger .user-menu__arrow,
+.user-menu.active .user-menu__arrow {
+    transform: rotate(180deg) !important;
+}
+
+/* ==========================================================================
+   主题切换按钮优化
+   ========================================================================== */
+
+.theme-toggle {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    background: transparent !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    font-size: 1.2rem !important;
+}
+
+.theme-toggle:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    transform: scale(1.05) !important;
+}
+
+.theme-icon {
+    transition: transform 0.2s ease !important;
+    display: inline-block !important;
+}
+
+.theme-toggle:hover .theme-icon {
+    transform: rotate(15deg) !important;
+}
+
+/* ==========================================================================
+   通知按钮优化
+   ========================================================================== */
+
+.notifications__trigger {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    background: transparent !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    font-size: 1.2rem !important;
+}
+
+.notifications__trigger:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    transform: scale(1.05) !important;
+}
+
+.notifications__icon {
+    font-size: 1rem !important;
+    color: #64748b !important;
+    transition: color 0.2s ease !important;
+}
+
+.notifications__trigger:hover .notifications__icon {
+    color: #0ea5e9 !important;
+}
+
+/* ==========================================================================
+   Header右侧整体布局优化
+   ========================================================================== */
+
+.header__right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    margin-left: auto !important;
+    position: relative !important;
+}
+
+/* ==========================================================================
+   响应式优化
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .header__right {
+        gap: 0.5rem !important;
+    }
+    
+    .theme-toggle,
+    .notifications__trigger {
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 1rem !important;
+    }
+    
+    .notifications__dropdown {
+        width: 280px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .header__right {
+        gap: 0.25rem !important;
+    }
+    
+    .notifications__dropdown {
+        width: calc(100vw - 2rem) !important;
+        right: -1rem !important;
+    }
+}
+
+/* ==========================================================================
+   深色主题支持
+   ========================================================================== */
+
+[data-theme="dark"] .notifications__dropdown,
+[data-theme="dark"] .user-menu__dropdown {
+    background: var(--color-bg-surface-dark, #1f2937) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--color-text-primary-dark, #f3f4f6) !important;
+}
+
+[data-theme="dark"] .theme-toggle,
+[data-theme="dark"] .notifications__trigger {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .theme-toggle:hover,
+[data-theme="dark"] .notifications__trigger:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ==========================================================================
+   确保默认状态下所有dropdown都是隐藏的 - 最终保险
+   ========================================================================== */
+
+/* 页面加载时立即隐藏所有dropdown */
+.notifications__dropdown:not(.show):not(.active),
+.user-menu__dropdown:not(.show):not(.active) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-10px) !important;
+    pointer-events: none !important;
+}
+
+/* 防止CSS加载顺序问题导致的闪现 */
+.notifications__dropdown,
+.user-menu__dropdown {
+    display: block !important; /* 保持display，但用opacity和visibility控制 */
+}

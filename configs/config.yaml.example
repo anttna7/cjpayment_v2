@@ -1,0 +1,25 @@
+server:
+  port: "8080"
+  read_timeout: 30
+  write_timeout: 30
+
+database:
+  host: "localhost"
+  port: 5432
+  user: "cjpayment"
+  password: "password"
+  dbname: "cjpayment"
+  sslmode: "disable"
+  dsn: "postgres://cjpayment:password@localhost:5432/cjpayment?sslmode=disable"
+
+redis:
+  host: "localhost"
+  port: 6379
+  password: ""
+  db: 0
+
+jwt:
+  secret: "your-secret-key-here"
+  expire_time: 3600
+
+log_level: "info"

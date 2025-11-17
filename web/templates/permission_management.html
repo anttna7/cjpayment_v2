@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>权限管理 - CJPayment 企业内部支付管理系统</title>
+
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard-enhanced.css">
+
+    <!-- Permission Management Specific CSS -->
+    <link rel="stylesheet" href="/static/css/permission-management.css">
+
+    <!-- Unified Permission Config CSS -->
+    <link rel="stylesheet" href="/static/css/permission-config-unified.css">
+
+    <!-- Complete Permission Selector CSS -->
+    <link rel="stylesheet" href="/static/css/full-permission-selector.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+
+    <style>
+        .permission-management {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .permission-tabs {
+            display: flex;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 8px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .permission-tab {
+            flex: 1;
+            padding: 12px 24px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .permission-tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .permission-tab:hover:not(.active) {
+            background: var(--bg-hover);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .permission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .permission-category {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .category-icon {
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+        }
+
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .category-count {
+            margin-left: auto;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .permission-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .permission-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .permission-item:hover {
+            background: var(--bg-hover);
+            transform: translateY(-1px);
+        }
+
+        .permission-info {
+            flex: 1;
+        }
+
+        .permission-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .permission-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .permission-level {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .level-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .level-1 { background: #e3f2fd; color: #1976d2; }
+        .level-2 { background: #f3e5f5; color: #7b1fa2; }
+        .level-3 { background: #fff3e0; color: #f57c00; }
+        .level-4 { background: #ffebee; color: #d32f2f; }
+        .level-5 { background: #f1f8e9; color: #388e3c; }
+
+        .role-card {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .role-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .role-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-primary);
+        }
+
+        .role-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .role-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .role-permissions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .permission-chip {
+            background: var(--bg-secondary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .permission-config {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .config-section {
+            margin-bottom: 2rem;
+        }
+
+        .config-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .permission-matrix {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .matrix-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .matrix-table td {
+            background: white;
+        }
+
+        .permission-toggle {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .permission-toggle.enabled {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .permission-toggle.enabled::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-section {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: end;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 1200px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Enhanced Navigation Styles */
+        .breadcrumb__icon {
+            margin-right: 0.25rem;
+        }
+
+        .page__title-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .page__actions-quick {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg-hover);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .role-permission-selector-container {
+            min-height: 500px;
+            max-height: 600px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+        }
+    </style>
+</head>
+<body class="page-permission-management">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link nav__link--active" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton" aria-expanded="false" aria-haspopup="true">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">系统管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown" role="menu">
+                        <a href="/profile" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="#" class="user-menu__item user-menu__item--danger" role="menuitem" id="logoutLink">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="permission-management">
+            <!-- Page Header -->
+            <div class="page__header">
+                <div class="page__title">
+                    <div class="breadcrumb">
+                        <a href="/system_management" class="breadcrumb__item">
+                            <span class="breadcrumb__icon">🏛️</span>
+                            用户与权限管理中心
+                        </a>
+                        <span class="breadcrumb__separator">›</span>
+                        <span class="breadcrumb__item breadcrumb__item--current" id="currentBreadcrumb">权限管理</span>
+                    </div>
+                    <div class="page__title-section">
+                        <h1 id="pageTitle">🔐 权限管理</h1>
+                        <div class="page__actions-quick">
+                            <button class="btn btn-ghost btn-sm" onclick="window.history.back()" title="返回上一页">
+                                <span class="btn__icon">←</span>
+                                返回
+                            </button>
+                        </div>
+                    </div>
+                    <p class="page__subtitle" id="pageSubtitle">管理系统权限点、角色权限配置和访问控制策略</p>
+                </div>
+
+                <div class="page__actions">
+                    <button class="btn btn-outline" id="exportPermissions" title="导出权限配置">
+                        <span class="btn__icon">📤</span>
+                        <span class="btn__text">导出配置</span>
+                    </button>
+                    <button class="btn btn-primary" id="createRole" title="创建新角色">
+                        <span class="btn__icon">➕</span>
+                        <span class="btn__text">新建角色</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalPermissions">144</div>
+                    <div class="stat-label">权限点总数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalRoles">6</div>
+                    <div class="stat-label">角色总数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="activeUsers">28</div>
+                    <div class="stat-label">活跃用户</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="permissionCategories">6</div>
+                    <div class="stat-label">权限分类</div>
+                </div>
+            </div>
+
+            <!-- Permission Tabs -->
+            <div class="permission-tabs">
+                <button class="permission-tab active" data-tab="permissions">
+                    🔑 权限点管理
+                </button>
+                <button class="permission-tab" data-tab="roles">
+                    👥 角色管理
+                </button>
+                <button class="permission-tab" data-tab="matrix">
+                    📊 权限矩阵
+                </button>
+                <button class="permission-tab" data-tab="config">
+                    ⚙️ 高级配置
+                </button>
+            </div>
+
+            <!-- Permissions Tab -->
+            <div class="tab-content active" id="permissions-tab">
+                <div class="search-section">
+                    <div class="search-form">
+                        <div class="form-group">
+                            <label for="permissionSearch" class="form-label">搜索权限</label>
+                            <input type="text" id="permissionSearch" class="form-input" placeholder="输入权限名称或描述">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryFilter" class="form-label">权限分类</label>
+                            <select id="categoryFilter" class="form-select">
+                                <option value="">全部分类</option>
+                                <option value="核心功能">核心功能</option>
+                                <option value="业务管理">业务管理</option>
+                                <option value="财务管理">财务管理</option>
+                                <option value="数据分析">数据分析</option>
+                                <option value="用户权限">用户权限</option>
+                                <option value="系统管理">系统管理</option>
+                                <option value="充值管理">充值管理</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="levelFilter" class="form-label">权限级别</label>
+                            <select id="levelFilter" class="form-select">
+                                <option value="">全部级别</option>
+                                <option value="1">级别 1 (查看)</option>
+                                <option value="2">级别 2 (基础操作)</option>
+                                <option value="3">级别 3 (高级操作)</option>
+                                <option value="4">级别 4 (管理操作)</option>
+                                <option value="5">级别 5 (完全控制)</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="searchPermissions">搜索</button>
+                    </div>
+                </div>
+
+                <div class="permission-grid" id="permissionGrid">
+                    <!-- Permission categories will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Roles Tab -->
+            <div class="tab-content" id="roles-tab">
+                <div class="quick-actions">
+                    <button class="btn btn-outline" id="importRoles">
+                        <span class="btn__icon">📁</span>
+                        导入角色
+                    </button>
+                    <button class="btn btn-outline" id="exportRoles">
+                        <span class="btn__icon">📤</span>
+                        导出角色
+                    </button>
+                    <button class="btn btn-outline" id="roleTemplates">
+                        <span class="btn__icon">📋</span>
+                        角色模板
+                    </button>
+                </div>
+
+                <div id="rolesList">
+                    <!-- Roles will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Permission Matrix Tab -->
+            <div class="tab-content" id="matrix-tab">
+                <div class="permission-config">
+                    <div class="config-section">
+                        <h3 class="config-title">
+                            📊 权限矩阵配置
+                            <span style="font-size: 0.8rem; color: var(--text-secondary); font-weight: normal;">
+                                可视化配置各角色的权限分配
+                            </span>
+                        </h3>
+
+                        <div class="permission-matrix">
+                            <table class="matrix-table" id="permissionMatrix">
+                                <thead>
+                                    <tr>
+                                        <th>权限 \ 角色</th>
+                                        <th>超级管理员</th>
+                                        <th>管理员</th>
+                                        <th>财务主管</th>
+                                        <th>审核员</th>
+                                        <th>操作员</th>
+                                        <th>查看员</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Matrix will be generated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Config Tab -->
+            <div class="tab-content" id="config-tab">
+                <div class="permission-config">
+                    <div class="config-section">
+                        <h3 class="config-title">🛡️ 安全策略配置</h3>
+                        <div class="form-group">
+                            <label class="form-label">密码策略</label>
+                            <select class="form-select">
+                                <option>标准密码策略</option>
+                                <option>高级密码策略</option>
+                                <option>自定义密码策略</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">会话超时 (分钟)</label>
+                            <input type="number" class="form-input" value="120" min="5" max="1440">
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3 class="config-title">🔄 权限继承配置</h3>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> 启用角色权限继承
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox"> 启用部门权限继承
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3 class="config-title">📝 审计日志配置</h3>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> 记录权限变更日志
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> 记录用户访问日志
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="page__actions">
+                        <button class="btn btn-outline">重置配置</button>
+                        <button class="btn btn-primary">保存配置</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create/Edit Role Modal -->
+        <div class="modal" id="roleModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="roleModalTitle">创建新角色</h3>
+                    <button class="modal-close" id="closeRoleModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="roleForm">
+                        <div class="form-group">
+                            <label for="roleName" class="form-label">角色名称</label>
+                            <input type="text" id="roleName" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="roleDescription" class="form-label">角色描述</label>
+                            <textarea id="roleDescription" class="form-input" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="roleLevel" class="form-label">角色级别</label>
+                            <select id="roleLevel" class="form-select" required>
+                                <option value="1">级别 1 (基础)</option>
+                                <option value="2">级别 2 (标准)</option>
+                                <option value="3">级别 3 (高级)</option>
+                                <option value="4">级别 4 (管理)</option>
+                                <option value="5">级别 5 (超级)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">权限配置</label>
+                            <div id="rolePermissionSelector" class="role-permission-selector-container">
+                                <!-- 完整权限选择器将在这里渲染 -->
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-outline" id="cancelRole">取消</button>
+                            <button type="submit" class="btn btn-primary">保存角色</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="/static/js/header-unified.js"></script>
+
+    <!-- Unified Permission Config Component -->
+    <script src="/static/js/permission-config-unified.js"></script>
+
+    <!-- Complete Permission Data and Selector -->
+    <script src="/static/js/permissions-data.js"></script>
+    <script src="/static/js/full-permission-selector.js"></script>
+
+    <script src="/static/js/permission-management.js"></script>
+</body>
+</html>

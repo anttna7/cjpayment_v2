@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对公充值 - CJPayment</title>
+    <link rel="stylesheet" href="/static/css/public_recharge.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>对公充值系统</h1>
+            <nav class="nav">
+                <a href="/private-recharge">对私充值</a>
+                <a href="/public-recharge" class="active">对公充值</a>
+                <a href="/financial-audit">财务审核</a>
+            </nav>
+        </header>
+
+        <main class="main">
+            <!-- Step 1: Create Recharge Order -->
+            <div class="step-container" id="step1">
+                <div class="step-header">
+                    <h2>第一步：填写充值信息</h2>
+                </div>
+                
+                <form id="rechargeForm" class="recharge-form">
+                    <div class="form-group">
+                        <label for="payerName">付款人名称 *</label>
+                        <input type="text" id="payerName" name="payer_name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="payerAccount">付款账号 *</label>
+                        <input type="text" id="payerAccount" name="payer_account" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">充值金额 *</label>
+                        <input type="number" id="amount" name="amount" step="0.01" min="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="merchantName">充值商户名称 *</label>
+                        <input type="text" id="merchantName" name="merchant_name" required autocomplete="off">
+                        <div id="merchantSuggestions" class="suggestions"></div>
+                        <input type="hidden" id="merchantId" name="merchant_id">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adAccount">充值广告账户名称 *</label>
+                        <input type="text" id="adAccount" name="ad_account" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="remark">备注</label>
+                        <textarea id="remark" name="remark" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">创建充值订单</button>
+                </form>
+            </div>
+
+            <!-- Step 2: Bank Transfer -->
+            <div class="step-container" id="step2" style="display: none;">
+                <div class="step-header">
+                    <h2>第二步：银行转账</h2>
+                </div>
+
+                <div class="order-info">
+                    <h3>订单信息</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>订单号：</label>
+                            <span id="orderNumber"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>充值金额：</label>
+                            <span id="orderAmount"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>付款人：</label>
+                            <span id="orderPayerName"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>付款账号：</label>
+                            <span id="orderPayerAccount"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="receive-info">
+                    <h3>收款信息</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>收款人：</label>
+                            <span id="receiverName"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>收款账号：</label>
+                            <span id="receiverAccount"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>开户银行：</label>
+                            <span id="bankName"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>支行信息：</label>
+                            <span id="bankBranch"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bank-transfer-section">
+                    <div class="transfer-status" id="transferStatus">
+                        <div class="status-indicator pending">
+                            <span class="status-dot"></span>
+                            <span class="status-text">等待银行转账</span>
+                        </div>
+                    </div>
+
+                    <div class="transfer-actions">
+                        <button id="initiateBankTransfer" class="btn btn-primary">
+                            发起银行转账
+                        </button>
+                        <button id="checkTransferStatus" class="btn btn-secondary" style="display: none;">
+                            查询转账状态
+                        </button>
+                        <button id="syncTransferStatus" class="btn btn-secondary" style="display: none;">
+                            同步转账状态
+                        </button>
+                    </div>
+
+                    <div class="transfer-info" id="transferInfo" style="display: none;">
+                        <h4>转账信息</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>转账ID：</label>
+                                <span id="transferId"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>银行参考号：</label>
+                                <span id="bankReference"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>转账状态：</label>
+                                <span id="transferStatusText"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>过期时间：</label>
+                                <span id="expiresAt"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="transfer-url-section" id="transferUrlSection" style="display: none;">
+                            <p>请点击下方链接完成银行转账：</p>
+                            <a id="transferUrl" href="#" target="_blank" class="btn btn-success">
+                                前往银行转账页面
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="backToStep1" class="btn btn-secondary">返回修改</button>
+                    <button id="continueToAudit" class="btn btn-primary" style="display: none;">
+                        转账完成，提交审核
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Financial Audit -->
+            <div class="step-container" id="step3" style="display: none;">
+                <div class="step-header">
+                    <h2>第三步：财务审核</h2>
+                </div>
+
+                <div class="audit-status">
+                    <div class="status-indicator pending">
+                        <span class="status-dot"></span>
+                        <span class="status-text">等待财务审核</span>
+                    </div>
+                    <p>您的充值订单已提交，请等待财务人员审核确认。</p>
+                    <p>审核完成后，系统将自动为您的广告账户充值。</p>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="createNewOrder" class="btn btn-primary">创建新订单</button>
+                    <button id="viewAuditPage" class="btn btn-secondary">查看审核页面</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">处理中...</div>
+        </div>
+
+        <!-- Error Modal -->
+        <div class="modal" id="errorModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>错误</h3>
+                    <button class="modal-close" id="closeErrorModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="errorMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="confirmError">确定</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal" id="successModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>成功</h3>
+                    <button class="modal-close" id="closeSuccessModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="successMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="confirmSuccess">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/public_recharge.js"></script>
+</body>
+</html>

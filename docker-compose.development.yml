@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  cjpayment-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - .:/app
+      - go_modules:/go/pkg/mod
+    environment:
+      - APP_ENV=development
+      - CGO_ENABLED=0
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=cjpayment_dev
+      - DATABASE_PASSWORD=dev123
+      - DATABASE_DBNAME=cjpayment_dev
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=dev-secret-key-change-in-production
+    command: ["air", "-c", ".air.toml"]
+    ports:
+      - "8080:8080"
+      - "2345:2345"  # Delve debugger port
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cjpayment-network
+
+  postgres:
+    environment:
+      POSTGRES_DB: cjpayment_dev
+      POSTGRES_USER: cjpayment_dev
+      POSTGRES_PASSWORD: dev123
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  # Development tools
+  pgadmin:
+    profiles: []  # Always include in development
+
+volumes:
+  go_modules:
+    driver: local

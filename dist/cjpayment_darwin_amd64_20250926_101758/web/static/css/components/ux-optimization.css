@@ -1,0 +1,545 @@
+/**
+ * 用户体验优化组件样式
+ */
+
+/* 自适应元素优化样式 */
+.ux-error-prevention {
+    position: relative;
+    border: 2px solid var(--warning-300);
+    background: var(--warning-50);
+}
+
+.ux-error-prevention::before {
+    content: '⚠️';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--warning-500);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.ux-simplified {
+    border-left: 4px solid var(--success-500);
+    background: var(--success-50);
+}
+
+.ux-cognitive-optimized {
+    border-left: 4px solid var(--info-500);
+    background: var(--info-50);
+}
+
+.ux-highlight-animation {
+    animation: uxHighlight 2s ease-in-out infinite;
+}
+
+@keyframes uxHighlight {
+    0%, 100% { 
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+        transform: scale(1);
+    }
+    50% { 
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+        transform: scale(1.02);
+    }
+}
+
+/* 验证消息样式 */
+.ux-validation-message {
+    color: var(--error-600);
+    font-size: 12px;
+    margin-top: 4px;
+    padding: 4px 8px;
+    background: var(--error-50);
+    border-radius: 4px;
+    border-left: 3px solid var(--error-500);
+}
+
+.ux-validation-error {
+    border-color: var(--error-500) !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* 引导覆盖层 */
+.ux-guidance-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    pointer-events: none;
+}
+
+.guidance-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px);
+}
+
+.guidance-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    pointer-events: auto;
+}
+
+.skip-guidance {
+    background: var(--neutral-800);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.skip-guidance:hover {
+    background: var(--neutral-700);
+}
+
+/* 高亮元素 */
+.ux-highlighted {
+    position: relative;
+    z-index: 10001;
+    box-shadow: 0 0 0 4px var(--primary-500), 0 0 20px rgba(59, 130, 246, 0.5) !important;
+    border-radius: 8px;
+    pointer-events: auto;
+}
+
+/* 引导工具提示 */
+.ux-guidance-tooltip {
+    position: fixed;
+    z-index: 10002;
+    max-width: 300px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--neutral-200);
+    pointer-events: auto;
+}
+
+.tooltip-content {
+    padding: 20px;
+}
+
+.tooltip-content p {
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--neutral-700);
+}
+
+.tooltip-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.tooltip-actions button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-next {
+    background: var(--primary-500);
+    color: white;
+    border: none;
+}
+
+.btn-next:hover {
+    background: var(--primary-600);
+}
+
+.btn-skip {
+    background: var(--neutral-100);
+    color: var(--neutral-600);
+    border: 1px solid var(--neutral-300);
+}
+
+.btn-skip:hover {
+    background: var(--neutral-200);
+}
+
+.tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tooltip-above .tooltip-arrow {
+    top: -10px;
+    bottom: auto;
+    border-top: none;
+    border-bottom: 10px solid white;
+}
+
+/* 引导箭头 */
+.ux-guidance-arrow {
+    font-size: 24px;
+    color: var(--primary-500);
+    animation: uxBounce 1s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes uxBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* 进度指示器 */
+.ux-progress-indicator {
+    width: 100%;
+    height: 4px;
+    background: var(--neutral-200);
+    border-radius: 2px;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--primary-500);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* 帮助按钮 */
+.ux-help-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-500);
+    color: white;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    transition: all 0.3s ease;
+}
+
+.ux-help-button:hover {
+    background: var(--primary-600);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* 帮助模态框 */
+.ux-help-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10003;
+    backdrop-filter: blur(4px);
+}
+
+.ux-help-modal .modal-content {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 90%;
+}
+
+.ux-help-modal h3 {
+    margin: 0 0 16px 0;
+    color: var(--neutral-800);
+}
+
+.ux-help-modal p {
+    margin: 0 0 20px 0;
+    color: var(--neutral-600);
+    line-height: 1.5;
+}
+
+.ux-help-modal button {
+    background: var(--primary-500);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.ux-help-modal button:hover {
+    background: var(--primary-600);
+}
+
+/* 简化通知 */
+.ux-simplification-notice {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10001;
+    background: var(--info-500);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    animation: uxSlideDown 0.3s ease-out;
+}
+
+@keyframes uxSlideDown {
+    from {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+.notice-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notice-content p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.notice-content button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.notice-content button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 改进状态指示 */
+.ux-usability-improved {
+    border-left: 4px solid var(--success-500);
+    position: relative;
+}
+
+.ux-usability-improved::after {
+    content: '✓';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--success-500);
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+.ux-design-improved {
+    border-left: 4px solid var(--info-500);
+}
+
+.ux-performance-improved {
+    border-left: 4px solid var(--warning-500);
+}
+
+.ux-general-improved {
+    border-left: 4px solid var(--neutral-500);
+}
+
+/* 工具提示增强 */
+[data-tooltip] {
+    position: relative;
+    cursor: help;
+}
+
+[data-tooltip]:hover::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--neutral-800);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10000;
+    margin-bottom: 5px;
+}
+
+[data-tooltip]:hover::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--neutral-800);
+    z-index: 10000;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .ux-guidance-tooltip {
+        max-width: 280px;
+        margin: 0 10px;
+    }
+    
+    .tooltip-content {
+        padding: 16px;
+    }
+    
+    .tooltip-actions {
+        flex-direction: column;
+    }
+    
+    .tooltip-actions button {
+        width: 100%;
+    }
+    
+    .ux-help-button {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+    }
+    
+    .ux-simplification-notice {
+        left: 10px;
+        right: 10px;
+        transform: none;
+    }
+    
+    .notice-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+}
+
+/* 暗色主题支持 */
+[data-theme="dark"] .ux-guidance-tooltip {
+    background: var(--neutral-800);
+    border-color: var(--neutral-700);
+}
+
+[data-theme="dark"] .tooltip-content p {
+    color: var(--neutral-300);
+}
+
+[data-theme="dark"] .tooltip-arrow {
+    border-top-color: var(--neutral-800);
+}
+
+[data-theme="dark"] .tooltip-above .tooltip-arrow {
+    border-bottom-color: var(--neutral-800);
+}
+
+[data-theme="dark"] .ux-help-modal .modal-content {
+    background: var(--neutral-800);
+}
+
+[data-theme="dark"] .ux-help-modal h3 {
+    color: var(--neutral-200);
+}
+
+[data-theme="dark"] .ux-help-modal p {
+    color: var(--neutral-400);
+}
+
+[data-theme="dark"] .ux-validation-message {
+    background: var(--error-900);
+    color: var(--error-300);
+}
+
+[data-theme="dark"] .ux-error-prevention {
+    background: var(--warning-900);
+    border-color: var(--warning-700);
+}
+
+[data-theme="dark"] .ux-simplified {
+    background: var(--success-900);
+}
+
+[data-theme="dark"] .ux-cognitive-optimized {
+    background: var(--info-900);
+}
+
+[data-theme="dark"] [data-tooltip]:hover::before {
+    background: var(--neutral-700);
+}
+
+[data-theme="dark"] [data-tooltip]:hover::after {
+    border-top-color: var(--neutral-700);
+}
+
+/* 高对比度主题支持 */
+[data-theme="high-contrast"] .ux-highlighted {
+    box-shadow: 0 0 0 4px #000000, 0 0 20px rgba(0, 0, 0, 0.8) !important;
+}
+
+[data-theme="high-contrast"] .ux-guidance-tooltip {
+    border: 2px solid #000000;
+}
+
+[data-theme="high-contrast"] .ux-help-button {
+    border: 2px solid #000000;
+}
+
+[data-theme="high-contrast"] .ux-validation-message {
+    border-left-width: 4px;
+    font-weight: bold;
+}
+
+/* 动画减少支持 */
+@media (prefers-reduced-motion: reduce) {
+    .ux-highlight-animation,
+    .ux-guidance-arrow,
+    .ux-simplification-notice {
+        animation: none;
+    }
+    
+    .ux-help-button:hover {
+        transform: none;
+    }
+    
+    * {
+        transition-duration: 0.01ms !important;
+    }
+}

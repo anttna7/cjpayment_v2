@@ -1,0 +1,68 @@
+<!-- Navigation Header -->
+<header class="app__header" id="appHeader">
+    <div class="header">
+        <div class="header__left">
+            <a href="/" class="logo">
+                <h1 class="logo__text">CJPayment</h1>
+                <span class="logo__version">v1.0</span>
+            </a>
+        </div>
+        
+        <nav class="nav" id="headerNav">
+            <ul class="nav__list">
+                <li class="nav__item">
+                    <a href="/dashboard" class="nav__link" data-route="dashboard">
+                        <span class="nav__icon">📊</span>
+                        <span class="nav__text">仪表板</span>
+                    </a>
+                </li>
+                <li class="nav__item">
+                    <a href="/recharge_management" class="nav__link" data-route="recharge">
+                        <span class="nav__icon">💰</span>
+                        <span class="nav__text">充值管理</span>
+                    </a>
+                </li>
+                <li class="nav__item">
+                    <a href="/user_management" class="nav__link" data-route="users">
+                        <span class="nav__icon">👥</span>
+                        <span class="nav__text">用户管理</span>
+                    </a>
+                </li>
+                <li class="nav__item">
+                    <a href="/admin" class="nav__link" data-route="system">
+                        <span class="nav__icon">⚙️</span>
+                        <span class="nav__text">系统管理</span>
+                    </a>
+                </li>
+                <li class="nav__item">
+                    <a href="/report_dashboard" class="nav__link" data-route="reports">
+                        <span class="nav__icon">📈</span>
+                        <span class="nav__text">数据报表</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="header__right">
+            <div class="user-menu" id="userMenu">
+                <button class="user-menu__trigger" id="userButton">
+                    <span class="user-menu__avatar">👤</span>
+                    <span class="user-menu__name" id="userName">管理员</span>
+                    <span class="user-menu__arrow">▼</span>
+                </button>
+                <div class="user-menu__dropdown" id="userDropdown">
+                    <a href="/profile" class="user-menu__item">个人资料</a>
+                    <a href="/change-password" class="user-menu__item">修改密码</a>
+                    <div class="user-menu__divider"></div>
+                    <a href="/logout" class="user-menu__item user-menu__item--danger">退出登录</a>
+                </div>
+            </div>
+            
+            <button class="nav__toggle" id="mobileMenuToggle">
+                <span class="nav__toggle-line"></span>
+                <span class="nav__toggle-line"></span>
+                <span class="nav__toggle-line"></span>
+            </button>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,300 @@
+/* 分页组件样式 */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-primary);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  gap: var(--space-4);
+}
+
+.pagination-info {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pagination-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* 分页按钮 */
+.page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-primary);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  user-select: none;
+}
+
+.page-btn:hover:not(:disabled):not(.active) {
+  background: var(--bg-secondary);
+  border-color: var(--border-secondary);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.page-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.page-btn.active {
+  background: var(--primary-500);
+  color: white;
+  border-color: var(--primary-500);
+  font-weight: var(--font-weight-medium);
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--bg-secondary);
+  color: var(--text-tertiary);
+}
+
+.page-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-200);
+}
+
+/* 分页按钮图标 */
+.page-btn-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 省略号 */
+.page-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-sm);
+}
+
+/* 页面大小选择器 */
+.page-size-selector {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.page-size-select {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-base);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.page-size-select:hover {
+  border-color: var(--border-secondary);
+}
+
+.page-size-select:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-200);
+}
+
+/* 页面跳转 */
+.page-jump {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.page-jump-input {
+  width: 60px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-base);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.page-jump-input:hover {
+  border-color: var(--border-secondary);
+}
+
+.page-jump-input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-200);
+}
+
+.page-jump-btn {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--primary-500);
+  background: var(--primary-500);
+  color: white;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease-in-out;
+}
+
+.page-jump-btn:hover {
+  background: var(--primary-600);
+  border-color: var(--primary-600);
+}
+
+.page-jump-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-200);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .pagination {
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+  
+  .pagination-controls {
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+  }
+  
+  .pagination-nav {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .page-size-selector,
+  .page-jump {
+    justify-content: center;
+  }
+  
+  .page-btn {
+    min-width: 32px;
+    height: 32px;
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* 紧凑模式 */
+.pagination.compact {
+  padding: var(--space-3) var(--space-4);
+}
+
+.pagination.compact .page-btn {
+  min-width: 32px;
+  height: 32px;
+  font-size: var(--font-size-xs);
+}
+
+.pagination.compact .pagination-info,
+.pagination.compact .page-size-selector,
+.pagination.compact .page-jump {
+  font-size: var(--font-size-xs);
+}
+
+/* 简单模式 */
+.pagination.simple {
+  justify-content: center;
+}
+
+.pagination.simple .pagination-info,
+.pagination.simple .page-size-selector,
+.pagination.simple .page-jump {
+  display: none;
+}
+
+/* 加载状态 */
+.pagination.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.pagination.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--primary-200);
+  border-top: 2px solid var(--primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 暗色主题适配 */
+[data-theme="dark"] .pagination {
+  background: var(--neutral-800);
+  border-color: var(--neutral-700);
+}
+
+[data-theme="dark"] .page-btn {
+  background: var(--neutral-800);
+  border-color: var(--neutral-700);
+  color: var(--neutral-300);
+}
+
+[data-theme="dark"] .page-btn:hover:not(:disabled):not(.active) {
+  background: var(--neutral-700);
+  border-color: var(--neutral-600);
+  color: var(--neutral-100);
+}
+
+[data-theme="dark"] .page-btn:disabled {
+  background: var(--neutral-900);
+  color: var(--neutral-600);
+}
+
+[data-theme="dark"] .page-size-select,
+[data-theme="dark"] .page-jump-input {
+  background: var(--neutral-800);
+  border-color: var(--neutral-700);
+  color: var(--neutral-300);
+}
+
+[data-theme="dark"] .page-size-select:hover,
+[data-theme="dark"] .page-jump-input:hover {
+  border-color: var(--neutral-600);
+}

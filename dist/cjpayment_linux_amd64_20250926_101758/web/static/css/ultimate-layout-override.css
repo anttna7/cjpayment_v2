@@ -1,0 +1,91 @@
+/* 终极布局覆盖 - 最高优先级解决方案 */
+
+/* ================== 核弹级选择器 - 确保最高优先级 ================== */
+
+/* 统计卡片容器 - 使用5重选择器确保绝对优先级 */
+html body.page-recharge-payment .stats-row,
+html body.page-recharge-payment div.stats-row,
+.page-recharge-payment .stats-row,
+.stats-row.stats-row.stats-row.stats-row.stats-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    max-width: none !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    margin: 0 0 2rem 0 !important;
+    position: static !important;
+    z-index: auto !important;
+
+    /* 正常样式 */
+    padding: 0 0 2rem 0 !important;
+
+    /* 强制移除grid相关属性 */
+    grid-template-columns: unset !important;
+    grid-gap: unset !important;
+    grid-auto-flow: unset !important;
+    grid-template-rows: unset !important;
+    align-content: unset !important;
+    place-items: unset !important;
+}
+
+/* 统计卡片 - 使用5重选择器确保绝对优先级 */
+html body.page-recharge-payment .stat-card,
+html body.page-recharge-payment div.stat-card,
+.page-recharge-payment .stat-card,
+.stat-card.stat-card.stat-card.stat-card.stat-card {
+    flex: 1 !important;
+    min-width: 200px !important;
+    max-width: 280px !important;
+    display: flex !important;
+    align-items: center !important;
+    margin: 5px !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    padding: 1.5rem !important;
+    float: none !important;
+    position: static !important;
+    grid-area: unset !important;
+    grid-column: unset !important;
+    grid-row: unset !important;
+}
+
+/* 强制覆盖任何可能的grid布局设置 */
+html body.page-recharge-payment .stats-row * {
+    grid-area: unset !important;
+    grid-column: unset !important;
+    grid-row: unset !important;
+}
+
+/* 移动端响应式 */
+@media (max-width: 768px) {
+    html body.page-recharge-payment .stats-row,
+    .stats-row.stats-row.stats-row.stats-row.stats-row {
+        flex-direction: column !important;
+    }
+
+    html body.page-recharge-payment .stat-card,
+    .stat-card.stat-card.stat-card.stat-card.stat-card {
+        max-width: 100% !important;
+        min-width: 100% !important;
+    }
+}
+
+/* 防止任何JavaScript动态修改 */
+.stats-row[style*="grid"],
+.stats-row[style*="column"] {
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+/* 确保布局稳定性 */
+.stats-row {
+    box-sizing: border-box !important;
+}
+
+.stat-card {
+    box-sizing: border-box !important;
+}

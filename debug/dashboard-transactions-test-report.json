@@ -1,0 +1,8 @@
+{
+  "timestamp": "2025-08-25T17:04:40.852Z",
+  "test": "仪表板交易记录数据加载测试",
+  "result": {
+    "success": false,
+    "error": "page.waitForFunction: Timeout 30000ms exceeded."
+  }
+}

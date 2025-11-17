@@ -1,0 +1,387 @@
+/**
+ * 懒加载系统样式
+ * Lazy Loading System Styles
+ */
+
+/* 懒加载占位符 */
+.lazy-placeholder {
+    min-height: 100px;
+    background: var(--neutral-100);
+    border: 2px dashed var(--neutral-300);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: var(--space-3);
+    color: var(--neutral-600);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.lazy-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    animation: shimmer 2s infinite;
+}
+
+.lazy-placeholder:hover {
+    border-color: var(--primary-400);
+    background: var(--primary-50);
+}
+
+/* 懒加载动画 */
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* 加载完成状态 */
+.lazy-loaded {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 加载错误状态 */
+.lazy-error {
+    background: var(--error-50);
+    border-color: var(--error-300);
+    color: var(--error-700);
+}
+
+.lazy-load-error {
+    text-align: center;
+    padding: var(--space-4);
+}
+
+.lazy-load-error .error-icon {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-2);
+}
+
+.lazy-load-error .error-message {
+    margin-bottom: var(--space-3);
+    font-weight: var(--font-weight-medium);
+}
+
+.lazy-load-error .retry-btn {
+    background: var(--error-500);
+    color: white;
+    border: none;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    transition: background 0.2s ease;
+}
+
+.lazy-load-error .retry-btn:hover {
+    background: var(--error-600);
+}
+
+/* 加载指示器 */
+.lazy-loading-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--primary-100);
+    color: var(--primary-700);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.lazy-loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--primary-300);
+    border-top: 2px solid var(--primary-600);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 路由加载状态 */
+body.route-loading {
+    cursor: wait;
+}
+
+body.route-loading::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        var(--primary-500),
+        var(--primary-300),
+        var(--primary-500)
+    );
+    z-index: 9999;
+    animation: loading-bar 2s ease-in-out infinite;
+}
+
+@keyframes loading-bar {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(0%); }
+    100% { transform: translateX(100%); }
+}
+
+/* 路由转场效果 */
+body.route-transitioning .main-content {
+    opacity: 0.7;
+    transform: scale(0.98);
+    transition: all 0.3s ease;
+}
+
+.route-transition-enter {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.route-transition-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+}
+
+.route-transition-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.route-transition-exit-active {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+/* 预加载提示 */
+.preload-hint {
+    position: relative;
+}
+
+.preload-hint::after {
+    content: '⚡';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 16px;
+    height: 16px;
+    background: var(--success-500);
+    color: white;
+    border-radius: 50%;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s ease;
+}
+
+.preload-hint:hover::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* 性能监控指示器 */
+.performance-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    min-width: 200px;
+    font-size: var(--font-size-sm);
+}
+
+.performance-indicator.hidden {
+    display: none;
+}
+
+.performance-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+}
+
+.performance-metric:last-child {
+    margin-bottom: 0;
+}
+
+.performance-label {
+    color: var(--neutral-600);
+}
+
+.performance-value {
+    font-weight: var(--font-weight-semibold);
+    color: var(--neutral-900);
+}
+
+.performance-value.good {
+    color: var(--success-600);
+}
+
+.performance-value.warning {
+    color: var(--warning-600);
+}
+
+.performance-value.poor {
+    color: var(--error-600);
+}
+
+/* 缓存状态指示器 */
+.cache-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    background: var(--neutral-100);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    color: var(--neutral-600);
+}
+
+.cache-status.hit {
+    background: var(--success-100);
+    color: var(--success-700);
+}
+
+.cache-status.miss {
+    background: var(--warning-100);
+    color: var(--warning-700);
+}
+
+.cache-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+/* 懒加载网格 */
+.lazy-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.lazy-grid-item {
+    position: relative;
+}
+
+.lazy-grid-item.loading {
+    pointer-events: none;
+}
+
+.lazy-grid-item.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .lazy-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .performance-indicator {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+    }
+    
+    .lazy-placeholder {
+        min-height: 80px;
+    }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+    .lazy-placeholder {
+        border-width: 3px;
+        border-color: var(--neutral-900);
+    }
+    
+    .lazy-error {
+        border-color: var(--error-600);
+    }
+    
+    .lazy-loading-spinner {
+        border-width: 3px;
+    }
+}
+
+/* 减少动画模式支持 */
+@media (prefers-reduced-motion: reduce) {
+    .lazy-placeholder::before,
+    .lazy-loading-spinner,
+    body.route-loading::before {
+        animation: none;
+    }
+    
+    .lazy-loaded {
+        animation: none;
+    }
+    
+    .route-transition-enter-active,
+    .route-transition-exit-active {
+        transition: none;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    .lazy-placeholder,
+    .performance-indicator,
+    .cache-status {
+        display: none;
+    }
+    
+    .lazy-loaded {
+        animation: none;
+    }
+}

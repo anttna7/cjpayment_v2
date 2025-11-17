@@ -1,0 +1,23 @@
+{
+  "name": "cjpayment-ui-tests",
+  "version": "1.0.0",
+  "description": "CJPayment UI自动化测试套件",
+  "main": "playwright-ui-tests.js",
+  "scripts": {
+    "test": "node playwright-ui-tests.js",
+    "test:headless": "HEADLESS=true node playwright-ui-tests.js",
+    "install-browsers": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0",
+    "playwright": "^1.40.0"
+  },
+  "keywords": [
+    "ui-testing",
+    "playwright",
+    "automation",
+    "cjpayment"
+  ],
+  "author": "Claude Code",
+  "license": "MIT"
+}

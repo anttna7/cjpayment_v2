@@ -1,0 +1,191 @@
+[
+  {
+    "test": "登录页面访问",
+    "status": "pass",
+    "message": "页面正常加载",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.909Z"
+  },
+  {
+    "test": "登录表单",
+    "status": "pass",
+    "message": "登录表单元素存在",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.909Z"
+  },
+  {
+    "test": "按钮元素",
+    "status": "pass",
+    "message": "页面包含按钮元素",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.909Z"
+  },
+  {
+    "test": "CSS样式",
+    "status": "pass",
+    "message": "页面包含CSS样式引用",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.910Z"
+  },
+  {
+    "test": "CSS文件: /static/css/header-unified.css",
+    "status": "pass",
+    "message": "文件正常 (15666 字符)",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.912Z"
+  },
+  {
+    "test": "CSS文件: /static/css/buttons-unified.css",
+    "status": "pass",
+    "message": "文件正常 (11417 字符)",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.913Z"
+  },
+  {
+    "test": "CSS文件: /static/css/theme-unified.css",
+    "status": "pass",
+    "message": "文件正常 (23064 字符)",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.915Z"
+  },
+  {
+    "test": "CSS文件: /static/css/merchant-management-enhanced.css",
+    "status": "pass",
+    "message": "文件正常 (33523 字符)",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.916Z"
+  },
+  {
+    "test": "CSS文件: /static/css/account-management-enhanced.css",
+    "status": "pass",
+    "message": "文件正常 (53714 字符)",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.917Z"
+  },
+  {
+    "test": "按钮渐变背景",
+    "status": "pass",
+    "message": "线性渐变样式已定义",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.918Z"
+  },
+  {
+    "test": "紫色主题色",
+    "status": "pass",
+    "message": "紫色主题色已应用",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.918Z"
+  },
+  {
+    "test": "悬停效果",
+    "status": "pass",
+    "message": "悬停效果已定义",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.918Z"
+  },
+  {
+    "test": "动画过渡",
+    "status": "pass",
+    "message": "动画过渡效果已定义",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.918Z"
+  },
+  {
+    "test": "导航链接样式",
+    "status": "pass",
+    "message": "导航链接样式类已定义",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.918Z"
+  },
+  {
+    "test": "导航悬停效果",
+    "status": "pass",
+    "message": "紫色悬停效果和渐变背景已定义",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.918Z"
+  },
+  {
+    "test": "导航动画效果",
+    "status": "pass",
+    "message": "导航动画变换效果已定义",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.918Z"
+  },
+  {
+    "test": "商户模态框",
+    "status": "pass",
+    "message": "模态框结构存在",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.921Z"
+  },
+  {
+    "test": "信息整合",
+    "status": "pass",
+    "message": "基础标识信息整合代理商和广告账户信息",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.921Z"
+  },
+  {
+    "test": "交易限额删除",
+    "status": "pass",
+    "message": "交易限额配置已删除",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.921Z"
+  },
+  {
+    "test": "下拉框元素",
+    "status": "pass",
+    "message": "下拉框元素存在",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.921Z"
+  },
+  {
+    "test": "账户模态框",
+    "status": "pass",
+    "message": "账户模态框存在",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.922Z"
+  },
+  {
+    "test": "账户类型",
+    "status": "pass",
+    "message": "收款账户和付款账户类型完整",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.922Z"
+  },
+  {
+    "test": "收款账户字段",
+    "status": "pass",
+    "message": "收款账户必要字段存在",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.922Z"
+  },
+  {
+    "test": "银行选择功能",
+    "status": "pass",
+    "message": "银行选择功能存在",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.922Z"
+  },
+  {
+    "test": "商户模态框下拉框美化",
+    "status": "pass",
+    "message": "增强下拉框样式已定义",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.923Z"
+  },
+  {
+    "test": "商户模态框交互效果",
+    "status": "pass",
+    "message": "渐变背景和悬停动画已定义",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.923Z"
+  },
+  {
+    "test": "账户模态框下拉框修复",
+    "status": "pass",
+    "message": "下拉框箭头重复问题已修复",
+    "details": null,
+    "timestamp": "2025-08-20T10:49:01.923Z"
+  }
+]

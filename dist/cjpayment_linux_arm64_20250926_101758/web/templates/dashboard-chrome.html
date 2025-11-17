@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>仪表板 - CJPayment</title>
+    
+    <!-- Chrome风格仪表板样式 -->
+    <link rel="stylesheet" href="/static/css/dashboard-chrome.css">
+    
+    <!-- 统一头部样式 -->
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <meta name="description" content="CJPayment Chrome风格仪表板">
+</head>
+<body class="chrome-dashboard">
+    <!-- 头部导航 -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link nav__link--active" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown" style="display: none;">
+                        <a href="/profile" class="user-menu__item">个人资料</a>
+                        <a href="/settings" class="user-menu__item">账户设置</a>
+                        <div class="user-menu__divider"></div>
+                        <a href="#" class="user-menu__item" id="logoutLink">退出登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Chrome风格仪表板主内容 -->
+    <main class="dashboard">
+        <!-- 页面标题 -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">数据概览</h1>
+            <p class="dashboard-subtitle">实时监控关键业务指标</p>
+        </div>
+
+        <!-- Chrome风格统计卡片 -->
+        <div class="stats-grid">
+            <!-- 交易统计 -->
+            <div class="chrome-card transactions">
+                <div class="chrome-icon">
+                    💰
+                </div>
+                <h3 class="chrome-card-title">总交易数</h3>
+                <div class="chrome-card-value" id="totalTransactions">1,247</div>
+                <div class="chrome-card-change positive">
+                    <span>↗</span> +12.5% 较昨日
+                </div>
+            </div>
+
+            <!-- 收益统计 -->
+            <div class="chrome-card revenue">
+                <div class="chrome-icon">
+                    📈
+                </div>
+                <h3 class="chrome-card-title">总收益</h3>
+                <div class="chrome-card-value" id="totalRevenue">¥156,890</div>
+                <div class="chrome-card-change positive">
+                    <span>↗</span> +8.3% 较昨日
+                </div>
+            </div>
+
+            <!-- 商户统计 -->
+            <div class="chrome-card merchants">
+                <div class="chrome-icon">
+                    🏪
+                </div>
+                <h3 class="chrome-card-title">活跃商户</h3>
+                <div class="chrome-card-value" id="activeMerchants">89</div>
+                <div class="chrome-card-change positive">
+                    <span>↗</span> +5.7% 较昨日
+                </div>
+            </div>
+
+            <!-- 成功率统计 -->
+            <div class="chrome-card success-rate">
+                <div class="chrome-icon">
+                    ✅
+                </div>
+                <h3 class="chrome-card-title">成功率</h3>
+                <div class="chrome-card-value" id="successRate">98.5%</div>
+                <div class="chrome-card-change positive">
+                    <span>↗</span> +2.1% 较昨日
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="dashboard-charts">
+            <div class="chart-section">
+                <h3 class="chart-title">交易趋势 (近30天)</h3>
+                <div style="height: 300px; display: flex; align-items: center; justify-content: center; color: #5f6368;">
+                    <canvas id="trendChart" width="800" height="300"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <h3 class="chart-title">交易状态分布</h3>
+                <div style="height: 300px; display: flex; align-items: center; justify-content: center; color: #5f6368;">
+                    <canvas id="statusChart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="/static/js/header-unified.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化用户信息
+            const authToken = localStorage.getItem('authToken');
+            if (!authToken) {
+                localStorage.setItem('authToken', 'demo-token');
+                localStorage.setItem('userInfo', JSON.stringify({
+                    name: '系统管理员',
+                    username: 'admin',
+                    role: '超级管理员'
+                }));
+            }
+
+            const userInfo = localStorage.getItem('userInfo');
+            if (userInfo) {
+                try {
+                    const user = JSON.parse(userInfo);
+                    document.getElementById('userName').textContent = user.name || user.username;
+                    document.querySelector('.user-menu__role').textContent = user.role;
+                } catch (error) {
+                    console.error('Failed to parse user info:', error);
+                }
+            }
+
+            // 主题切换
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const html = document.documentElement;
+            
+            const savedTheme = localStorage.getItem('dashboard-theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+            themeIcon.textContent = savedTheme === 'light' ? '🌙' : '☀️';
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('dashboard-theme', newTheme);
+                themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀️';
+            });
+
+            // 退出登录
+            document.getElementById('logoutLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('确定要退出登录吗？')) {
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userInfo');
+                    window.location.href = '/login';
+                }
+            });
+
+            // 用户菜单切换
+            const userButton = document.getElementById('userButton');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            userButton.addEventListener('click', function() {
+                const isVisible = userDropdown.style.display !== 'none';
+                userDropdown.style.display = isVisible ? 'none' : 'block';
+            });
+
+            // 点击其他地方关闭菜单
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.user-menu')) {
+                    userDropdown.style.display = 'none';
+                }
+            });
+
+            // 模拟数据更新
+            setTimeout(() => {
+                updateStats();
+            }, 1000);
+        });
+
+        function updateStats() {
+            // 模拟实时数据更新
+            const stats = [
+                { id: 'totalTransactions', value: Math.floor(Math.random() * 500 + 1000).toLocaleString() },
+                { id: 'totalRevenue', value: '¥' + Math.floor(Math.random() * 100000 + 150000).toLocaleString() },
+                { id: 'activeMerchants', value: Math.floor(Math.random() * 20 + 80).toString() },
+                { id: 'successRate', value: (Math.random() * 2 + 97).toFixed(1) + '%' }
+            ];
+
+            stats.forEach(stat => {
+                const element = document.getElementById(stat.id);
+                if (element) {
+                    element.textContent = stat.value;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

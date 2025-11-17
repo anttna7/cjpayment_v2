@@ -1,0 +1,384 @@
+/**
+ * CJPayment 系统管理页面布局优化
+ * 美观的响应式卡片布局设计
+ */
+
+/* ==========================================================================
+   系统管理专用响应式网格布局
+   ========================================================================== */
+
+/* 系统管理卡片容器 */
+.system-cards {
+    margin-bottom: var(--space-8, 32px);
+}
+
+/* 系统管理专用网格布局 */
+.card-grid--system-management {
+    display: grid;
+    gap: var(--space-6, 24px);
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    align-items: stretch; /* 确保卡片等高 */
+    margin: 0 auto;
+    max-width: 1400px;
+}
+
+/* 系统管理卡片基础样式 */
+.card-grid--system-management .card {
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+    max-width: none;
+    background: var(--bg-surface, #ffffff);
+    border: 1px solid var(--border-light, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+    transition: all var(--duration-300, 300ms) var(--ease-out);
+    overflow: hidden;
+}
+
+/* 卡片悬停效果 */
+.card-grid--system-management .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg, 0 10px 25px rgba(0,0,0,0.15));
+    border-color: var(--primary-200, #ddd6fe);
+}
+
+/* 卡片头部优化 */
+.card-grid--system-management .card__header {
+    padding: var(--space-6, 24px) var(--space-6, 24px) var(--space-4, 16px);
+    background: linear-gradient(135deg, var(--bg-surface-secondary, #f9fafb) 0%, var(--bg-surface, #ffffff) 100%);
+    border-bottom: 1px solid var(--border-light, #e5e7eb);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4, 16px);
+}
+
+/* 卡片图标优化 */
+.card-grid--system-management .card__icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--primary-100, #ede9fe) 0%, var(--primary-50, #f5f3ff) 100%);
+    border-radius: var(--radius-lg, 12px);
+    border: 2px solid var(--primary-200, #ddd6fe);
+    flex-shrink: 0;
+    transition: all var(--duration-200, 200ms) ease;
+}
+
+.card-grid--system-management .card:hover .card__icon {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, var(--primary-200, #ddd6fe) 0%, var(--primary-100, #ede9fe) 100%);
+    border-color: var(--primary-300, #c4b5fd);
+}
+
+/* 卡片标题优化 */
+.card-grid--system-management .card__title {
+    font-size: var(--text-xl, 1.25rem);
+    font-weight: var(--font-bold, 700);
+    color: var(--text-primary, #111827);
+    margin: 0;
+    line-height: 1.3;
+    flex: 1;
+}
+
+/* 卡片主体内容 */
+.card-grid--system-management .card__body {
+    padding: var(--space-4, 16px) var(--space-6, 24px);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4, 16px);
+}
+
+/* 卡片描述 */
+.card-grid--system-management .card__desc {
+    font-size: var(--text-sm, 0.875rem);
+    color: var(--text-secondary, #6b7280);
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+}
+
+/* 卡片统计信息区域 */
+.card-grid--system-management .card__stats {
+    display: flex;
+    gap: var(--space-6, 24px);
+    margin-top: auto;
+    padding-top: var(--space-3, 12px);
+    border-top: 1px solid var(--border-light, #e5e7eb);
+}
+
+/* 统计项样式 */
+.card-grid--system-management .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1, 4px);
+    flex: 1;
+    text-align: center;
+}
+
+.card-grid--system-management .stat-label {
+    font-size: var(--text-xs, 0.75rem);
+    color: var(--text-tertiary, #9ca3af);
+    font-weight: var(--font-medium, 500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.card-grid--system-management .stat-value {
+    font-size: var(--text-lg, 1.125rem);
+    font-weight: var(--font-bold, 700);
+    color: var(--text-primary, #111827);
+}
+
+/* 状态值特殊样式 */
+.card-grid--system-management .stat-value.status-success {
+    color: var(--color-success, #10b981);
+}
+
+.card-grid--system-management .stat-value.status-warning {
+    color: var(--color-warning, #f59e0b);
+}
+
+.card-grid--system-management .stat-value.status-error {
+    color: var(--color-error, #ef4444);
+}
+
+/* 卡片底部操作区域 */
+.card-grid--system-management .card__footer {
+    padding: var(--space-4, 16px) var(--space-6, 24px) var(--space-6, 24px);
+    background: var(--bg-surface-secondary, #f9fafb);
+    border-top: 1px solid var(--border-light, #e5e7eb);
+}
+
+/* 底部按钮优化 */
+.card-grid--system-management .btn--full {
+    width: 100%;
+    justify-content: center;
+    gap: var(--space-2, 8px);
+    padding: var(--space-3, 12px) var(--space-4, 16px);
+    font-weight: var(--font-semibold, 600);
+    transition: all var(--duration-200, 200ms) ease;
+}
+
+.card-grid--system-management .btn--full:hover {
+    background: var(--primary-600, #7c3aed);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md, 0 4px 6px rgba(0,0,0,0.1));
+}
+
+/* ==========================================================================
+   响应式断点优化
+   ========================================================================== */
+
+/* 超小屏幕 - 手机竖屏 */
+@media (max-width: 480px) {
+    .card-grid--system-management {
+        grid-template-columns: 1fr;
+        gap: var(--space-4, 16px);
+        padding: 0 var(--space-2, 8px);
+    }
+    
+    .card-grid--system-management .card {
+        min-height: 240px;
+    }
+    
+    .card-grid--system-management .card__icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.5rem;
+    }
+    
+    .card-grid--system-management .card__title {
+        font-size: var(--text-lg, 1.125rem);
+    }
+    
+    .card-grid--system-management .card__stats {
+        gap: var(--space-4, 16px);
+    }
+}
+
+/* 小屏幕 - 手机横屏/小平板 */
+@media (min-width: 481px) and (max-width: 768px) {
+    .card-grid--system-management {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--space-5, 20px);
+    }
+    
+    .card-grid--system-management .card {
+        min-height: 260px;
+    }
+}
+
+/* 中等屏幕 - 平板 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .card-grid--system-management {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6, 24px);
+        max-width: 800px;
+    }
+}
+
+/* 大屏幕 - 桌面 */
+@media (min-width: 1025px) and (max-width: 1400px) {
+    .card-grid--system-management {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-6, 24px);
+    }
+}
+
+/* 超大屏幕 - 宽屏桌面 */
+@media (min-width: 1401px) {
+    .card-grid--system-management {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-8, 32px);
+        max-width: 1400px;
+    }
+    
+    .card-grid--system-management .card {
+        min-height: 300px;
+    }
+}
+
+/* ==========================================================================
+   卡片主题色彩系统
+   ========================================================================== */
+
+/* 用户管理卡片 */
+.card-grid--system-management #userManagementCard .card__icon {
+    background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+    border-color: #93c5fd;
+    color: #1d4ed8;
+}
+
+.card-grid--system-management #userManagementCard:hover .card__icon {
+    background: linear-gradient(135deg, #93c5fd 0%, #dbeafe 100%);
+    border-color: #60a5fa;
+}
+
+/* 系统配置卡片 */
+.card-grid--system-management #systemConfigCard .card__icon {
+    background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+    border-color: #86efac;
+    color: #059669;
+}
+
+.card-grid--system-management #systemConfigCard:hover .card__icon {
+    background: linear-gradient(135deg, #86efac 0%, #d1fae5 100%);
+    border-color: #4ade80;
+}
+
+/* 安全中心卡片 */
+.card-grid--system-management #securityCard .card__icon {
+    background: linear-gradient(135deg, #fecaca 0%, #fef2f2 100%);
+    border-color: #fca5a5;
+    color: #dc2626;
+}
+
+.card-grid--system-management #securityCard:hover .card__icon {
+    background: linear-gradient(135deg, #fca5a5 0%, #fecaca 100%);
+    border-color: #f87171;
+}
+
+/* API管理卡片 */
+.card-grid--system-management #apiManagementCard .card__icon {
+    background: linear-gradient(135deg, #fed7aa 0%, #fff7ed 100%);
+    border-color: #fdba74;
+    color: #ea580c;
+}
+
+.card-grid--system-management #apiManagementCard:hover .card__icon {
+    background: linear-gradient(135deg, #fdba74 0%, #fed7aa 100%);
+    border-color: #fb923c;
+}
+
+/* 监控告警卡片 */
+.card-grid--system-management #monitoringCard .card__icon {
+    background: linear-gradient(135deg, #e0e7ff 0%, #f0f9ff 100%);
+    border-color: #a5b4fc;
+    color: #4338ca;
+}
+
+.card-grid--system-management #monitoringCard:hover .card__icon {
+    background: linear-gradient(135deg, #a5b4fc 0%, #e0e7ff 100%);
+    border-color: #818cf8;
+}
+
+/* 备份恢复卡片 */
+.card-grid--system-management #backupCard .card__icon {
+    background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%);
+    border-color: #d8b4fe;
+    color: #7c2d12;
+}
+
+.card-grid--system-management #backupCard:hover .card__icon {
+    background: linear-gradient(135deg, #d8b4fe 0%, #f3e8ff 100%);
+    border-color: #c084fc;
+}
+
+/* ==========================================================================
+   加载和交互动画
+   ========================================================================== */
+
+/* 卡片加载动画 */
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-grid--system-management .card {
+    animation: cardFadeIn 0.6s ease-out;
+}
+
+/* 为每个卡片添加延迟，创建渐次出现的效果 */
+.card-grid--system-management .card:nth-child(1) { animation-delay: 0.1s; }
+.card-grid--system-management .card:nth-child(2) { animation-delay: 0.2s; }
+.card-grid--system-management .card:nth-child(3) { animation-delay: 0.3s; }
+.card-grid--system-management .card:nth-child(4) { animation-delay: 0.4s; }
+.card-grid--system-management .card:nth-child(5) { animation-delay: 0.5s; }
+.card-grid--system-management .card:nth-child(6) { animation-delay: 0.6s; }
+
+/* 按钮点击效果 */
+.card-grid--system-management .btn--full:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.1));
+}
+
+/* ==========================================================================
+   无障碍和可访问性优化
+   ========================================================================== */
+
+/* 提高对比度 */
+@media (prefers-contrast: high) {
+    .card-grid--system-management .card {
+        border-color: var(--border-strong, #374151);
+    }
+    
+    .card-grid--system-management .card__desc {
+        color: var(--text-primary, #111827);
+    }
+}
+
+/* 减少动画 */
+@media (prefers-reduced-motion: reduce) {
+    .card-grid--system-management .card,
+    .card-grid--system-management .card__icon,
+    .card-grid--system-management .btn--full {
+        animation: none;
+        transition: none;
+    }
+    
+    .card-grid--system-management .card:hover {
+        transform: none;
+    }
+}

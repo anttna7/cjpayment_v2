@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>付款账户信息录入 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="CJPayment企业内部支付管理系统付款账户信息录入">
+    <meta name="keywords" content="付款账户,账户录入,支付管理,企业系统">
+</head>
+<body class="page-payment-account-entry">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">💼</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link nav__link--active" data-route="accounts">
+                            <span class="nav__icon">💳</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/financial_audit" class="nav__link" data-route="financial">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="analytics">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- User Menu -->
+            <div class="header__right">
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name">管理员</span>
+                            <span class="user-menu__role">系统管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown">
+                        <a href="/profile" class="user-menu__item">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/settings" class="user-menu__item">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <div class="user-menu__divider"></div>
+                        <a href="/logout" class="user-menu__item user-menu__item--danger">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="payment-account-entry">
+            <!-- Breadcrumb Navigation -->
+            <nav class="breadcrumb-nav">
+                <div class="breadcrumb">
+                    <a href="/accounts" class="breadcrumb-item">账户管理</a>
+                    <span class="breadcrumb-separator">›</span>
+                    <span class="breadcrumb-item breadcrumb-item--current">付款账户信息录入</span>
+                </div>
+            </nav>
+
+            <!-- Page Header -->
+            <header class="page-header">
+                <div class="page-header__main">
+                    <div class="page-title">
+                        <h1 class="page-title__text">
+                            <span class="page-title__icon">💳</span>
+                            付款账户信息录入
+                        </h1>
+                        <p class="page-title__subtitle">录入和管理商户付款账户详细信息</p>
+                    </div>
+                </div>
+                
+                <div class="page-header__actions">
+                    <button class="btn btn--outline" id="previewBtn">
+                        <span class="btn__icon">👁</span>
+                        <span class="btn__text">预览</span>
+                    </button>
+                    <button class="btn btn--outline" id="saveAsDraftBtn">
+                        <span class="btn__icon">💾</span>
+                        <span class="btn__text">保存草稿</span>
+                    </button>
+                    <button class="btn btn--primary" id="submitBtn">
+                        <span class="btn__icon">✅</span>
+                        <span class="btn__text">提交录入</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Entry Form -->
+            <div class="entry-form-container">
+                <form class="payment-account-form" id="paymentAccountForm" novalidate>
+                    <!-- 基础账户信息 -->
+                    <section class="form-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span class="section-icon">🏦</span>
+                                基础账户信息
+                            </h2>
+                            <div class="section-badge">
+                                <span class="badge badge--required">必填</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced required" for="accountName">
+                                        付款账户名称
+                                        <span class="label-tip" title="请输入银行开户名称或支付平台账户名">?</span>
+                                    </label>
+                                    <input type="text" 
+                                           class="form-input-enhanced" 
+                                           id="accountName" 
+                                           name="accountName" 
+                                           required
+                                           placeholder="请输入付款账户名称"
+                                           maxlength="100">
+                                    <div class="form-error" id="accountNameError"></div>
+                                    <div class="form-help">例如：北京科技有限公司、张三（个人账户）</div>
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced required" for="accountNumber">
+                                        付款账号
+                                        <span class="label-tip" title="银行卡号或支付平台账号">?</span>
+                                    </label>
+                                    <input type="text" 
+                                           class="form-input-enhanced" 
+                                           id="accountNumber" 
+                                           name="accountNumber" 
+                                           required
+                                           placeholder="请输入付款账号"
+                                           maxlength="30">
+                                    <div class="form-error" id="accountNumberError"></div>
+                                    <div class="form-help">银行卡号、支付宝账号或微信号</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced required" for="accountType">账户类型</label>
+                                    <select class="form-input-enhanced" 
+                                            id="accountType" 
+                                            name="accountType" 
+                                            required
+                                            onchange="toggleAccountTypeFields(this.value)">
+                                        <option value="">请选择账户类型</option>
+                                        <option value="corporate">企业银行账户</option>
+                                        <option value="personal">个人银行账户</option>
+                                        <option value="alipay">支付宝账户</option>
+                                        <option value="wechat">微信支付账户</option>
+                                        <option value="other">其他支付方式</option>
+                                    </select>
+                                    <div class="form-error" id="accountTypeError"></div>
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced required" for="accountInstitution">账户机构</label>
+                                    <select class="form-input-enhanced" 
+                                            id="accountInstitution" 
+                                            name="accountInstitution" 
+                                            required
+                                            onchange="toggleInstitutionFields(this.value)">
+                                        <option value="">请选择账户机构</option>
+                                        <option value="icbc">中国工商银行</option>
+                                        <option value="ccb">中国建设银行</option>
+                                        <option value="abc">中国农业银行</option>
+                                        <option value="boc">中国银行</option>
+                                        <option value="bcom">交通银行</option>
+                                        <option value="cmb">招商银行</option>
+                                        <option value="spdb">浦发银行</option>
+                                        <option value="citic">中信银行</option>
+                                        <option value="alipay">支付宝</option>
+                                        <option value="wechat">微信支付</option>
+                                        <option value="other">其他机构</option>
+                                    </select>
+                                    <div class="form-error" id="accountInstitutionError"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 银行信息（条件显示） -->
+                    <section class="form-section" id="bankInfoSection" style="display: none;">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span class="section-icon">🏛️</span>
+                                银行详细信息
+                            </h2>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced" for="branchName">开户支行</label>
+                                    <input type="text" 
+                                           class="form-input-enhanced" 
+                                           id="branchName" 
+                                           name="branchName"
+                                           placeholder="请输入开户支行名称"
+                                           maxlength="100">
+                                    <div class="form-help">例如：北京朝阳支行</div>
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced" for="branchCode">支行代码</label>
+                                    <input type="text" 
+                                           class="form-input-enhanced" 
+                                           id="branchCode" 
+                                           name="branchCode"
+                                           placeholder="请输入支行联行号"
+                                           maxlength="20">
+                                    <div class="form-help">12位联行号，可选填</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 商户关联信息 -->
+                    <section class="form-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span class="section-icon">🏪</span>
+                                商户关联信息
+                            </h2>
+                            <div class="section-badge">
+                                <span class="badge badge--required">必填</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced required" for="merchantId">关联商户</label>
+                                    <select class="form-input-enhanced" 
+                                            id="merchantId" 
+                                            name="merchantId" 
+                                            required
+                                            onchange="loadMerchantInfo(this.value)">
+                                        <option value="">请选择商户</option>
+                                        <option value="MERCHANT_001">演示商户A</option>
+                                        <option value="MERCHANT_002">演示商户B</option>
+                                        <option value="MERCHANT_003">演示商户C</option>
+                                    </select>
+                                    <div class="form-error" id="merchantIdError"></div>
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced required" for="adAccountId">广告账户ID</label>
+                                    <input type="text" 
+                                           class="form-input-enhanced" 
+                                           id="adAccountId" 
+                                           name="adAccountId" 
+                                           required
+                                           placeholder="请输入广告账户ID"
+                                           maxlength="50">
+                                    <div class="form-error" id="adAccountIdError"></div>
+                                    <div class="form-help">关联的广告投放账户标识</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced required" for="adAccountName">广告账户名称</label>
+                                    <input type="text" 
+                                           class="form-input-enhanced" 
+                                           id="adAccountName" 
+                                           name="adAccountName" 
+                                           required
+                                           placeholder="请输入广告账户名称"
+                                           maxlength="100">
+                                    <div class="form-error" id="adAccountNameError"></div>
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced" for="accountStatus">账户状态</label>
+                                    <select class="form-input-enhanced" 
+                                            id="accountStatus" 
+                                            name="accountStatus">
+                                        <option value="active">正常使用</option>
+                                        <option value="pending">待审核</option>
+                                        <option value="suspended">暂停使用</option>
+                                        <option value="inactive">停用</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 联系人信息 -->
+                    <section class="form-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span class="section-icon">👤</span>
+                                联系人信息
+                            </h2>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced" for="contactName">联系人姓名</label>
+                                    <input type="text" 
+                                           class="form-input-enhanced" 
+                                           id="contactName" 
+                                           name="contactName"
+                                           placeholder="请输入联系人姓名"
+                                           maxlength="50">
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced" for="contactPhone">联系电话</label>
+                                    <input type="tel" 
+                                           class="form-input-enhanced" 
+                                           id="contactPhone" 
+                                           name="contactPhone"
+                                           placeholder="请输入联系电话"
+                                           pattern="[0-9]{11}"
+                                           maxlength="15">
+                                    <div class="form-help">手机号或固定电话</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced" for="contactEmail">联系邮箱</label>
+                                    <input type="email" 
+                                           class="form-input-enhanced" 
+                                           id="contactEmail" 
+                                           name="contactEmail"
+                                           placeholder="请输入联系邮箱"
+                                           maxlength="100">
+                                </div>
+                                
+                                <div class="form-group-enhanced">
+                                    <label class="form-label-enhanced" for="contactAddress">联系地址</label>
+                                    <input type="text" 
+                                           class="form-input-enhanced" 
+                                           id="contactAddress" 
+                                           name="contactAddress"
+                                           placeholder="请输入联系地址"
+                                           maxlength="200">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 备注信息 -->
+                    <section class="form-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span class="section-icon">📝</span>
+                                备注信息
+                            </h2>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group-enhanced">
+                                <label class="form-label-enhanced" for="remark">备注说明</label>
+                                <textarea class="form-input-enhanced" 
+                                          id="remark" 
+                                          name="remark" 
+                                          rows="4"
+                                          placeholder="请输入备注信息（可选）"
+                                          maxlength="500"></textarea>
+                                <div class="form-help">
+                                    <span class="char-count">0/500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 表单操作按钮 -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn--outline btn--large" id="cancelBtn">
+                            <span class="btn__icon">❌</span>
+                            <span class="btn__text">取消</span>
+                        </button>
+                        <button type="button" class="btn btn--secondary btn--large" id="resetBtn">
+                            <span class="btn__icon">🔄</span>
+                            <span class="btn__text">重置</span>
+                        </button>
+                        <button type="submit" class="btn btn--primary btn--large" id="submitFormBtn">
+                            <span class="btn__icon">✅</span>
+                            <span class="btn__text">提交录入</span>
+                            <span class="btn__loading" style="display: none;">
+                                <span class="loading-spinner"></span>
+                                提交中...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 预览模态框 -->
+            <div class="modal-overlay" id="previewModalOverlay">
+                <div class="modal-enhanced" id="previewModal">
+                    <div class="modal-header">
+                        <h3 class="modal-title">付款账户信息预览</h3>
+                        <button class="modal-close" id="previewModalClose">&times;</button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="preview-content" id="previewContent">
+                            <!-- 预览内容动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn--outline" id="closePreviewBtn">关闭</button>
+                        <button type="button" class="btn btn--primary" id="confirmSubmitBtn">确认提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 统一页脚组件 -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | Payment Account Entry</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+        <div class="toast-content">
+            <span class="toast-icon"></span>
+            <span class="toast-message"></span>
+        </div>
+        <button class="toast-close">&times;</button>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/static/js/header-unified.js"></script>
+    <script src="/static/js/payment-account-entry.js"></script>
+</body>
+</html>

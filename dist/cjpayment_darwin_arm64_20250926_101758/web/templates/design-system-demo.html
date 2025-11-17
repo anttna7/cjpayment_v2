@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CJPayment 统一设计系统演示</title>
+    
+    <!-- 统一设计系统 - 唯一需要的CSS文件 -->
+    <link rel="stylesheet" href="/static/css/cjpayment-unified.css">
+    
+    <meta name="description" content="CJPayment统一设计系统演示页面">
+</head>
+<body class="app">
+    <!-- 跳转链接 (无障碍支持) -->
+    <a href="#main-content" class="skip-link">跳转到主要内容</a>
+    
+    <!-- 统一页头 -->
+    <header class="app-header">
+        <div class="header">
+            <div class="header__left">
+                <a href="#" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v3.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="nav">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="#" class="nav__link nav__link--active">
+                            <span class="nav__icon">🎨</span>
+                            <span class="nav__text">设计系统</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="header__right">
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <div class="user-menu">
+                    <button class="user-menu__trigger">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name">设计师</span>
+                            <span class="user-menu__role">UI/UX专家</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 主要内容 -->
+    <main class="app__main" id="main-content">
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">CJPayment 统一设计系统</h1>
+            <p class="page-subtitle">解决UI不一致问题，创建企业级用户体验</p>
+        </div>
+
+        <!-- 设计原则 -->
+        <section class="form-section">
+            <h2 class="form-section-title">🎯 设计原则</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card">
+                    <div class="card__body">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 bg-primary-500 text-white rounded-full flex items-center justify-content">🎨</div>
+                            <h3 class="text-lg font-semibold">一致性</h3>
+                        </div>
+                        <p class="text-secondary">所有页面使用统一的按钮、卡片、表格等组件，确保用户体验一致</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card__body">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 bg-primary-500 text-white rounded-full flex items-center justify-content">♿</div>
+                            <h3 class="text-lg font-semibold">可访问性</h3>
+                        </div>
+                        <p class="text-secondary">符合WCAG标准，支持键盘导航、屏幕阅读器，确保所有用户可用</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 按钮系统演示 -->
+        <section class="form-section">
+            <h2 class="form-section-title">🔘 统一按钮系统</h2>
+            <div class="alert alert-info">
+                <span class="alert-icon">💡</span>
+                <div class="alert-message">
+                    所有按钮都使用您指定的紫色交互效果：悬停时紫色背景渐变，选中时白色文字配紫色背景
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">主要按钮</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="flex flex-col gap-3">
+                            <button class="btn btn--primary">主要操作</button>
+                            <button class="btn btn--primary btn--lg">大按钮</button>
+                            <button class="btn btn--primary btn--sm">小按钮</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">次要按钮</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="flex flex-col gap-3">
+                            <button class="btn btn--secondary">次要操作</button>
+                            <button class="btn btn--outline">轮廓按钮</button>
+                            <button class="btn btn--text">文本按钮</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">状态按钮</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="flex flex-col gap-3">
+                            <button class="btn btn--success">成功</button>
+                            <button class="btn btn--danger">危险</button>
+                            <button class="btn btn--primary" disabled>禁用</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 统计卡片演示 -->
+        <section class="form-section">
+            <h2 class="form-section-title">📊 统一统计卡片</h2>
+            <div class="stats-responsive">
+                <div class="stat-card">
+                    <div class="stat-card__icon">💰</div>
+                    <div class="stat-card__title">总交易数</div>
+                    <div class="stat-card__value">1,247</div>
+                    <div class="stat-card__change stat-card__change--positive">
+                        <span>↗</span> +12.5% 较昨日
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card__icon">📈</div>
+                    <div class="stat-card__title">总收益</div>
+                    <div class="stat-card__value">¥156,890</div>
+                    <div class="stat-card__change stat-card__change--positive">
+                        <span>↗</span> +8.3% 较昨日
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card__icon">👥</div>
+                    <div class="stat-card__title">活跃用户</div>
+                    <div class="stat-card__value">89</div>
+                    <div class="stat-card__change stat-card__change--negative">
+                        <span>↘</span> -2.1% 较昨日
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-card__icon">✅</div>
+                    <div class="stat-card__title">成功率</div>
+                    <div class="stat-card__value">98.5%</div>
+                    <div class="stat-card__change stat-card__change--neutral">
+                        <span>→</span> 持平
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 统一表格系统 -->
+        <section class="form-section">
+            <h2 class="form-section-title">📋 统一表格系统</h2>
+            <div class="data-table">
+                <div class="data-table__header">
+                    <h3 class="data-table__title">用户数据</h3>
+                    <div class="data-table__actions">
+                        <div class="data-table__search">
+                            <input type="text" placeholder="搜索用户..." class="data-table__search-input">
+                            <span class="data-table__search-icon">🔍</span>
+                        </div>
+                        <div class="data-table__view-toggle">
+                            <button class="data-table__view-btn data-table__view-btn--active">表格</button>
+                            <button class="data-table__view-btn">卡片</button>
+                        </div>
+                        <button class="btn btn--primary btn--sm">
+                            <span class="btn__icon">➕</span>
+                            新增用户
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="data-table__content">
+                    <table class="data-table__table">
+                        <thead>
+                            <tr>
+                                <th>用户名</th>
+                                <th>邮箱</th>
+                                <th>角色</th>
+                                <th>状态</th>
+                                <th>注册时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>张三</td>
+                                <td>zhangsan@example.com</td>
+                                <td>管理员</td>
+                                <td><span class="badge badge--success">活跃</span></td>
+                                <td>2025-01-15</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn--sm btn--text">编辑</button>
+                                        <button class="btn btn--sm btn--text">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>李四</td>
+                                <td>lisi@example.com</td>
+                                <td>用户</td>
+                                <td><span class="badge badge--warning">待激活</span></td>
+                                <td>2025-01-14</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn--sm btn--text">编辑</button>
+                                        <button class="btn btn--sm btn--text">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>王五</td>
+                                <td>wangwu@example.com</td>
+                                <td>用户</td>
+                                <td><span class="badge badge--error">禁用</span></td>
+                                <td>2025-01-13</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn--sm btn--text">编辑</button>
+                                        <button class="btn btn--sm btn--text">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <div class="pagination__info">显示 1-3 条，共 25 条记录</div>
+                    <div class="pagination__controls">
+                        <button class="pagination__btn" disabled>上一页</button>
+                        <button class="pagination__btn pagination__btn--active">1</button>
+                        <button class="pagination__btn">2</button>
+                        <button class="pagination__btn">3</button>
+                        <button class="pagination__btn">下一页</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 表单系统演示 -->
+        <section class="form-section">
+            <h2 class="form-section-title">📝 统一表单系统</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label class="form-label">用户名</label>
+                    <input type="text" class="form-input" placeholder="请输入用户名">
+                    <div class="form-help">用户名将用于登录系统</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">邮箱地址</label>
+                    <input type="email" class="form-input" placeholder="请输入邮箱地址">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">用户角色</label>
+                    <select class="form-select">
+                        <option>请选择角色</option>
+                        <option>管理员</option>
+                        <option>用户</option>
+                        <option>访客</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">用户状态</label>
+                    <select class="form-select">
+                        <option>活跃</option>
+                        <option>待激活</option>
+                        <option>禁用</option>
+                    </select>
+                </div>
+                
+                <div class="form-group col-span-full">
+                    <label class="form-label">备注信息</label>
+                    <textarea class="form-textarea" rows="4" placeholder="请输入备注信息"></textarea>
+                </div>
+            </div>
+            
+            <div class="flex justify-end gap-3 mt-6">
+                <button class="btn btn--secondary">取消</button>
+                <button class="btn btn--primary">保存</button>
+            </div>
+        </section>
+
+        <!-- 提示消息演示 -->
+        <section class="form-section">
+            <h2 class="form-section-title">💬 统一提示系统</h2>
+            <div class="grid gap-4">
+                <div class="alert alert-success">
+                    <span class="alert-icon">✅</span>
+                    <div class="alert-message">操作成功！用户信息已更新。</div>
+                    <button class="alert-close">×</button>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <span class="alert-icon">⚠️</span>
+                    <div class="alert-message">请注意：此操作将影响系统性能。</div>
+                    <button class="alert-close">×</button>
+                </div>
+                
+                <div class="alert alert-error">
+                    <span class="alert-icon">❌</span>
+                    <div class="alert-message">错误：无法连接到服务器，请稍后重试。</div>
+                    <button class="alert-close">×</button>
+                </div>
+                
+                <div class="alert alert-info">
+                    <span class="alert-icon">ℹ️</span>
+                    <div class="alert-message">提示：系统将在5分钟后进行维护。</div>
+                    <button class="alert-close">×</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 加载状态演示 -->
+        <section class="form-section">
+            <h2 class="form-section-title">⏳ 加载和状态</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">加载中</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">正在加载数据...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">空状态</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📭</div>
+                            <div class="empty-state-title">暂无数据</div>
+                            <div class="empty-state-description">还没有任何记录，点击按钮创建第一条记录</div>
+                            <button class="btn btn--primary">创建记录</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card__header">
+                        <h3 class="card__title">错误状态</h3>
+                    </div>
+                    <div class="card__body">
+                        <div class="error-state">
+                            <div class="error-state-icon">❌</div>
+                            <div class="error-state-title">加载失败</div>
+                            <div class="error-state-description">无法加载数据，请检查网络连接</div>
+                            <button class="btn btn--outline">重新加载</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 统一页脚 -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__text">© 2025 CJPayment. 统一设计系统 v3.0</div>
+        </div>
+    </footer>
+
+    <!-- 统一交互脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 主题切换
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const html = document.documentElement;
+            
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+            themeIcon.textContent = savedTheme === 'light' ? '🌙' : '☀️';
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀️';
+            });
+
+            // 提示消息关闭功能
+            document.querySelectorAll('.alert-close').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.alert').style.display = 'none';
+                });
+            });
+
+            // 表格视图切换演示
+            document.querySelectorAll('.data-table__view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有活跃状态
+                    document.querySelectorAll('.data-table__view-btn').forEach(b => {
+                        b.classList.remove('data-table__view-btn--active');
+                    });
+                    // 添加当前按钮活跃状态
+                    this.classList.add('data-table__view-btn--active');
+                });
+            });
+
+            // 统计卡片点击演示
+            document.querySelectorAll('.stat-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // 移除所有选中状态
+                    document.querySelectorAll('.stat-card').forEach(c => {
+                        c.classList.remove('card-interactive--selected');
+                    });
+                    // 添加当前卡片选中状态
+                    this.classList.add('card-interactive--selected');
+                });
+            });
+
+            // 表格行点击演示
+            document.querySelectorAll('.data-table__table tbody tr').forEach(row => {
+                row.addEventListener('click', function() {
+                    // 移除所有选中状态
+                    document.querySelectorAll('.data-table__table tbody tr').forEach(r => {
+                        r.classList.remove('table-row-interactive--selected');
+                    });
+                    // 添加当前行选中状态
+                    this.classList.add('table-row-interactive--selected');
+                });
+            });
+
+            // 页面加载完成后的渐入动画
+            document.body.classList.add('page-transition--enter');
+        });
+    </script>
+</body>
+</html>

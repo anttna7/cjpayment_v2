@@ -1,0 +1,47 @@
+{
+  "testName": "修复后的导航功能验证测试",
+  "timestamp": "2025-08-22T16:07:38.765Z",
+  "testResults": [
+    {
+      "step": 1,
+      "test": "访问Dashboard页面不重定向到登录页面",
+      "result": "PASS",
+      "details": {
+        "currentUrl": "http://127.0.0.1:8091/dashboard",
+        "pageTitle": "仪表板 - CJPayment 企业内部支付管理系统",
+        "redirected": false
+      }
+    },
+    {
+      "step": 2,
+      "test": "检查认证状态",
+      "result": "PASS",
+      "details": {
+        "authToken": true,
+        "userInfo": true,
+        "authTokenValue": "已设置",
+        "userInfoValue": "已设置"
+      }
+    },
+    {
+      "step": "ERROR",
+      "test": "测试执行",
+      "result": "FAIL",
+      "details": {
+        "error": "page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.sidebar') to be visible\u001b[22m\n",
+        "stack": "page.waitForSelector: Timeout 5000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.sidebar') to be visible\u001b[22m\n\n    at runFixedNavigationTest (/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/fixed-navigation-verification-test.js:92:16)"
+      }
+    }
+  ],
+  "screenshots": [
+    "fixed-navigation-01-dashboard-initial.png",
+    "fixed-navigation-error.png"
+  ],
+  "summary": {
+    "totalTests": 2,
+    "passed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "overall": "FAIL"
+  }
+}

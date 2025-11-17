@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>订单号规则管理 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/static/css/order-number-rules.css" as="style">
+    <link rel="preload" href="/static/js/order-number-rules.js" as="script">
+    
+    <!-- Header Critical Fix CSS - 最高优先级修复 -->
+    <link rel="stylesheet" href="/static/css/header-critical-fix.css">
+    
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard-enhanced.css">
+    
+    <!-- Order Number Rules CSS -->
+    <link rel="stylesheet" href="/static/css/order-number-rules.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="CJPayment企业内部支付管理系统订单号规则管理">
+    <meta name="keywords" content="订单号规则,订单编号,业务规则,企业系统">
+</head>
+<body class="page-order-rules">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link nav__link--active" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">3</span>
+                    </button>
+                    
+                    <!-- Notification Dropdown -->
+                    <div class="notifications__dropdown" id="notificationDropdown">
+                        <div class="dropdown__header">
+                            <h3 class="dropdown__title">通知中心</h3>
+                            <button class="dropdown__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="dropdown__body" id="notificationList">
+                            <!-- 通知项将通过JavaScript动态生成 -->
+                        </div>
+                        <div class="dropdown__footer">
+                            <a href="/notifications" class="dropdown__link">查看全部通知</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userMenuButton" aria-label="用户菜单" title="用户菜单">
+                        <div class="user-avatar">
+                            <span class="avatar-text">管</span>
+                        </div>
+                        <span class="user-name">系统管理员</span>
+                        <span class="user-arrow">▼</span>
+                    </button>
+                    
+                    <!-- User Dropdown -->
+                    <div class="user-menu__dropdown" id="userMenuDropdown">
+                        <div class="dropdown__header">
+                            <div class="user-info">
+                                <div class="user-avatar user-avatar--large">
+                                    <span class="avatar-text">管</span>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name">系统管理员</div>
+                                    <div class="user-role">Super Admin</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown__body">
+                            <a href="/profile" class="dropdown__item">
+                                <span class="item__icon">👤</span>
+                                个人资料
+                            </a>
+                            <a href="/settings" class="dropdown__item">
+                                <span class="item__icon">⚙️</span>
+                                系统设置
+                            </a>
+                            <div class="dropdown__divider"></div>
+                            <button class="dropdown__item dropdown__item--danger" onclick="logout()">
+                                <span class="item__icon">🚪</span>
+                                退出登录
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page__header">
+                <div class="page__title-section">
+                    <nav class="breadcrumb">
+                        <a href="/dashboard" class="breadcrumb__item">首页</a>
+                        <span class="breadcrumb__separator">»</span>
+                        <a href="/system_management" class="breadcrumb__item">系统管理</a>
+                        <span class="breadcrumb__separator">»</span>
+                        <span class="breadcrumb__item breadcrumb__item--active">订单号规则管理</span>
+                    </nav>
+                    <h1 class="page__title">
+                        <span class="page__icon">🔢</span>
+                        订单号规则管理
+                    </h1>
+                    <p class="page__description">管理订单号生成规则、格式配置和自动编号策略</p>
+                </div>
+                
+                <div class="page__actions">
+                    <button class="btn-enhanced btn-outline" id="testOrderNumberBtn" title="测试订单号生成">
+                        <span class="btn__icon">🧪</span>
+                        测试生成
+                    </button>
+                    <button class="btn-enhanced btn-primary" id="createRuleBtn" title="创建新规则">
+                        <span class="btn__icon">➕</span>
+                        创建规则
+                    </button>
+                </div>
+            </div>
+
+            <!-- Rule Statistics Dashboard -->
+            <div class="rule-stats-dashboard">
+                <div class="stats-card">
+                    <div class="stats-card__icon">📏</div>
+                    <div class="stats-card__content">
+                        <div class="stats-card__value" id="totalRulesCount">0</div>
+                        <div class="stats-card__label">总规则数</div>
+                        <div class="stats-card__trend">
+                            <span class="trend-indicator positive">📈</span>
+                            <span class="trend-text">活跃规则</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stats-card__icon">⚡</div>
+                    <div class="stats-card__content">
+                        <div class="stats-card__value" id="activeRulesCount">0</div>
+                        <div class="stats-card__label">启用规则</div>
+                        <div class="stats-card__trend">
+                            <span class="trend-indicator positive">✅</span>
+                            <span class="trend-text">运行中</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stats-card__icon">🔢</div>
+                    <div class="stats-card__content">
+                        <div class="stats-card__value" id="todayGeneratedCount">0</div>
+                        <div class="stats-card__label">今日生成</div>
+                        <div class="stats-card__trend">
+                            <span class="trend-indicator positive">⬆️</span>
+                            <span class="trend-text">+15.6%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="stats-card__icon">🎯</div>
+                    <div class="stats-card__content">
+                        <div class="stats-card__value" id="successRate">99.8%</div>
+                        <div class="stats-card__label">成功率</div>
+                        <div class="stats-card__trend">
+                            <span class="trend-indicator positive">⭐</span>
+                            <span class="trend-text">优秀</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="order-rules-content">
+                <!-- Current Active Rules Panel -->
+                <div class="active-rules-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <span class="panel-icon">⚡</span>
+                            当前规则配置
+                        </h2>
+                        <div class="panel-actions">
+                            <button class="btn-enhanced btn-sm btn-outline" id="refreshRulesBtn">
+                                <span class="btn__icon">🔄</span>
+                                刷新
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="current-rules-grid" id="currentRulesGrid">
+                            <!-- Current rules will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rules Management Panel -->
+                <div class="rules-management-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <span class="panel-icon">⚙️</span>
+                            规则管理
+                        </h2>
+                        <div class="panel-actions">
+                            <div class="search-box">
+                                <input type="text" id="rulesSearch" class="search-input" placeholder="搜索规则...">
+                                <span class="search-icon">🔍</span>
+                            </div>
+                            <select id="ruleStatusFilter" class="filter-select">
+                                <option value="">全部状态</option>
+                                <option value="active">启用</option>
+                                <option value="inactive">禁用</option>
+                                <option value="draft">草稿</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="rules-table-container">
+                            <table class="rules-table">
+                                <thead>
+                                    <tr>
+                                        <th class="checkbox-column">
+                                            <input type="checkbox" id="selectAllRules">
+                                        </th>
+                                        <th>规则名称</th>
+                                        <th>业务类型</th>
+                                        <th>前缀格式</th>
+                                        <th>编号长度</th>
+                                        <th>状态</th>
+                                        <th>最后修改</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rulesTableBody">
+                                    <tr class="loading-row">
+                                        <td colspan="8">
+                                            <div class="loading-spinner"></div>
+                                            <span>正在加载规则列表...</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="pagination-container">
+                            <div class="pagination-info">
+                                显示 <span id="pageStart">1</span>-<span id="pageEnd">10</span> 条，共 <span id="totalRules">-</span> 条记录
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="pagination-btn" id="firstPage" disabled>首页</button>
+                                <button class="pagination-btn" id="prevPage" disabled>上一页</button>
+                                <div class="pagination-numbers" id="paginationNumbers">
+                                    <!-- 页码将通过JavaScript动态生成 -->
+                                </div>
+                                <button class="pagination-btn" id="nextPage">下一页</button>
+                                <button class="pagination-btn" id="lastPage">末页</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create/Edit Rule Modal -->
+    <div class="modal-enhanced" id="ruleModal" role="dialog" aria-labelledby="ruleModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="ruleModalTitle">创建订单号规则</h2>
+                <button class="modal-close" id="ruleModalClose" aria-label="关闭对话框">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="ruleForm" class="rule-form">
+                    <!-- Basic Information Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">
+                            <span class="section-icon">ℹ️</span>
+                            基本信息
+                        </h4>
+                        
+                        <div class="form-row">
+                            <div class="form-group-enhanced">
+                                <label for="ruleName" class="form-label-enhanced required">规则名称</label>
+                                <input type="text" 
+                                       id="ruleName" 
+                                       name="ruleName" 
+                                       class="form-input-enhanced" 
+                                       placeholder="请输入规则名称"
+                                       required>
+                                <div class="form-help">建议使用描述性名称，如：充值订单-对公账户</div>
+                            </div>
+                            
+                            <div class="form-group-enhanced">
+                                <label for="businessType" class="form-label-enhanced required">业务类型</label>
+                                <select id="businessType" name="businessType" class="form-input-enhanced" required>
+                                    <option value="">请选择业务类型</option>
+                                    <option value="recharge">充值订单</option>
+                                    <option value="withdrawal">提现订单</option>
+                                    <option value="transfer">转账订单</option>
+                                    <option value="refund">退款订单</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group-enhanced">
+                            <label for="ruleDescription" class="form-label-enhanced">规则描述</label>
+                            <textarea id="ruleDescription" 
+                                     name="ruleDescription" 
+                                     class="form-input-enhanced" 
+                                     placeholder="请输入规则描述（可选）"
+                                     rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Format Configuration Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">
+                            <span class="section-icon">🔧</span>
+                            格式配置
+                        </h4>
+                        
+                        <div class="form-row">
+                            <div class="form-group-enhanced">
+                                <label for="prefixType" class="form-label-enhanced required">前缀类型</label>
+                                <select id="prefixType" name="prefixType" class="form-input-enhanced" required>
+                                    <option value="fixed">固定前缀</option>
+                                    <option value="business">业务类型</option>
+                                    <option value="date">日期格式</option>
+                                    <option value="custom">自定义</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group-enhanced">
+                                <label for="prefixValue" class="form-label-enhanced required">前缀值</label>
+                                <input type="text" 
+                                       id="prefixValue" 
+                                       name="prefixValue" 
+                                       class="form-input-enhanced" 
+                                       placeholder="如：CJ、RO、PAY等"
+                                       required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group-enhanced">
+                                <label for="dateFormat" class="form-label-enhanced">日期格式</label>
+                                <select id="dateFormat" name="dateFormat" class="form-input-enhanced">
+                                    <option value="">不包含日期</option>
+                                    <option value="YYYYMMDD">年月日 (YYYYMMDD)</option>
+                                    <option value="YYMMDD">年月日短 (YYMMDD)</option>
+                                    <option value="YYYYMM">年月 (YYYYMM)</option>
+                                    <option value="YYMM">年月短 (YYMM)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group-enhanced">
+                                <label for="numberLength" class="form-label-enhanced required">编号长度</label>
+                                <input type="number" 
+                                       id="numberLength" 
+                                       name="numberLength" 
+                                       class="form-input-enhanced" 
+                                       min="4" 
+                                       max="12" 
+                                       value="6"
+                                       required>
+                                <div class="form-help">序列号位数（4-12位）</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Advanced Options Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">
+                            <span class="section-icon">⚙️</span>
+                            高级选项
+                        </h4>
+                        
+                        <div class="form-row">
+                            <div class="form-group-enhanced">
+                                <label class="form-label-enhanced">生成策略</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="radio" name="generationStrategy" value="sequential" checked>
+                                        <span class="checkbox-label">顺序递增</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="radio" name="generationStrategy" value="random">
+                                        <span class="checkbox-label">随机生成</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="radio" name="generationStrategy" value="timestamp">
+                                        <span class="checkbox-label">时间戳</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group-enhanced">
+                                <label class="form-label-enhanced">重置周期</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="radio" name="resetCycle" value="never" checked>
+                                        <span class="checkbox-label">永不重置</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="radio" name="resetCycle" value="daily">
+                                        <span class="checkbox-label">每日重置</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="radio" name="resetCycle" value="monthly">
+                                        <span class="checkbox-label">每月重置</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group-enhanced">
+                                <label for="startNumber" class="form-label-enhanced">起始编号</label>
+                                <input type="number" 
+                                       id="startNumber" 
+                                       name="startNumber" 
+                                       class="form-input-enhanced" 
+                                       min="1" 
+                                       value="1">
+                            </div>
+                            
+                            <div class="form-group-enhanced">
+                                <label for="separator" class="form-label-enhanced">分隔符</label>
+                                <input type="text" 
+                                       id="separator" 
+                                       name="separator" 
+                                       class="form-input-enhanced" 
+                                       placeholder="可选，如：-、_等"
+                                       maxlength="2">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preview Section -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">
+                            <span class="section-icon">👁️</span>
+                            预览效果
+                        </h4>
+                        
+                        <div class="preview-container">
+                            <div class="preview-label">生成效果预览：</div>
+                            <div class="preview-result" id="previewResult">
+                                <span class="preview-placeholder">请完善规则配置以查看预览</span>
+                            </div>
+                            <div class="preview-examples" id="previewExamples">
+                                <!-- 示例将通过JavaScript动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-enhanced btn-outline" id="cancelRuleBtn">取消</button>
+                <button type="button" class="btn-enhanced btn-outline" id="testRuleBtn">测试规则</button>
+                <button type="submit" form="ruleForm" class="btn-enhanced btn-primary" id="saveRuleBtn">
+                    <span class="btn__text">保存规则</span>
+                    <span class="btn__loading" style="display: none;">
+                        <span class="loading-spinner"></span>
+                        保存中...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Generation Modal -->
+    <div class="modal-enhanced" id="testModal" role="dialog" aria-labelledby="testModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="testModalTitle">订单号生成测试</h2>
+                <button class="modal-close" id="testModalClose" aria-label="关闭对话框">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="test-controls">
+                    <div class="form-group-enhanced">
+                        <label for="testRuleSelect" class="form-label-enhanced">测试规则</label>
+                        <select id="testRuleSelect" class="form-input-enhanced">
+                            <option value="">选择要测试的规则</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group-enhanced">
+                            <label for="testCount" class="form-label-enhanced">生成数量</label>
+                            <input type="number" id="testCount" class="form-input-enhanced" min="1" max="100" value="10">
+                        </div>
+                        
+                        <div class="form-group-enhanced">
+                            <label class="form-label-enhanced">测试选项</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" id="testUniqueness" checked>
+                                    <span class="checkbox-label">唯一性测试</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" id="testValidation" checked>
+                                    <span class="checkbox-label">格式验证</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-actions">
+                        <button class="btn-enhanced btn-primary" id="startTestBtn">开始测试</button>
+                        <button class="btn-enhanced btn-outline" id="clearTestBtn">清空结果</button>
+                    </div>
+                </div>
+                
+                <div class="test-results">
+                    <div class="test-results-header">
+                        <h4>测试结果</h4>
+                        <div class="test-stats" id="testStats">
+                            <!-- 测试统计信息 -->
+                        </div>
+                    </div>
+                    <div class="test-results-body" id="testResultsBody">
+                        <div class="test-placeholder">
+                            点击"开始测试"按钮进行测试
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-enhanced btn-outline" id="cancelTestBtn">关闭</button>
+                <button type="button" class="btn-enhanced btn-primary" id="exportTestBtn">导出结果</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-enhanced" id="deleteRuleModal" role="dialog" aria-labelledby="deleteRuleModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="deleteRuleModalTitle">确认删除</h2>
+                <button class="modal-close" id="deleteRuleModalClose" aria-label="关闭对话框">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="delete-warning">
+                    <div class="warning-icon">⚠️</div>
+                    <div class="warning-content">
+                        <h4 class="warning-title">删除确认</h4>
+                        <p class="warning-text">您确定要删除规则 <strong id="deleteRuleName"></strong> 吗？</p>
+                        <p class="warning-note">删除后该规则将无法恢复，相关的订单号生成将受到影响。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-enhanced btn-outline" id="cancelDeleteRule">取消</button>
+                <button type="button" class="btn-enhanced btn-danger" id="confirmDeleteRule">
+                    <span class="btn__text">确认删除</span>
+                    <span class="btn__loading" style="display: none;">
+                        <span class="loading-spinner"></span>
+                        删除中...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced JavaScript -->
+    <script src="/static/js/base.js"></script>
+    <script src="/static/js/components.js"></script>
+    <script src="/static/js/order-number-rules.js"></script>
+    
+    <script>
+        // Initialize order number rules management when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof OrderNumberRulesManager === 'function') {
+                window.orderRulesManager = new OrderNumberRulesManager({
+                    apiEndpoint: '/api/order-rules',
+                    autoRefresh: 30000,
+                    enableRealTimePreview: true
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+{
+  "timestamp": "2025-08-27T09:41:56.531Z",
+  "testResults": [
+    {
+      "test": "advanced-table-modal-open-1",
+      "immediatePosition": {
+        "visible": false,
+        "rect": {
+          "top": 0,
+          "left": 0,
+          "width": 0,
+          "height": 0
+        },
+        "styles": {
+          "display": "none",
+          "position": "fixed",
+          "alignItems": "center",
+          "justifyContent": "center"
+        },
+        "classes": "modal-enhanced show",
+        "isInCorrectPosition": true
+      }
+    },
+    {
+      "test": "advanced-table-modal-delay-1",
+      "afterDelayPosition": {
+        "rect": {
+          "top": 0,
+          "left": 0
+        },
+        "isInCorrectPosition": true
+      }
+    },
+    {
+      "test": "advanced-table-modal-close-1",
+      "closeResult": {
+        "display": "none",
+        "visible": false,
+        "classes": "modal-enhanced show"
+      }
+    },
+    {
+      "test": "advanced-table-modal-open-2",
+      "immediatePosition": {
+        "visible": false,
+        "rect": {
+          "top": 0,
+          "left": 0,
+          "width": 0,
+          "height": 0
+        },
+        "styles": {
+          "display": "none",
+          "position": "fixed",
+          "alignItems": "center",
+          "justifyContent": "center"
+        },
+        "classes": "modal-enhanced",
+        "isInCorrectPosition": true
+      }
+    },
+    {
+      "test": "advanced-table-modal-delay-2",
+      "afterDelayPosition": {
+        "rect": {
+          "top": 0,
+          "left": 0
+        },
+        "isInCorrectPosition": true
+      }
+    },
+    {
+      "test": "advanced-table-modal-close-2",
+      "closeResult": {
+        "display": "none",
+        "visible": false,
+        "classes": "modal-enhanced show"
+      }
+    },
+    {
+      "test": "advanced-table-modal-open-3",
+      "immediatePosition": {
+        "visible": false,
+        "rect": {
+          "top": 0,
+          "left": 0,
+          "width": 0,
+          "height": 0
+        },
+        "styles": {
+          "display": "none",
+          "position": "fixed",
+          "alignItems": "center",
+          "justifyContent": "center"
+        },
+        "classes": "modal-enhanced show",
+        "isInCorrectPosition": true
+      }
+    },
+    {
+      "test": "advanced-table-modal-delay-3",
+      "afterDelayPosition": {
+        "rect": {
+          "top": 0,
+          "left": 0
+        },
+        "isInCorrectPosition": true
+      }
+    },
+    {
+      "test": "advanced-table-modal-close-3",
+      "closeResult": {
+        "display": "none",
+        "visible": false,
+        "classes": "modal-enhanced show"
+      }
+    },
+    {
+      "test": "report-modal-1",
+      "reportModalPosition": {
+        "visible": false,
+        "rect": {
+          "top": 0,
+          "left": 0,
+          "centerX": 0,
+          "centerY": 0
+        },
+        "viewport": {
+          "centerX": 640,
+          "centerY": 360
+        },
+        "isProperlyPositioned": true,
+        "isCentered": false
+      }
+    },
+    {
+      "test": "report-modal-2",
+      "reportModalPosition": {
+        "visible": false,
+        "rect": {
+          "top": 0,
+          "left": 0,
+          "centerX": 0,
+          "centerY": 0
+        },
+        "viewport": {
+          "centerX": 640,
+          "centerY": 360
+        },
+        "isProperlyPositioned": true,
+        "isCentered": false
+      }
+    }
+  ],
+  "issues": [],
+  "successes": [
+    {
+      "type": "initial-position-correct",
+      "message": "所有测试中模态框初始位置都正确"
+    },
+    {
+      "type": "position-stable",
+      "message": "所有测试中模态框位置都稳定"
+    }
+  ]
+}

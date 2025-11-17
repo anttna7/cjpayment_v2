@@ -1,0 +1,150 @@
+{
+  "timestamp": "2025-08-27T05:37:20.968Z",
+  "issues": [
+    {
+      "type": "positioning",
+      "message": "模态框未正确居中显示",
+      "expected_center": {
+        "x": 960,
+        "y": 540
+      },
+      "actual_center": {
+        "x": 1245,
+        "y": 991.798095703125
+      }
+    },
+    {
+      "type": "tab-switching",
+      "message": "标签页 \"高级条件\" 点击后未激活",
+      "tab_index": 1
+    },
+    {
+      "type": "tab-switching",
+      "message": "标签页 \"自定义规则\" 点击后未激活",
+      "tab_index": 2
+    },
+    {
+      "type": "advanced-tab-unresponsive",
+      "message": "高级条件标签页点击无反应，未激活"
+    },
+    {
+      "type": "close-button-ineffective",
+      "message": "关闭按钮 \"closeAdvancedFilters\" 点击后模态框未关闭"
+    }
+  ],
+  "screenshots": [
+    "debug/diagnosis-01-page-loaded.png",
+    "debug/diagnosis-02-modal-opened.png",
+    "debug/diagnosis-03-tab-testing.png",
+    "debug/diagnosis-04-advanced-tab.png",
+    "debug/diagnosis-05-close-testing.png"
+  ],
+  "detailed_analysis": {
+    "modal_elements": {
+      "backdrop_exists": true,
+      "container_exists": true
+    },
+    "backdrop": {
+      "visible": true,
+      "boundingBox": {
+        "x": 285,
+        "y": 452.1353759765625,
+        "width": 1920,
+        "height": 1079.9998779296875
+      },
+      "classes": "modal-backdrop show"
+    },
+    "container": {
+      "visible": true,
+      "boundingBox": {
+        "x": 645,
+        "y": 595.020751953125,
+        "width": 1200,
+        "height": 793.5546875
+      },
+      "is_centered": false,
+      "classes": "modal-container"
+    },
+    "tabs": {
+      "count": 3,
+      "buttons": [
+        {
+          "index": 0,
+          "text": "基础筛选",
+          "active": true,
+          "visible": true,
+          "clickable": true
+        },
+        {
+          "index": 1,
+          "text": "高级条件",
+          "active": false,
+          "visible": true,
+          "clickable": true
+        },
+        {
+          "index": 2,
+          "text": "自定义规则",
+          "active": false,
+          "visible": true,
+          "clickable": true
+        }
+      ]
+    },
+    "advanced_tab": {
+      "exists": true,
+      "text": "高级条件",
+      "visible": true,
+      "click_test": {
+        "before": {
+          "active": false,
+          "classes": "filter-tab"
+        },
+        "after": {
+          "active": false,
+          "classes": "filter-tab"
+        },
+        "state_changed": false
+      }
+    },
+    "close_methods": {
+      "close_buttons": 5,
+      "methods_tested": [
+        {
+          "button_index": 0,
+          "button_id": "closeAdvancedFilters",
+          "click_successful": true,
+          "modal_closed": false
+        }
+      ],
+      "esc_key_test": {
+        "tested": true,
+        "modal_closed": true
+      },
+      "backdrop_click_test": {
+        "tested": false,
+        "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#advancedFiltersBackdrop')\u001b[22m\n\u001b[2m    - locator resolved to <div aria-hidden=\"true\" class=\"modal-backdrop\" id=\"advancedFiltersBackdrop\">…</div>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    56 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+      }
+    },
+    "css_state": {
+      "backdrop": {
+        "display": "none",
+        "position": "fixed",
+        "pointerEvents": "none",
+        "zIndex": "1000",
+        "opacity": "0"
+      },
+      "container": {
+        "display": "block",
+        "position": "relative",
+        "pointerEvents": "auto",
+        "transform": "none"
+      }
+    },
+    "js_state": {
+      "orderInfoTable_exists": true,
+      "advancedDataTable_exists": true,
+      "global_click_handlers": 0
+    }
+  }
+}

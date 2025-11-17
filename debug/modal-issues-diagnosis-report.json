@@ -1,0 +1,734 @@
+{
+  "timestamp": "2025-08-27T09:45:49.217Z",
+  "dashboardTest": {
+    "exportButtons": [
+      {
+        "id": "exportDashboard",
+        "className": "btn btn-primary",
+        "text": "📊\n                        导出报表",
+        "onclick": null,
+        "disabled": false
+      },
+      {
+        "id": "exportTransactions",
+        "className": "btn btn--sm btn-outline",
+        "text": "📊\n                                导出",
+        "onclick": null,
+        "disabled": false
+      },
+      {
+        "id": "confirmDashboardExportBtn",
+        "className": "btn-enhanced btn-primary",
+        "text": "📤\n                    确认导出",
+        "onclick": null,
+        "disabled": false
+      },
+      {
+        "id": "confirmTransactionsExportBtn",
+        "className": "btn-enhanced btn-primary",
+        "text": "📤\n                    确认导出",
+        "onclick": null,
+        "disabled": false
+      }
+    ],
+    "modals": [
+      {
+        "id": "exportDashboardModal",
+        "className": "modal-enhanced",
+        "display": "none",
+        "visible": false
+      },
+      {
+        "id": "exportTransactionsModal",
+        "className": "modal-enhanced",
+        "display": "none",
+        "visible": false
+      }
+    ],
+    "functions": {
+      "showModalExists": false,
+      "hideModalExists": false
+    },
+    "errors": [],
+    "clickResult": {
+      "modalStatus": [
+        {
+          "id": "exportDashboardModal",
+          "visible": true,
+          "display": "block",
+          "classes": "modal-enhanced show"
+        },
+        {
+          "id": "exportTransactionsModal",
+          "visible": false,
+          "display": "none",
+          "classes": "modal-enhanced"
+        }
+      ],
+      "newMessages": [
+        {
+          "type": "warning",
+          "text": "图表Canvas元素未找到，延迟重试",
+          "timestamp": 1756287954490
+        },
+        {
+          "type": "log",
+          "text": "📊 Performance Report: {totalTime: 5038.80, averageLoadTime: 38.52, filesLoaded: 5, loadTimes: Object}",
+          "timestamp": 1756287954495
+        },
+        {
+          "type": "warning",
+          "text": "图表Canvas元素未找到，延迟重试",
+          "timestamp": 1756287954690
+        },
+        {
+          "type": "warning",
+          "text": "图表Canvas元素未找到，延迟重试",
+          "timestamp": 1756287954892
+        },
+        {
+          "type": "warning",
+          "text": "图表Canvas元素未找到，延迟重试",
+          "timestamp": 1756287955093
+        },
+        {
+          "type": "warning",
+          "text": "图表Canvas元素未找到，延迟重试",
+          "timestamp": 1756287955295
+        }
+      ],
+      "success": true
+    }
+  },
+  "reportsTest": {
+    "exportButtons": [
+      {
+        "id": "exportReportBtn",
+        "className": "btn btn-success",
+        "text": "📊\n                            导出报表",
+        "onclick": null,
+        "disabled": false
+      },
+      {
+        "id": "exportAdvancedBtn",
+        "className": "btn-enhanced btn-sm btn-success dropdown-trigger",
+        "text": "📤\n                                        导出\n                                        ▼",
+        "onclick": null,
+        "disabled": false
+      },
+      {
+        "id": "exportAdvancedTableBtn",
+        "className": "export-btn",
+        "text": "📊\n                        导出订单数据",
+        "onclick": null,
+        "disabled": false
+      },
+      {
+        "id": "confirmAdvancedTableExportBtn",
+        "className": "btn-enhanced btn-primary",
+        "text": "📤\n                    确认导出",
+        "onclick": null,
+        "disabled": false
+      },
+      {
+        "id": "confirmExportBtn",
+        "className": "btn-enhanced btn-primary",
+        "text": "📤\n                    确认导出",
+        "onclick": null,
+        "disabled": false
+      }
+    ],
+    "modals": [
+      {
+        "id": "exportAdvancedTableModal",
+        "className": "modal-enhanced",
+        "display": "none",
+        "visible": false,
+        "parentNode": "BODY"
+      },
+      {
+        "id": "exportModal",
+        "className": "modal-enhanced",
+        "display": "none",
+        "visible": false,
+        "parentNode": "BODY"
+      },
+      {
+        "id": "subscriptionModal",
+        "className": "modal-enhanced",
+        "display": "none",
+        "visible": false,
+        "parentNode": "BODY"
+      },
+      {
+        "id": "columnSettingsModal",
+        "className": "modal-enhanced",
+        "display": "none",
+        "visible": false,
+        "parentNode": "BODY"
+      }
+    ],
+    "functions": {
+      "showModalExists": true,
+      "hideModalExists": true
+    },
+    "specificModals": {
+      "exportModal": {
+        "exists": true,
+        "display": "none",
+        "parentNode": "BODY",
+        "classes": "modal-enhanced"
+      },
+      "exportAdvancedTableModal": {
+        "exists": true,
+        "display": "none",
+        "parentNode": "BODY",
+        "classes": "modal-enhanced"
+      }
+    },
+    "errors": [],
+    "directShowModalTest": {
+      "success": true,
+      "error": null
+    },
+    "modalStatus": {
+      "display": "none",
+      "visible": true,
+      "classes": "modal-enhanced show",
+      "styles": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "zIndex": "9999"
+      }
+    }
+  },
+  "issues": [],
+  "consoleMessages": [
+    {
+      "type": "log",
+      "text": "NotificationDataUnified: 通知列表HTML已更新 1757 个通知",
+      "timestamp": 1756287949486
+    },
+    {
+      "type": "log",
+      "text": "NotificationDataUnified: 通知数据已统一渲染",
+      "timestamp": 1756287949487
+    },
+    {
+      "type": "log",
+      "text": "🚀 Performance Loader initialized",
+      "timestamp": 1756287949488
+    },
+    {
+      "type": "log",
+      "text": "📄 Current page: dashboard",
+      "timestamp": 1756287949488
+    },
+    {
+      "type": "log",
+      "text": "Dashboard: 演示模式 - 跳过认证检查",
+      "timestamp": 1756287949495
+    },
+    {
+      "type": "warning",
+      "text": "Optional dependencies not yet loaded: [CJComponents]",
+      "timestamp": 1756287949499
+    },
+    {
+      "type": "log",
+      "text": "User Feedback Analytics: Initializing...",
+      "timestamp": 1756287949502
+    },
+    {
+      "type": "log",
+      "text": "User Feedback Analytics: Initialized successfully",
+      "timestamp": 1756287949534
+    },
+    {
+      "type": "log",
+      "text": "Mobile Utilities initialized: {isMobile: false, isTablet: false, isTouch: false, orientation: portrait}",
+      "timestamp": 1756287949536
+    },
+    {
+      "type": "log",
+      "text": "Interaction Enhancements: Initializing...",
+      "timestamp": 1756287949537
+    },
+    {
+      "type": "log",
+      "text": "Interaction Enhancements: Initialized successfully",
+      "timestamp": 1756287949542
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 用户信息已统一更新 {id: demo_admin, name: 系统管理员, role: 超级管理员, avatar: 👤, email: admin@cjpayment.com}",
+      "timestamp": 1756287949542
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 通知UI已更新，未读数量: 2",
+      "timestamp": 1756287949542
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 所有dropdown已强制隐藏",
+      "timestamp": 1756287949542
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 统一头部组件初始化完成",
+      "timestamp": 1756287949543
+    },
+    {
+      "type": "log",
+      "text": "✅ CSS Loaded: /static/css/dashboard-enhanced.css (90.00ms)",
+      "timestamp": 1756287949582
+    },
+    {
+      "type": "log",
+      "text": "✅ Loaded: /static/js/dashboard-enhanced.js (94.40ms)",
+      "timestamp": 1756287949584
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287949595
+    },
+    {
+      "type": "log",
+      "text": "Dashboard Enhanced: 开始加载交易记录...",
+      "timestamp": 1756287949701
+    },
+    {
+      "type": "log",
+      "text": "Dashboard Enhanced: 初始化完成",
+      "timestamp": 1756287949704
+    },
+    {
+      "type": "log",
+      "text": "Enhanced dashboard initialized successfully",
+      "timestamp": 1756287949704
+    },
+    {
+      "type": "log",
+      "text": "Dashboard Enhanced: 成功渲染 10 条交易记录",
+      "timestamp": 1756287949718
+    },
+    {
+      "type": "log",
+      "text": "Dashboard Enhanced: 交易记录加载成功",
+      "timestamp": 1756287949718
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287949796
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287949997
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287950219
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287950420
+    },
+    {
+      "type": "log",
+      "text": "Toast Enhanced: 初始化完成",
+      "timestamp": 1756287950492
+    },
+    {
+      "type": "log",
+      "text": "✅ Loaded: /static/js/toast-enhanced.js (3.00ms)",
+      "timestamp": 1756287950492
+    },
+    {
+      "type": "log",
+      "text": "✅ Loaded: /static/js/components.js (3.30ms)",
+      "timestamp": 1756287950492
+    },
+    {
+      "type": "log",
+      "text": "✅ Loaded: /static/js/modal-component.js (1.90ms)",
+      "timestamp": 1756287950494
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287950621
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287950823
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287951026
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287951230
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287951429
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287951631
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287951833
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287952035
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287952235
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287952436
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287952637
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287952838
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287953040
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287953242
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287953443
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287953644
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287953845
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287954047
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287954376
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287954490
+    },
+    {
+      "type": "log",
+      "text": "📊 Performance Report: {totalTime: 5038.80, averageLoadTime: 38.52, filesLoaded: 5, loadTimes: Object}",
+      "timestamp": 1756287954495
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287954690
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287954892
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287955093
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287955295
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287955497
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287955765
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287955899
+    },
+    {
+      "type": "warning",
+      "text": "图表Canvas元素未找到，延迟重试",
+      "timestamp": 1756287956103
+    },
+    {
+      "type": "error",
+      "text": "Failed to upload analytics data: TypeError: Failed to fetch\n    at window.fetch (http://localhost:8091/static/js/user-feedback-analytics.js:308:40)\n    at UserFeedbackAnalytics.sendAnalyticsData (http://localhost:8091/static/js/user-feedback-analytics.js:1070:15)\n    at UserFeedbackAnalytics.flushData (http://localhost:8091/static/js/user-feedback-analytics.js:979:28)\n    at HTMLDocument.<anonymous> (http://localhost:8091/static/js/user-feedback-analytics.js:1002:22)",
+      "timestamp": 1756287956306
+    },
+    {
+      "type": "log",
+      "text": "🚀 数据报表快速加载器启动",
+      "timestamp": 1756287956326
+    },
+    {
+      "type": "log",
+      "text": "✅ Header interactions initialized",
+      "timestamp": 1756287956334
+    },
+    {
+      "type": "log",
+      "text": "NotificationDataUnified: 通知列表HTML已更新 1757 个通知",
+      "timestamp": 1756287956334
+    },
+    {
+      "type": "log",
+      "text": "NotificationDataUnified: 通知数据已统一渲染",
+      "timestamp": 1756287956334
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 开始初始化...",
+      "timestamp": 1756287956334
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 开始加载订单数据...",
+      "timestamp": 1756287956334
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 初始化完成",
+      "timestamp": 1756287956336
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable 全局实例已创建",
+      "timestamp": 1756287956336
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 用户信息已统一更新 {id: demo_admin, name: 系统管理员, role: 超级管理员, avatar: 👤, email: admin@cjpayment.com}",
+      "timestamp": 1756287956336
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 通知UI已更新，未读数量: 2",
+      "timestamp": 1756287956336
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 所有dropdown已强制隐藏",
+      "timestamp": 1756287956336
+    },
+    {
+      "type": "log",
+      "text": "HeaderUnified: 统一头部组件初始化完成",
+      "timestamp": 1756287956336
+    },
+    {
+      "type": "log",
+      "text": "数据报表页面高级数据表导出功能已初始化",
+      "timestamp": 1756287956336
+    },
+    {
+      "type": "log",
+      "text": "User Feedback Analytics: Initializing...",
+      "timestamp": 1756287956336
+    },
+    {
+      "type": "log",
+      "text": "User Feedback Analytics: Initialized successfully",
+      "timestamp": 1756287956363
+    },
+    {
+      "type": "log",
+      "text": "Mobile Utilities initialized: {isMobile: false, isTablet: false, isTouch: false, orientation: portrait}",
+      "timestamp": 1756287956363
+    },
+    {
+      "type": "log",
+      "text": "Interaction Enhancements: Initializing...",
+      "timestamp": 1756287956363
+    },
+    {
+      "type": "log",
+      "text": "Interaction Enhancements: Initialized successfully",
+      "timestamp": 1756287956365
+    },
+    {
+      "type": "log",
+      "text": "Initializing Report Dashboard...",
+      "timestamp": 1756287956437
+    },
+    {
+      "type": "log",
+      "text": "Report Dashboard initialized successfully",
+      "timestamp": 1756287956437
+    },
+    {
+      "type": "log",
+      "text": "检查AdvancedDataTable类是否存在: true",
+      "timestamp": 1756287956437
+    },
+    {
+      "type": "log",
+      "text": "开始创建AdvancedDataTable实例...",
+      "timestamp": 1756287956437
+    },
+    {
+      "type": "log",
+      "text": "初始化高级数据表...",
+      "timestamp": 1756287956437
+    },
+    {
+      "type": "log",
+      "text": "AdvancedDataTable: 设置筛选标签页事件绑定",
+      "timestamp": 1756287956438
+    },
+    {
+      "type": "log",
+      "text": "发现 3 个筛选标签页",
+      "timestamp": 1756287956438
+    },
+    {
+      "type": "log",
+      "text": "绑定标签页 0: basic",
+      "timestamp": 1756287956438
+    },
+    {
+      "type": "log",
+      "text": "绑定标签页 1: advanced",
+      "timestamp": 1756287956438
+    },
+    {
+      "type": "log",
+      "text": "绑定标签页 2: custom",
+      "timestamp": 1756287956438
+    },
+    {
+      "type": "log",
+      "text": "AdvancedDataTable: 检查列设置按钮: JSHandle@node",
+      "timestamp": 1756287956440
+    },
+    {
+      "type": "log",
+      "text": "AdvancedDataTable: 绑定列设置按钮点击事件",
+      "timestamp": 1756287956440
+    },
+    {
+      "type": "log",
+      "text": "AdvancedDataTable: 绑定关闭按钮事件",
+      "timestamp": 1756287956440
+    },
+    {
+      "type": "log",
+      "text": "高级数据表初始化完成",
+      "timestamp": 1756287956440
+    },
+    {
+      "type": "log",
+      "text": "高级数据表初始化成功",
+      "timestamp": 1756287956440
+    },
+    {
+      "type": "log",
+      "text": "Enhanced report system initialized successfully",
+      "timestamp": 1756287956440
+    },
+    {
+      "type": "log",
+      "text": "KPI数据加载完成: 51.20ms",
+      "timestamp": 1756287956488
+    },
+    {
+      "type": "log",
+      "text": "高级数据表加载完成: 0.00ms",
+      "timestamp": 1756287956790
+    },
+    {
+      "type": "log",
+      "text": "Initializing Advanced Analytics...",
+      "timestamp": 1756287956821
+    },
+    {
+      "type": "warning",
+      "text": "Advanced Analytics: No data available",
+      "timestamp": 1756287956821
+    },
+    {
+      "type": "log",
+      "text": "图表数据加载完成: 231.00ms",
+      "timestamp": 1756287956821
+    },
+    {
+      "type": "log",
+      "text": "表格数据加载完成: 301.70ms",
+      "timestamp": 1756287957092
+    },
+    {
+      "type": "log",
+      "text": "报表页面总加载时间: 655.60ms",
+      "timestamp": 1756287957092
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 已强制设置 1800 个单元格为可滚动",
+      "timestamp": 1756287957351
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 已渲染 150 行数据",
+      "timestamp": 1756287957352
+    },
+    {
+      "type": "log",
+      "text": "OrderInfoTable: 成功加载 150 条订单记录",
+      "timestamp": 1756287957352
+    }
+  ]
+}

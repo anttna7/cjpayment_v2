@@ -1,0 +1,353 @@
+/* ==========================================================================
+   CJPayment 统一按钮交互样式系统
+   基于security_center页面的完美交互效果，采用紫色主题
+   ========================================================================== */
+
+/* ==========================================================================
+   主要按钮样式（Primary Buttons）
+   ========================================================================== */
+
+.btn-primary,
+.btn.btn-primary,
+button.btn-primary,
+.button-primary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    padding: 0.6rem 1.2rem !important;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.25) !important;
+    text-decoration: none !important;
+    min-height: 40px !important;
+    white-space: nowrap !important;
+}
+
+.btn-primary:hover,
+.btn.btn-primary:hover,
+button.btn-primary:hover,
+.button-primary:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35) !important;
+    color: white !important;
+}
+
+.btn-primary:active,
+.btn.btn-primary:active,
+button.btn-primary:active,
+.button-primary:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4) !important;
+}
+
+/* ==========================================================================
+   次要按钮样式（Secondary/Outline Buttons）
+   ========================================================================== */
+
+.btn-outline,
+.btn.btn-outline,
+button.btn-outline,
+.button-outline,
+.btn-secondary,
+.btn.btn-secondary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    padding: 0.6rem 1.2rem !important;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    color: #64748b !important;
+    border: 1px solid rgba(139, 92, 246, 0.2) !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    text-decoration: none !important;
+    min-height: 40px !important;
+    white-space: nowrap !important;
+}
+
+.btn-outline:hover,
+.btn.btn-outline:hover,
+button.btn-outline:hover,
+.button-outline:hover,
+.btn-secondary:hover,
+.btn.btn-secondary:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%) !important;
+    color: #8b5cf6 !important;
+    border-color: rgba(139, 92, 246, 0.4) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 12px rgba(139, 92, 246, 0.15) !important;
+}
+
+.btn-outline:active,
+.btn.btn-outline:active,
+button.btn-outline:active,
+.button-outline:active,
+.btn-secondary:active,
+.btn.btn-secondary:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 1px 6px rgba(139, 92, 246, 0.2) !important;
+}
+
+/* ==========================================================================
+   圆形图标按钮样式（Icon Buttons）
+   ========================================================================== */
+
+.btn-icon,
+.theme-toggle,
+.notifications__trigger,
+button.btn-icon {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    border: 1px solid rgba(139, 92, 246, 0.15) !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    font-size: 1.1rem !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    color: #64748b !important;
+}
+
+.btn-icon:hover,
+.theme-toggle:hover,
+.notifications__trigger:hover,
+button.btn-icon:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%) !important;
+    border-color: rgba(139, 92, 246, 0.3) !important;
+    transform: translateY(-1px) scale(1.05) !important;
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.15) !important;
+    color: #8b5cf6 !important;
+}
+
+.btn-icon:active,
+.theme-toggle:active,
+.notifications__trigger:active,
+button.btn-icon:active {
+    transform: translateY(0) scale(1) !important;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2) !important;
+}
+
+/* 图标动画效果 */
+.btn-icon .theme-icon,
+.theme-toggle .theme-icon {
+    transition: transform 0.3s ease !important;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)) !important;
+}
+
+.btn-icon:hover .theme-icon,
+.theme-toggle:hover .theme-icon {
+    transform: rotate(20deg) scale(1.1) !important;
+}
+
+.notifications__icon {
+    transition: all 0.3s ease !important;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)) !important;
+}
+
+.notifications__trigger:hover .notifications__icon {
+    transform: scale(1.1) !important;
+}
+
+/* ==========================================================================
+   小按钮样式（Small Buttons）
+   ========================================================================== */
+
+.btn--sm,
+.btn.btn--sm,
+.btn-sm,
+.notifications__clear {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.8rem !important;
+    min-height: 32px !important;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 6px rgba(139, 92, 246, 0.2) !important;
+}
+
+.btn--sm:hover,
+.btn.btn--sm:hover,
+.btn-sm:hover,
+.notifications__clear:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 10px rgba(139, 92, 246, 0.3) !important;
+}
+
+/* ==========================================================================
+   危险按钮样式（Danger Buttons）
+   ========================================================================== */
+
+.btn-danger,
+.btn.btn-danger,
+button.btn-danger,
+.user-menu__item--danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.btn-danger:hover,
+.btn.btn-danger:hover,
+button.btn-danger:hover,
+.user-menu__item--danger:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3) !important;
+}
+
+/* ==========================================================================
+   用户菜单按钮样式（User Menu Button）
+   ========================================================================== */
+
+.user-menu__trigger {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem 1rem !important;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    border: 1px solid rgba(139, 92, 246, 0.15) !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    color: #1e293b !important;
+    min-width: 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.user-menu__trigger:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.12) 100%) !important;
+    border-color: rgba(139, 92, 246, 0.3) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.15) !important;
+}
+
+/* ==========================================================================
+   表单按钮样式（Form Buttons）
+   ========================================================================== */
+
+.form-btn,
+input[type="submit"],
+input[type="button"],
+.btn-enhanced {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    padding: 0.6rem 1.2rem !important;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.25) !important;
+    text-decoration: none !important;
+    min-height: 40px !important;
+}
+
+.form-btn:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.btn-enhanced:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35) !important;
+}
+
+/* ==========================================================================
+   禁用状态样式（Disabled State）
+   ========================================================================== */
+
+.btn:disabled,
+button:disabled,
+.btn-disabled {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important;
+    color: #94a3b8 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: #e2e8f0 !important;
+}
+
+.btn:disabled:hover,
+button:disabled:hover,
+.btn-disabled:hover {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ==========================================================================
+   特殊场景按钮样式
+   ========================================================================== */
+
+/* 浮动反馈按钮 */
+.feedback-floating-btn {
+    width: 60px !important;
+    height: 60px !important;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+    border-radius: 50% !important;
+    color: white !important;
+    font-size: 24px !important;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
+}
+
+.feedback-floating-btn:hover {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+}
+
+/* ==========================================================================
+   响应式适配
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .btn-primary,
+    .btn-outline,
+    .btn-secondary {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.85rem !important;
+        min-height: 36px !important;
+    }
+    
+    .btn-icon,
+    .theme-toggle,
+    .notifications__trigger {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-primary,
+    .btn-outline,
+    .btn-secondary {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}

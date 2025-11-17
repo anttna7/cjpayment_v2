@@ -1,0 +1,253 @@
+{
+  "timestamp": "2025-08-27T05:52:54.198Z",
+  "console_messages": [
+    "[log] 🚀 数据报表快速加载器启动",
+    "[log] ✅ Header interactions initialized",
+    "[log] NotificationDataUnified: 通知列表HTML已更新 1757 个通知",
+    "[log] NotificationDataUnified: 通知数据已统一渲染",
+    "[log] OrderInfoTable: 开始初始化...",
+    "[log] OrderInfoTable: 开始加载订单数据...",
+    "[log] OrderInfoTable: 初始化完成",
+    "[log] OrderInfoTable 全局实例已创建",
+    "[log] HeaderUnified: 用户信息已统一更新 {id: admin_001, name: 系统管理员, role: 超级管理员, avatar: 👤, email: admin@cjpayment.com}",
+    "[log] HeaderUnified: 通知UI已更新，未读数量: 2",
+    "[log] HeaderUnified: 所有dropdown已强制隐藏",
+    "[log] HeaderUnified: 统一头部组件初始化完成",
+    "[log] 数据报表页面高级数据表导出功能已初始化",
+    "[log] User Feedback Analytics: Initializing...",
+    "[log] User Feedback Analytics: Initialized successfully",
+    "[log] Mobile Utilities initialized: {isMobile: false, isTablet: false, isTouch: false, orientation: portrait}",
+    "[log] Interaction Enhancements: Initializing...",
+    "[log] Interaction Enhancements: Initialized successfully",
+    "[log] Initializing Report Dashboard...",
+    "[log] Report Dashboard initialized successfully",
+    "[log] 检查AdvancedDataTable类是否存在: true",
+    "[log] 开始创建AdvancedDataTable实例...",
+    "[log] 初始化高级数据表...",
+    "[log] AdvancedDataTable: 设置筛选标签页事件绑定",
+    "[log] 发现 3 个筛选标签页",
+    "[log] 绑定标签页 0: basic",
+    "[log] 绑定标签页 1: advanced",
+    "[log] 绑定标签页 2: custom",
+    "[log] AdvancedDataTable: 检查列设置按钮: JSHandle@node",
+    "[log] AdvancedDataTable: 绑定列设置按钮点击事件",
+    "[log] AdvancedDataTable: 绑定关闭按钮事件",
+    "[log] 高级数据表初始化完成",
+    "[log] 高级数据表初始化成功",
+    "[log] Enhanced report system initialized successfully",
+    "[log] KPI数据加载完成: 60.50ms",
+    "[log] 高级数据表加载完成: 0.10ms",
+    "[log] Initializing Advanced Analytics...",
+    "[warning] Advanced Analytics: No data available",
+    "[log] 图表数据加载完成: 201.80ms",
+    "[log] 表格数据加载完成: 301.50ms",
+    "[log] 报表页面总加载时间: 669.40ms",
+    "[log] OrderInfoTable: 已强制设置 1800 个单元格为可滚动",
+    "[log] OrderInfoTable: 已渲染 150 行数据",
+    "[log] OrderInfoTable: 成功加载 150 条订单记录",
+    "[log] AdvancedDataTable: 列设置按钮被点击",
+    "[log] AdvancedDataTable: showColumnSettings() 被调用",
+    "[log] AdvancedDataTable: 找到列设置模态框，开始显示",
+    "[log] 模态框当前状态: {display: none, visible: false, classes: modal-enhanced}",
+    "[log] AdvancedDataTable: 列设置模态框显示完成",
+    "[log] AdvancedDataTable: 找到可聚焦元素: 13",
+    "[log] AdvancedDataTable: 已聚焦到第一个元素"
+  ],
+  "analysis": {
+    "button": {
+      "exists": true,
+      "visible": true,
+      "enabled": true,
+      "text": "\n                                    ⚙️\n                                    列设置\n                                ",
+      "classes": "btn-enhanced btn-sm btn-outline"
+    },
+    "modal": {
+      "exists": true,
+      "classes": "modal-enhanced",
+      "style": "display: none;",
+      "visible": false
+    },
+    "javascript": {
+      "orderInfoTable_exists": true,
+      "advancedDataTable_exists": true,
+      "button_has_listeners": "unknown",
+      "showColumnSettings_exists": true
+    },
+    "click_result": {
+      "success": true,
+      "modal_appeared": true
+    },
+    "all_elements": {
+      "columnSettingsBtn_count": 1,
+      "columnSettingsModal_count": 1,
+      "modal_close_buttons": 1,
+      "all_modals": [
+        {
+          "id": "advancedFiltersBackdrop",
+          "classes": "modal-backdrop",
+          "tagName": "DIV"
+        },
+        {
+          "id": "advancedFiltersContainer",
+          "classes": "modal-container",
+          "tagName": "DIV"
+        },
+        {
+          "id": "exportAdvancedTableModal",
+          "classes": "modal-enhanced",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-content",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-header",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-title",
+          "tagName": "H3"
+        },
+        {
+          "id": "",
+          "classes": "modal-close",
+          "tagName": "BUTTON"
+        },
+        {
+          "id": "",
+          "classes": "modal-body",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-footer",
+          "tagName": "DIV"
+        },
+        {
+          "id": "exportModal",
+          "classes": "modal-enhanced",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-content",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-header",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-title",
+          "tagName": "H3"
+        },
+        {
+          "id": "",
+          "classes": "modal-close",
+          "tagName": "BUTTON"
+        },
+        {
+          "id": "",
+          "classes": "modal-body",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-footer",
+          "tagName": "DIV"
+        },
+        {
+          "id": "subscriptionModal",
+          "classes": "modal-enhanced",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-content",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-header",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-title",
+          "tagName": "H3"
+        },
+        {
+          "id": "",
+          "classes": "modal-close",
+          "tagName": "BUTTON"
+        },
+        {
+          "id": "",
+          "classes": "modal-body",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-footer",
+          "tagName": "DIV"
+        },
+        {
+          "id": "columnSettingsModal",
+          "classes": "modal-enhanced",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-content",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-header",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-title",
+          "tagName": "H3"
+        },
+        {
+          "id": "",
+          "classes": "modal-close",
+          "tagName": "BUTTON"
+        },
+        {
+          "id": "",
+          "classes": "modal-body",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "modal-footer",
+          "tagName": "DIV"
+        },
+        {
+          "id": "",
+          "classes": "btn btn-outline modal-cancel",
+          "tagName": "BUTTON"
+        },
+        {
+          "id": "saveColumnSettings",
+          "classes": "btn btn-primary modal-save",
+          "tagName": "BUTTON"
+        }
+      ]
+    }
+  },
+  "issues": [],
+  "screenshots": [
+    "debug/column-settings-01-loaded.png",
+    "debug/column-settings-02-after-click.png"
+  ]
+}

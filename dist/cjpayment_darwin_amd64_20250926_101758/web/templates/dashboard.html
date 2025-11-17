@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>仪表板 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- CJPayment 统一设计系统 v3.0 -->
+    <link rel="stylesheet" href="/static/css/cjpayment-unified.css">
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- 仪表板布局修复 - 防换行专用 -->
+    <link rel="stylesheet" href="/static/css/dashboard-layout-fix-nowrap.css">
+    
+    <!-- 仪表板紧凑布局优化 -->
+    <link rel="stylesheet" href="/static/css/dashboard-layout-compact.css">
+    
+    <!-- 仪表板卡片布局美化 -->
+    <link rel="stylesheet" href="/static/css/dashboard-card-layout.css">
+    
+    <!-- 仪表板布局重构 -->
+    <link rel="stylesheet" href="/static/css/dashboard-layout-restructure.css">
+    
+    <!-- 仪表板图表布局优化 -->
+    <link rel="stylesheet" href="/static/css/dashboard-charts-optimized.css">
+    
+    <!-- Header Dropdown 修复 - 解决通知和用户菜单默认打开状态问题 -->
+    <link rel="stylesheet" href="/static/css/header-dropdown-fix.css">
+    
+    <!-- 仪表板表格溢出修复 -->
+    <link rel="stylesheet" href="/static/css/dashboard-table-overflow-fix.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="CJPayment企业内部支付管理系统仪表板">
+    <meta name="keywords" content="支付管理,数据统计,企业仪表板">
+</head>
+<body class="page-dashboard" data-page="dashboard">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link nav__link--active" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">3</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>系统通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部标记为已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">系统维护通知</div>
+                                    <div class="notification-text">系统将在今晚22:00-24:00进行例行维护</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">2小时前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">新商户待审核</div>
+                                    <div class="notification-text">有2个新商户申请待审核</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">10分钟前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">数据报表已生成</div>
+                                    <div class="notification-text">本月财务报表已生成完成</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">1小时前</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown">
+                        <a href="/profile" class="user-menu__item">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="/help" class="user-menu__item">
+                            <span class="user-menu__item-icon">❓</span>
+                            帮助中心
+                        </a>
+                        <div class="user-menu__divider"></div>
+                        <a href="/logout" class="user-menu__item user-menu__item--danger" id="logoutLink">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="nav__toggle" id="mobileMenuToggle" aria-label="切换导航菜单">
+                    <span class="nav__toggle-line"></span>
+                    <span class="nav__toggle-line"></span>
+                    <span class="nav__toggle-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="dashboard">
+            <!-- Enhanced Dashboard Header -->
+            <div class="dashboard__header">
+                <div class="dashboard__title">
+                    <h1>仪表板概览</h1>
+                    <p class="dashboard__subtitle">实时监控系统运行状态和关键业务指标</p>
+                </div>
+                
+                <!-- Search and Filter -->
+                <div class="dashboard__search" id="dashboardSearch">
+                    <div class="search-bar">
+                        <input type="text" placeholder="搜索交易、商户或订单..." class="search-input" id="searchInput">
+                        <button class="search-button" id="searchButton">
+                            <span class="search-icon">🔍</span>
+                        </button>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select class="form-select" id="timeFilter">
+                            <option value="today">今天</option>
+                            <option value="week" selected>本周</option>
+                            <option value="month">本月</option>
+                            <option value="quarter">本季度</option>
+                            <option value="year">本年</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="dashboard__actions">
+                    <button class="btn btn-outline" id="refreshDashboard" title="刷新数据">
+                        <span class="btn__icon">🔄</span>
+                        <span class="btn__text">刷新数据</span>
+                    </button>
+                    <button class="btn btn-primary" id="exportDashboard" title="导出报表">
+                        <span class="btn__icon">📊</span>
+                        <span class="btn__text">导出报表</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Enhanced Statistics Cards -->
+            <div class="dashboard__stats">
+                <div class="card-grid card-grid--responsive" id="statsGrid">
+                    <!-- Total Transactions Card -->
+                    <div class="card card--stat" id="totalTransactionsCard">
+                        <div class="card__body">
+                            <div class="stat-card__icon">📊</div>
+                            <div class="stat-card__content">
+                                <div class="stat-card__value" id="totalTransactions">-</div>
+                                <div class="stat-card__label">总交易数</div>
+                                <div class="stat-card__trend" id="totalTransactionsTrend">
+                                    <span class="trend-icon">↗️</span>
+                                    <span class="trend-value">+12.5%</span>
+                                    <span class="trend-label">较昨日</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total Amount Card -->
+                    <div class="card card--stat" id="totalAmountCard">
+                        <div class="card__body">
+                            <div class="stat-card__icon">💰</div>
+                            <div class="stat-card__content">
+                                <div class="stat-card__value" id="totalAmount">-</div>
+                                <div class="stat-card__label">总交易额</div>
+                                <div class="stat-card__trend" id="totalAmountTrend">
+                                    <span class="trend-icon">↗️</span>
+                                    <span class="trend-value">+8.3%</span>
+                                    <span class="trend-label">较昨日</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Success Rate Card -->
+                    <div class="card card--stat" id="successRateCard">
+                        <div class="card__body">
+                            <div class="stat-card__icon">✅</div>
+                            <div class="stat-card__content">
+                                <div class="stat-card__value" id="successRate">-</div>
+                                <div class="stat-card__label">成功率</div>
+                                <div class="stat-card__trend" id="successRateTrend">
+                                    <span class="trend-icon">↗️</span>
+                                    <span class="trend-value">+2.1%</span>
+                                    <span class="trend-label">较昨日</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Users Card -->
+                    <div class="card card--stat" id="activeUsersCard">
+                        <div class="card__body">
+                            <div class="stat-card__icon">👥</div>
+                            <div class="stat-card__content">
+                                <div class="stat-card__value" id="activeUsers">-</div>
+                                <div class="stat-card__label">活跃用户</div>
+                                <div class="stat-card__trend" id="activeUsersTrend">
+                                    <span class="trend-icon">↗️</span>
+                                    <span class="trend-value">+5.7%</span>
+                                    <span class="trend-label">较昨日</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Pending Tasks Section -->
+            <div class="dashboard__pending">
+                <div class="card card--pending-tasks" id="pendingTasksCard">
+                    <div class="card__header">
+                        <div class="card__header-left">
+                            <h3 class="card__title">
+                                <span class="card__title-icon">📋</span>
+                                待处理任务
+                            </h3>
+                            <p class="card__subtitle">需要您关注和处理的重要事项</p>
+                        </div>
+                        <div class="card__header-right">
+                            <div class="pending-stats">
+                                <span class="pending-count" id="pendingTasksCount">0</span>
+                                <span class="pending-label">项待处理</span>
+                            </div>
+                            <button class="btn-icon" id="refreshPendingTasks" title="刷新">
+                                <span>🔄</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <div class="pending-tasks-container">
+                            <div class="pending-categories">
+                                <div class="pending-category" data-category="audit">
+                                    <div class="pending-category-header">
+                                        <div class="pending-category-info">
+                                            <span class="pending-category-icon">⏳</span>
+                                            <span class="pending-category-title">待审核订单</span>
+                                        </div>
+                                        <div class="pending-category-count" id="pendingAuditCount">0</div>
+                                    </div>
+                                    <div class="pending-category-actions">
+                                        <button class="btn-link" onclick="window.location.href='/audit'">立即处理</button>
+                                        <span class="pending-category-urgency urgent" id="pendingAuditUrgency">2项紧急</span>
+                                    </div>
+                                </div>
+
+                                <div class="pending-category" data-category="merchant">
+                                    <div class="pending-category-header">
+                                        <div class="pending-category-info">
+                                            <span class="pending-category-icon">🏪</span>
+                                            <span class="pending-category-title">商户待激活</span>
+                                        </div>
+                                        <div class="pending-category-count" id="pendingMerchantCount">0</div>
+                                    </div>
+                                    <div class="pending-category-actions">
+                                        <button class="btn-link" onclick="window.location.href='/merchant'">查看详情</button>
+                                        <span class="pending-category-urgency normal" id="pendingMerchantUrgency">3项待处理</span>
+                                    </div>
+                                </div>
+
+                                <div class="pending-category" data-category="accounts">
+                                    <div class="pending-category-header">
+                                        <div class="pending-category-info">
+                                            <span class="pending-category-icon">💰</span>
+                                            <span class="pending-category-title">账户异常</span>
+                                        </div>
+                                        <div class="pending-category-count" id="pendingAccountsCount">0</div>
+                                    </div>
+                                    <div class="pending-category-actions">
+                                        <button class="btn-link" onclick="window.location.href='/accounts'">立即检查</button>
+                                        <span class="pending-category-urgency warning" id="pendingAccountsUrgency">1项警告</span>
+                                    </div>
+                                </div>
+
+                                <div class="pending-category" data-category="reports">
+                                    <div class="pending-category-header">
+                                        <div class="pending-category-info">
+                                            <span class="pending-category-icon">📊</span>
+                                            <span class="pending-category-title">报表生成</span>
+                                        </div>
+                                        <div class="pending-category-count" id="pendingReportsCount">0</div>
+                                    </div>
+                                    <div class="pending-category-actions">
+                                        <button class="btn-link" onclick="window.location.href='/reports'">查看报表</button>
+                                        <span class="pending-category-urgency normal" id="pendingReportsUrgency">定时任务</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快捷入口和快速操作合并为一行 -->
+            <div class="dashboard__actions-row">
+                <!-- 快捷入口区域 -->
+                <div class="dashboard__shortcuts">
+                    <div class="shortcuts-card">
+                        <div class="shortcuts-header">
+                            <div>
+                                <h3 class="shortcuts-title">快捷入口</h3>
+                                <p class="shortcuts-subtitle">常用功能快速访问</p>
+                            </div>
+                        </div>
+                        <div class="shortcuts-grid">
+                            <!-- 第一排：5个快捷入口 -->
+                            <a href="/audit?filter=urgent" class="shortcut-item">
+                                <div class="shortcut-icon">🚨</div>
+                                <div class="shortcut-text">紧急审核</div>
+                            </a>
+                            <a href="/merchant?action=approve" class="shortcut-item">
+                                <div class="shortcut-icon">✅</div>
+                                <div class="shortcut-text">批量审批</div>
+                            </a>
+                            <a href="/reports?action=export" class="shortcut-item">
+                                <div class="shortcut-icon">📥</div>
+                                <div class="shortcut-text">导出数据</div>
+                            </a>
+                            <a href="/merchant?action=create" class="shortcut-item">
+                                <div class="shortcut-icon">🏪</div>
+                                <div class="shortcut-text">新增商户</div>
+                            </a>
+                            <a href="/audit?action=review" class="shortcut-item">
+                                <div class="shortcut-icon">📋</div>
+                                <div class="shortcut-text">财务复核</div>
+                            </a>
+                        </div>
+                        <div class="shortcuts-grid">
+                            <!-- 第二排：5个快捷入口 -->
+                            <a href="/accounts?action=create" class="shortcut-item">
+                                <div class="shortcut-icon">💳</div>
+                                <div class="shortcut-text">开户申请</div>
+                            </a>
+                            <a href="/system_management?tab=users" class="shortcut-item">
+                                <div class="shortcut-icon">👥</div>
+                                <div class="shortcut-text">用户管理</div>
+                            </a>
+                            <a href="/reports?type=transaction" class="shortcut-item">
+                                <div class="shortcut-icon">💰</div>
+                                <div class="shortcut-text">交易统计</div>
+                            </a>
+                            <a href="/system_management?tab=backup" class="shortcut-item">
+                                <div class="shortcut-icon">💾</div>
+                                <div class="shortcut-text">数据备份</div>
+                            </a>
+                            <a href="/system_management?tab=monitor" class="shortcut-item">
+                                <div class="shortcut-icon">📊</div>
+                                <div class="shortcut-text">系统监控</div>
+                            </a>
+                            <a href="/recharge" class="shortcut-item">
+                                <div class="shortcut-icon">⚡</div>
+                                <div class="shortcut-text">快速充值</div>
+                            </a>
+                            <a href="/accounts?action=freeze" class="shortcut-item">
+                                <div class="shortcut-icon">🔒</div>
+                                <div class="shortcut-text">账户冻结</div>
+                            </a>
+                            <a href="/system_management?tab=logs" class="shortcut-item">
+                                <div class="shortcut-icon">📝</div>
+                                <div class="shortcut-text">操作日志</div>
+                            </a>
+                            <a href="/merchant?action=settlement" class="shortcut-item">
+                                <div class="shortcut-icon">💸</div>
+                                <div class="shortcut-text">商户结算</div>
+                            </a>
+                            <a href="/reports?type=risk" class="shortcut-item">
+                                <div class="shortcut-icon">⚠️</div>
+                                <div class="shortcut-text">风险监控</div>
+                            </a>
+                            <a href="/system_management?tab=alerts" class="shortcut-item">
+                                <div class="shortcut-icon">🔔</div>
+                                <div class="shortcut-text">告警设置</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- 系统状态监控单独一行 -->
+            <div class="dashboard__status-monitoring">
+                <div class="status-monitoring-card">
+                    <div class="status-monitoring-header">
+                        <h3 class="status-monitoring-title">系统状态监控</h3>
+                        <div class="card__actions">
+                            <span class="status-timestamp" id="statusTimestamp">2分钟前更新</span>
+                            <button class="btn btn--sm btn-outline" id="refreshSystemStatus">
+                                <span class="btn__icon">🔄</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="status-monitoring-grid">
+                        <div class="status-monitoring-item">
+                            <div class="status-monitoring-icon" style="background: #dcfce7; color: #16a34a;">💾</div>
+                            <div class="status-monitoring-content">
+                                <div class="status-monitoring-label">数据库连接</div>
+                                <div class="status-monitoring-value">正常 (5ms)</div>
+                            </div>
+                        </div>
+                        <div class="status-monitoring-item">
+                            <div class="status-monitoring-icon" style="background: #dcfce7; color: #16a34a;">⚡</div>
+                            <div class="status-monitoring-content">
+                                <div class="status-monitoring-label">Redis缓存</div>
+                                <div class="status-monitoring-value">正常 (1ms)</div>
+                            </div>
+                        </div>
+                        <div class="status-monitoring-item">
+                            <div class="status-monitoring-icon" style="background: #fef3c7; color: #d97706;">📬</div>
+                            <div class="status-monitoring-content">
+                                <div class="status-monitoring-label">消息队列</div>
+                                <div class="status-monitoring-value">繁忙 (156 pending)</div>
+                            </div>
+                        </div>
+                        <div class="status-monitoring-item">
+                            <div class="status-monitoring-icon" style="background: #dcfce7; color: #16a34a;">🌐</div>
+                            <div class="status-monitoring-content">
+                                <div class="status-monitoring-label">外部API</div>
+                                <div class="status-monitoring-value">正常 (98.9%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最近活动单独一行 -->
+            <div class="dashboard__recent-activities">
+                <div class="recent-activities-card">
+                    <div class="recent-activities-header">
+                        <h3 class="recent-activities-title">最近活动</h3>
+                        <div class="card__actions">
+                            <button class="btn btn--sm btn-outline" id="filterActivity">
+                                <span class="btn__icon">🎯</span>
+                                筛选
+                            </button>
+                            <a href="/reports" class="btn btn--sm btn-outline">查看全部</a>
+                        </div>
+                    </div>
+                    <div class="recent-activities-list">
+                        <div class="recent-activity-item">
+                            <div class="recent-activity-icon">💰</div>
+                            <div class="recent-activity-content">
+                                <div class="recent-activity-text">商户"张三店铺"提交充值申请 ¥5,000</div>
+                                <div class="recent-activity-time">5分钟前</div>
+                            </div>
+                        </div>
+                        <div class="recent-activity-item">
+                            <div class="recent-activity-icon">✅</div>
+                            <div class="recent-activity-content">
+                                <div class="recent-activity-text">订单 #TXN202412250001 审核通过</div>
+                                <div class="recent-activity-time">12分钟前</div>
+                            </div>
+                        </div>
+                        <div class="recent-activity-item">
+                            <div class="recent-activity-icon">👤</div>
+                            <div class="recent-activity-content">
+                                <div class="recent-activity-text">新用户"李四"完成注册并提交资料</div>
+                                <div class="recent-activity-time">25分钟前</div>
+                            </div>
+                        </div>
+                        <div class="recent-activity-item">
+                            <div class="recent-activity-icon">⚠️</div>
+                            <div class="recent-activity-content">
+                                <div class="recent-activity-text">系统检测到异常登录，已自动锁定账户</div>
+                                <div class="recent-activity-time">1小时前</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Recent Transactions Table -->
+            <div class="dashboard__table">
+                <div class="card card--data" id="recentTransactionsCard">
+                    <div class="card__header">
+                        <h3 class="card__title">最近交易记录</h3>
+                        <div class="card__actions">
+                            <div class="table-search">
+                                <input type="text" placeholder="搜索交易..." class="form-input form-input--sm" id="tableSearch">
+                            </div>
+                            <button class="btn btn--sm btn-outline" id="exportTransactions">
+                                <span class="btn__icon">📊</span>
+                                <span class="btn__text">导出</span>
+                            </button>
+                            <a href="/merchant" class="btn btn--sm btn-primary">
+                                <span class="btn__text">查看全部</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <div class="table-container">
+                            <table class="table" id="recentTransactionsTable">
+                                <thead>
+                                    <tr>
+                                        <th>订单号</th>
+                                        <th>付款人</th>
+                                        <th>金额</th>
+                                        <th>商户</th>
+                                        <th>状态</th>
+                                        <th>时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="7" class="table__loading">
+                                            <div class="loading-spinner"></div>
+                                            <span>正在加载交易数据...</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Table Pagination -->
+                        <div class="table-pagination" id="tablePagination">
+                            <div class="pagination-info">
+                                显示 <span id="pageStart">1</span>-<span id="pageEnd">10</span> 条，共 <span id="totalRecords">-</span> 条
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="btn btn--sm btn-outline" id="prevPage" disabled>上一页</button>
+                                <div class="pagination-numbers" id="paginationNumbers"></div>
+                                <button class="btn btn--sm btn-outline" id="nextPage">下一页</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | Enhanced Dashboard</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">数据加载中，请稍候...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="globalToast" class="toast-container" aria-live="polite"></div>
+
+    <!-- Critical Scripts - Load immediately -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    
+    <!-- 统一头部组件管理 -->
+    <script src="/static/js/header-unified.js"></script>
+    
+    <!-- 统一通知数据管理系统 -->
+    <script src="/static/js/notification-data-unified.js"></script>
+    
+    <!-- Performance Loader -->
+    <script src="/static/js/performance-loader.js"></script>
+    
+    <!-- Chart.js - Load async -->
+    <script async src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    
+    <!-- Page Scripts - Load asynchronously -->
+    <script async src="/static/js/chart-component.js"></script>
+    <script async src="/static/js/stats-component.js"></script>
+    
+    <!-- 仪表板图表增强管理 -->
+    <script src="/static/js/dashboard-charts-enhanced.js"></script>
+    
+    <!-- Non-critical Scripts - Load async -->
+    <script async src="/static/js/user-feedback-analytics.js"></script>
+    <script async src="/static/js/analytics-init.js"></script>
+    <script async src="/static/js/mobile-utilities.js"></script>
+    <script async src="/static/js/interaction-enhancements.js"></script>
+    
+    <!-- Initialize Dashboard -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load user information from localStorage
+            const userInfo = localStorage.getItem('userInfo');
+            const authToken = localStorage.getItem('authToken');
+            
+            // 演示环境跳过认证检查
+            if (!authToken) {
+                console.log('Dashboard: 演示模式 - 跳过认证检查');
+                // 设置默认认证信息用于演示
+                localStorage.setItem('authToken', 'demo-token');
+                localStorage.setItem('userInfo', JSON.stringify({
+                    name: '系统管理员',
+                    username: 'admin',
+                    role: '超级管理员',
+                    id: 'demo_admin'
+                }));
+            }
+            
+            if (userInfo) {
+                try {
+                    const user = JSON.parse(userInfo);
+                    document.getElementById('userName').textContent = user.name || user.username;
+                    document.querySelector('.user-menu__role').textContent = user.role;
+                } catch (error) {
+                    console.error('Failed to parse user info:', error);
+                }
+            }
+            
+            // Check critical dependencies
+            const criticalDependencies = ['CJUtils', 'CJApi'];
+            const missing = criticalDependencies.filter(dep => typeof window[dep] === 'undefined');
+            
+            if (missing.length > 0) {
+                console.error('Missing critical dependencies:', missing);
+                return;
+            }
+            
+            // Check optional dependencies (warn but don't block)
+            const optionalDependencies = ['CJComponents'];
+            const missingOptional = optionalDependencies.filter(dep => typeof window[dep] === 'undefined');
+            if (missingOptional.length > 0) {
+                console.warn('Optional dependencies not yet loaded:', missingOptional);
+            }
+            
+            // 等待 DashboardEnhanced 类加载完成后再初始化
+            const initializeDashboard = () => {
+                if (typeof DashboardEnhanced !== 'undefined') {
+                    try {
+                        // Initialize enhanced dashboard
+                        window.dashboard = new DashboardEnhanced({
+                            refreshInterval: 30000, // 30秒自动刷新
+                            enableRealtime: true,
+                            enableNotifications: true,
+                            chartOptions: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom'
+                                    }
+                                }
+                            }
+                        });
+                        
+                        console.log('Enhanced dashboard initialized successfully');
+                    } catch (error) {
+                        console.error('Failed to initialize enhanced dashboard:', error);
+                    }
+                } else {
+                    // 如果 DashboardEnhanced 尚未加载，等待后再试
+                    setTimeout(initializeDashboard, 100);
+                }
+            };
+            
+            // 延迟初始化，确保 performance-loader 有时间加载资源
+            setTimeout(initializeDashboard, 200);
+            
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const html = document.documentElement;
+            
+            // Load saved theme
+            const savedTheme = localStorage.getItem('dashboard-theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('dashboard-theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+            
+            function updateThemeIcon(theme) {
+                themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+                themeToggle.setAttribute('title', 
+                    theme === 'light' ? '切换到深色主题' : '切换到浅色主题'
+                );
+            }
+            
+            // Logout functionality
+            document.getElementById('logoutLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('确定要退出登录吗？')) {
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userInfo');
+                    window.location.href = '/login';
+                }
+            });
+        });
+    </script>
+
+    <!-- Additional Styles -->
+    <style>
+        /* Notification styles */
+        .notifications {
+            position: relative;
+        }
+        
+        .notifications__trigger {
+            position: relative;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: var(--transition-base);
+        }
+        
+        .notifications__trigger:hover {
+            background: var(--dashboard-bg-tertiary);
+        }
+        
+        .notifications__icon {
+            font-size: 1.25rem;
+        }
+        
+        .notifications__badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--status-danger);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.125rem 0.375rem;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+        
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--dashboard-border-light);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-base);
+            margin-right: 1rem;
+        }
+        
+        .theme-toggle:hover {
+            background: var(--dashboard-bg-tertiary);
+            border-color: var(--dashboard-primary);
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--dashboard-bg-secondary);
+            border: 1px solid var(--dashboard-border-light);
+            border-radius: 8px;
+            padding: 0.5rem;
+            min-width: 300px;
+        }
+        
+        .search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            color: var(--dashboard-text-primary);
+        }
+        
+        .search-input:focus {
+            outline: none;
+        }
+        
+        .search-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.25rem;
+            color: var(--dashboard-text-secondary);
+        }
+        
+        .dashboard__search {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .table-search {
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-input--sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            border: 1px solid var(--dashboard-border-light);
+            border-radius: 6px;
+            background: var(--dashboard-bg-secondary);
+            color: var(--dashboard-text-primary);
+        }
+        
+        .table-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-top: 1px solid var(--dashboard-border-light);
+            margin-top: 1rem;
+        }
+        
+        .pagination-info {
+            font-size: 0.875rem;
+            color: var(--dashboard-text-secondary);
+        }
+        
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .user-menu__info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+        
+        .user-menu__role {
+            font-size: 0.75rem;
+            color: var(--dashboard-text-muted);
+        }
+        
+        .user-menu__item-icon {
+            margin-right: 0.5rem;
+        }
+        
+        .status-timestamp {
+            font-size: 0.75rem;
+            color: var(--dashboard-text-muted);
+            margin-right: 0.5rem;
+        }
+
+        /* 导出模态框样式 */
+        .modal-enhanced {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-enhanced.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-enhanced.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .format-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .format-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .format-option:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .format-option input[type="radio"] {
+            display: none;
+        }
+
+        .format-option input[type="radio"]:checked + .format-icon + .format-text {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .format-option:has(input[type="radio"]:checked) {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .format-icon {
+            font-size: 2rem;
+        }
+
+        .format-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .content-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .content-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .content-option:hover {
+            background: #f3f4f6;
+        }
+
+        .content-option input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: #3b82f6;
+        }
+
+        .btn-enhanced {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-enhanced.btn-outline {
+            background: white;
+            border-color: #d1d5db;
+            color: #374151;
+        }
+
+        .btn-enhanced.btn-outline:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        .btn-enhanced.btn-primary {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .btn-enhanced.btn-primary:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .format-options {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .btn-enhanced {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+
+    <!-- 仪表板导出模态框 -->
+    <div class="modal-enhanced" id="exportDashboardModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">导出仪表板报表</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="option-group">
+                        <label class="option-label">导出格式</label>
+                        <div class="format-options">
+                            <label class="format-option">
+                                <input type="radio" name="dashboardFormat" value="pdf" checked>
+                                <span class="format-icon">📄</span>
+                                <span class="format-text">PDF报告</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="dashboardFormat" value="excel">
+                                <span class="format-icon">📊</span>
+                                <span class="format-text">Excel表格</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="dashboardFormat" value="csv">
+                                <span class="format-icon">📋</span>
+                                <span class="format-text">CSV数据</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">包含内容</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>统计摘要</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>图表分析</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>近期交易</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox">
+                                <span>详细数据</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <label class="option-label">时间范围</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="radio" name="dashboardTimeRange" value="today" checked>
+                                <span>今日数据</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="radio" name="dashboardTimeRange" value="week">
+                                <span>最近7天</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="radio" name="dashboardTimeRange" value="month">
+                                <span>最近30天</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeDashboardExportModal()">取消</button>
+                <button class="btn-enhanced btn-primary" id="confirmDashboardExportBtn">
+                    <span class="btn__icon">📤</span>
+                    确认导出
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交易导出模态框 -->
+    <div class="modal-enhanced" id="exportTransactionsModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">导出交易数据</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="option-group">
+                        <label class="option-label">导出格式</label>
+                        <div class="format-options">
+                            <label class="format-option">
+                                <input type="radio" name="transactionsFormat" value="excel" checked>
+                                <span class="format-icon">📊</span>
+                                <span class="format-text">Excel表格</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="transactionsFormat" value="csv">
+                                <span class="format-icon">📋</span>
+                                <span class="format-text">CSV数据</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="transactionsFormat" value="pdf">
+                                <span class="format-icon">📄</span>
+                                <span class="format-text">PDF报告</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">包含内容</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>交易详情</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>商户信息</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>状态信息</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox">
+                                <span>统计汇总</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <label class="option-label">数据范围</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="radio" name="transactionsDataRange" value="visible" checked>
+                                <span>当前显示的交易</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="radio" name="transactionsDataRange" value="all">
+                                <span>所有交易数据</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeTransactionsExportModal()">取消</button>
+                <button class="btn-enhanced btn-primary" id="confirmTransactionsExportBtn">
+                    <span class="btn__icon">📤</span>
+                    确认导出
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

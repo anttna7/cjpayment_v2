@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手动输入测试 - CJPayment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px dashed #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .test-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .test-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        .form-input.success {
+            border-color: #48bb78;
+            background-color: #f0fff4;
+        }
+
+        .simple-input {
+            border: 1px solid #ccc !important;
+            padding: 8px !important;
+            font-size: 14px !important;
+        }
+
+        .test-results {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .result-value {
+            color: #2d3748;
+            font-family: monospace;
+            background: #f7fafc;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .browser-info {
+            background: #edf2f7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .info-value {
+            color: #2d3748;
+            font-family: monospace;
+        }
+
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .test-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .clear-button {
+            background: #e53e3e;
+        }
+
+        .instructions {
+            background: #fef5e7;
+            border: 2px solid #f6ad55;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .instructions h3 {
+            color: #c05621;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            color: #744210;
+            margin-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔍 手动输入测试页面</h1>
+
+        <div class="instructions">
+            <h3>📋 测试说明</h3>
+            <ol>
+                <li>请尝试在下面的输入框中输入信息</li>
+                <li>点击"检查输入值"按钮查看结果</li>
+                <li>如果某个输入框无法输入，请记录是哪个</li>
+                <li>请告诉我您使用的浏览器和版本</li>
+            </ol>
+        </div>
+
+        <div class="browser-info" id="browserInfo">
+            <h3>🌐 浏览器信息</h3>
+            <div class="info-grid" id="browserDetails">
+                <!-- JavaScript will fill this -->
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">
+                <span class="test-icon">🎯</span>
+                标准输入框测试
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">账户ID</label>
+                <input type="text"
+                       class="form-input"
+                       id="testAccountId"
+                       placeholder="请输入账户ID（如：TEST_123）">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">账户名称</label>
+                <input type="text"
+                       class="form-input"
+                       id="testAccountName"
+                       placeholder="请输入账户名称（如：测试公司）">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">充值金额</label>
+                <input type="number"
+                       class="form-input"
+                       id="testAmount"
+                       placeholder="请输入金额（如：1000）"
+                       min="1" step="0.01">
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">
+                <span class="test-icon">⚡</span>
+                简化输入框测试
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">简单文本输入</label>
+                <input type="text"
+                       class="simple-input"
+                       id="simpleText"
+                       placeholder="简单输入测试">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">基础数字输入</label>
+                <input type="number"
+                       class="simple-input"
+                       id="simpleNumber"
+                       placeholder="123">
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="test-button" onclick="checkInputValues()">🔍 检查输入值</button>
+            <button class="test-button clear-button" onclick="clearAllInputs()">🧹 清空所有</button>
+        </div>
+
+        <div class="test-results" id="testResults" style="display: none;">
+            <h3>📊 测试结果</h3>
+            <div id="resultsList">
+                <!-- JavaScript will fill this -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示浏览器信息
+        function showBrowserInfo() {
+            const browserDetails = document.getElementById('browserDetails');
+            const info = {
+                '用户代理': navigator.userAgent,
+                '浏览器': getBrowserName(),
+                '版本': getBrowserVersion(),
+                '操作系统': getOperatingSystem(),
+                '屏幕分辨率': `${screen.width}x${screen.height}`,
+                '窗口大小': `${window.innerWidth}x${window.innerHeight}`,
+                '时区': Intl.DateTimeFormat().resolvedOptions().timeZone,
+                'JavaScript启用': 'true'
+            };
+
+            browserDetails.innerHTML = '';
+            Object.entries(info).forEach(([label, value]) => {
+                const item = document.createElement('div');
+                item.className = 'info-item';
+                item.innerHTML = `
+                    <span class="info-label">${label}:</span>
+                    <span class="info-value">${value}</span>
+                `;
+                browserDetails.appendChild(item);
+            });
+        }
+
+        function getBrowserName() {
+            const ua = navigator.userAgent;
+            if (ua.includes('Chrome')) return 'Chrome';
+            if (ua.includes('Firefox')) return 'Firefox';
+            if (ua.includes('Safari')) return 'Safari';
+            if (ua.includes('Edge')) return 'Edge';
+            return '未知';
+        }
+
+        function getBrowserVersion() {
+            const ua = navigator.userAgent;
+            const match = ua.match(/(Chrome|Firefox|Safari|Edge)\/([0-9.]+)/);
+            return match ? match[2] : '未知';
+        }
+
+        function getOperatingSystem() {
+            const ua = navigator.userAgent;
+            if (ua.includes('Windows')) return 'Windows';
+            if (ua.includes('Mac')) return 'macOS';
+            if (ua.includes('Linux')) return 'Linux';
+            if (ua.includes('Android')) return 'Android';
+            if (ua.includes('iOS')) return 'iOS';
+            return '未知';
+        }
+
+        // 检查输入值
+        function checkInputValues() {
+            const inputs = [
+                { id: 'testAccountId', label: '标准账户ID' },
+                { id: 'testAccountName', label: '标准账户名称' },
+                { id: 'testAmount', label: '标准充值金额' },
+                { id: 'simpleText', label: '简单文本输入' },
+                { id: 'simpleNumber', label: '简单数字输入' }
+            ];
+
+            const results = [];
+            let hasInput = false;
+
+            inputs.forEach(({ id, label }) => {
+                const element = document.getElementById(id);
+                const value = element.value.trim();
+                const isEmpty = value === '';
+
+                if (!isEmpty) hasInput = true;
+
+                results.push({
+                    label,
+                    value: isEmpty ? '(空)' : value,
+                    status: isEmpty ? '❌' : '✅',
+                    element: element
+                });
+
+                // 标记成功的输入框
+                if (!isEmpty) {
+                    element.classList.add('success');
+                } else {
+                    element.classList.remove('success');
+                }
+            });
+
+            // 显示结果
+            const resultsList = document.getElementById('resultsList');
+            const testResults = document.getElementById('testResults');
+
+            resultsList.innerHTML = '';
+            results.forEach(({ label, value, status }) => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `
+                    <span class="result-label">${status} ${label}:</span>
+                    <span class="result-value">${value}</span>
+                `;
+                resultsList.appendChild(item);
+            });
+
+            // 添加总结
+            const summary = document.createElement('div');
+            summary.className = 'result-item';
+            summary.style.borderTop = '2px solid #e2e8f0';
+            summary.style.marginTop = '10px';
+            summary.style.paddingTop = '10px';
+            summary.innerHTML = `
+                <span class="result-label"><strong>总结:</strong></span>
+                <span class="result-value">${hasInput ? '✅ 有输入成功' : '❌ 没有任何输入'}</span>
+            `;
+            resultsList.appendChild(summary);
+
+            testResults.style.display = 'block';
+
+            // 记录到控制台
+            console.log('🔍 手动输入测试结果:', results);
+        }
+
+        // 清空所有输入
+        function clearAllInputs() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('success');
+            });
+
+            document.getElementById('testResults').style.display = 'none';
+            console.log('🧹 已清空所有输入框');
+        }
+
+        // 添加实时输入监听
+        function addInputListeners() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    console.log(`💬 输入框 ${this.id}: "${this.value}"`);
+                });
+
+                input.addEventListener('focus', function() {
+                    console.log(`🎯 聚焦: ${this.id}`);
+                });
+
+                input.addEventListener('blur', function() {
+                    console.log(`👁️ 失焦: ${this.id}`);
+                });
+            });
+        }
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 手动输入测试页面初始化');
+            showBrowserInfo();
+            addInputListeners();
+        });
+
+        // 监听键盘事件
+        document.addEventListener('keydown', function(e) {
+            console.log(`⌨️ 键盘事件: ${e.key} (keyCode: ${e.keyCode})`);
+        });
+    </script>
+</body>
+</html>

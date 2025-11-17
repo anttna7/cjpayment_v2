@@ -1,0 +1,48 @@
+{
+  "timestamp": "2025-08-22T16:25:36.757Z",
+  "testName": "演示模式设置验证",
+  "success": true,
+  "details": {
+    "initialLocalStorage": {
+      "token": null,
+      "userInfo": "{\"id\":\"admin_001\",\"name\":\"系统管理员\",\"role\":\"超级管理员\",\"avatar\":\"👤\",\"email\":\"admin@cjpayment.com\",\"permissions\":[\"all\"]}",
+      "authTime": null,
+      "allKeys": [
+        "userInfo"
+      ],
+      "allData": "{\"userInfo\":\"{\\\"id\\\":\\\"admin_001\\\",\\\"name\\\":\\\"系统管理员\\\",\\\"role\\\":\\\"超级管理员\\\",\\\"avatar\\\":\\\"👤\\\",\\\"email\\\":\\\"admin@cjpayment.com\\\",\\\"permissions\\\":[\\\"all\\\"]}\"}"
+    },
+    "authElements": {
+      "hasUserInfo": true,
+      "userInfoText": "\n                    \n                        👤\n                        \n                            系统管理员\n                            超级管理员\n                        \n                        ▼\n                    \n                    \n                        \n                            👤\n                            个人资料\n                        \n                        \n                            ⚙️\n                            账户设置\n                        \n                        \n                        \n                            🚪\n                            退出登录\n                        \n                    \n                ",
+      "hasLoginForm": false,
+      "hasAuthMessage": false,
+      "authMessageText": null,
+      "pageTitle": "财务审核 - CJPayment 企业内部支付管理系统",
+      "currentUrl": "http://127.0.0.1:8091/audit"
+    },
+    "demoSetup": {
+      "success": true,
+      "token": "demo_token_1755879940442",
+      "userInfo": "{\"id\":\"demo_user_001\",\"name\":\"演示用户\",\"role\":\"管理员\",\"email\":\"demo@cjpayment.com\",\"isDemo\":true}",
+      "demoMode": "true",
+      "message": "演示模式设置成功"
+    },
+    "afterRefresh": {
+      "token": "demo_token_1755879940442",
+      "userInfo": "{\"id\":\"demo_user_001\",\"name\":\"演示用户\",\"role\":\"管理员\",\"avatar\":\"👤\",\"email\":\"demo@cjpayment.com\",\"permissions\":[\"all\"]}",
+      "demoMode": "true",
+      "authTime": "1755879940442",
+      "currentUrl": "http://127.0.0.1:8091/audit",
+      "hasRedirected": false
+    },
+    "apiRequest": null,
+    "finalCheck": {
+      "isOnAuditPage": true,
+      "hasContent": true,
+      "hasToken": true,
+      "isDemoMode": true,
+      "success": true
+    }
+  }
+}

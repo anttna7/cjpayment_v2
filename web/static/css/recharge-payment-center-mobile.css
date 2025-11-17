@@ -1,0 +1,544 @@
+/* 充值支付管理中心移动端专用优化 */
+
+/* ================== 移动端视口优化 ================== */
+@media (max-width: 768px) {
+    /* 页面整体布局 */
+    .page-recharge-payment {
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 50%, #f5f7fa 100%);
+        background-attachment: fixed;
+    }
+
+    .page__container {
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    /* 标题区域移动端优化 */
+    .page__title-section {
+        padding: 2rem 1rem 3rem;
+        border-radius: 0;
+        text-align: center;
+        position: relative;
+        background: var(--gradient-primary);
+    }
+
+    .page__title {
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+
+    .page__description {
+        font-size: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    /* 统计卡片移动端布局 */
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin: -2rem 1rem 1.5rem;
+        padding: 0;
+    }
+
+    .stat-card {
+        padding: 1rem;
+        flex-direction: column;
+        text-align: center;
+        min-height: 100px;
+        backdrop-filter: blur(15px);
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .stat-card__icon {
+        font-size: 1.8rem;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .stat-card__value {
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    .stat-card__label {
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+    }
+
+    /* 标签页移动端优化 */
+    .content-tabs {
+        margin: 0 1rem;
+        border-radius: 12px;
+    }
+
+    .tab-list {
+        flex-direction: row;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
+
+    .tab-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tab-button {
+        flex-direction: column;
+        min-width: 80px;
+        padding: 0.75rem 0.5rem;
+        font-size: 0.8rem;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .tab-icon {
+        font-size: 1.2rem;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .tab-text {
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .tab-badge {
+        margin: 0.25rem 0 0 0;
+        padding: 0.2rem 0.4rem;
+        font-size: 0.65rem;
+        min-width: 16px;
+    }
+
+    .tab-status {
+        margin: 0.25rem 0 0 0;
+        padding: 0.2rem 0.4rem;
+        font-size: 0.65rem;
+    }
+
+    /* 标签内容移动端优化 */
+    .tab-panel {
+        padding: 1rem;
+    }
+
+    .section-header {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .section-description {
+        font-size: 0.9rem;
+    }
+
+    /* 配置网格移动端布局 */
+    .config-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .config-group {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+
+    .config-group-title {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    /* 表单控件移动端优化 */
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-input,
+    .form-select {
+        padding: 0.75rem;
+        font-size: 16px; /* 防止iOS缩放 */
+        border-radius: 10px;
+    }
+
+    .form-help {
+        font-size: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    /* 复选框移动端优化 */
+    .checkbox-label {
+        padding: 0.75rem;
+        border-radius: 10px;
+    }
+
+    .checkbox-custom {
+        width: 18px;
+        height: 18px;
+        margin-right: 0.75rem;
+    }
+
+    .checkbox-text {
+        font-size: 0.9rem;
+    }
+
+    /* 按钮移动端优化 */
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        border-radius: 10px;
+        min-height: 44px; /* iOS触摸目标 */
+    }
+
+    /* 测试工具移动端布局 */
+    .testing-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .testing-card {
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .testing-card__icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .testing-card__title {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .testing-card__desc {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+}
+
+/* ================== 小屏幕优化 (480px以下) ================== */
+@media (max-width: 480px) {
+    /* 统计卡片单列布局 */
+    .stats-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        margin: -1.5rem 0.5rem 1rem;
+    }
+
+    .stat-card {
+        flex-direction: row;
+        text-align: left;
+        min-height: 80px;
+        padding: 0.75rem;
+    }
+
+    .stat-card__icon {
+        font-size: 1.5rem;
+        margin: 0 0.75rem 0 0;
+    }
+
+    .stat-card__content {
+        flex: 1;
+    }
+
+    .stat-card__value {
+        font-size: 1.1rem;
+    }
+
+    .stat-card__label {
+        font-size: 0.75rem;
+    }
+
+    /* 内容区域更紧凑 */
+    .content-tabs {
+        margin: 0 0.5rem;
+    }
+
+    .tab-panel {
+        padding: 0.75rem;
+    }
+
+    .config-group {
+        padding: 0.75rem;
+    }
+
+    .section-header {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+    }
+
+    .page__title {
+        font-size: 1.6rem;
+    }
+
+    .page__title-section {
+        padding: 1.5rem 0.75rem 2.5rem;
+    }
+}
+
+/* ================== 横屏模式优化 ================== */
+@media (max-width: 768px) and (orientation: landscape) {
+    .page__title-section {
+        padding: 1rem;
+    }
+
+    .page__title {
+        font-size: 1.5rem;
+    }
+
+    .stats-row {
+        grid-template-columns: repeat(4, 1fr);
+        margin: -1rem 1rem 1rem;
+    }
+
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+        min-height: 70px;
+        padding: 0.5rem;
+    }
+
+    .stat-card__icon {
+        font-size: 1.2rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-card__value {
+        font-size: 1rem;
+    }
+
+    .stat-card__label {
+        font-size: 0.7rem;
+    }
+
+    .tab-list {
+        flex-direction: row;
+    }
+
+    .tab-button {
+        flex-direction: row;
+        padding: 0.5rem 1rem;
+        min-width: 120px;
+    }
+
+    .tab-icon {
+        margin: 0 0.5rem 0 0;
+        font-size: 1rem;
+    }
+
+    .tab-text {
+        font-size: 0.8rem;
+    }
+}
+
+/* ================== 触摸优化 ================== */
+@media (pointer: coarse) {
+    /* 增大触摸目标 */
+    .tab-button {
+        min-height: 48px;
+        padding: 0.75rem 1rem;
+    }
+
+    .btn {
+        min-height: 48px;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .checkbox-label {
+        min-height: 48px;
+        padding: 0.75rem;
+    }
+
+    .stat-card {
+        min-height: 80px;
+        cursor: pointer;
+    }
+
+    /* 增强点击反馈 */
+    .stat-card:active {
+        transform: scale(0.98);
+    }
+
+    .tab-button:active {
+        background: rgba(102, 126, 234, 0.2);
+    }
+
+    .btn:active {
+        transform: scale(0.98);
+    }
+}
+
+/* ================== 高分辨率屏幕优化 ================== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .page__title-section::before {
+        background-size: 25px 10px;
+    }
+}
+
+/* ================== 减少动画偏好支持 ================== */
+@media (prefers-reduced-motion: reduce) {
+    .stat-card,
+    .config-group,
+    .tab-button,
+    .btn,
+    .page__icon {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .page__title-section::before {
+        animation: none !important;
+    }
+}
+
+/* ================== 深色主题移动端优化 ================== */
+@media (max-width: 768px) {
+    [data-theme="dark"] .page-recharge-payment {
+        background: linear-gradient(180deg, #1a202c 0%, #2d3748 50%, #1a202c 100%);
+    }
+
+    [data-theme="dark"] .stat-card {
+        background: rgba(26, 32, 44, 0.9);
+        backdrop-filter: blur(15px);
+    }
+
+    [data-theme="dark"] .content-tabs {
+        background: rgba(26, 32, 44, 0.95);
+    }
+
+    [data-theme="dark"] .config-group {
+        background: rgba(26, 32, 44, 0.8);
+    }
+}
+
+/* ================== 可访问性增强 ================== */
+@media (max-width: 768px) {
+    /* 高对比度支持 */
+    @media (prefers-contrast: high) {
+        .stat-card {
+            border: 2px solid var(--text-primary);
+            background: var(--bg-primary);
+        }
+
+        .tab-button {
+            border: 1px solid var(--border-color);
+        }
+
+        .btn {
+            border: 2px solid currentColor;
+        }
+    }
+
+    /* 焦点指示器增强 */
+    .tab-button:focus,
+    .btn:focus,
+    .form-input:focus,
+    .form-select:focus {
+        outline: 3px solid #667eea;
+        outline-offset: 2px;
+    }
+
+    /* 文字大小偏好支持 */
+    @media (prefers-font-size: large) {
+        .page__title {
+            font-size: 2rem;
+        }
+
+        .stat-card__value {
+            font-size: 1.4rem;
+        }
+
+        .tab-text {
+            font-size: 0.85rem;
+        }
+
+        .form-input,
+        .form-select {
+            font-size: 18px;
+        }
+    }
+}
+
+/* ================== 性能优化 ================== */
+@media (max-width: 768px) {
+    /* 减少重绘 */
+    .stat-card,
+    .config-group,
+    .tab-button {
+        will-change: transform;
+        backface-visibility: hidden;
+        perspective: 1000px;
+    }
+
+    /* GPU加速 */
+    .page__title-section {
+        transform: translateZ(0);
+    }
+
+    .content-tabs {
+        transform: translateZ(0);
+    }
+
+    /* 滚动优化 */
+    .tab-list {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+}
+
+/* ================== 印刷媒体支持 ================== */
+@media print {
+    .page-recharge-payment {
+        background: white !important;
+    }
+
+    .page__title-section {
+        background: white !important;
+        color: black !important;
+        break-inside: avoid;
+    }
+
+    .stats-row {
+        break-inside: avoid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-card {
+        background: white !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+    }
+
+    .content-tabs {
+        break-inside: avoid;
+    }
+
+    .tab-list {
+        display: none;
+    }
+
+    .tab-panel {
+        display: block !important;
+        break-inside: avoid;
+    }
+
+    .config-group {
+        background: white !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}

@@ -1,0 +1,604 @@
+/**
+ * 财务审核页面增强样式
+ * 基于统一主题系统的财务审核专用样式增强
+ */
+
+/* 财务审核主容器 */
+.financial-audit {
+    padding: var(--spacing-xl, 32px);
+    max-width: 1800px;
+    margin: 0 auto;
+    background: var(--color-bg-canvas, #f8fafc);
+    min-height: calc(100vh - 80px);
+}
+
+.financial-audit-container {
+    padding: var(--spacing-lg, 24px);
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* 财务审核页面头部 */
+.financial-audit__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl, 32px);
+    padding: var(--spacing-xl, 32px);
+    background: var(--color-bg-surface, white);
+    border-radius: var(--border-radius-lg, 12px);
+    box-shadow: var(--card-shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
+    border: 1px solid var(--color-border-light, #e5e7eb);
+    gap: var(--spacing-lg, 24px);
+    flex-wrap: wrap;
+}
+
+.financial-audit__title h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+    margin: 0 0 var(--spacing-sm, 8px);
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.financial-audit__subtitle {
+    font-size: 16px;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.financial-audit__actions {
+    display: flex;
+    gap: var(--spacing-md, 16px);
+    align-items: center;
+}
+
+/* 审核状态统计区域 */
+.financial-audit__stats {
+    margin-bottom: var(--spacing-xl, 32px);
+}
+
+.audit-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg, 24px);
+}
+
+.audit-stat-card {
+    background: var(--color-bg-surface, white);
+    border-radius: var(--border-radius-lg, 12px);
+    padding: var(--spacing-xl, 32px);
+    box-shadow: var(--card-shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
+    border: 1px solid var(--color-border-light, #e5e7eb);
+    text-align: center;
+    transition: all var(--transition-normal, 0.3s ease);
+    position: relative;
+    overflow: hidden;
+}
+
+.audit-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow-hover, 0 12px 32px rgba(0, 0, 0, 0.12));
+}
+
+.audit-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--card-accent-color, #667eea);
+}
+
+.audit-stat-card.pending::before {
+    background: var(--color-warning, #f59e0b);
+}
+
+.audit-stat-card.approved::before {
+    background: var(--color-success, #10b981);
+}
+
+.audit-stat-card.rejected::before {
+    background: var(--color-error, #ef4444);
+}
+
+.audit-stat-card.total::before {
+    background: var(--color-primary, #667eea);
+}
+
+.audit-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-md, 16px);
+    font-size: 20px;
+    color: white;
+    background: var(--card-accent-color, #667eea);
+}
+
+.audit-stat-card.pending .audit-stat-icon {
+    background: var(--color-warning, #f59e0b);
+}
+
+.audit-stat-card.approved .audit-stat-icon {
+    background: var(--color-success, #10b981);
+}
+
+.audit-stat-card.rejected .audit-stat-icon {
+    background: var(--color-error, #ef4444);
+}
+
+.audit-stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+    margin: 0 0 var(--spacing-sm, 8px);
+    line-height: 1;
+}
+
+.audit-stat-label {
+    font-size: 14px;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+    font-weight: 500;
+}
+
+/* 筛选和搜索增强 */
+.audit-filters-enhanced {
+    background: var(--color-bg-surface, white);
+    border-radius: var(--border-radius-lg, 12px);
+    padding: var(--spacing-lg, 24px);
+    box-shadow: var(--card-shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
+    border: 1px solid var(--color-border-light, #e5e7eb);
+    margin-bottom: var(--spacing-lg, 24px);
+}
+
+.audit-filters-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary, #111827);
+    margin: 0 0 var(--spacing-lg, 24px);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm, 8px);
+}
+
+.audit-filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg, 24px);
+    margin-bottom: var(--spacing-lg, 24px);
+}
+
+.audit-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm, 8px);
+}
+
+.audit-filter-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-secondary, #6b7280);
+}
+
+.audit-filter-input {
+    padding: 10px 12px;
+    border: 2px solid var(--color-border-light, #e5e7eb);
+    border-radius: var(--border-radius-md, 8px);
+    font-size: 14px;
+    background: var(--color-bg-input, #f9fafb);
+    color: var(--color-text-primary, #111827);
+    transition: all var(--transition-fast, 0.2s ease);
+}
+
+.audit-filter-input:focus {
+    outline: none;
+    border-color: var(--color-primary, #667eea);
+    background: var(--color-bg-surface, white);
+    box-shadow: 0 0 0 3px var(--primary-50, rgba(102, 126, 234, 0.1));
+}
+
+.audit-filter-actions {
+    display: flex;
+    gap: var(--spacing-md, 16px);
+    flex-wrap: wrap;
+}
+
+/* 审核表格区域 */
+.financial-audit__table {
+    margin-bottom: var(--spacing-xl, 32px);
+}
+
+.audit-table-enhanced, .audit-table-container {
+    background: var(--color-bg-surface, white);
+    border-radius: var(--border-radius-lg, 12px);
+    box-shadow: var(--card-shadow, 0 4px 12px rgba(0, 0, 0, 0.1));
+    border: 1px solid var(--color-border-light, #e5e7eb);
+    overflow: hidden;
+}
+
+.audit-table-header {
+    padding: var(--spacing-xl, 32px);
+    border-bottom: 2px solid var(--color-border-light, #e5e7eb);
+    background: var(--color-bg-secondary, #f8fafc);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.audit-table-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-primary, #111827);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm, 8px);
+}
+
+.audit-table-title::before {
+    content: '📋';
+    font-size: 24px;
+}
+
+.audit-table-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg, 24px);
+    color: var(--color-text-secondary, #6b7280);
+    font-size: 14px;
+}
+
+.audit-table-wrapper {
+    overflow-x: auto;
+}
+
+.audit-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.audit-table th {
+    background: var(--color-bg-secondary, #f8fafc);
+    color: var(--color-text-secondary, #6b7280);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: var(--spacing-md, 16px);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border-light, #e5e7eb);
+    white-space: nowrap;
+}
+
+.audit-table td {
+    padding: var(--spacing-md, 16px);
+    border-bottom: 1px solid var(--color-border-light, #e5e7eb);
+    color: var(--color-text-primary, #111827);
+    font-size: 14px);
+}
+
+.audit-table tbody tr:hover {
+    background: var(--color-bg-hover, #f8fafc);
+}
+
+.audit-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* 审核状态标签增强 */
+.audit-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.audit-status-badge.pending {
+    background: var(--color-warning-bg, #fef3c7);
+    color: var(--color-warning-text, #92400e);
+    border: 1px solid var(--color-warning-border, #f59e0b);
+}
+
+.audit-status-badge.approved {
+    background: var(--color-success-bg, #d1fae5);
+    color: var(--color-success-text, #065f46);
+    border: 1px solid var(--color-success-border, #10b981);
+}
+
+.audit-status-badge.rejected {
+    background: var(--color-error-bg, #fee2e2);
+    color: var(--color-error-text, #991b1b);
+    border: 1px solid var(--color-error-border, #ef4444);
+}
+
+.audit-status-badge.reviewing {
+    background: var(--color-info-bg, #dbeafe);
+    color: var(--color-info-text, #1e40af);
+    border: 1px solid var(--color-info-border, #3b82f6);
+}
+
+/* 审核操作按钮增强 */
+.audit-actions {
+    display: flex;
+    gap: var(--spacing-sm, 8px);
+}
+
+.audit-action-btn {
+    padding: 6px 12px;
+    border: 1px solid;
+    border-radius: var(--border-radius-sm, 6px);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast, 0.2s ease);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.audit-action-btn.view {
+    color: var(--color-text-secondary, #6b7280);
+    border-color: var(--color-border-light, #e5e7eb);
+    background: var(--color-bg-surface, white);
+}
+
+.audit-action-btn.view:hover {
+    color: var(--color-primary, #667eea);
+    border-color: var(--color-primary, #667eea);
+    background: var(--primary-50, rgba(102, 126, 234, 0.05));
+}
+
+.audit-action-btn.approve {
+    color: var(--color-success, #10b981);
+    border-color: var(--color-success, #10b981);
+    background: var(--color-success-bg, #d1fae5);
+}
+
+.audit-action-btn.approve:hover {
+    background: var(--color-success, #10b981);
+    color: white;
+}
+
+.audit-action-btn.reject {
+    color: var(--color-error, #ef4444);
+    border-color: var(--color-error, #ef4444);
+    background: var(--color-error-bg, #fee2e2);
+}
+
+.audit-action-btn.reject:hover {
+    background: var(--color-error, #ef4444);
+    color: white;
+}
+
+/* 分页增强 */
+.audit-pagination-enhanced {
+    display: flex;
+    align-items: center;
+    justify-content: between;
+    padding: var(--spacing-lg, 24px);
+    background: var(--color-bg-secondary, #f8fafc);
+    border-top: 1px solid var(--color-border-light, #e5e7eb);
+}
+
+.audit-pagination-info {
+    color: var(--color-text-secondary, #6b7280);
+    font-size: 14px);
+}
+
+.audit-pagination-controls {
+    display: flex;
+    gap: var(--spacing-sm, 8px);
+    margin-left: auto;
+}
+
+.audit-pagination-btn {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border-light, #e5e7eb);
+    border-radius: var(--border-radius-md, 8px);
+    background: var(--color-bg-surface, white);
+    color: var(--color-text-primary, #111827);
+    cursor: pointer;
+    transition: all var(--transition-fast, 0.2s ease);
+    font-size: 14px;
+}
+
+.audit-pagination-btn:hover:not(:disabled) {
+    border-color: var(--color-primary, #667eea);
+    color: var(--color-primary, #667eea);
+}
+
+.audit-pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.audit-pagination-btn.active {
+    background: var(--color-primary, #667eea);
+    color: white;
+    border-color: var(--color-primary, #667eea);
+}
+
+/* ========== 财务审核响应式设计 ========== */
+
+/* 大屏幕 (1440px+) */
+@media (min-width: 1440px) {
+    .financial-audit {
+        padding: var(--spacing-2xl, 48px);
+    }
+    
+    .audit-stats-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* 桌面端 (1024px - 1439px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
+    .audit-stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* 平板端 (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .financial-audit {
+        padding: var(--spacing-lg, 24px);
+    }
+    
+    .financial-audit__header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-lg, 24px);
+        text-align: center;
+    }
+    
+    .audit-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .audit-filters-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .audit-filter-actions {
+        flex-wrap: wrap;
+    }
+}
+
+/* 手机端 (480px - 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+    .financial-audit {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .financial-audit__header {
+        padding: var(--spacing-lg, 24px);
+        text-align: center;
+    }
+    
+    .financial-audit__title h1 {
+        font-size: 24px;
+    }
+    
+    .audit-stats-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md, 16px);
+    }
+    
+    .audit-stat-card {
+        padding: var(--spacing-lg, 24px);
+    }
+    
+    .audit-filters-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md, 16px);
+    }
+    
+    .audit-filter-actions {
+        flex-direction: column;
+        gap: var(--spacing-sm, 8px);
+    }
+    
+    .audit-table-wrapper {
+        margin: 0 calc(var(--spacing-md, 16px) * -1);
+        overflow-x: scroll;
+    }
+    
+    .audit-table th,
+    .audit-table td {
+        padding: var(--spacing-sm, 8px);
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    
+    .audit-actions {
+        flex-direction: column;
+        gap: var(--spacing-xs, 4px);
+    }
+    
+    .audit-action-btn {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+}
+
+/* 小屏手机端 (320px - 479px) */
+@media (max-width: 479px) {
+    .financial-audit {
+        padding: var(--spacing-sm, 8px);
+    }
+    
+    .financial-audit__header {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .financial-audit__title h1 {
+        font-size: 20px;
+    }
+    
+    .financial-audit__subtitle {
+        font-size: 14px;
+    }
+    
+    .audit-stat-card {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .audit-stat-value {
+        font-size: 24px;
+    }
+    
+    .audit-stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+    
+    .audit-filters-enhanced {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .audit-table-enhanced {
+        border-radius: 0;
+        margin: 0 calc(var(--spacing-sm, 8px) * -1);
+    }
+    
+    .audit-table-header {
+        padding: var(--spacing-md, 16px);
+    }
+    
+    .audit-table-title {
+        font-size: 16px;
+    }
+    
+    .audit-pagination-enhanced {
+        padding: var(--spacing-md, 16px);
+        flex-direction: column;
+        gap: var(--spacing-md, 16px);
+        text-align: center;
+    }
+    
+    .audit-pagination-controls {
+        justify-content: center;
+        margin-left: 0;
+    }
+    
+    .audit-pagination-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}

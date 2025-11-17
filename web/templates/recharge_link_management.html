@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>充值链接管理 - CJPayment</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/recharge_link_management.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>充值链接管理</h1>
+            <nav class="nav">
+                <a href="/dashboard">仪表盘</a>
+                <a href="/system_management">系统管理</a>
+                <a href="/recharge_link_management" class="active">链接管理</a>
+            </nav>
+        </header>
+
+        <main class="main">
+            <!-- 操作按钮区域 -->
+            <div class="action-bar">
+                <button id="createLinkBtn" class="btn btn-primary">
+                    <i class="icon">+</i>
+                    创建充值链接
+                </button>
+                <div class="filter-controls">
+                    <select id="linkTypeFilter" class="form-select">
+                        <option value="">所有类型</option>
+                        <option value="merchant">商户专用</option>
+                        <option value="general">通用链接</option>
+                    </select>
+                    <select id="statusFilter" class="form-select">
+                        <option value="">所有状态</option>
+                        <option value="true">激活</option>
+                        <option value="false">禁用</option>
+                    </select>
+                    <button id="refreshBtn" class="btn btn-secondary">刷新</button>
+                </div>
+            </div>
+
+            <!-- 链接列表 -->
+            <div class="table-container">
+                <table id="linksTable" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>链接标题</th>
+                            <th>短链接</th>
+                            <th>类型</th>
+                            <th>关联商户</th>
+                            <th>状态</th>
+                            <th>访问统计</th>
+                            <th>成功订单</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="linksTableBody">
+                        <!-- 动态内容 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="pagination-container">
+                <div class="pagination" id="pagination">
+                    <!-- 分页按钮 -->
+                </div>
+            </div>
+        </main>
+
+        <!-- 创建/编辑链接模态框 -->
+        <div class="modal" id="linkModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">创建充值链接</h3>
+                    <button class="modal-close" id="closeModalBtn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="linkForm">
+                        <input type="hidden" id="linkId" name="link_id">
+                        
+                        <div class="form-group">
+                            <label for="title">链接标题 *</label>
+                            <input type="text" id="title" name="title" required>
+                            <small class="form-hint">用于识别链接用途的描述性标题</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">链接描述</label>
+                            <textarea id="description" name="description" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="linkType">链接类型 *</label>
+                            <select id="linkType" name="link_type" required>
+                                <option value="">请选择类型</option>
+                                <option value="general">通用链接</option>
+                                <option value="merchant">商户专用</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="merchantGroup" style="display: none;">
+                            <label for="merchantId">关联商户</label>
+                            <select id="merchantId" name="merchant_id">
+                                <option value="">选择商户...</option>
+                                <!-- 动态填充商户列表 -->
+                            </select>
+                        </div>
+
+                        <!-- 预填充信息 -->
+                        <fieldset class="form-fieldset">
+                            <legend>预填充信息</legend>
+                            
+                            <div class="form-group">
+                                <label for="prefillMerchantName">预填商户名称</label>
+                                <input type="text" id="prefillMerchantName" name="prefill_merchant_name">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prefillAdAccount">预填广告账户</label>
+                                <input type="text" id="prefillAdAccount" name="prefill_ad_account">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prefillAmount">预填金额</label>
+                                <input type="number" id="prefillAmount" name="prefill_amount" step="0.01" min="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prefillRemark">预填备注</label>
+                                <textarea id="prefillRemark" name="prefill_remark" rows="2"></textarea>
+                            </div>
+                        </fieldset>
+
+                        <!-- 访问控制 -->
+                        <fieldset class="form-fieldset">
+                            <legend>访问控制</legend>
+                            
+                            <div class="form-group">
+                                <label for="expiresAt">过期时间</label>
+                                <input type="datetime-local" id="expiresAt" name="expires_at">
+                                <small class="form-hint">留空表示永不过期</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="maxUses">最大使用次数</label>
+                                <input type="number" id="maxUses" name="max_uses" min="1">
+                                <small class="form-hint">留空表示无限制</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="allowedIPs">允许访问的IP</label>
+                                <textarea id="allowedIPs" name="allowed_ips" rows="2" placeholder="一行一个IP地址，留空表示不限制"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="requireVerification" name="require_verification">
+                                    需要验证访问
+                                </label>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">取消</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn">保存</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 提示消息 -->
+        <div class="toast-container" id="toastContainer">
+            <!-- 动态提示消息 -->
+        </div>
+    </div>
+
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/recharge_link_management.js"></script>
+</body>
+</html>

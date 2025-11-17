@@ -1,0 +1,77 @@
+{
+  "dashboard": {
+    "exportModal": {
+      "success": true,
+      "modalFound": true,
+      "display": "flex",
+      "position": "fixed",
+      "visibility": "visible",
+      "zIndex": "9999",
+      "alignItems": "center",
+      "justifyContent": "center",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "top": 0,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      },
+      "isVisible": true,
+      "classes": "modal-enhanced show"
+    },
+    "transactionsModal": {
+      "success": true,
+      "modalFound": true,
+      "display": "flex",
+      "position": "fixed",
+      "visibility": "visible",
+      "zIndex": "9999",
+      "alignItems": "center",
+      "justifyContent": "center",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "top": 0,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      },
+      "isVisible": true,
+      "classes": "modal-enhanced show"
+    }
+  },
+  "reports": {
+    "exportModal": {
+      "success": true,
+      "modalFound": true,
+      "display": "flex",
+      "position": "fixed",
+      "visibility": "visible",
+      "zIndex": "9999",
+      "alignItems": "center",
+      "justifyContent": "center",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "top": 0,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      },
+      "isVisible": true,
+      "classes": "modal-enhanced show"
+    }
+  },
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3
+  }
+}

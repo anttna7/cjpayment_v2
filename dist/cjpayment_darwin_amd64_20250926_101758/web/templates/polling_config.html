@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮询规则管理 - CJPayment 充值系统</title>
+    
+    <!-- 统一样式 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/components-unified.css">
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    <link rel="stylesheet" href="/static/css/components/polling-config.css">
+</head>
+<body>
+    <div class="polling-container">
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1>⚙️ 轮询规则管理</h1>
+            <p>配置收款账户的智能分配策略</p>
+        </div>
+        
+        <!-- 快速统计 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalRulesCount">0</div>
+                <div class="stat-label">📋 总规则数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activeRulesCount">0</div>
+                <div class="stat-label">✅ 活跃规则</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="businessRulesCount">0</div>
+                <div class="stat-label">🏢 对公规则</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="personalRulesCount">0</div>
+                <div class="stat-label">👤 对私规则</div>
+            </div>
+        </div>
+        
+        <!-- 操作栏 -->
+        <div class="action-bar">
+            <button type="button" class="btn btn-primary" id="createRuleBtn">
+                <span>➕</span> 新建规则
+            </button>
+            <button type="button" class="btn btn-secondary" id="testRuleBtn">
+                <span>🧪</span> 测试规则
+            </button>
+            <button type="button" class="btn btn-secondary" id="refreshBtn">
+                <span>🔄</span> 刷新数据
+            </button>
+        </div>
+        
+        <!-- 规则列表 -->
+        <div class="rules-section">
+            <div class="section-header">
+                <h2>📋 轮询规则列表</h2>
+                <div class="filter-controls">
+                    <select class="filter-select" id="paymentTypeFilter">
+                        <option value="">全部类型</option>
+                        <option value="business">对公转账</option>
+                        <option value="personal">对私转账</option>
+                    </select>
+                    <select class="filter-select" id="ruleTypeFilter">
+                        <option value="">全部规则</option>
+                        <option value="round_robin">轮询规则</option>
+                        <option value="weight">加权规则</option>
+                        <option value="amount_based">金额分层</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="rules-grid" id="rulesGrid">
+                <!-- 动态加载规则卡片 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 创建/编辑规则模态框 -->
+    <div class="modal-overlay" id="ruleModal" style="display: none;">
+        <div class="modal modal-lg">
+            <div class="modal-header">
+                <div class="modal-title" id="ruleModalTitle">新建轮询规则</div>
+                <button class="modal-close" id="closeRuleModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="ruleForm">
+                    <input type="hidden" id="ruleId" name="ruleId">
+                    
+                    <div class="form-section">
+                        <div class="form-section-title">基础信息</div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label required">规则名称</label>
+                                <input type="text" class="form-input" id="ruleName" name="ruleName" placeholder="请输入规则名称" required>
+                                <div class="error-message" id="ruleNameError"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">支付类型</label>
+                                <select class="form-select" id="rulePaymentType" name="paymentType" required>
+                                    <option value="">请选择支付类型</option>
+                                    <option value="business">对公转账</option>
+                                    <option value="personal">对私转账</option>
+                                </select>
+                                <div class="error-message" id="paymentTypeError"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label class="form-label required">规则类型</label>
+                                <div class="rule-type-selector">
+                                    <div class="rule-type-option" data-type="round_robin">
+                                        <input type="radio" name="ruleType" value="round_robin" id="roundRobinType">
+                                        <label for="roundRobinType">
+                                            <div class="rule-icon">🔄</div>
+                                            <div class="rule-title">轮询规则</div>
+                                            <div class="rule-desc">按顺序轮流选择账户</div>
+                                        </label>
+                                    </div>
+                                    <div class="rule-type-option" data-type="weight">
+                                        <input type="radio" name="ruleType" value="weight" id="weightType">
+                                        <label for="weightType">
+                                            <div class="rule-icon">⚖️</div>
+                                            <div class="rule-title">加权规则</div>
+                                            <div class="rule-desc">根据权重随机选择账户</div>
+                                        </label>
+                                    </div>
+                                    <div class="rule-type-option" data-type="amount_based">
+                                        <input type="radio" name="ruleType" value="amount_based" id="amountBasedType">
+                                        <label for="amountBasedType">
+                                            <div class="rule-icon">📊</div>
+                                            <div class="rule-title">金额分层</div>
+                                            <div class="rule-desc">根据金额范围选择账户</div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="error-message" id="ruleTypeError"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 轮询规则配置 -->
+                    <div class="config-section" id="roundRobinConfig" style="display: none;">
+                        <div class="form-section-title">轮询配置</div>
+                        <div class="config-info">
+                            <p>轮询规则将按顺序循环选择可用的收款账户，确保负载均衡。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 加权规则配置 -->
+                    <div class="config-section" id="weightConfig" style="display: none;">
+                        <div class="form-section-title">权重配置</div>
+                        <div class="config-info">
+                            <p>系统将根据账户权重进行随机选择，权重越高的账户被选中概率越大。</p>
+                        </div>
+                        <div id="weightAccountsConfig">
+                            <!-- 动态加载权重配置 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 金额分层配置 -->
+                    <div class="config-section" id="amountBasedConfig" style="display: none;">
+                        <div class="form-section-title">金额分层配置</div>
+                        <div class="config-info">
+                            <p>根据充值金额范围选择不同的收款账户，适用于大额小额分离处理。</p>
+                        </div>
+                        <div class="amount-tiers" id="amountTiers">
+                            <!-- 动态加载分层配置 -->
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" id="addTierBtn">
+                            <span>➕</span> 添加分层
+                        </button>
+                    </div>
+                    
+                    <!-- 账户选择 -->
+                    <div class="form-section">
+                        <div class="form-section-title">关联账户</div>
+                        <div class="accounts-selector" id="accountsSelector">
+                            <!-- 动态加载可用账户 -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelRuleModal">取消</button>
+                <button type="button" class="btn btn-primary" id="saveRuleBtn">保存规则</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 规则测试模态框 -->
+    <div class="modal-overlay" id="testModal" style="display: none;">
+        <div class="modal modal-md">
+            <div class="modal-header">
+                <div class="modal-title">🧪 规则测试</div>
+                <button class="modal-close" id="closeTestModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-section">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">支付类型</label>
+                            <select class="form-select" id="testPaymentType" required>
+                                <option value="">请选择支付类型</option>
+                                <option value="business">对公转账</option>
+                                <option value="personal">对私转账</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">测试金额</label>
+                            <input type="number" class="form-input" id="testAmount" placeholder="请输入测试金额" step="0.01" min="1" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">测试次数</label>
+                            <input type="number" class="form-input" id="testCount" placeholder="测试次数" min="1" max="1000" value="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">&nbsp;</label>
+                            <button type="button" class="btn btn-primary" id="runTestBtn">
+                                <span>▶️</span> 开始测试
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-results" id="testResults" style="display: none;">
+                    <div class="form-section-title">测试结果</div>
+                    <div id="testResultsContent">
+                        <!-- 动态显示测试结果 -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeTestModalBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast 通知组件 -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <script src="/static/js/components.js"></script>
+    <script src="/static/js/polling-manager.js"></script>
+</body>
+</html>

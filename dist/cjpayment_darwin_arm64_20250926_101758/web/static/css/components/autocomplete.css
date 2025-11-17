@@ -1,0 +1,543 @@
+/* ==========================================================================
+   Autocomplete Component Styles
+   自动完成组件样式
+   ========================================================================== */
+
+/* ==========================================================================
+   Container and Base Styles
+   ========================================================================== */
+
+.autocomplete-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.autocomplete-container input {
+  width: 100%;
+}
+
+/* Loading state for input */
+.autocomplete-container input.autocomplete-loading {
+  background-image: url("data:image/svg+xml,%3csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3e%3cg fill='none' fill-rule='evenodd'%3e%3cg fill='%23999' fill-rule='nonzero'%3e%3cpath d='M10 3a7 7 0 100 14 7 7 0 000-14zM2 10a8 8 0 1116 0 8 8 0 01-16 0z' opacity='.4'/%3e%3cpath d='M10 3a7 7 0 017 7h1a8 8 0 00-8-8v1z'%3e%3canimateTransform attributeName='transform' dur='1s' from='0 10 10' repeatCount='indefinite' to='360 10 10' type='rotate'/%3e%3c/path%3e%3c/g%3e%3c/g%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  padding-right: 2.5rem;
+}
+
+/* ==========================================================================
+   Suggestions Container
+   ========================================================================== */
+
+.autocomplete-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--color-border-secondary, #d4d4d4);
+  border-top: none;
+  border-radius: 0 0 var(--radius-base, 0.25rem) var(--radius-base, 0.25rem);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  
+  /* 动画效果 */
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+.autocomplete-suggestions[style*="display: block"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 向上显示时的样式 */
+.autocomplete-suggestions.autocomplete-above {
+  top: auto;
+  bottom: 100%;
+  border-top: 1px solid var(--color-border-secondary, #d4d4d4);
+  border-bottom: none;
+  border-radius: var(--radius-base, 0.25rem) var(--radius-base, 0.25rem) 0 0;
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(4px);
+}
+
+.autocomplete-suggestions.autocomplete-above[style*="display: block"] {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Individual Suggestions
+   ========================================================================== */
+
+.autocomplete-suggestion {
+  padding: var(--space-3, 0.75rem);
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-border-tertiary, #f5f5f5);
+  transition: background-color var(--duration-150, 150ms) var(--ease-out, ease-out);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+}
+
+.autocomplete-suggestion:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-suggestion:hover,
+.autocomplete-suggestion.autocomplete-selected {
+  background: var(--color-bg-secondary, #f9fafb);
+}
+
+.autocomplete-suggestion.autocomplete-selected {
+  background: var(--color-interactive-bg-hover, #e0f2fe);
+  border-left: 3px solid var(--color-interactive-primary, #0ea5e9);
+  padding-left: calc(var(--space-3, 0.75rem) - 3px);
+}
+
+/* ==========================================================================
+   Suggestion Content
+   ========================================================================== */
+
+.autocomplete-suggestion-text {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-text-primary, #171717);
+  line-height: var(--line-height-tight, 1.25);
+  font-weight: var(--font-weight-medium, 500);
+}
+
+.autocomplete-suggestion-meta {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-text-tertiary, #737373);
+  line-height: var(--line-height-tight, 1.25);
+}
+
+/* 高亮匹配文本 */
+.autocomplete-suggestion-text mark {
+  background: var(--color-highlight-bg, #fef08a);
+  color: var(--color-highlight-text, #854d0e);
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+/* ==========================================================================
+   Loading Indicator
+   ========================================================================== */
+
+.autocomplete-loading {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--color-border-secondary, #d4d4d4);
+  border-top: none;
+  border-radius: 0 0 var(--radius-base, 0.25rem) var(--radius-base, 0.25rem);
+  padding: var(--space-4, 1rem);
+  text-align: center;
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-text-secondary, #404040);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-border-tertiary, #f5f5f5);
+  border-top: 2px solid var(--color-interactive-primary, #0ea5e9);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   Empty State
+   ========================================================================== */
+
+.autocomplete-empty {
+  padding: var(--space-4, 1rem);
+  text-align: center;
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-text-tertiary, #737373);
+  font-style: italic;
+}
+
+/* ==========================================================================
+   Keyboard Navigation Indicators
+   ========================================================================== */
+
+.autocomplete-suggestion:focus {
+  outline: 2px solid var(--color-border-focus, #0ea5e9);
+  outline-offset: -2px;
+}
+
+/* 键盘导航提示 */
+.autocomplete-suggestions::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-interactive-primary, #0ea5e9);
+  opacity: 0;
+  transition: opacity var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+.autocomplete-suggestions:focus-within::before {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .autocomplete-suggestions {
+    max-height: 250px;
+    border-radius: 0;
+    left: -1px;
+    right: -1px;
+  }
+  
+  .autocomplete-suggestion {
+    padding: var(--space-4, 1rem);
+  }
+  
+  .autocomplete-suggestion-text {
+    font-size: var(--font-size-base, 1rem);
+  }
+}
+
+/* ==========================================================================
+   Touch Device Optimizations
+   ========================================================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .autocomplete-suggestion {
+    min-height: 44px; /* Minimum touch target size */
+    padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+    display: flex;
+    align-items: center;
+  }
+  
+  .autocomplete-suggestion:hover {
+    background: transparent; /* Remove hover on touch devices */
+  }
+  
+  .autocomplete-suggestion:active {
+    background: var(--color-bg-secondary, #f9fafb);
+  }
+}
+
+/* ==========================================================================
+   High Contrast Mode Support
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  .autocomplete-suggestions {
+    border-width: 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .autocomplete-suggestion {
+    border-bottom-width: 2px;
+  }
+  
+  .autocomplete-suggestion.autocomplete-selected {
+    border-left-width: 4px;
+    background: var(--color-interactive-bg-hover, #e0f2fe);
+  }
+  
+  .autocomplete-suggestion-text mark {
+    background: #ffff00;
+    color: #000000;
+    border: 1px solid #000000;
+  }
+}
+
+/* ==========================================================================
+   Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .autocomplete-suggestions {
+    transition: none;
+    transform: none;
+  }
+  
+  .autocomplete-suggestions.autocomplete-above {
+    transform: none;
+  }
+  
+  .autocomplete-suggestion {
+    transition: none;
+  }
+  
+  .loading-spinner {
+    animation: none;
+    border-top-color: var(--color-interactive-primary, #0ea5e9);
+  }
+}
+
+/* ==========================================================================
+   Dark Theme Support
+   ========================================================================== */
+
+[data-theme="dark"] .autocomplete-suggestions {
+  background: var(--color-bg-surface);
+  border-color: var(--color-border-secondary);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .autocomplete-suggestion {
+  border-bottom-color: var(--color-border-tertiary);
+}
+
+[data-theme="dark"] .autocomplete-suggestion:hover,
+[data-theme="dark"] .autocomplete-suggestion.autocomplete-selected {
+  background: var(--color-bg-secondary);
+}
+
+[data-theme="dark"] .autocomplete-suggestion.autocomplete-selected {
+  background: var(--color-interactive-bg-hover);
+  border-left-color: var(--color-interactive-primary);
+}
+
+[data-theme="dark"] .autocomplete-suggestion-text {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .autocomplete-suggestion-meta {
+  color: var(--color-text-tertiary);
+}
+
+[data-theme="dark"] .autocomplete-suggestion-text mark {
+  background: var(--color-highlight-bg);
+  color: var(--color-highlight-text);
+}
+
+[data-theme="dark"] .autocomplete-loading {
+  background: var(--color-bg-surface);
+  border-color: var(--color-border-secondary);
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .loading-spinner {
+  border-color: var(--color-border-tertiary);
+  border-top-color: var(--color-interactive-primary);
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  .autocomplete-suggestions,
+  .autocomplete-loading {
+    display: none !important;
+  }
+  
+  .autocomplete-container input.autocomplete-loading {
+    background-image: none;
+    padding-right: var(--space-3, 0.75rem);
+  }
+}
+
+/* ==========================================================================
+   Focus Management
+   ========================================================================== */
+
+.autocomplete-container input:focus + .autocomplete-suggestions {
+  border-color: var(--color-border-focus, #0ea5e9);
+}
+
+/* 确保建议列表在输入框获得焦点时正确显示 */
+.autocomplete-container input[aria-expanded="true"] {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.autocomplete-container input[aria-expanded="true"] + .autocomplete-suggestions {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* ==========================================================================
+   Scrollbar Styling
+   ========================================================================== */
+
+.autocomplete-suggestions::-webkit-scrollbar {
+  width: 6px;
+}
+
+.autocomplete-suggestions::-webkit-scrollbar-track {
+  background: var(--color-bg-tertiary, #f5f5f5);
+}
+
+.autocomplete-suggestions::-webkit-scrollbar-thumb {
+  background: var(--color-border-secondary, #d4d4d4);
+  border-radius: 3px;
+}
+
+.autocomplete-suggestions::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-primary, #a3a3a3);
+}
+
+/* Firefox scrollbar */
+.autocomplete-suggestions {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-secondary, #d4d4d4) var(--color-bg-tertiary, #f5f5f5);
+}
+
+/* ==========================================================================
+   Animation Utilities
+   ========================================================================== */
+
+.autocomplete-fade-in {
+  animation: autocompleteFadeIn var(--duration-200, 200ms) var(--ease-out, ease-out);
+}
+
+.autocomplete-fade-out {
+  animation: autocompleteFadeOut var(--duration-150, 150ms) var(--ease-in, ease-in);
+}
+
+@keyframes autocompleteFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes autocompleteFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+/* ==========================================================================
+   Error States
+   ========================================================================== */
+
+.autocomplete-error {
+  padding: var(--space-4, 1rem);
+  text-align: center;
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-status-error, #ef4444);
+  background: var(--color-status-error-bg, #fef2f2);
+  border-top: 1px solid var(--color-status-error-border, #fecaca);
+}
+
+.autocomplete-error::before {
+  content: '⚠️';
+  margin-right: var(--space-2, 0.5rem);
+}
+
+/* ==========================================================================
+   Accessibility Enhancements
+   ========================================================================== */
+
+/* Screen reader only content */
+.autocomplete-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus indicators for keyboard navigation */
+.autocomplete-suggestion[aria-selected="true"] {
+  position: relative;
+}
+
+.autocomplete-suggestion[aria-selected="true"]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-interactive-primary, #0ea5e9);
+}
+
+/* ==========================================================================
+   Integration with Form Components
+   ========================================================================== */
+
+.form-group .autocomplete-container {
+  width: 100%;
+}
+
+.form-group .autocomplete-container input {
+  margin-bottom: 0;
+}
+
+/* 确保自动完成建议不被表单组边界裁剪 */
+.form-group {
+  position: relative;
+  z-index: 1;
+}
+
+.form-group:focus-within {
+  z-index: 10;
+}
+
+/* ==========================================================================
+   Performance Optimizations
+   ========================================================================== */
+
+.autocomplete-suggestions {
+  /* 使用GPU加速 */
+  will-change: transform, opacity;
+  /* 优化重绘 */
+  contain: layout style paint;
+}
+
+.autocomplete-suggestion {
+  /* 优化hover性能 */
+  will-change: background-color;
+}
+
+/* ==========================================================================
+   Custom Properties for Theming
+   ========================================================================== */
+
+.autocomplete-container {
+  --autocomplete-bg: var(--color-bg-surface, #ffffff);
+  --autocomplete-border: var(--color-border-secondary, #d4d4d4);
+  --autocomplete-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --autocomplete-text: var(--color-text-primary, #171717);
+  --autocomplete-text-meta: var(--color-text-tertiary, #737373);
+  --autocomplete-hover-bg: var(--color-bg-secondary, #f9fafb);
+  --autocomplete-selected-bg: var(--color-interactive-bg-hover, #e0f2fe);
+  --autocomplete-selected-border: var(--color-interactive-primary, #0ea5e9);
+  --autocomplete-highlight-bg: var(--color-highlight-bg, #fef08a);
+  --autocomplete-highlight-text: var(--color-highlight-text, #854d0e);
+}

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收款账户展示系统 - CJPayment</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/components.css">
+    <link rel="stylesheet" href="../static/css/dashboard-enhanced.css">
+    <link rel="stylesheet" href="../static/css/account-management-enhanced.css">
+    
+    <style>
+        .display-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--account-bg-primary);
+        }
+        
+        .display-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--account-bg-secondary);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--account-shadow-card);
+        }
+        
+        .display-title {
+            font-size: 2.5rem;
+            color: var(--account-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .display-subtitle {
+            color: var(--dashboard-text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .filter-section {
+            background: var(--account-bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: var(--account-shadow-card);
+        }
+        
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+        
+        .accounts-section {
+            background: var(--account-bg-secondary);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--account-shadow-card);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--dashboard-text-primary);
+            font-weight: 600;
+        }
+        
+        .accounts-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--account-bg-tertiary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border-left: 4px solid var(--account-primary);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--account-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--dashboard-text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .account-card-display {
+            background: var(--account-bg-tertiary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .account-card-display:hover {
+            border-color: var(--account-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .account-card-display.priority-high {
+            border-left: 4px solid var(--rule-active);
+        }
+        
+        .account-card-display.priority-medium {
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .account-card-display.priority-low {
+            border-left: 4px solid #6b7280;
+        }
+        
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .account-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-启用 {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--rule-active);
+        }
+        
+        .status-禁用 {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        
+        .status-维护 {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+        
+        .account-main-info {
+            margin-bottom: 1.5rem;
+        }
+        
+        .account-name-display {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .account-number-display {
+            font-family: monospace;
+            color: var(--dashboard-text-secondary);
+            font-size: 0.95rem;
+            background: var(--account-bg-primary);
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .account-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .detail-item {
+            text-align: center;
+        }
+        
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--dashboard-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+        }
+        
+        .account-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+        
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-btn.copy {
+            background: var(--account-primary);
+            color: white;
+        }
+        
+        .action-btn.copy:hover {
+            background: var(--account-hover);
+        }
+        
+        .action-btn.details {
+            background: transparent;
+            color: var(--account-primary);
+            border: 1px solid var(--account-primary);
+        }
+        
+        .action-btn.details:hover {
+            background: var(--account-primary);
+            color: white;
+        }
+        
+        .priority-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .priority-1 { background: var(--rule-active); }
+        .priority-2 { background: #f59e0b; }
+        .priority-3 { background: #6b7280; }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--dashboard-text-secondary);
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .accounts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .account-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="display-container">
+        <!-- 页面标题 -->
+        <div class="display-header">
+            <h1 class="display-title">🏦 收款账户展示系统</h1>
+            <p class="display-subtitle">实时展示可用收款账户，支持筛选和匹配功能</p>
+        </div>
+        
+        <!-- 筛选区域 -->
+        <div class="filter-section">
+            <div class="filter-grid">
+                <div class="form-group-enhanced">
+                    <label for="filterAccountType" class="form-label-enhanced">账号类型</label>
+                    <select id="filterAccountType" class="form-input-enhanced">
+                        <option value="">全部类型</option>
+                        <option value="银行卡">银行卡</option>
+                        <option value="支付宝">支付宝</option>
+                        <option value="微信">微信</option>
+                        <option value="其它">其它</option>
+                    </select>
+                </div>
+                
+                <div class="form-group-enhanced">
+                    <label for="filterBusinessType" class="form-label-enhanced">业务类型</label>
+                    <select id="filterBusinessType" class="form-input-enhanced">
+                        <option value="">全部业务</option>
+                        <option value="对公">对公</option>
+                        <option value="对私">对私</option>
+                    </select>
+                </div>
+                
+                <div class="form-group-enhanced">
+                    <label for="filterStatus" class="form-label-enhanced">账户状态</label>
+                    <select id="filterStatus" class="form-input-enhanced">
+                        <option value="">全部状态</option>
+                        <option value="启用">启用</option>
+                        <option value="禁用">禁用</option>
+                        <option value="维护">维护中</option>
+                    </select>
+                </div>
+                
+                <div class="form-group-enhanced">
+                    <label for="filterMinAmount" class="form-label-enhanced">最小限额</label>
+                    <input type="number" id="filterMinAmount" class="form-input-enhanced" 
+                           placeholder="输入最小限额">
+                </div>
+                
+                <div class="filter-actions">
+                    <button type="button" class="btn-enhanced btn-primary" onclick="applyFilters()">
+                        <span class="btn__icon">🔍</span>
+                        筛选
+                    </button>
+                    <button type="button" class="btn-enhanced btn-outline" onclick="clearFilters()">
+                        清除筛选
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 收款账户展示区域 -->
+        <div class="accounts-section">
+            <div class="section-header">
+                <h2 class="section-title">收款账户列表</h2>
+                <button class="btn-enhanced btn-outline" onclick="refreshAccounts()">
+                    <span class="btn__icon">🔄</span>
+                    刷新
+                </button>
+            </div>
+            
+            <!-- 统计信息 -->
+            <div class="accounts-stats" id="accountsStats">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalAccounts">0</div>
+                    <div class="stat-label">总账户数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="activeAccounts">0</div>
+                    <div class="stat-label">可用账户</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalDailyLimit">¥0</div>
+                    <div class="stat-label">总日限额</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgPriority">0</div>
+                    <div class="stat-label">平均优先级</div>
+                </div>
+            </div>
+            
+            <!-- 账户列表 -->
+            <div class="accounts-grid" id="accountsGrid">
+                <!-- 收款账户卡片将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 账户详情模态框 -->
+    <div class="modal-enhanced" id="accountDetailsModal" role="dialog" aria-labelledby="accountDetailsModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="accountDetailsModalTitle">收款账户详情</h2>
+                <button class="modal-close" id="accountDetailsModalClose" aria-label="关闭对话框">✕</button>
+            </div>
+            <div class="modal-body" id="accountDetailsBody">
+                <!-- 详情内容将通过JavaScript动态生成 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-enhanced btn-outline" id="closeDetailsBtn">关闭</button>
+                <button type="button" class="btn-enhanced btn-primary" id="copyAccountInfoBtn">
+                    <span class="btn__icon">📋</span>
+                    复制账户信息
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/js/receiving-accounts-display.js"></script>
+</body>
+</html>

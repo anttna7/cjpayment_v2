@@ -1,0 +1,73 @@
+{
+  "timestamp": "2025-08-22T16:14:52.401Z",
+  "pageInfo": {
+    "title": "商户管理 - CJPayment",
+    "url": "http://127.0.0.1:8091/merchant",
+    "loadTime": 1608,
+    "isRedirected": false
+  },
+  "content": {
+    "isBlank": false,
+    "bodyTextLength": 11402,
+    "keyElements": {
+      "loginForm": 37,
+      "merchantTitle": 3,
+      "inputFields": 6,
+      "buttons": 33,
+      "navigation": 0
+    }
+  },
+  "styles": {
+    "stylesheetsCount": 6,
+    "stylesheets": [
+      {
+        "href": "http://127.0.0.1:8091/static/css/theme-unified.css",
+        "rules": 114,
+        "disabled": false
+      },
+      {
+        "href": "http://127.0.0.1:8091/static/css/components/enhanced-table.css",
+        "rules": 73,
+        "disabled": false
+      },
+      {
+        "href": "http://127.0.0.1:8091/static/css/components/modal-unified.css",
+        "rules": 40,
+        "disabled": false
+      },
+      {
+        "href": "http://127.0.0.1:8091/static/css/components/form.css",
+        "rules": 148,
+        "disabled": false
+      },
+      {
+        "href": "http://127.0.0.1:8091/static/css/components/toast.css",
+        "rules": 67,
+        "disabled": false
+      },
+      {
+        "href": null,
+        "rules": 30,
+        "disabled": false
+      }
+    ]
+  },
+  "javascript": {
+    "windowLoaded": "complete",
+    "scriptsCount": 3,
+    "hasJQuery": false,
+    "hasVue": false,
+    "hasReact": false,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+  },
+  "interactions": {
+    "clickableElements": 36,
+    "inputFields": 6
+  },
+  "errors": {
+    "javascriptErrors": [],
+    "consoleMessages": [],
+    "networkFailures": []
+  },
+  "allConsoleMessages": []
+}

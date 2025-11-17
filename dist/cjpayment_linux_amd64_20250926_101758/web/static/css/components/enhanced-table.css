@@ -1,0 +1,484 @@
+/* 增强表格样式 - 支持固定列的左右滚动 */
+.table-wrapper {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: visible;
+    max-width: 100%;
+    border: 1px solid #e0e7ff;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.enhanced-table {
+    width: 100%;
+    min-width: 1200px; /* 确保表格有足够宽度触发滚动 */
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+    background: white;
+}
+
+/* 表头样式 */
+.table-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table-header th {
+    padding: 16px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    white-space: nowrap;
+    position: relative;
+}
+
+/* 固定列基础样式 */
+.col-fixed {
+    position: sticky;
+    z-index: 11;
+}
+
+/* 序号列固定在左侧 */
+.col-index.col-fixed {
+    left: 0;
+    width: 80px;
+    min-width: 80px;
+    text-align: center;
+    background: white;
+}
+
+/* 操作列固定在右侧 */
+.col-actions.col-fixed {
+    right: 0;
+    width: 160px;
+    min-width: 160px;
+    text-align: center;
+    background: white;
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 可滚动列样式 */
+.col-scrollable {
+    min-width: 120px;
+    width: 140px;
+}
+
+/* 表体样式 */
+#merchantTableBody tr {
+    background: white;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+#merchantTableBody tr:hover {
+    background: #f8fafc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#merchantTableBody td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    font-size: 13px;
+    color: #334155;
+    border-right: 1px solid #f1f5f9;
+}
+
+/* 表头固定列样式 */
+.table-header th.col-fixed {
+    position: sticky;
+    z-index: 12; /* 表头需要更高的层级 */
+}
+
+.table-header th.col-index.col-fixed {
+    left: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.table-header th.col-actions.col-fixed {
+    right: 0;
+    /* 继承表头统一背景样式，不单独设置背景色 */
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.15);
+}
+
+/* 表体固定列样式 */
+#merchantTableBody td.col-fixed {
+    position: sticky;
+    background: white;
+    z-index: 5; /* 表体层级较低 */
+}
+
+#merchantTableBody td.col-index.col-fixed {
+    left: 0;
+    text-align: center;
+    font-weight: 600;
+    color: #6366f1;
+}
+
+#merchantTableBody td.col-actions.col-fixed {
+    right: 0;
+    text-align: center;
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 悬停状态 */
+#merchantTableBody tr:hover td.col-fixed {
+    background: #f8fafc;
+}
+
+#merchantTableBody tr:hover td.col-actions.col-fixed {
+    background: #f8fafc;
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.15);
+}
+
+/* 操作按钮样式 */
+.table-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-action {
+    padding: 4px 8px;
+    font-size: 12px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #374151;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-action:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+    color: #111827;
+}
+
+.btn-action:active {
+    background: #e5e7eb;
+}
+
+/* 返点政策样式 */
+.rebate-policy {
+    font-weight: 500;
+    color: #059669;
+}
+
+/* 充值链接类型样式 */
+.link-type {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.link-type--general {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.link-type--merchant {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+/* 备注文本样式 */
+.remarks-text {
+    color: #6b7280;
+    font-size: 12px;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 这些样式已经在上面的固定列样式中定义，删除重复定义 */
+
+/* 状态标签样式 */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.25px;
+}
+
+.status-enabled {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.status-disabled {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+/* 链接样式 */
+.link-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.link-text {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.link-text:hover {
+    text-decoration: underline;
+}
+
+.link-copy-btn {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 12px;
+}
+
+.link-copy-btn:hover {
+    background: #e2e8f0;
+    border-color: #94a3b8;
+}
+
+/* 操作按钮组 */
+.action-buttons {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+    color: #374151;
+    transform: translateY(-1px);
+}
+
+.action-btn--details {
+    color: #3b82f6;
+}
+
+.action-btn--details:hover {
+    background: #eff6ff;
+    border-color: #3b82f6;
+}
+
+.action-btn--edit {
+    color: #f59e0b;
+}
+
+.action-btn--edit:hover {
+    background: #fffbeb;
+    border-color: #f59e0b;
+}
+
+.action-btn--config {
+    color: #8b5cf6;
+}
+
+.action-btn--config:hover {
+    background: #faf5ff;
+    border-color: #8b5cf6;
+}
+
+/* 加载状态 */
+.loading-row {
+    height: 200px;
+}
+
+.loading-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: #6b7280;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #f3f4f6;
+    border-top: 3px solid #6366f1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 空数据状态 */
+.empty-row {
+    height: 200px;
+}
+
+.empty-cell {
+    text-align: center;
+    vertical-align: middle;
+    color: #9ca3af;
+}
+
+.empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.empty-icon {
+    font-size: 48px;
+    opacity: 0.5;
+}
+
+.empty-text {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.empty-hint {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* 滚动条样式 */
+.table-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .table-wrapper {
+        border-radius: 8px;
+    }
+    
+    .enhanced-table {
+        min-width: 900px;
+    }
+    
+    .col-index {
+        width: 60px;
+        min-width: 60px;
+    }
+    
+    .col-actions {
+        width: 120px;
+        min-width: 120px;
+    }
+    
+    .col-scrollable {
+        min-width: 100px;
+        width: 120px;
+    }
+    
+    .table-header th {
+        padding: 12px 8px;
+        font-size: 12px;
+    }
+    
+    #merchantTableBody td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+}
+
+/* 表格阴影边缘效果 - 表示可滚动 */
+.table-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 80px; /* 序号列宽度 */
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.1), transparent);
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.table-wrapper.scrollable::before {
+    opacity: 1;
+}
+
+.table-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 160px; /* 操作列宽度 */
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(to left, rgba(0,0,0,0.1), transparent);
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.table-wrapper.scrollable::after {
+    opacity: 1;
+}

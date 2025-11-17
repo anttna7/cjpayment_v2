@@ -1,0 +1,3909 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>数据报表中心 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/static/css/report_dashboard.css" as="style">
+    <link rel="preload" href="/static/js/utils.js" as="script">
+    <link rel="preload" href="/static/js/api.js" as="script">
+    <link rel="preload" href="/static/js/components.js" as="script">
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- Header Dropdown 修复 - 解决通知和用户菜单默认打开状态问题 -->
+    <link rel="stylesheet" href="/static/css/header-dropdown-fix.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- 统一表格样式系统 -->
+    <link rel="stylesheet" href="/static/css/table-unified.css">
+    
+    <!-- 页面特定样式 -->
+    <link rel="stylesheet" href="/static/css/report_dashboard.css">
+    <link rel="stylesheet" href="/static/css/advanced-data-table.css">
+    <link rel="stylesheet" href="/static/css/toolbar-interactive.css">
+    <link rel="stylesheet" href="/static/css/views-style.css">
+    
+    <!-- 订单信息表高级样式 -->
+    <link rel="stylesheet" href="/static/css/order-info-table-advanced.css">
+    
+    <!-- 统一分页组件样式系统 -->
+    <link rel="stylesheet" href="/static/css/pagination-unified.css">
+    
+    <!-- DNS预连接优化 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    
+    <!-- External Chart Libraries - 高优先级异步加载 -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js" as="script">
+    <script async src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <!-- Fast Loader - 已移除，用户不需要加载中间页面提示 -->
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="CJPayment企业内部支付管理系统数据报表中心">
+    <meta name="keywords" content="数据报表,数据可视化,统计分析,支付管理">
+</head>
+<body class="page-report-enhanced">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link nav__link--active" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">3</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>商户通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">新商户待审核</div>
+                                    <div class="notification-text">有2个新商户申请待审核</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">10分钟前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name">管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown">
+                        <a href="/profile" class="user-menu__item">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="/help" class="user-menu__item">
+                            <span class="user-menu__item-icon">❓</span>
+                            帮助中心
+                        </a>
+                        <div class="user-menu__divider"></div>
+                        <a href="/logout" class="user-menu__item user-menu__item--danger">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+                
+                <button class="nav__toggle" id="mobileMenuToggle">
+                    <span class="nav__toggle-line"></span>
+                    <span class="nav__toggle-line"></span>
+                    <span class="nav__toggle-line"></span>
+                </button>
+            </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="dashboard-container">
+            <!-- Enhanced Header -->
+            <div class="page__header">
+                <div class="page__title">
+                    <h1>数据报表中心</h1>
+                    <p class="page__subtitle">智能数据分析与可视化报表展示</p>
+                </div>
+                
+                <div class="page__actions">
+                    <!-- Time Range Selector -->
+                    <div class="time-range-selector">
+                        <div class="time-presets">
+                            <button class="btn btn--sm time-preset active" data-range="today">今天</button>
+                            <button class="btn btn--sm time-preset" data-range="yesterday">昨天</button>
+                            <button class="btn btn--sm time-preset" data-range="week">本周</button>
+                            <button class="btn btn--sm time-preset" data-range="month">本月</button>
+                            <button class="btn btn--sm time-preset" data-range="quarter">本季</button>
+                            <button class="btn btn--sm time-preset" data-range="custom">自定义</button>
+                        </div>
+                        <div class="custom-range" id="customRange" style="display: none;">
+                            <input type="date" id="startDate" class="form-input form-input--sm">
+                            <span class="date-separator">至</span>
+                            <input type="date" id="endDate" class="form-input form-input--sm">
+                        </div>
+                    </div>
+
+                    <!-- Advanced Filters -->
+                    <div class="advanced-filters" id="advancedFilters">
+                        <button class="btn btn--sm btn-outline" id="toggleAdvancedFilters">
+                            <span class="btn__icon">🔍</span>
+                            <span class="btn__text">高级筛选</span>
+                            <span class="btn__arrow">▼</span>
+                        </button>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="action-group">
+                        <button class="btn btn-outline" id="refreshReportBtn">
+                            <span class="btn__icon">🔄</span>
+                            <span class="btn__text">刷新数据</span>
+                        </button>
+                        <button class="btn btn-success" id="exportReportBtn">
+                            <span class="btn__icon">📊</span>
+                            <span class="btn__text">导出报表</span>
+                        </button>
+                        <button class="btn btn-primary" id="subscribeReportBtn">
+                            <span class="btn__icon">📧</span>
+                            <span class="btn__text">订阅报表</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced KPI Dashboard -->
+            
+            <div class="kpi-dashboard">
+                <div class="kpi-card kpi-card--primary">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">💰</div>
+                        <div class="kpi-trend" id="totalAmountTrend">
+                            <span class="trend-icon">📈</span>
+                            <span class="trend-text">+12.5%</span>
+                        </div>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="totalAmount">
+                            <span class="kpi-number">¥2,856,742.30</span>
+                        </div>
+                        <div class="kpi-label">总交易额</div>
+                        <div class="kpi-sparkline">
+                            <canvas id="totalAmountSparkline" class="sparkline-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-card--success">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">📊</div>
+                        <div class="kpi-trend" id="totalTransactionsTrend">
+                            <span class="trend-icon">📈</span>
+                            <span class="trend-text">+8.3%</span>
+                        </div>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="totalTransactions">
+                            <span class="kpi-number">1,247</span>
+                            <span class="kpi-unit">笔</span>
+                        </div>
+                        <div class="kpi-label">交易笔数</div>
+                        <div class="kpi-sparkline">
+                            <canvas id="totalTransactionsSparkline" class="sparkline-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-card--warning">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">✅</div>
+                        <div class="kpi-trend" id="successRateTrend">
+                            <span class="trend-icon">📈</span>
+                            <span class="trend-text">+2.1%</span>
+                        </div>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="successRate">
+                            <span class="kpi-number">98.7</span>
+                            <span class="kpi-unit">%</span>
+                        </div>
+                        <div class="kpi-label">成功率</div>
+                        <div class="kpi-sparkline">
+                            <canvas id="successRateSparkline" class="sparkline-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="kpi-card kpi-card--secondary">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">🏪</div>
+                        <div class="kpi-trend" id="activeMerchantsTrend">
+                            <span class="trend-icon">📈</span>
+                            <span class="trend-text">+3</span>
+                        </div>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="activeMerchants">
+                            <span class="kpi-number">128</span>
+                            <span class="kpi-unit">个</span>
+                        </div>
+                        <div class="kpi-label">活跃商户</div>
+                        <div class="kpi-sparkline">
+                            <canvas id="activeMerchantsSparkline" class="sparkline-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kpi-card kpi-card--danger">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">⚠️</div>
+                        <div class="kpi-trend" id="failedTransactionsTrend">
+                            <span class="trend-icon">📉</span>
+                            <span class="trend-text">-25%</span>
+                        </div>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="failedTransactions">
+                            <span class="kpi-number">16</span>
+                            <span class="kpi-unit">笔</span>
+                        </div>
+                        <div class="kpi-label">失败交易</div>
+                        <div class="kpi-sparkline">
+                            <canvas id="failedTransactionsSparkline" class="sparkline-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Charts Grid -->
+            <div class="charts-container">
+                <!-- Transaction Trend Analysis -->
+                <div class="chart-card chart-card--expanded">
+                    <div class="chart-header">
+                        <div class="chart-title-section">
+                            <h3 class="chart-title">📈 交易趋势分析</h3>
+                            <p class="chart-subtitle">多维度交易数据趋势展示</p>
+                        </div>
+                        <div class="chart-controls">
+                            <div class="chart-tabs">
+                                <button class="chart-tab active" data-tab="amount">金额</button>
+                                <button class="chart-tab" data-tab="count">笔数</button>
+                                <button class="chart-tab" data-tab="rate">成功率</button>
+                            </div>
+                            <div class="chart-actions">
+                                <button class="chart-action-btn" title="全屏显示" data-action="fullscreen">
+                                    <span class="icon">⛶</span>
+                                </button>
+                                <button class="chart-action-btn" title="导出图表" data-action="export">
+                                    <span class="icon">📊</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <div class="chart-container chart-container--expanded">
+                            <canvas id="trendChart" class="chart-canvas"></canvas>
+                            <div class="chart-loading" id="trendChartLoading">
+                                <div class="loading-spinner"></div>
+                                <span class="loading-text">加载图表中...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Merchants Performance -->
+                <div class="chart-card chart-card--expanded">
+                    <div class="chart-header">
+                        <div class="chart-title-section">
+                            <h3 class="chart-title">🏆 商户表现排行</h3>
+                            <p class="chart-subtitle">Top 10 商户数据对比</p>
+                        </div>
+                        <div class="chart-controls">
+                            <select class="chart-select" id="merchantSortBy">
+                                <option value="amount">按金额</option>
+                                <option value="count">按笔数</option>
+                                <option value="success_rate">按成功率</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <div class="chart-container chart-container--expanded">
+                            <canvas id="merchantChart" class="chart-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time-based Heatmap -->
+                <div class="chart-card chart-card--full-width">
+                    <div class="chart-header">
+                        <div class="chart-title-section">
+                            <h3 class="chart-title">🔥 时段活跃度热力图</h3>
+                            <p class="chart-subtitle">24小时×7天交易热力分布</p>
+                        </div>
+                        <div class="chart-controls">
+                            <select class="chart-select" id="heatmapMetric">
+                                <option value="transaction_count">交易笔数</option>
+                                <option value="transaction_amount">交易金额</option>
+                                <option value="success_rate">成功率</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <div class="heatmap-container heatmap-container--expanded" id="heatmapChart"></div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <!-- Advanced Data Table -->
+            <div class="advanced-data-table-container" id="advancedDataTableContainer">
+                <div class="table-header-advanced">
+                    <div class="table-title-section">
+                        <h3 class="table-title">📊 高级数据表</h3>
+                        <p class="table-subtitle">多维度交易数据分析与管理</p>
+                    </div>
+                    
+                    <!-- Table Toolbar -->
+                    <div class="table-toolbar">
+                        <div class="toolbar-left">
+                            <div class="table-search-advanced">
+                                <div class="search-input-container">
+                                    <input type="text" id="advancedTableSearch" class="search-input-advanced" placeholder="全文搜索...">
+                                    <button class="search-btn-advanced" id="searchBtn">🔍</button>
+                                    <button class="search-clear-btn" id="clearSearchBtn" style="display: none;">✕</button>
+                                </div>
+                                <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+                                    <!-- 搜索建议动态生成 -->
+                                </div>
+                            </div>
+                            
+                            <div class="quick-filters">
+                                <button class="quick-filter-btn active" data-filter="all">全部</button>
+                                <button class="quick-filter-btn" data-filter="today">今日</button>
+                                <button class="quick-filter-btn" data-filter="success">成功</button>
+                                <button class="quick-filter-btn" data-filter="failed">失败</button>
+                                <button class="quick-filter-btn" data-filter="large">大额</button>
+                            </div>
+                        </div>
+                        
+                        <div class="toolbar-right">
+                            <div class="table-view-controls">
+                                <div class="view-toggle-group">
+                                    <button class="view-toggle-btn active" data-view="table" title="表格视图">📋</button>
+                                    <button class="view-toggle-btn" data-view="cards" title="卡片视图">📊</button>
+                                    <button class="view-toggle-btn" data-view="timeline" title="时间轴视图">📅</button>
+                                </div>
+                                
+                                <div class="table-density-control">
+                                    <button class="density-btn" data-density="compact" title="紧凑视图">⚌</button>
+                                    <button class="density-btn active" data-density="default" title="默认视图">☰</button>
+                                    <button class="density-btn" data-density="spacious" title="宽松视图">≡</button>
+                                </div>
+                            </div>
+                            
+                            <div class="table-actions-advanced">
+                                <button class="btn-enhanced btn-sm btn-outline" id="advancedFiltersToggle">
+                                    <span class="btn__icon">🔧</span>
+                                    高级筛选
+                                </button>
+                                <button class="btn-enhanced btn-sm btn-outline" id="columnSettingsBtn">
+                                    <span class="btn__icon">⚙️</span>
+                                    列设置
+                                </button>
+                                <button class="btn-enhanced btn-sm btn-outline" id="refreshAdvancedTableBtn">
+                                    <span class="btn__icon">🔄</span>
+                                    刷新
+                                </button>
+                                <div class="dropdown-wrapper">
+                                    <button class="btn-enhanced btn-sm btn-success dropdown-trigger" id="exportAdvancedBtn">
+                                        <span class="btn__icon">📤</span>
+                                        导出
+                                        <span class="dropdown-arrow">▼</span>
+                                    </button>
+                                    <div class="dropdown-menu" id="exportDropdownMenu">
+                                        <a class="dropdown-item" href="#" data-export="current">导出当前页</a>
+                                        <a class="dropdown-item" href="#" data-export="filtered">导出筛选结果</a>
+                                        <a class="dropdown-item" href="#" data-export="all">导出全部数据</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#" data-export="template">下载模板</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Enhanced Advanced Filters Panel - Restructured Architecture -->
+                    <div class="modal-backdrop" id="advancedFiltersBackdrop" style="display: none;" aria-hidden="true">
+                        <!-- Modal content container with proper pointer events -->
+                        <div class="modal-container" id="advancedFiltersContainer" role="dialog" aria-modal="true" aria-labelledby="filtersTitle">
+                            <div class="filters-content-wrapper">
+                            <div class="filters-header-enhanced">
+                            <div class="filters-title-section">
+                                <h4 class="filters-title">🔍 高级筛选条件</h4>
+                                <span class="filters-subtitle">精确定位您需要的数据</span>
+                            </div>
+                            <div class="filters-header-actions">
+                                <button class="btn-icon" id="filterPresetsBtn" title="筛选预设">
+                                    <span class="btn__icon">📋</span>
+                                </button>
+                                <button class="btn-icon" id="filterHistoryBtn" title="筛选历史">
+                                    <span class="btn__icon">🕒</span>
+                                </button>
+                                <button class="filters-close-btn" id="closeAdvancedFilters">✕</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Filter Presets and History Dropdown -->
+                        <div class="filter-presets-panel" id="filterPresetsPanel" style="display: none;">
+                            <div class="presets-section">
+                                <h5 class="presets-title">快速预设</h5>
+                                <div class="preset-chips">
+                                    <button class="preset-chip" data-preset="today-success">今日成功订单</button>
+                                    <button class="preset-chip" data-preset="high-amount">大额交易</button>
+                                    <button class="preset-chip" data-preset="pending-audit">待审核订单</button>
+                                    <button class="preset-chip" data-preset="failed-today">今日失败订单</button>
+                                </div>
+                            </div>
+                            <div class="history-section">
+                                <h5 class="history-title">筛选历史</h5>
+                                <div class="history-list" id="filterHistoryList">
+                                    <!-- 动态填充筛选历史 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filters-body-enhanced">
+                            <!-- 筛选条件标签页 -->
+                            <div class="filter-tabs">
+                                <button class="filter-tab active" data-tab="basic">基础筛选</button>
+                                <button class="filter-tab" data-tab="advanced">高级条件</button>
+                                <button class="filter-tab" data-tab="custom">自定义规则</button>
+                            </div>
+
+                            <!-- 基础筛选面板 -->
+                            <div class="filter-tab-content" id="basicFilters">
+                                <div class="filter-row-enhanced">
+                                    <div class="filter-group-enhanced">
+                                        <label class="filter-label-enhanced">
+                                            <span class="label-text">交易状态</span>
+                                            <span class="label-count" id="statusCount">(全部)</span>
+                                        </label>
+                                        <div class="checkbox-group-enhanced">
+                                            <label class="checkbox-item-enhanced">
+                                                <input type="checkbox" value="success" class="filter-checkbox" data-filter="transactionStatus"> 
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">✅ 成功</span>
+                                                <span class="item-count" data-count="success">0</span>
+                                            </label>
+                                            <label class="checkbox-item-enhanced">
+                                                <input type="checkbox" value="pending" class="filter-checkbox" data-filter="transactionStatus"> 
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">⏳ 处理中</span>
+                                                <span class="item-count" data-count="pending">0</span>
+                                            </label>
+                                            <label class="checkbox-item-enhanced">
+                                                <input type="checkbox" value="failed" class="filter-checkbox" data-filter="transactionStatus"> 
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">❌ 失败</span>
+                                                <span class="item-count" data-count="failed">0</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="filter-group-enhanced">
+                                        <label class="filter-label-enhanced">
+                                            <span class="label-text">支付方式</span>
+                                            <span class="label-count" id="paymentCount">(全部)</span>
+                                        </label>
+                                        <div class="checkbox-group-enhanced">
+                                            <label class="checkbox-item-enhanced">
+                                                <input type="checkbox" value="public" class="filter-checkbox" data-filter="paymentType"> 
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">🏢 对公转账</span>
+                                                <span class="item-count" data-count="public">0</span>
+                                            </label>
+                                            <label class="checkbox-item-enhanced">
+                                                <input type="checkbox" value="private" class="filter-checkbox" data-filter="paymentType"> 
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">👤 对私转账</span>
+                                                <span class="item-count" data-count="private">0</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="filter-row-enhanced">
+                                    <div class="filter-group-enhanced">
+                                        <label class="filter-label-enhanced">
+                                            <span class="label-text">审核状态</span>
+                                            <span class="label-count" id="auditCount">(全部)</span>
+                                        </label>
+                                        <div class="checkbox-group-enhanced">
+                                            <label class="checkbox-item-enhanced">
+                                                <input type="checkbox" value="已到账" class="filter-checkbox" data-filter="auditStatus"> 
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">✅ 已到账</span>
+                                                <span class="item-count" data-count="arrived">0</span>
+                                            </label>
+                                            <label class="checkbox-item-enhanced">
+                                                <input type="checkbox" value="未到账" class="filter-checkbox" data-filter="auditStatus"> 
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">⏳ 未到账</span>
+                                                <span class="item-count" data-count="pending">0</span>
+                                            </label>
+                                            <label class="checkbox-item-enhanced">
+                                                <input type="checkbox" value="未审核" class="filter-checkbox" data-filter="auditStatus"> 
+                                                <span class="checkbox-custom"></span>
+                                                <span class="checkbox-text">❓ 未审核</span>
+                                                <span class="item-count" data-count="unaudited">0</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="filter-group-enhanced">
+                                        <label class="filter-label-enhanced">
+                                            <span class="label-text">金额范围</span>
+                                            <span class="filter-hint">(¥)</span>
+                                        </label>
+                                        <div class="range-input-group">
+                                            <div class="input-with-label">
+                                                <input type="number" id="minAmount" placeholder="0" class="form-input form-input--enhanced">
+                                                <label class="input-label">最小金额</label>
+                                            </div>
+                                            <span class="range-separator">至</span>
+                                            <div class="input-with-label">
+                                                <input type="number" id="maxAmount" placeholder="无限制" class="form-input form-input--enhanced">
+                                                <label class="input-label">最大金额</label>
+                                            </div>
+                                        </div>
+                                        <div class="amount-presets">
+                                            <button class="amount-preset" data-range="0-1000">< ¥1K</button>
+                                            <button class="amount-preset" data-range="1000-10000">¥1K-10K</button>
+                                            <button class="amount-preset" data-range="10000-100000">¥10K-100K</button>
+                                            <button class="amount-preset" data-range="100000-0">> ¥100K</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 高级筛选面板 -->
+                            <div class="filter-tab-content" id="advancedFilters" style="display: none;">
+                                <div class="filter-row-enhanced">
+                                    <div class="filter-group-enhanced">
+                                        <label class="filter-label-enhanced">
+                                            <span class="label-text">时间范围</span>
+                                        </label>
+                                        <div class="time-range-tabs">
+                                            <button class="time-tab active" data-period="today">今天</button>
+                                            <button class="time-tab" data-period="week">本周</button>
+                                            <button class="time-tab" data-period="month">本月</button>
+                                            <button class="time-tab" data-period="custom">自定义</button>
+                                        </div>
+                                        <div class="date-range-group" id="customDateRange" style="display: none;">
+                                            <div class="input-with-label">
+                                                <input type="datetime-local" id="filterStartDate" class="form-input form-input--enhanced">
+                                                <label class="input-label">开始时间</label>
+                                            </div>
+                                            <span class="range-separator">至</span>
+                                            <div class="input-with-label">
+                                                <input type="datetime-local" id="filterEndDate" class="form-input form-input--enhanced">
+                                                <label class="input-label">结束时间</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="filter-group-enhanced">
+                                        <label class="filter-label-enhanced">
+                                            <span class="label-text">商户筛选</span>
+                                        </label>
+                                        <div class="merchant-search-container">
+                                            <input type="text" id="merchantNameFilter" placeholder="搜索商户名称..." class="form-input form-input--enhanced merchant-search-input">
+                                            <div class="merchant-suggestions" id="merchantSuggestions" style="display: none;">
+                                                <!-- 动态填充商户建议 -->
+                                            </div>
+                                        </div>
+                                        <div class="selected-merchants" id="selectedMerchants">
+                                            <!-- 已选择的商户标签 -->
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="filter-row-enhanced">
+                                    <div class="filter-group-enhanced">
+                                        <label class="filter-label-enhanced">
+                                            <span class="label-text">处理时长</span>
+                                        </label>
+                                        <div class="processing-time-tabs">
+                                            <button class="time-range-tab" data-time="fast">快速 (&lt; 1分钟)</button>
+                                            <button class="time-range-tab" data-time="normal">正常 (1-5分钟)</button>
+                                            <button class="time-range-tab" data-time="slow">缓慢 (&gt; 5分钟)</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 自定义规则面板 -->
+                            <div class="filter-tab-content" id="customFilters" style="display: none;">
+                                <div class="custom-rules-container">
+                                    <div class="rule-builder" id="ruleBuilder">
+                                        <div class="rule-item" id="rule-1">
+                                            <select class="rule-field">
+                                                <option value="amount">金额</option>
+                                                <option value="merchantName">商户名称</option>
+                                                <option value="createdAt">创建时间</option>
+                                                <option value="transactionId">交易号</option>
+                                            </select>
+                                            <select class="rule-operator">
+                                                <option value="equals">等于</option>
+                                                <option value="not_equals">不等于</option>
+                                                <option value="greater">大于</option>
+                                                <option value="less">小于</option>
+                                                <option value="contains">包含</option>
+                                                <option value="not_contains">不包含</option>
+                                            </select>
+                                            <input type="text" class="rule-value" placeholder="输入值...">
+                                            <button class="rule-remove-btn" onclick="removeRule(1)">−</button>
+                                        </div>
+                                    </div>
+                                    <div class="rule-actions">
+                                        <button class="btn-secondary" id="addRuleBtn">+ 添加规则</button>
+                                        <select class="rule-logic" id="ruleLogic">
+                                            <option value="and">同时满足(AND)</option>
+                                            <option value="or">满足任一(OR)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 筛选结果预览 -->
+                        <div class="filter-preview" id="filterPreview">
+                            <div class="preview-header">
+                                <span class="preview-title">筛选预览</span>
+                                <span class="preview-count" id="previewCount">预计匹配 0 条记录</span>
+                            </div>
+                            <div class="preview-tags" id="activeFilterTags">
+                                <!-- 动态显示当前筛选条件 -->
+                            </div>
+                        </div>
+
+                        <div class="filters-footer-enhanced">
+                            <div class="filters-actions-left">
+                                <button class="btn btn--sm btn-outline" id="saveFilterPreset">💾 保存预设</button>
+                                <button class="btn btn--sm btn-outline" id="resetAdvancedFilters">🔄 重置</button>
+                            </div>
+                            <div class="filters-actions-right">
+                                <button class="btn btn--sm btn-secondary" id="cancelAdvancedFilters">取消</button>
+                                <button class="btn btn--sm btn-primary" id="applyAdvancedFilters">✨ 应用筛选</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Table Stats Bar -->
+                    <div class="table-stats-bar" id="tableStatsBar">
+                        <div class="stats-left">
+                            <span class="stats-item">
+                                <span class="stats-label">显示:</span>
+                                <span class="stats-value" id="visibleRecordsCount">0</span>
+                                <span class="stats-unit">条</span>
+                            </span>
+                            <span class="stats-item">
+                                <span class="stats-label">总计:</span>
+                                <span class="stats-value" id="totalRecordsCount">0</span>
+                                <span class="stats-unit">条</span>
+                            </span>
+                            <span class="stats-item" id="selectedStats" style="display: none;">
+                                <span class="stats-label">已选:</span>
+                                <span class="stats-value" id="selectedCount">0</span>
+                                <span class="stats-unit">条</span>
+                            </span>
+                        </div>
+                        <div class="stats-right">
+                            <span class="stats-item">
+                                <span class="stats-label">筛选金额:</span>
+                                <span class="stats-value" id="filteredAmount">¥0</span>
+                            </span>
+                            <span class="stats-item">
+                                <span class="stats-label">成功率:</span>
+                                <span class="stats-value" id="filteredSuccessRate">0%</span>
+                            </span>
+                        </div>
+                    </div>
+                            </div> <!-- filters-content-wrapper -->
+                        </div> <!-- modal-container -->
+                    </div> <!-- modal-backdrop -->
+
+                <!-- 高级数据表导出功能区域 -->
+                <div class="export-section">
+                    <button class="export-btn" id="exportAdvancedTableBtn">
+                        <span class="btn__icon">📊</span>
+                        <span class="btn__text">导出订单数据</span>
+                    </button>
+                </div>
+
+                <!-- Table Views Container -->
+                <div class="table-views-container">
+                    <!-- Table View -->
+                    <div class="table-view active" id="tableView">
+                        <div class="unified-table-wrapper table-wrapper-advanced">
+                            <table class="unified-table financial-audit-table horizontal-scroll-table columns-15" id="advancedDataTable">
+                                <thead class="unified-table-header table-head-enhanced-sticky">
+                                    <tr class="unified-table-header-row table-header-row">
+                                        <!-- 序号列 - 固定在左侧不滚动 -->
+                                        <th class="col-serial col-fixed-left" data-priority="1" style="min-width: 80px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">序号</span>
+                                                </div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 订单号 -->
+                                        <th class="col-sortable col-resizable" data-sort="order_number" data-column="order_number" data-priority="1" style="min-width: 160px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">订单号</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 付款凭证 -->
+                                        <th class="col-sortable col-resizable" data-sort="payment_voucher" data-column="payment_voucher" data-priority="2" style="min-width: 150px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">付款凭证</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 付款金额 -->
+                                        <th class="col-sortable col-resizable col-highlight" data-sort="amount" data-column="amount" data-priority="1" style="min-width: 130px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">付款金额</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 付款账号 -->
+                                        <th class="col-sortable col-resizable" data-sort="payer_account_number" data-column="payer_account_number" data-priority="2" style="min-width: 140px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">付款账号</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 付款账户名称 -->
+                                        <th class="col-sortable col-resizable" data-sort="payer_account_name" data-column="payer_account_name" data-priority="2" style="min-width: 160px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">付款账户名称</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 付款账户机构 -->
+                                        <th class="col-sortable col-resizable" data-sort="payer_bank" data-column="payer_bank" data-priority="3" style="min-width: 140px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">付款账户机构</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 付款类型（对公/对私） -->
+                                        <th class="col-sortable col-resizable" data-sort="business_type" data-column="business_type" data-priority="3" style="min-width: 120px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">付款类型</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 收款账号 -->
+                                        <th class="col-sortable col-resizable" data-sort="receiver_account_number" data-column="receiver_account_number" data-priority="2" style="min-width: 140px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">收款账号</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 收款账户名称 -->
+                                        <th class="col-sortable col-resizable" data-sort="receiver_account_name" data-column="receiver_account_name" data-priority="2" style="min-width: 160px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">收款账户名称</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 收款账户机构 -->
+                                        <th class="col-sortable col-resizable" data-sort="receiver_bank" data-column="receiver_bank" data-priority="3" style="min-width: 140px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">收款账户机构</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 订单状态（交易成功、交易失败） -->
+                                        <th class="col-sortable col-resizable col-status" data-sort="status" data-column="status" data-priority="1" style="min-width: 110px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">订单状态</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 创建时间 -->
+                                        <th class="col-sortable col-resizable" data-sort="created_time" data-column="created_time" data-priority="2" style="min-width: 140px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">创建时间</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 付款时间 -->
+                                        <th class="col-sortable col-resizable" data-sort="payment_time" data-column="payment_time" data-priority="3" style="min-width: 140px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">付款时间</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                        
+                                        <!-- 审核状态（已到账、未到账、未审核） -->
+                                        <th class="col-sortable col-resizable col-audit col-fixed-right" data-sort="audit_status" data-column="audit_status" data-priority="2" style="min-width: 140px;">
+                                            <div class="th-content-enhanced">
+                                                <div class="th-main">
+                                                    <span class="th-text">审核状态</span>
+                                                </div>
+                                                <span class="sort-indicator-enhanced">↕️</span>
+                                                <div class="col-resize-handle-enhanced"></div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="advancedDataTableBody">
+                                    <!-- 数据行将通过 JavaScript 动态加载 -->
+                                    <tr class="loading-row">
+                                        <td colspan="11" style="text-align: center; padding: 40px;">
+                                            <div class="loading-spinner"></div>
+                                            <span>正在加载订单数据...</span>
+                                        </td>
+                                    </tr>
+                            </table>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Card View -->
+                    <div class="card-view" id="cardView" style="display: none;">
+                        <div class="cards-grid" id="cardsGrid">
+                            <!-- 卡片视图内容动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <!-- Timeline View -->
+                    <div class="timeline-view" id="timelineView" style="display: none;">
+                        <div class="timeline-container" id="timelineContainer">
+                            <!-- 时间线视图内容动态生成 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Pagination -->
+                <div class="table-pagination-advanced">
+                    <div class="pagination-left">
+                        <div class="pagination-info-advanced">
+                            <span>显示第</span>
+                            <span id="pageStartAdvanced">1</span>
+                            <span>-</span>
+                            <span id="pageEndAdvanced">50</span>
+                            <span>条，共</span>
+                            <span id="totalRecordsAdvanced">-</span>
+                            <span>条记录</span>
+                        </div>
+                        <div class="pagination-jump">
+                            <span>跳转至</span>
+                            <input type="number" id="jumpToPage" class="page-jump-input" min="1">
+                            <span>页</span>
+                            <button class="jump-btn" id="jumpBtn">跳转</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pagination-center">
+                        <div class="pagination-controls-advanced">
+                            <button class="pagination-btn-advanced" id="firstPageAdvanced" disabled title="首页">«</button>
+                            <button class="pagination-btn-advanced" id="prevPageAdvanced" disabled title="上一页">‹</button>
+                            <div class="pagination-numbers-advanced" id="paginationNumbersAdvanced">
+                                <!-- 页码动态生成 -->
+                            </div>
+                            <button class="pagination-btn-advanced" id="nextPageAdvanced" title="下一页">›</button>
+                            <button class="pagination-btn-advanced" id="lastPageAdvanced" title="末页">»</button>
+                        </div>
+                    </div>
+                    
+                    <div class="pagination-right">
+                        <div class="pagination-size-advanced">
+                            <span>每页显示</span>
+                            <select id="pageSizeAdvanced" class="size-select-advanced">
+                                <option value="10">10条</option>
+                                <option value="25">25条</option>
+                                <option value="50" selected>50条</option>
+                                <option value="100">100条</option>
+                                <option value="200">200条</option>
+                            </select>
+                        </div>
+                        <div class="pagination-performance">
+                            <span class="performance-indicator" id="tablePerformance">
+                                <span class="performance-text">加载耗时: <span id="loadTime">-</span>ms</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | Data Reports</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 高级数据表导出模态框 -->
+    <div class="modal-enhanced" id="exportAdvancedTableModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">导出订单数据</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="option-group">
+                        <label class="option-label">导出格式</label>
+                        <div class="format-options">
+                            <label class="format-option">
+                                <input type="radio" name="advancedTableFormat" value="pdf" checked>
+                                <span class="format-icon">📄</span>
+                                <span class="format-text">PDF报告</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="advancedTableFormat" value="excel">
+                                <span class="format-icon">📊</span>
+                                <span class="format-text">Excel表格</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="advancedTableFormat" value="csv">
+                                <span class="format-icon">📋</span>
+                                <span class="format-text">CSV数据</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">包含内容</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>订单基本信息</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>账户和金额信息</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>时间和状态信息</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox">
+                                <span>数据统计摘要</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <label class="option-label">数据范围</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="radio" name="advancedTableDataRange" value="filtered" checked>
+                                <span>当前筛选结果</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="radio" name="advancedTableDataRange" value="all">
+                                <span>所有订单数据</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeExportAdvancedTableModal()">取消</button>
+                <button class="btn-enhanced btn-primary" id="confirmAdvancedTableExportBtn">
+                    <span class="btn__icon">📤</span>
+                    确认导出
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Export Modal -->
+    <div class="modal-enhanced" id="exportModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">导出报表</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="option-group">
+                        <label class="option-label">导出格式</label>
+                        <div class="format-options">
+                            <label class="format-option">
+                                <input type="radio" name="format" value="pdf" checked>
+                                <span class="format-icon">📄</span>
+                                <span class="format-text">PDF报告</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="format" value="excel">
+                                <span class="format-icon">📊</span>
+                                <span class="format-text">Excel表格</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="format" value="csv">
+                                <span class="format-icon">📋</span>
+                                <span class="format-text">CSV数据</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">包含内容</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>KPI汇总</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>趋势图表</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>详细数据</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox">
+                                <span>智能分析</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeExportModal()">取消</button>
+                <button class="btn-enhanced btn-primary" id="confirmExportBtn">
+                    <span class="btn__icon">📤</span>
+                    确认导出
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Subscription Modal -->
+    <div class="modal-enhanced" id="subscriptionModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">订阅报表</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="subscription-form">
+                    <div class="form-group">
+                        <label class="form-label">发送频率</label>
+                        <select class="form-select" id="frequency">
+                            <option value="daily">每日</option>
+                            <option value="weekly">每周</option>
+                            <option value="monthly">每月</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">发送时间</label>
+                        <input type="time" class="form-input" id="sendTime" value="09:00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">接收邮箱</label>
+                        <input type="email" class="form-input" id="email" placeholder="输入邮箱地址">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeSubscriptionModal()">取消</button>
+                <button class="btn-enhanced btn-primary" id="confirmSubscriptionBtn">
+                    <span class="btn__icon">📧</span>
+                    确认订阅
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">处理中，请稍候...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="globalToast" class="toast-container" aria-live="polite"></div>
+
+    <!-- Critical Scripts - Load immediately -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/components.js"></script>
+    
+    <!-- Header Interaction - 修复头部导航交互 -->
+    <script src="/static/js/header-interaction.js"></script>
+    
+    <!-- Unified Header System - 统一头部系统 -->
+    <script src="/static/js/header-unified.js"></script>
+    
+    <!-- 统一通知数据管理系统 -->
+    <script src="/static/js/notification-data-unified.js"></script>    
+    <!-- Main Report Dashboard Script -->
+    <script src="/static/js/report_dashboard.js?v=1.5"></script>
+    
+    <!-- Advanced Data Table Script -->
+    <script src="/static/js/advanced-data-table.js"></script>
+    
+    <!-- Order Info Table Script -->
+    <script src="/static/js/order-info-table.js"></script>
+    
+    <!-- Non-critical Scripts - Load asynchronously -->
+    <script async src="/static/js/user-feedback-analytics.js"></script>
+    <script async src="/static/js/analytics-init.js"></script>
+    <script async src="/static/js/mobile-utilities.js"></script>
+    <script async src="/static/js/interaction-enhancements.js"></script>
+    
+    <!-- Initialize Report Enhanced -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟初始化以确保所有依赖都已加载
+            setTimeout(function() {
+                initializeReportSystem();
+            }, 100);
+        });
+
+        function initializeReportSystem() {
+            // Check dependencies with retry mechanism
+            const dependencies = ['CJUtils', 'CJApi', 'CJComponents', 'ReportDashboard'];
+            const missing = dependencies.filter(dep => typeof window[dep] === 'undefined');
+            
+            if (missing.length > 0) {
+                console.warn('Missing dependencies:', missing);
+                
+                // 重试机制
+                if (missing.includes('ReportDashboard')) {
+                    setTimeout(initializeReportSystem, 200);
+                    return;
+                }
+                
+                // 如果其他依赖缺失，使用基础版本
+                console.log('Using basic report initialization');
+                initializeBasicReport();
+                return;
+            }
+            
+            try {
+                // Initialize enhanced report system
+                window.reportManager = new ReportDashboard({
+                    apiEndpoint: '/api/reports',
+                    enableRealTime: true,
+                    autoRefresh: 60000,
+                    enableAdvancedAnalytics: true
+                });
+                
+                // Initialize advanced data table - 添加调试日志
+                console.log('检查AdvancedDataTable类是否存在:', typeof AdvancedDataTable !== 'undefined');
+                if (typeof AdvancedDataTable !== 'undefined') {
+                    console.log('开始创建AdvancedDataTable实例...');
+                    window.advancedDataTable = new AdvancedDataTable({
+                        containerId: 'advancedDataTableContainer',
+                        apiEndpoint: '/api/transactions',
+                        pageSize: 50,
+                        defaultView: 'table',
+                        enableSearch: true,
+                        enableFilters: true,
+                        enableSorting: true,
+                        autoRefresh: false
+                    });
+                    console.log('高级数据表初始化成功');
+                }
+                
+                console.log('Enhanced report system initialized successfully');
+            } catch (error) {
+                console.error('Failed to initialize enhanced report system:', error);
+                // 降级到基础版本
+                initializeBasicReport();
+            }
+        }
+
+        function initializeBasicReport() {
+            console.log('Initializing basic report functionality');
+            // 基础功能初始化
+            const refreshBtn = document.getElementById('refreshReportBtn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function() {
+                    location.reload();
+                });
+            }
+        }
+
+        // Initialize Report Page
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化统一头部组件
+            window.headerUnified = new HeaderUnified();
+        });
+
+        // 模态框管理函数 - 修复版本
+        function showModal(modalId) {
+            console.log(`🔧 修复版showModal被调用: ${modalId}`);
+            const modal = document.getElementById(modalId);
+            if (!modal) {
+                console.error(`模态框未找到: ${modalId}`);
+                return;
+            }
+            
+            // 确保modal在body根级别，避免父容器影响
+            if (modal.parentNode !== document.body) {
+                console.log(`移动${modalId}到body根级别`);
+                document.body.appendChild(modal);
+            }
+            
+            // 强制清除所有可能冲突的样式和状态
+            modal.classList.remove('show', 'hide', 'hidden');
+            modal.removeAttribute('aria-hidden');
+            
+            // 立即设置所有必要的内联样式，强制覆盖任何CSS规则
+            modal.style.cssText = `
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                z-index: 9999 !important;
+                background-color: rgba(0, 0, 0, 0.5) !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            `;
+            
+            // 强制重排，确保样式立即生效
+            modal.offsetHeight;
+            
+            // 添加show类用于过渡效果
+            modal.classList.add('show');
+            
+            // 设置可访问性属性
+            modal.setAttribute('aria-hidden', 'false');
+            modal.setAttribute('aria-modal', 'true');
+            
+            // 管理焦点
+            const firstFocusable = modal.querySelector('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+            if (firstFocusable) {
+                setTimeout(() => firstFocusable.focus(), 100);
+            }
+            
+            console.log(`✅ ${modalId} 已修复显示`);
+            return modal;
+        }
+
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                // 关键修复: 立即隐藏，避免闪现到居中位置
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+                modal.setAttribute('aria-hidden', 'true');
+                modal.removeAttribute('aria-modal');
+                
+                // 清理样式，为下次显示做准备
+                modal.style.opacity = '';
+                modal.style.transform = '';
+            }
+        }
+
+        function closeExportModal() {
+            hideModal('exportModal');
+        }
+
+        function closeSubscriptionModal() {
+            hideModal('subscriptionModal');
+        }
+
+        // 点击背景关闭模态框
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-enhanced')) {
+                const modalId = e.target.id;
+                hideModal(modalId);
+            }
+        });
+
+        // 绑定关闭按钮事件
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.modal-close').forEach(button => {
+                button.addEventListener('click', function() {
+                    const modal = this.closest('.modal-enhanced');
+                    if (modal) {
+                        hideModal(modal.id);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Additional Styles for Report Page -->
+    <style>
+        .time-range-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .time-presets {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .time-preset.active {
+            background: var(--dashboard-primary, #007bff);
+            color: white;
+        }
+        
+        .custom-range {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: var(--dashboard-bg-secondary, #f8f9fa);
+            border-radius: 6px;
+        }
+        
+        .date-separator {
+            color: var(--dashboard-text-secondary, #6c757d);
+            font-size: 0.875rem;
+        }
+        
+        .action-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .page__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--dashboard-bg-primary, #fff);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page__title h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dashboard-text-primary, #1a1a1a);
+        }
+        
+        .page__subtitle {
+            margin: 0;
+            color: var(--dashboard-text-secondary, #6c757d);
+            font-size: 0.875rem;
+        }
+        
+        .page__actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        .kpi-dashboard {
+            margin-bottom: 2rem;
+        }
+        
+        .report-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-container {
+            background: var(--dashboard-bg-primary, #fff);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--dashboard-border-light, #e9ecef);
+        }
+        
+        .chart-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dashboard-text-primary, #1a1a1a);
+            margin: 0;
+        }
+        
+        .chart-content {
+            position: relative;
+            min-height: 300px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .page__header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .page__actions {
+                width: 100%;
+                align-items: stretch;
+            }
+            
+            .time-presets {
+                justify-content: center;
+            }
+            
+            .action-group {
+                justify-content: center;
+            }
+            
+            .custom-range {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+    
+    <!-- Additional Styles -->
+    <style>
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+        }
+        
+        .loading-spinner {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: 10000;
+        }
+
+
+        /* 热力图样式 */
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(24, 1fr);
+            grid-template-rows: repeat(7, 1fr);
+            gap: 2px;
+            padding: 10px;
+            height: 200px;
+        }
+
+        .heatmap-cell {
+            background: #f8f9fa;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        /* 漏斗图样式 */
+        .funnel-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .funnel-stage {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 8px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .funnel-stage:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .stage-content {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .stage-label {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .stage-count {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .stage-percentage {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* 修复页面头部布局 */
+        .page__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem 1.25rem;
+            background: var(--color-bg-surface, #ffffff);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+            column-gap: 1rem;
+            row-gap: 0.75rem;
+        }
+
+        .page__title { flex: 1 1 420px; min-width: 280px; }
+        .page__title h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--color-text-primary, #1a1a1a);
+        }
+
+        .page__subtitle {
+            margin: 0;
+            color: var(--color-text-secondary, #6c757d);
+            font-size: 0.875rem;
+        }
+
+        .page__actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: flex-end;
+            min-width: 320px;
+            flex: 1 1 520px;
+        }
+
+        .time-range-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .time-presets {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .time-preset {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid #d1d5db;
+            background: #ffffff;
+            color: #374151;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .time-preset.active {
+            background: var(--primary-500, #0ea5e9);
+            color: white;
+            border-color: var(--primary-500, #0ea5e9);
+        }
+
+        .time-preset:hover {
+            background: var(--primary-50, #f0f9ff);
+            border-color: var(--primary-300, #7dd3fc);
+        }
+
+        .action-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-outline {
+            background: #ffffff;
+            border-color: #d1d5db;
+            color: #374151;
+        }
+
+        .btn-outline:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        .btn-success {
+            background: var(--success-500, #22c55e);
+            color: white;
+            border-color: var(--success-500, #22c55e);
+        }
+
+        .btn-success:hover {
+            background: var(--success-600, #16a34a);
+            border-color: var(--success-600, #16a34a);
+        }
+
+        .btn-primary {
+            background: var(--primary-500, #0ea5e9);
+            color: white;
+            border-color: var(--primary-500, #0ea5e9);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-600, #0284c7);
+            border-color: var(--primary-600, #0284c7);
+        }
+
+        .btn__icon {
+            font-size: 1rem;
+        }
+
+        .btn__text {
+            font-size: 0.875rem;
+        }
+
+        /* 响应式布局 */
+        @media (max-width: 768px) {
+            .page__header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .page__actions {
+                align-items: stretch;
+                min-width: auto;
+            }
+
+            .time-presets {
+                justify-content: center;
+            }
+
+            .action-group {
+                justify-content: center;
+            }
+
+            .btn {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .time-presets {
+                flex-direction: column;
+            }
+
+            .action-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* KPI面板样式修复 - 优化尺寸 */
+        .kpi-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, var(--primary-500, #0ea5e9) 0%, var(--primary-600, #0284c7) 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 120px;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .kpi-card--success {
+            background: linear-gradient(135deg, var(--success-500, #22c55e) 0%, var(--success-600, #16a34a) 100%);
+        }
+
+        .kpi-card--warning {
+            background: linear-gradient(135deg, var(--warning-500, #f59e0b) 0%, var(--warning-600, #d97706) 100%);
+        }
+
+        .kpi-card--info {
+            background: linear-gradient(135deg, var(--info-500, #3b82f6) 0%, var(--info-600, #2563eb) 100%);
+        }
+
+        .kpi-card--secondary {
+            background: linear-gradient(135deg, var(--neutral-500, #737373) 0%, var(--neutral-600, #525252) 100%);
+        }
+
+        .kpi-card--danger {
+            background: linear-gradient(135deg, var(--error-500, #ef4444) 0%, var(--error-600, #dc2626) 100%);
+        }
+
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-icon {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .kpi-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.125rem 0.375rem;
+            border-radius: 8px;
+        }
+
+        .trend-icon {
+            font-size: 0.875rem;
+        }
+
+        .kpi-content {
+            text-align: left;
+        }
+
+        .kpi-value {
+            display: flex;
+            align-items: baseline;
+            gap: 0.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .kpi-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .kpi-unit {
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-sparkline {
+            height: 30px;
+            opacity: 0.8;
+        }
+
+        .sparkline-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 响应式KPI布局 - 优化尺寸 */
+        @media (max-width: 1200px) {
+            .kpi-dashboard {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 0.875rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .kpi-dashboard {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 0.75rem;
+            }
+
+            .kpi-card {
+                padding: 0.875rem;
+                min-height: 110px;
+            }
+
+            .kpi-number {
+                font-size: 1.375rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-dashboard {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .kpi-card {
+                padding: 0.75rem;
+                min-height: 100px;
+            }
+
+            .kpi-number {
+                font-size: 1.25rem;
+            }
+
+            .kpi-icon {
+                font-size: 1.25rem;
+            }
+
+            .kpi-label {
+                font-size: 0.6875rem;
+            }
+        }
+
+        /* 模态框样式修复 - 关键修复：预设flexbox居中属性 */
+        .modal-enhanced {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: rgba(0, 0, 0, 0.6) !important;
+            /* 关键修复：预设flexbox属性，避免显示时的重新计算 */
+            display: none !important;
+            align-items: center !important;
+            justify-content: center !important;
+            z-index: 9999 !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease !important;
+            /* 强制覆盖任何可能的干扰样式 */
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+            transform: none !important;
+        }
+
+        .modal-enhanced.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-enhanced.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+
+        /* 导出选项样式 */
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .format-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .format-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .format-option:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .format-option input[type="radio"] {
+            display: none;
+        }
+
+        .format-option input[type="radio"]:checked + .format-icon + .format-text {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .format-option:has(input[type="radio"]:checked) {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .format-icon {
+            font-size: 2rem;
+        }
+
+        .format-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .content-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .content-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .content-option:hover {
+            background: #f3f4f6;
+        }
+
+        .content-option input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: #3b82f6;
+        }
+
+        /* 订阅表单样式 */
+        .subscription-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-select,
+        .form-input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-select:focus,
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* 优化图表容器布局 */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card--expanded {
+            background: var(--color-bg-surface, #ffffff);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--color-border-light, #e5e7eb);
+        }
+
+        .chart-card--full-width {
+            grid-column: 1 / -1;
+            background: var(--color-bg-surface, #ffffff);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--color-border-light, #e5e7eb);
+        }
+
+        .chart-container--expanded {
+            min-height: 400px;
+            position: relative;
+        }
+
+        .heatmap-container--expanded {
+            min-height: 300px;
+            position: relative;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .chart-canvas {
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 350px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border-light, #e5e7eb);
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary, #1a1a1a);
+            margin: 0;
+        }
+
+        .chart-subtitle {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary, #6c757d);
+            margin: 0.25rem 0 0 0;
+        }
+
+        /* 响应式图表布局 */
+        @media (max-width: 1200px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+            
+            .chart-container--expanded {
+                min-height: 350px;
+            }
+            
+            .chart-canvas {
+                min-height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .charts-container {
+                gap: 1rem;
+            }
+            
+            .chart-card--expanded,
+            .chart-card--full-width {
+                padding: 1.25rem;
+            }
+            
+            .chart-container--expanded {
+                min-height: 300px;
+            }
+            
+            .heatmap-container--expanded {
+                min-height: 250px;
+            }
+            
+            .chart-canvas {
+                min-height: 250px;
+            }
+        }
+
+        /* 增强横向滚动表格样式 */
+        .table-wrapper-advanced {
+            position: relative;
+            overflow-x: auto;
+            overflow-y: visible;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            /* 改进的滚动条样式 */
+            scrollbar-width: thin;
+            scrollbar-color: #d1d5db #f9fafb;
+        }
+
+        .table-wrapper-advanced::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-wrapper-advanced::-webkit-scrollbar-track {
+            background: #f9fafb;
+            border-radius: 4px;
+        }
+
+        .table-wrapper-advanced::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .table-wrapper-advanced::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+
+        .horizontal-scroll-table {
+            width: 100%;
+            min-width: 1800px; /* 确保有足够宽度触发横向滚动 */
+            border-collapse: collapse;
+            background: #ffffff;
+        }
+
+        /* 增强的表头样式 */
+        .table-head-enhanced-sticky {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #f8fafc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-header-row {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .th-content-enhanced {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 8px;
+            min-height: 48px;
+            user-select: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .th-main {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .th-icon {
+            font-size: 14px;
+            opacity: 0.7;
+            flex-shrink: 0;
+        }
+
+        .th-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sort-indicator-enhanced {
+            font-size: 12px;
+            opacity: 0.5;
+            margin-left: 4px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .col-sortable:hover .sort-indicator-enhanced {
+            opacity: 1;
+            color: #3b82f6;
+        }
+
+        .col-resize-handle-enhanced {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: transparent;
+            cursor: col-resize;
+            transition: background-color 0.2s ease;
+        }
+
+        .col-resize-handle-enhanced:hover {
+            background: #3b82f6;
+        }
+
+        /* 列优先级样式 */
+        .col-fixed-left {
+            position: sticky;
+            left: 0;
+            z-index: 11;
+            background: #ffffff;
+            box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .col-fixed-left .th-content-enhanced {
+            background: #ffffff;
+        }
+
+        .col-fixed-right {
+            position: sticky;
+            right: 0;
+            z-index: 11;
+            background: #ffffff;
+            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .col-fixed-right .th-content-enhanced {
+            background: #ffffff;
+        }
+
+        /* 审核列固定在右侧的特殊样式 */
+        .col-audit-cell.col-fixed-right {
+            position: sticky;
+            right: 0;
+            z-index: 11;
+            background: #ffffff;
+            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 确保审核列表头也正确固定 */
+        .col-audit.col-fixed-right {
+            position: sticky;
+            right: 0;
+            z-index: 12;
+            background: #f8fafc;
+            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .col-audit.col-fixed-right .th-content-enhanced {
+            background: #f8fafc;
+        }
+
+        /* 审核列悬停时保持背景色 */
+        .advanced-table tbody tr:hover .col-audit-cell.col-fixed-right {
+            background: #f8fafc;
+        }
+
+        .col-highlight {
+            background: #fef3c7 !important;
+        }
+
+        .col-highlight .th-content-enhanced {
+            background: #fef3c7;
+        }
+
+        .col-highlight .th-text {
+            color: #92400e;
+            font-weight: 700;
+        }
+
+        .col-status .th-content-enhanced {
+            background: #f0fdf4;
+        }
+
+        .col-status .th-text {
+            color: #166534;
+        }
+
+        /* 响应式列显示优先级 */
+        @media (max-width: 1600px) {
+            th[data-priority="4"] {
+                display: none;
+            }
+            .horizontal-scroll-table {
+                min-width: 1400px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            th[data-priority="4"],
+            th[data-priority="3"] {
+                display: none;
+            }
+            .horizontal-scroll-table {
+                min-width: 1000px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            th[data-priority="4"],
+            th[data-priority="3"],
+            th[data-priority="2"]:not(.col-highlight):not(.col-status) {
+                display: none;
+            }
+            .horizontal-scroll-table {
+                min-width: 600px;
+            }
+            
+            .th-content-enhanced {
+                padding: 8px 4px;
+            }
+            
+            .th-text {
+                font-size: 12px;
+            }
+        }
+
+        /* 表格行样式增强 */
+        .advanced-table tbody tr {
+            border-bottom: 1px solid #f1f5f9;
+            transition: background-color 0.2s ease;
+        }
+
+        .advanced-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .advanced-table tbody td {
+            padding: 12px 8px;
+            font-size: 13px;
+            color: #374151;
+            border-right: 1px solid #f1f5f9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .advanced-table tbody td:last-child {
+            border-right: none;
+        }
+
+        /* 固定列的tbody样式 - 只有序号列（第一列）固定 */
+        .advanced-table tbody tr td:first-child {
+            position: sticky;
+            left: 0;
+            background: #ffffff;
+            z-index: 5;
+            box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 确保序号列使用 col-serial-cell 类时也固定 */
+        .advanced-table tbody tr .col-serial-cell {
+            position: sticky;
+            left: 0;
+            background: #ffffff;
+            z-index: 5;
+            box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 强制确保订单号列和其他非固定列可以滚动 */
+        .advanced-table tbody tr td[data-column="order_number"],
+        .advanced-table tbody tr td[data-column="bank_voucher"],
+        .advanced-table tbody tr td[data-column="amount"],
+        .advanced-table tbody tr td[data-column="merchant_name"],
+        .advanced-table tbody tr td[data-column="payer_account_name"],
+        .advanced-table tbody tr td[data-column="payer_account_number"],
+        .advanced-table tbody tr td[data-column="receiver_account_name"],
+        .advanced-table tbody tr td[data-column="receiver_account_number"],
+        .advanced-table tbody tr td[data-column="business_type"],
+        .advanced-table tbody tr td[data-column="status"],
+        .advanced-table tbody tr td[data-column="created_time"],
+        .advanced-table tbody tr td[data-column="success_time"] {
+            position: static !important;
+            left: auto !important;
+            right: auto !important;
+            z-index: auto !important;
+        }
+
+        /* 通用的最后一列固定样式（如果没有特殊类的话） */
+        .advanced-table tbody tr td:last-child:not(.col-audit-cell) {
+            position: sticky;
+            right: 0;
+            background: #ffffff;
+            z-index: 5;
+            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .advanced-table tbody tr:hover td:first-child,
+        .advanced-table tbody tr:hover .col-serial-cell {
+            background: #f8fafc;
+        }
+
+        .advanced-table tbody tr:hover td:last-child:not(.col-audit-cell) {
+            background: #f8fafc;
+        }
+
+        /* 增强按钮样式 */
+        .btn-enhanced {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-enhanced.btn-outline {
+            background: white;
+            border-color: #d1d5db;
+            color: #374151;
+        }
+
+        .btn-enhanced.btn-outline:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        .btn-enhanced.btn-primary {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .btn-enhanced.btn-primary:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        /* 响应式模态框 */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .format-options {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .btn-enhanced {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* 新的审核状态徽章样式 */
+        .audit-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+        }
+
+        .audit-badge--arrived {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .audit-badge--not-arrived {
+            background: linear-gradient(135deg, #fef2f2, #fecaca);
+            color: #991b1b;
+            border: 1px solid #f87171;
+        }
+
+        .audit-badge--pending {
+            background: linear-gradient(135deg, #fefbeb, #fed7aa);
+            color: #9a3412;
+            border: 1px solid #fdba74;
+        }
+
+        .audit-badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .audit-badge .audit-icon {
+            font-size: 0.875rem;
+            margin-right: 0.125rem;
+        }
+
+        /* 高级筛选按钮激活状态 */
+        .btn-enhanced.has-filters {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
+
+        .btn-enhanced.has-filters:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .filter-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.25rem;
+        }
+
+        /* 列设置模态框样式 */
+        .column-settings-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .settings-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #374151;
+            margin: 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .column-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .column-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .column-option:hover {
+            background: #f3f4f6;
+        }
+
+        .column-option input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: #3b82f6;
+        }
+
+        .column-label {
+            font-size: 0.875rem;
+            color: #374151;
+            flex: 1;
+        }
+
+        .column-order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .order-item:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .drag-handle {
+            color: #9ca3af;
+            cursor: grab;
+            font-size: 0.875rem;
+            user-select: none;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .order-controls {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .order-btn {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: #6b7280;
+            transition: all 0.2s ease;
+        }
+
+        .order-btn:hover:not(:disabled) {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
+
+        .order-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 重构模态框架构 - 关键修复: 精确控制pointer events */
+        /* 关键修复: 完全重构backdrop定位系统 */
+        .modal-backdrop {
+            display: none !important;
+            /* 核心修复: 强制使用固定定位，完全脱离文档流 */
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            /* 关键: 移除right/bottom/vw/vh属性，防止定位冲突 */
+            background: rgba(0, 0, 0, 0.5) !important;
+            z-index: 1000 !important;
+            opacity: 0 !important;
+            transition: opacity 0.3s ease;
+            /* 关键: 重启pointer events，用于背景点击关闭 */
+            pointer-events: auto !important;
+            visibility: hidden !important;
+            /* 强制覆盖任何可能的定位干扰 */
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+            /* 防止任何transform或其他定位干扰 */
+            transform: none !important;
+            border: none !important;
+            outline: none !important;
+        }
+
+        .modal-backdrop.show {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            /* 关键: 显示时启用pointer events用于背景点击 */
+            pointer-events: auto !important;
+        }
+        
+        /* 移除不必要的:before伪元素 - 简化架构 */
+
+        .modal-container {
+            background: white !important;
+            border-radius: 12px !important;
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+            /* 优化宽度设置 - 避免超出视口 */
+            max-width: min(1200px, calc(100vw - 80px)) !important;
+            width: min(90vw, calc(100vw - 80px)) !important;
+            max-height: 85vh !important;
+            overflow: auto !important;
+            /* 关键修复: 使用static定位，依赖flexbox居中 */
+            position: static !important;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            /* 最高优先级: 容器内容强制允许交互 */
+            pointer-events: auto !important;
+            z-index: 1001 !important;
+            cursor: default;
+            /* 关键修复: 移除margin，让flexbox完全控制定位 */
+            margin: 0 auto !important;
+            /* 确保内容垂直滚动正常 */
+            box-sizing: border-box !important;
+        }
+
+        .modal-backdrop.show .modal-container {
+            transform: scale(1);
+        }
+        
+        /* 响应式优化 - 确保小屏幕上的良好显示 */
+        @media (max-width: 1400px) {
+            .modal-container {
+                max-width: min(1100px, calc(100vw - 60px)) !important;
+                width: min(85vw, calc(100vw - 60px)) !important;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .modal-container {
+                max-width: min(1000px, calc(100vw - 40px)) !important;
+                width: min(80vw, calc(100vw - 40px)) !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .modal-container {
+                max-width: calc(100vw - 20px) !important;
+                width: calc(100vw - 20px) !important;
+                margin: 10px !important;
+            }
+            
+            .filters-content-wrapper {
+                padding: 16px !important;
+            }
+            
+            .filter-tab-content {
+                padding: 16px 12px !important;
+            }
+        }
+        
+        /* 最高优先级: 确保容器内所有元素都强制可点击 */
+        .modal-container * {
+            pointer-events: auto !important;
+        }
+        
+        /* 特别处理按钮和表单元素 */
+        .modal-container button,
+        .modal-container input,
+        .modal-container select,
+        .modal-container textarea,
+        .modal-container a {
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 1002;
+        }
+
+        /* 筛选面板头部 - 适配新架构，确保所有交互元素可点击 */
+        .filters-header-enhanced {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px 16px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .filters-title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .filters-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filters-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .filters-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-icon:hover {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        .filters-close-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filters-close-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* 筛选预设面板 */
+        .filter-presets-panel {
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 24px;
+        }
+
+        .presets-section, .history-section {
+            margin-bottom: 16px;
+        }
+
+        .presets-title, .history-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin: 0 0 8px 0;
+        }
+
+        .preset-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .preset-chip {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 13px;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-chip:hover {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+
+        /* 筛选面板主体 */
+        .filters-body-enhanced {
+            padding: 0;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        /* 标签页导航 */
+        .filter-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .filter-tab {
+            flex: 1;
+            padding: 16px 20px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .filter-tab.active {
+            color: #3b82f6;
+            background: #f8fafc;
+        }
+
+        .filter-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #3b82f6;
+        }
+
+        .filter-tab:hover:not(.active) {
+            background: #f9fafb;
+            color: #374151;
+        }
+
+        /* 标签页内容 */
+        .filter-tab-content {
+            padding: 20px 24px;
+        }
+
+        /* 筛选行和分组 */
+        .filter-row-enhanced {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group-enhanced {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .filter-label-enhanced {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .label-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .label-count {
+            font-size: 12px;
+            color: #6b7280;
+            background: #e5e7eb;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .filter-hint {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        /* 复选框组增强 */
+        .checkbox-group-enhanced {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-item-enhanced {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .checkbox-item-enhanced:hover {
+            background: #e5e7eb;
+        }
+
+        .checkbox-custom {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .filter-checkbox {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .filter-checkbox:checked + .checkbox-custom {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .filter-checkbox:checked + .checkbox-custom::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .checkbox-text {
+            flex: 1;
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .item-count {
+            font-size: 12px;
+            color: #6b7280;
+            background: #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* 范围输入组 */
+        .range-input-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .input-with-label {
+            position: relative;
+            flex: 1;
+        }
+
+        .form-input--enhanced {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-input--enhanced:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .input-label {
+            position: absolute;
+            top: -6px;
+            left: 8px;
+            background: white;
+            padding: 0 4px;
+            font-size: 11px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .range-separator {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* 金额预设按钮 */
+        .amount-presets {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .amount-preset {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 16px;
+            padding: 4px 10px;
+            font-size: 12px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .amount-preset:hover, .amount-preset.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+
+        /* 时间范围标签页 */
+        .time-range-tabs, .processing-time-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .time-tab, .time-range-tab {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .time-tab.active, .time-range-tab.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+
+        .time-tab:hover:not(.active), .time-range-tab:hover:not(.active) {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        /* 商户搜索容器 */
+        .merchant-search-container {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .merchant-search-input {
+            padding-right: 40px;
+        }
+
+        .merchant-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        /* 自定义规则构建器 */
+        .custom-rules-container {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .rule-builder {
+            margin-bottom: 16px;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding: 12px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+        }
+
+        .rule-field, .rule-operator, .rule-logic {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background: white;
+            font-size: 13px;
+        }
+
+        .rule-value {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        .rule-remove-btn {
+            width: 32px;
+            height: 32px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .rule-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 筛选预览 */
+        .filter-preview {
+            background: #f0f9ff;
+            border-top: 1px solid #e5e7eb;
+            padding: 16px 24px;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .preview-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .preview-count {
+            font-size: 14px;
+            color: #3b82f6;
+            font-weight: 500;
+        }
+
+        .preview-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        /* 筛选底部 */
+        .filters-footer-enhanced {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: #f8fafc;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .filters-actions-left, .filters-actions-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* 筛选标签样式 */
+        .filter-tag {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 6px;
+            margin-bottom: 4px;
+        }
+
+        /* 商户标签样式 */
+        .merchant-tag {
+            display: inline-block;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 16px;
+            padding: 4px 8px;
+            margin: 2px;
+            font-size: 12px;
+        }
+
+        .remove-merchant {
+            background: none;
+            border: none;
+            color: #6b7280;
+            margin-left: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .remove-merchant:hover {
+            color: #ef4444;
+        }
+
+        /* 商户建议样式 */
+        .merchant-suggestion {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 13px;
+        }
+
+        .merchant-suggestion:hover {
+            background: #f3f4f6;
+        }
+
+        .merchant-suggestion:last-child {
+            border-bottom: none;
+        }
+
+        /* 历史记录样式 */
+        .history-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .history-item:hover {
+            background: #f3f4f6;
+        }
+
+        .history-description {
+            font-size: 13px;
+            color: #374151;
+            margin-bottom: 2px;
+        }
+
+        .history-timestamp {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* 筛选计数标记 */
+        .filter-count {
+            background: #ef4444;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .filter-row-enhanced {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-footer-enhanced {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .filters-actions-left, .filters-actions-right {
+                justify-content: center;
+                width: 100%;
+            }
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .filters-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .filters-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .filters-close-btn:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .filters-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: #3b82f6;
+        }
+
+        .amount-range-inputs {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .range-input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .range-separator {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* 列设置模态框样式 */
+        .column-settings {
+            padding: 1rem 0;
+        }
+        
+        .settings-desc {
+            margin-bottom: 1rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .column-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+        
+        .column-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            background: #f9fafb;
+        }
+        
+        .column-item:hover {
+            background: #f3f4f6;
+        }
+        
+        .column-item input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: #3b82f6;
+        }
+        
+        .column-item input[type="checkbox"]:disabled {
+            opacity: 0.6;
+        }
+        
+        .column-item label {
+            flex: 1;
+            font-size: 0.875rem;
+            cursor: pointer;
+            color: #374151;
+        }
+        
+        .column-item label em {
+            color: #9ca3af;
+            font-size: 0.75rem;
+        }
+        
+        .column-item input[type="checkbox"]:disabled + label {
+            cursor: not-allowed;
+            color: #9ca3af;
+        }
+
+        /* 响应式列设置 */
+        @media (max-width: 768px) {
+            .column-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .amount-range-inputs {
+                flex-direction: column;
+            }
+            
+            .range-separator {
+                display: none;
+            }
+        }
+    </style>
+
+    <!-- 列设置模态框 -->
+    <div class="modal-enhanced" id="columnSettingsModal" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">列设置</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="column-settings">
+                    <p class="settings-desc">选择要显示的列：</p>
+                    
+                    <div class="column-list">
+                        <div class="column-item">
+                            <input type="checkbox" id="col-serial" checked disabled>
+                            <label for="col-serial">序号 <em>(固定)</em></label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-order-number" checked>
+                            <label for="col-order-number">订单号</label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-bank-voucher" checked>
+                            <label for="col-bank-voucher">银行凭证号</label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-amount" checked>
+                            <label for="col-amount">交易金额</label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-merchant" checked>
+                            <label for="col-merchant">商户名称</label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-payer" checked>
+                            <label for="col-payer">付款方</label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-receiver" checked>
+                            <label for="col-receiver">收款方</label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-business-type" checked>
+                            <label for="col-business-type">业务类别</label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-status" checked>
+                            <label for="col-status">状态</label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-created-time" checked>
+                            <label for="col-created-time">创建时间</label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-success-time" checked>
+                            <label for="col-success-time">完成时间</label>
+                        </div>
+                        <div class="column-item">
+                            <input type="checkbox" id="col-audit" checked disabled>
+                            <label for="col-audit">审核状态 <em>(固定)</em></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-outline modal-cancel">取消</button>
+                <button class="btn btn-primary modal-save" id="saveColumnSettings">保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 数据报表页面高级数据表导出功能 -->
+    <script src="/static/js/report-advanced-export.js"></script>
+</body>
+</html>

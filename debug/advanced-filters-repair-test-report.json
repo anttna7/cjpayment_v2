@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-08-27T00:10:22.272Z",
+  "tests": [
+    {
+      "name": "高级筛选按钮功能",
+      "status": "passed",
+      "details": "筛选面板正常显示"
+    },
+    {
+      "name": "列设置按钮功能",
+      "status": "passed",
+      "details": "列设置模态框正常显示"
+    },
+    {
+      "name": "JavaScript错误检查",
+      "status": "passed",
+      "details": "总错误数: 1, 关键错误: 0"
+    },
+    {
+      "name": "模态框可访问性",
+      "status": "passed",
+      "details": "aria-modal: true, aria-hidden: null"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

@@ -1,0 +1,152 @@
+version: '3.8'
+
+services:
+  # Recharge Testing System Application
+  recharge-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.recharge
+    container_name: recharge-app-dev
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=development
+      - DB_HOST=mysql
+      - DB_USERNAME=cjpayment_dev
+      - DB_PASSWORD=dev_password_123
+      - DB_DATABASE=cjpayment_recharge_dev
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=
+      - JWT_SECRET=dev_jwt_secret_key_recharge_testing_2024
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./configs:/app/configs:ro
+      - ./uploads:/app/uploads
+      - ./logs:/var/log/recharge-system
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - recharge-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: recharge-mysql-dev
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password_123
+      - MYSQL_DATABASE=cjpayment_recharge_dev
+      - MYSQL_USER=cjpayment_dev
+      - MYSQL_PASSWORD=dev_password_123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./configs/mysql/dev.cnf:/etc/mysql/conf.d/custom.cnf:ro
+      - ./migrations:/docker-entrypoint-initdb.d:ro
+    networks:
+      - recharge-network
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password_123"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: recharge-redis-dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+      - ./configs/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    networks:
+      - recharge-network
+    command: redis-server /usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: recharge-nginx-dev
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/recharge.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/recharge-common.conf:/etc/nginx/conf.d/recharge-common.conf:ro
+      - ./web/static:/var/www/recharge/static:ro
+      - ./uploads:/var/www/recharge/uploads:ro
+      - ./nginx/error:/var/www/error:ro
+    depends_on:
+      - recharge-app
+    networks:
+      - recharge-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # MailHog for email testing
+  mailhog:
+    image: mailhog/mailhog
+    container_name: recharge-mailhog-dev
+    restart: unless-stopped
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - recharge-network
+
+  # Adminer for database management
+  adminer:
+    image: adminer
+    container_name: recharge-adminer-dev
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=mysql
+    depends_on:
+      - mysql
+    networks:
+      - recharge-network
+
+  # Redis Commander for Redis management
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: recharge-redis-commander-dev
+    restart: unless-stopped
+    ports:
+      - "8082:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    depends_on:
+      - redis
+    networks:
+      - recharge-network
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  recharge-network:
+    driver: bridge

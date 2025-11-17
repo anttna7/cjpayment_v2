@@ -1,0 +1,451 @@
+/**
+ * 可用性测试组件样式
+ */
+
+.usability-test-ui {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    max-width: 350px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--neutral-200);
+    font-family: var(--font-family-sans);
+}
+
+.test-session-panel {
+    padding: 0;
+}
+
+.test-session-header {
+    padding: 16px 20px;
+    background: var(--primary-50);
+    border-bottom: 1px solid var(--neutral-200);
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.test-session-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-700);
+}
+
+.session-id {
+    font-size: 12px;
+    color: var(--neutral-600);
+    background: var(--neutral-100);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: var(--font-family-mono);
+}
+
+.end-session-btn {
+    background: var(--error-500);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.end-session-btn:hover {
+    background: var(--error-600);
+}
+
+.test-tasks {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--neutral-200);
+}
+
+.test-tasks h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--neutral-700);
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--neutral-100);
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-item.completed {
+    opacity: 0.6;
+}
+
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    color: var(--success-600);
+}
+
+.task-text {
+    flex: 1;
+    font-size: 13px;
+    color: var(--neutral-700);
+    line-height: 1.4;
+}
+
+.task-complete-btn {
+    background: var(--success-500);
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.task-complete-btn:hover {
+    background: var(--success-600);
+}
+
+.task-item.completed .task-complete-btn {
+    background: var(--neutral-300);
+    cursor: not-allowed;
+}
+
+.feedback-section {
+    padding: 16px 20px;
+}
+
+.feedback-section h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--neutral-700);
+}
+
+.feedback-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.feedback-buttons button {
+    background: var(--neutral-100);
+    border: 1px solid var(--neutral-300);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.feedback-buttons button:hover {
+    background: var(--neutral-200);
+    border-color: var(--neutral-400);
+}
+
+/* 反馈模态框 */
+.feedback-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    backdrop-filter: blur(4px);
+}
+
+.feedback-modal .modal-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow: hidden;
+}
+
+.feedback-modal .modal-header {
+    padding: 20px;
+    background: var(--neutral-50);
+    border-bottom: 1px solid var(--neutral-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.feedback-modal .modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--neutral-800);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--neutral-500);
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.close-btn:hover {
+    background: var(--neutral-200);
+    color: var(--neutral-700);
+}
+
+.feedback-form {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--neutral-700);
+}
+
+.rating-stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.star {
+    font-size: 24px;
+    color: var(--neutral-300);
+    cursor: pointer;
+    transition: color 0.2s;
+    user-select: none;
+}
+
+.star:hover,
+.star.selected {
+    color: var(--warning-500);
+}
+
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--neutral-300);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--neutral-200);
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.form-actions button[type="submit"] {
+    background: var(--primary-500);
+    color: white;
+    border: none;
+}
+
+.form-actions button[type="submit"]:hover {
+    background: var(--primary-600);
+}
+
+.form-actions button[type="button"] {
+    background: var(--neutral-100);
+    color: var(--neutral-700);
+    border: 1px solid var(--neutral-300);
+}
+
+.form-actions button[type="button"]:hover {
+    background: var(--neutral-200);
+    border-color: var(--neutral-400);
+}
+
+/* Toast 通知 */
+.usability-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--neutral-800);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 10002;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease-out;
+}
+
+.usability-toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .usability-test-ui {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+    
+    .feedback-modal .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+    
+    .feedback-buttons {
+        justify-content: center;
+    }
+    
+    .feedback-buttons button {
+        flex: 1;
+        min-width: 0;
+        justify-content: center;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions button {
+        width: 100%;
+    }
+}
+
+/* 暗色主题支持 */
+[data-theme="dark"] .usability-test-ui {
+    background: var(--neutral-800);
+    border-color: var(--neutral-700);
+}
+
+[data-theme="dark"] .test-session-header {
+    background: var(--neutral-700);
+    border-color: var(--neutral-600);
+}
+
+[data-theme="dark"] .test-session-header h3 {
+    color: var(--primary-400);
+}
+
+[data-theme="dark"] .session-id {
+    background: var(--neutral-600);
+    color: var(--neutral-300);
+}
+
+[data-theme="dark"] .task-text {
+    color: var(--neutral-300);
+}
+
+[data-theme="dark"] .feedback-buttons button {
+    background: var(--neutral-700);
+    border-color: var(--neutral-600);
+    color: var(--neutral-300);
+}
+
+[data-theme="dark"] .feedback-buttons button:hover {
+    background: var(--neutral-600);
+    border-color: var(--neutral-500);
+}
+
+[data-theme="dark"] .feedback-modal .modal-content {
+    background: var(--neutral-800);
+}
+
+[data-theme="dark"] .feedback-modal .modal-header {
+    background: var(--neutral-700);
+    border-color: var(--neutral-600);
+}
+
+[data-theme="dark"] .feedback-modal .modal-header h3 {
+    color: var(--neutral-200);
+}
+
+[data-theme="dark"] .form-group label {
+    color: var(--neutral-300);
+}
+
+[data-theme="dark"] .form-group select,
+[data-theme="dark"] .form-group textarea {
+    background: var(--neutral-700);
+    border-color: var(--neutral-600);
+    color: var(--neutral-200);
+}
+
+[data-theme="dark"] .form-actions {
+    border-color: var(--neutral-600);
+}
+
+[data-theme="dark"] .form-actions button[type="button"] {
+    background: var(--neutral-700);
+    color: var(--neutral-300);
+    border-color: var(--neutral-600);
+}
+
+[data-theme="dark"] .form-actions button[type="button"]:hover {
+    background: var(--neutral-600);
+    border-color: var(--neutral-500);
+}

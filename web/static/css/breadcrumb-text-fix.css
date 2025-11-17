@@ -1,0 +1,85 @@
+/* 修复breadcrumb文字被截断的问题 */
+
+/* 确保breadcrumb容器有足够宽度显示完整文字 */
+.page__header .breadcrumb {
+    display: flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+    margin-bottom: 1rem !important;
+
+    /* 关键修复：确保容器宽度足够 */
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 400px !important;
+
+    /* 确保z-index足够高 */
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+/* 确保breadcrumb项目不被截断 */
+.breadcrumb__item {
+    display: inline-block !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+
+    /* 移除最大宽度限制 */
+    max-width: none !important;
+    min-width: auto !important;
+
+    /* 确保文字完整显示 */
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+.breadcrumb__separator {
+    display: inline-block !important;
+    margin: 0 0.5rem !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* 特别处理当前页面项目 */
+.breadcrumb__item--current {
+    /* 移除之前设置的最大宽度限制 */
+    max-width: none !important;
+    min-width: auto !important;
+
+    /* 确保完整文字显示 */
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+
+    /* 确保有足够空间 */
+    flex-shrink: 0 !important;
+}
+
+/* 确保父容器不限制breadcrumb宽度 */
+.page__header {
+    overflow: visible !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .page__header .breadcrumb {
+        min-width: 300px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .breadcrumb__item--current {
+        /* 在移动端可以适当缩短，但仍要显示关键信息 */
+        max-width: 200px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .breadcrumb__item--current {
+        max-width: 150px !important;
+    }
+}

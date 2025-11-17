@@ -1,0 +1,635 @@
+/* 统一权限配置组件样式 */
+.unified-permission-config {
+    background: var(--bg-primary);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+/* 头部区域 */
+.permission-config-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 2rem 2rem 1rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+}
+
+.config-title h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+}
+
+.config-subtitle {
+    margin: 0.5rem 0 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.config-actions .btn {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+.config-actions .btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+/* 筛选区域 */
+.permission-filters {
+    padding: 1.5rem 2rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-item .form-input,
+.filter-item .form-select {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.filter-item .form-input:focus,
+.filter-item .form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filter-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.stat-item strong {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* 权限配置内容区域 */
+.permission-config-content {
+    padding: 2rem;
+    min-height: 400px;
+}
+
+/* 列表视图 */
+.permission-category {
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-primary);
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.category-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.category-icon {
+    font-size: 1.5rem;
+}
+
+.category-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.category-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.category-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.category-count {
+    background: var(--primary);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.permission-list {
+    padding: 1rem;
+}
+
+.permission-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+    background: var(--bg-primary);
+}
+
+.permission-item:hover {
+    background: var(--bg-hover);
+    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.permission-item.selected {
+    border-color: var(--primary);
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.permission-checkbox {
+    flex-shrink: 0;
+}
+
+.permission-info {
+    flex: 1;
+}
+
+.permission-name {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.permission-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.permission-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8rem;
+}
+
+.permission-code {
+    font-family: 'Courier New', monospace;
+    background: var(--bg-secondary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    color: var(--text-secondary);
+}
+
+.permission-level {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 0.75rem;
+}
+
+.permission-level.level-1 {
+    background: #22c55e;
+    color: white;
+}
+
+.permission-level.level-2 {
+    background: #3b82f6;
+    color: white;
+}
+
+.permission-level.level-3 {
+    background: #f59e0b;
+    color: white;
+}
+
+.permission-level.level-4 {
+    background: #ef4444;
+    color: white;
+}
+
+.permission-level.level-5 {
+    background: #8b5cf6;
+    color: white;
+}
+
+/* 树形视图 */
+.permission-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tree-node {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    overflow: hidden;
+}
+
+.tree-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tree-header:hover {
+    background: var(--bg-hover);
+}
+
+.tree-toggle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+    width: 1rem;
+    text-align: center;
+}
+
+.tree-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    flex: 1;
+}
+
+.resource-name {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.resource-count {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.tree-content {
+    padding: 1rem;
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.tree-permission-item {
+    display: flex;
+    align-items: center;
+}
+
+.tree-permission-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    flex: 1;
+}
+
+.tree-permission-label:hover {
+    background: var(--bg-hover);
+}
+
+.permission-action {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+/* 矩阵视图 */
+.permission-matrix {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-primary);
+}
+
+.matrix-table th,
+.matrix-table td {
+    padding: 0.75rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.matrix-table th {
+    background: var(--bg-secondary);
+    font-weight: 600;
+    color: var(--text-primary);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.matrix-corner {
+    background: var(--primary) !important;
+    color: white !important;
+    position: sticky;
+    left: 0;
+    z-index: 3;
+}
+
+.resource-header {
+    background: var(--bg-secondary);
+    font-weight: 500;
+    text-align: left;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+}
+
+.action-header {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    min-width: 50px;
+}
+
+.matrix-cell {
+    background: var(--bg-primary);
+    transition: background-color 0.3s ease;
+}
+
+.matrix-cell:hover {
+    background: var(--bg-hover);
+}
+
+.matrix-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* 自定义复选框样式 */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-custom {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-primary);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.checkbox-text {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* 底部操作区域 */
+.config-footer {
+    padding: 1.5rem 2rem;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.config-footer .config-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+/* 权限预览 */
+.permission-preview {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.permission-preview h4 {
+    margin: 0 0 1rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.preview-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .filter-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+    }
+
+    .tree-content {
+        grid-template-columns: 1fr;
+    }
+
+    .permission-config-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .permission-config-content {
+        padding: 1rem;
+    }
+
+    .permission-config-header {
+        padding: 1.5rem 1rem 1rem;
+    }
+
+    .permission-filters {
+        padding: 1rem;
+    }
+
+    .filter-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .category-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .category-actions {
+        align-self: stretch;
+        justify-content: space-between;
+    }
+
+    .permission-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .permission-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .matrix-table {
+        font-size: 0.8rem;
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+        padding: 0.5rem;
+    }
+
+    .config-footer .config-actions {
+        flex-direction: column;
+    }
+
+    .preview-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.permission-item,
+.tree-node,
+.permission-category {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+/* 加载状态 */
+.permission-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: var(--text-secondary);
+}
+
+.permission-loading .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 空状态 */
+.permission-empty {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-secondary);
+}
+
+.permission-empty .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.permission-empty .empty-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.permission-empty .empty-desc {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}

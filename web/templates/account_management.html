@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>账户管理 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- 统一表格样式系统 -->
+    <link rel="stylesheet" href="/static/css/table-unified.css">
+    
+    <!-- 页面特定样式 -->
+    <link rel="stylesheet" href="/static/css/account-management-new.css">
+    
+    <!-- 收款账户模态框样式 -->
+    <link rel="stylesheet" href="/static/css/add-account-modal.css">
+    
+    <!-- Header Dropdown 修复 - 解决通知和用户菜单默认打开状态问题 -->
+    <link rel="stylesheet" href="/static/css/header-dropdown-fix.css">
+    <link rel="stylesheet" href="/static/css/components/modal-unified.css">
+    <link rel="stylesheet" href="/static/css/components/polling-config.css">
+    <link rel="stylesheet" href="/static/css/components/polling-group-config.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="CJPayment企业内部支付管理系统账户管理">
+    <meta name="keywords" content="账户管理,支付管理,企业系统">
+</head>
+<body class="page-accounts-management">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">💼</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link nav__link--active" data-route="accounts">
+                            <span class="nav__icon">💳</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="analytics">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">3</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>系统通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部标记为已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">新商户待审核</div>
+                                    <div class="notification-text">有2个新商户申请待审核</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">10分钟前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name">管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown">
+                        <a href="/profile" class="user-menu__item">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="/help" class="user-menu__item">
+                            <span class="user-menu__item-icon">❓</span>
+                            帮助中心
+                        </a>
+                        <div class="user-menu__divider"></div>
+                        <a href="/logout" class="user-menu__item user-menu__item--danger">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="accounts-management">
+            <!-- 页面标题已移除 - 导航栏已提供足够的页面标识 -->
+
+            <!-- Tab Navigation -->
+            <nav class="tab-navigation" id="tabNavigation">
+                <button class="tab-nav__item tab-nav__item--active" data-tab="receiving-accounts" id="receivingAccountsTab">
+                    <span class="tab-nav__icon">🏦</span>
+                    <span class="tab-nav__text">收款账户</span>
+                </button>
+                <button class="tab-nav__item" data-tab="polling-rules" id="pollingRulesTab">
+                    <span class="tab-nav__icon">⚙️</span>
+                    <span class="tab-nav__text">轮询规则</span>
+                </button>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- 收款账户标签页 -->
+                <div class="tab-panel tab-panel--active" id="receivingAccountsPanel" data-tab="receiving-accounts">
+                    <div class="section-header">
+                        <!-- 优化布局：左侧标题，右侧双按钮，完美平衡 -->
+                        <div class="section-header-balanced">
+                            <!-- 左侧：标题区域 -->
+                            <div class="section-title-area">
+                                <h2 class="section-title">收款账户管理</h2>
+                                <p class="section-subtitle">管理和配置收款账户信息</p>
+                            </div>
+                            
+                            <!-- 右侧：操作按钮组 -->
+                            <div class="section-actions-area">
+                                <button class="btn-primary" id="addReceivingAccountBtn">
+                                    <span class="btn__icon">+</span>
+                                    <span class="btn__text">添加收款账户</span>
+                                </button>
+                                <button class="btn-secondary" id="exportReceivingAccountsBtn">
+                                    <span class="btn__icon">📊</span>
+                                    <span class="btn__text">导出收款账户</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accounts-table-container">
+                        <div class="table-responsive-wrapper">
+                            <table class="enhanced-table" id="receivingAccountsTable">
+                                <thead class="table-header">
+                                    <tr>
+                                        <th class="col-fixed-left col-index">序号</th>
+                                        <th class="col-scrollable">收款账号</th>
+                                        <th class="col-scrollable">账户名称</th>
+                                        <th class="col-scrollable">账户机构</th>
+                                        <th class="col-scrollable">收款类型</th>
+                                        <th class="col-scrollable">日限额</th>
+                                        <th class="col-scrollable">单笔限额</th>
+                                        <th class="col-scrollable">账户状态</th>
+                                        <th class="col-scrollable">备注</th>
+                                        <th class="col-actions">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="receivingAccountsTableBody">
+                                    <tr>
+                                        <td colspan="10" class="table__loading">
+                                            <div class="loading-spinner"></div>
+                                            <span>正在加载收款账户数据...</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 轮询规则标签页 -->
+                <div class="tab-panel" id="pollingRulesPanel" data-tab="polling-rules">
+                    <div class="section-header">
+                        <h2 class="section-title">轮询规则管理</h2>
+                        <p class="section-subtitle">配置收款账户的轮询模式和分组</p>
+                    </div>
+
+                    <!-- 轮询模式配置 -->
+                    <div class="polling-section">
+                        <h3 class="subsection-title">轮询模式配置</h3>
+                        <div class="polling-modes-grid">
+                            <div class="polling-mode-card" data-mode="weight">
+                                <div class="polling-mode-header">
+                                    <h4>权重轮询</h4>
+                                    <div class="polling-mode-status">
+                                        <span class="status-badge status-badge--active">已配置</span>
+                                    </div>
+                                </div>
+                                <p>根据账户设置的权重进行分配，权重越高使用概率越大</p>
+                                <div class="polling-mode-details">
+                                    <div class="rule-explanation">
+                                        <strong>适用场景：</strong>需要按比例分配收款流量时
+                                    </div>
+                                    <div class="rule-settings">
+                                        <small>当前配置：3个账户，总权重100</small>
+                                    </div>
+                                </div>
+                                <div class="polling-mode-actions">
+                                    <button class="btn btn--outline btn--sm" onclick="accountsManager.viewPollingRule('weight')">查看</button>
+                                    <button class="btn btn--primary btn--sm" onclick="accountsManager.editPollingRule('weight')">编辑</button>
+                                </div>
+                            </div>
+                            <div class="polling-mode-card" data-mode="amount">
+                                <div class="polling-mode-header">
+                                    <h4>金额指定</h4>
+                                    <div class="polling-mode-status">
+                                        <span class="status-badge status-badge--inactive">未配置</span>
+                                    </div>
+                                </div>
+                                <p>根据金额大小指定特定收款号，不同金额范围使用不同账户</p>
+                                <div class="polling-mode-details">
+                                    <div class="rule-explanation">
+                                        <strong>适用场景：</strong>大小额分离，降低单账户风险
+                                    </div>
+                                    <div class="rule-settings">
+                                        <small>未设置金额区间</small>
+                                    </div>
+                                </div>
+                                <div class="polling-mode-actions">
+                                    <button class="btn btn--primary btn--sm" onclick="accountsManager.configurePollingRule('amount')">配置</button>
+                                </div>
+                            </div>
+                            <div class="polling-mode-card" data-mode="sequence">
+                                <div class="polling-mode-header">
+                                    <h4>顺序轮询</h4>
+                                    <div class="polling-mode-status">
+                                        <span class="status-badge status-badge--pending">部分配置</span>
+                                    </div>
+                                </div>
+                                <p>按照预设顺序依次使用账户，轮流分配收款任务</p>
+                                <div class="polling-mode-details">
+                                    <div class="rule-explanation">
+                                        <strong>适用场景：</strong>平均分配，确保所有账户均匀使用
+                                    </div>
+                                    <div class="rule-settings">
+                                        <small>当前顺序：账户1 → 账户2 → 账户3</small>
+                                    </div>
+                                </div>
+                                <div class="polling-mode-actions">
+                                    <button class="btn btn--outline btn--sm" onclick="accountsManager.viewPollingRule('sequence')">查看</button>
+                                    <button class="btn btn--primary btn--sm" onclick="accountsManager.editPollingRule('sequence')">编辑</button>
+                                </div>
+                            </div>
+                            <div class="polling-mode-card" data-mode="priority">
+                                <div class="polling-mode-header">
+                                    <h4>优先级轮询</h4>
+                                    <div class="polling-mode-status">
+                                        <span class="status-badge status-badge--inactive">未配置</span>
+                                    </div>
+                                </div>
+                                <p>按照优先级别处理收款，高优先级账户优先使用</p>
+                                <div class="polling-mode-details">
+                                    <div class="rule-explanation">
+                                        <strong>适用场景：</strong>有主次账户之分，优先使用主账户
+                                    </div>
+                                    <div class="rule-settings">
+                                        <small>未设置优先级规则</small>
+                                    </div>
+                                </div>
+                                <div class="polling-mode-actions">
+                                    <button class="btn btn--primary btn--sm" onclick="accountsManager.configurePollingRule('priority')">配置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 轮询组管理 -->
+                    <div class="polling-groups-section">
+                        <div class="section-header">
+                            <h3 class="subsection-title">轮询组管理</h3>
+                            <button class="btn btn--primary btn--sm" id="createPollingGroupBtn">
+                                <span class="btn__icon">+</span>
+                                <span class="btn__text">创建轮询组</span>
+                            </button>
+                        </div>
+
+                        <div class="polling-groups-grid" id="pollingGroupsContainer">
+                            <!-- 轮询组将通过JavaScript动态生成 -->
+                            <div class="polling-group-placeholder">
+                                <div class="loading-spinner"></div>
+                                <span>正在加载轮询组...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 账户管理导出模态框 - 复用财务审核页面样式 -->
+    <div class="modal-enhanced" id="exportAccountModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">导出账户报表</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="option-group">
+                        <label class="option-label">导出格式</label>
+                        <div class="format-options">
+                            <label class="format-option">
+                                <input type="radio" name="accountFormat" value="pdf" checked>
+                                <span class="format-icon">📄</span>
+                                <span class="format-text">PDF报告</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="accountFormat" value="excel">
+                                <span class="format-icon">📊</span>
+                                <span class="format-text">Excel表格</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="accountFormat" value="csv">
+                                <span class="format-icon">📋</span>
+                                <span class="format-text">CSV数据</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">包含内容</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>收款账户信息</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>账户状态配置</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox">
+                                <span>轮询组设置</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <label class="option-label">数据范围</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="radio" name="accountDataRange" value="current" checked>
+                                <span>当前标签页数据</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="radio" name="accountDataRange" value="all">
+                                <span>所有收款账户数据</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeExportAccountModal()">取消</button>
+                <button class="btn-enhanced btn-primary" id="confirmAccountExportBtn">
+                    <span class="btn__icon">📤</span>
+                    确认导出
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 统一页脚组件 -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | CJPayment Management System</span>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        /* 导出按钮样式 - 与数据报表页面保持一致 */
+        .btn-success {
+            background: var(--success-500, #22c55e);
+            color: white;
+            border: 1px solid var(--success-500, #22c55e);
+        }
+
+        .btn-success:hover {
+            background: var(--success-600, #16a34a);
+            border-color: var(--success-600, #16a34a);
+            color: white;
+        }
+
+        .btn-success:focus {
+            box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.25);
+            background: var(--success-600, #16a34a);
+            border-color: var(--success-600, #16a34a);
+            color: white;
+        }
+
+        .btn-success:active {
+            background: var(--success-700, #15803d);
+            border-color: var(--success-700, #15803d);
+            color: white;
+        }
+
+        /* 模态框样式 - 复用数据报表页面完整样式 */
+        .modal-enhanced {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-enhanced.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-enhanced.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+
+        /* 导出选项样式 */
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .format-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .format-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .format-option:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .format-option input[type="radio"] {
+            display: none;
+        }
+
+        .format-option input[type="radio"]:checked + .format-icon + .format-text {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .format-option:has(input[type="radio"]:checked) {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .format-icon {
+            font-size: 2rem;
+        }
+
+        .format-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .content-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .content-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .content-option:hover {
+            background: #f3f4f6;
+        }
+
+        .content-option input[type="checkbox"],
+        .content-option input[type="radio"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: #3b82f6;
+        }
+
+        /* 响应式模态框 - 与数据报表页面完全一致 */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .format-options {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .btn-enhanced {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+
+    <!-- 收款账户模态框 -->
+    <div class="account-modal-overlay" id="receivingAccountModalOverlay">
+        <div class="account-modal-container">
+            <div class="account-modal-header">
+                <h2 class="account-modal-title">
+                    <span class="account-modal-icon">💳</span>
+                    添加收款账户
+                </h2>
+                <button class="account-modal-close" id="receivingAccountModalClose" aria-label="关闭">
+                    <span class="close-icon">✕</span>
+                </button>
+            </div>
+            
+            <form class="account-modal-form" id="receivingAccountForm">
+                <div class="account-modal-body">
+                    <!-- 基础账户信息 -->
+                    <div class="account-form-section">
+                        <h3 class="account-section-title">
+                            <span class="account-section-icon">📋</span>
+                            基础账户信息
+                        </h3>
+                        
+                        <div class="account-form-grid">
+                            <div class="account-form-group account-form-group--required">
+                                <label for="receivingAccountName" class="account-form-label">收款账户名称</label>
+                                <input type="text" 
+                                       id="receivingAccountName" 
+                                       name="accountName" 
+                                       class="account-form-input" 
+                                       placeholder="请输入收款账户名称"
+                                       required
+                                       maxlength="100">
+                                <div class="account-form-error" id="accountNameError"></div>
+                            </div>
+                            
+                            <div class="account-form-group account-form-group--required">
+                                <label for="receivingAccountNumber" class="account-form-label">收款账号</label>
+                                <input type="text" 
+                                       id="receivingAccountNumber" 
+                                       name="accountNumber" 
+                                       class="account-form-input" 
+                                       placeholder="请输入收款账号"
+                                       required
+                                       maxlength="30">
+                                <div class="account-form-error" id="accountNumberError"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="account-form-grid">
+                            <div class="account-form-group account-form-group--required">
+                                <label for="receivingAccountType" class="account-form-label">账户类型</label>
+                                <select id="receivingAccountType" 
+                                        name="accountType" 
+                                        class="account-form-select" 
+                                        required>
+                                    <option value="">请选择账户类型</option>
+                                    <option value="corporate">对公账户</option>
+                                    <option value="personal">对私账户</option>
+                                </select>
+                                <div class="account-form-error" id="accountTypeError"></div>
+                            </div>
+                            
+                            <div class="account-form-group account-form-group--required">
+                                <label for="receivingAccountInstitution" class="account-form-label">账户机构</label>
+                                <select id="receivingAccountInstitution" 
+                                        name="accountInstitution" 
+                                        class="account-form-select" 
+                                        required
+                                        onchange="toggleBankFields(this.value)">
+                                    <option value="">请选择账户机构</option>
+                                    <option value="bank">银行</option>
+                                    <option value="alipay">支付宝</option>
+                                    <option value="wechat">微信支付</option>
+                                    <option value="other">其他</option>
+                                </select>
+                                <div class="account-form-error" id="accountInstitutionError"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 银行信息（当选择银行时显示） -->
+                    <div class="account-form-section" id="bankSection" style="display: none;">
+                        <h3 class="account-section-title">
+                            <span class="account-section-icon">🏦</span>
+                            银行信息
+                        </h3>
+                        
+                        <div class="account-form-grid">
+                            <div class="account-form-group account-form-group--required">
+                                <label for="receivingBankName" class="account-form-label">银行名称</label>
+                                <select id="receivingBankName" 
+                                        name="bankName" 
+                                        class="account-form-select">
+                                    <option value="">请选择银行</option>
+                                    <option value="icbc">中国工商银行</option>
+                                    <option value="ccb">中国建设银行</option>
+                                    <option value="abc">中国农业银行</option>
+                                    <option value="boc">中国银行</option>
+                                    <option value="bcom">交通银行</option>
+                                    <option value="cmb">招商银行</option>
+                                    <option value="spdb">浦发银行</option>
+                                    <option value="citic">中信银行</option>
+                                    <option value="ceb">光大银行</option>
+                                    <option value="cmbc">民生银行</option>
+                                    <option value="hxb">华夏银行</option>
+                                    <option value="pingan">平安银行</option>
+                                    <option value="cib">兴业银行</option>
+                                    <option value="other_bank">其他银行</option>
+                                </select>
+                                <div class="account-form-error" id="bankNameError"></div>
+                            </div>
+                            
+                            <div class="account-form-group">
+                                <label for="receivingBranchInfo" class="account-form-label">开户行信息</label>
+                                <input type="text" 
+                                       id="receivingBranchInfo" 
+                                       name="branchInfo" 
+                                       class="account-form-input" 
+                                       placeholder="请输入开户行信息（选填）"
+                                       maxlength="100">
+                                <div class="account-form-help">具体开户支行或网点信息</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 限额配置 -->
+                    <div class="account-form-section">
+                        <h3 class="account-section-title">
+                            <span class="account-section-icon">💰</span>
+                            限额配置
+                        </h3>
+                        
+                        <div class="account-form-grid">
+                            <div class="account-form-group">
+                                <label for="receivingDailyLimit" class="account-form-label">单日限额</label>
+                                <input type="number" 
+                                       id="receivingDailyLimit" 
+                                       name="dailyLimit" 
+                                       class="account-form-input" 
+                                       min="0" 
+                                       step="0.01" 
+                                       placeholder="留空表示无限制">
+                                <div class="account-form-help">每日最大收款金额，不填写默认无限制</div>
+                            </div>
+                            
+                            <div class="account-form-group">
+                                <label for="receivingSingleLimit" class="account-form-label">单笔限额</label>
+                                <input type="number" 
+                                       id="receivingSingleLimit" 
+                                       name="singleLimit" 
+                                       class="account-form-input" 
+                                       min="0" 
+                                       step="0.01" 
+                                       placeholder="留空表示无限制">
+                                <div class="account-form-help">单次收款最大金额，不填写默认无限制</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 备注信息 -->
+                    <div class="account-form-section">
+                        <h3 class="account-section-title">
+                            <span class="account-section-icon">📝</span>
+                            备注信息
+                        </h3>
+                        
+                        <div class="account-form-grid account-form-grid--single">
+                            <div class="account-form-group">
+                                <label for="receivingRemark" class="account-form-label">备注信息</label>
+                                <textarea id="receivingRemark" 
+                                          name="remark" 
+                                          class="account-form-textarea"
+                                          rows="3"
+                                          placeholder="请输入备注信息（可选）"
+                                          maxlength="500"></textarea>
+                                <div class="account-form-help">收款账户的补充说明信息</div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="account-modal-footer">
+                <button type="button" class="account-btn-secondary" id="cancelReceivingAccountBtn">
+                    取消
+                </button>
+                <button type="submit" class="account-btn-primary" id="saveReceivingAccountBtn">
+                    <span class="account-loading-spinner" style="display: none;"></span>
+                    保存收款账户
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 轮询模式编辑模态框 -->
+    <div class="modal-overlay" id="pollingModeModalOverlay">
+        <div class="modal-enhanced modal-large" id="pollingModeModal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="pollingModeModalTitle">
+                    <span class="modal-title-icon">⚙️</span>
+                    编辑轮询模式
+                </h3>
+                <button class="modal-close" id="pollingModeModalClose">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <form class="form-enhanced" id="pollingModeForm">
+                    <input type="hidden" id="currentPollingMode" name="mode">
+                    
+                    <!-- 基础信息 -->
+                    <div class="form-section">
+                        <h4 class="form-section-title">
+                            <span class="section-icon">📋</span>
+                            基础信息
+                        </h4>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="pollingModeName">模式名称</label>
+                                <input type="text" class="form-input" id="pollingModeName" name="modeName" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="pollingModeStatus">状态</label>
+                                <select class="form-select" id="pollingModeStatus" name="status">
+                                    <option value="active">已启用</option>
+                                    <option value="inactive">已禁用</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="pollingModeDescription">模式描述</label>
+                            <textarea class="form-textarea" id="pollingModeDescription" name="description" rows="2" readonly></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- 权重轮询配置 -->
+                    <div class="form-section" id="weightConfigSection" style="display: none;">
+                        <h4 class="form-section-title">
+                            <span class="section-icon">⚖️</span>
+                            权重配置
+                        </h4>
+                        <p class="form-section-description">设置每个账户的权重值，权重越高使用概率越大</p>
+                        
+                        <div id="weightAccountsList" class="weight-accounts-list">
+                            <!-- 权重账户列表将动态生成 -->
+                        </div>
+                        
+                        <div class="weight-summary">
+                            <span>总权重：<strong id="totalWeight">0</strong></span>
+                        </div>
+                    </div>
+                    
+                    <!-- 金额指定配置 -->
+                    <div class="form-section" id="amountConfigSection" style="display: none;">
+                        <h4 class="form-section-title">
+                            <span class="section-icon">💰</span>
+                            金额区间配置
+                        </h4>
+                        <p class="form-section-description">设置不同金额区间使用的账户</p>
+                        
+                        <div id="amountRulesList" class="amount-rules-list">
+                            <!-- 金额规则列表将动态生成 -->
+                        </div>
+                        
+                        <button type="button" class="btn btn--outline btn--sm" id="addAmountRuleBtn">
+                            <span class="btn__icon">+</span>
+                            添加金额区间
+                        </button>
+                    </div>
+                    
+                    <!-- 顺序轮询配置 -->
+                    <div class="form-section" id="sequenceConfigSection" style="display: none;">
+                        <h4 class="form-section-title">
+                            <span class="section-icon">🔄</span>
+                            顺序配置
+                        </h4>
+                        <p class="form-section-description">拖拽调整账户的轮询顺序</p>
+                        
+                        <div id="sequenceAccountsList" class="sequence-accounts-list sortable">
+                            <!-- 顺序账户列表将动态生成 -->
+                        </div>
+                    </div>
+                    
+                    
+                    <!-- 优先级配置 -->
+                    <div class="form-section" id="priorityConfigSection" style="display: none;">
+                        <h4 class="form-section-title">
+                            <span class="section-icon">⬆️</span>
+                            优先级配置
+                        </h4>
+                        <p class="form-section-description">设置账户的优先级别，数字越小优先级越高</p>
+                        
+                        <div id="priorityAccountsList" class="priority-accounts-list">
+                            <!-- 优先级账户列表将动态生成 -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn--secondary modal-btn" id="cancelPollingModeBtn">取消</button>
+                <button type="submit" form="pollingModeForm" class="btn btn--primary modal-btn" id="savePollingModeBtn">
+                    <span class="btn__text">保存配置</span>
+                    <span class="btn-loading" style="display: none;">
+                        <span class="loading-spinner"></span>
+                        保存中...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 轮询组模态框 - 优化样式匹配系统设计 -->
+    <div class="account-modal-overlay" id="pollingGroupModalOverlay">
+        <div class="account-modal-container" id="pollingGroupModal">
+            <div class="account-modal-header">
+                <h2 class="account-modal-title">
+                    <span class="account-modal-icon">⚙️</span>
+                    创建轮询组
+                </h2>
+                <button class="account-modal-close" id="pollingGroupModalClose" aria-label="关闭">
+                    <span class="close-icon">✕</span>
+                </button>
+            </div>
+            
+            <form class="account-modal-form" id="pollingGroupForm">
+                <div class="account-modal-body">
+                    <!-- 基础配置 -->
+                    <div class="account-form-section">
+                        <h3 class="account-section-title">
+                            <span class="account-section-icon">📋</span>
+                            基础配置
+                        </h3>
+                        
+                        <div class="account-form-grid">
+                            <div class="account-form-group account-form-group--required">
+                                <label class="account-form-label" for="pollingGroupName">轮询组名称</label>
+                                <input type="text" 
+                                       class="account-form-input" 
+                                       id="pollingGroupName" 
+                                       name="groupName" 
+                                       placeholder="请输入轮询组名称"
+                                       required
+                                       maxlength="50">
+                                <div class="account-form-error" id="groupNameError"></div>
+                            </div>
+                            
+                            <div class="account-form-group account-form-group--required">
+                                <label class="account-form-label" for="pollingMode">轮询模式</label>
+                                <select class="account-form-select" id="pollingMode" name="pollingMode" required>
+                                    <option value="">请选择轮询模式</option>
+                                    <option value="weight">权重轮询</option>
+                                    <option value="amount">金额指定</option>
+                                    <option value="sequence">顺序轮询</option>
+                                    <option value="priority">优先级轮询</option>
+                                </select>
+                                <div class="account-form-help" id="pollingModeDescription">请选择适合的轮询模式</div>
+                                <div class="account-form-error" id="pollingModeError"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 账户选择 -->
+                    <div class="account-form-section">
+                        <h3 class="account-section-title">
+                            <span class="account-section-icon">🏦</span>
+                            选择收款账户
+                        </h3>
+                        
+                        <div class="account-form-grid account-form-grid--single">
+                            <div class="account-form-group">
+                                <div class="account-selector" id="accountSelector">
+                                    <!-- 账户选择器将通过JavaScript动态生成 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 轮询模式具体配置区域 -->
+                    <div id="pollingConfigSection" style="display: none;">
+                        <!-- 顺序轮询配置 -->
+                        <div id="sequencePollingConfig" class="account-form-section" style="display: none;">
+                            <h3 class="account-section-title">
+                                <span class="account-section-icon">🔄</span>
+                                顺序轮询配置
+                            </h3>
+                            <div class="account-form-help">拖拽调整账户的轮询顺序，系统将按此顺序依次使用账户</div>
+                            <div class="account-form-grid account-form-grid--single">
+                                <div class="account-form-group">
+                                    <div id="sequenceOrderList" class="sequence-order-list">
+                                        <!-- 顺序列表将通过JavaScript生成 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 金额指定配置 -->
+                        <div id="amountPollingConfig" class="account-form-section" style="display: none;">
+                            <h3 class="account-section-title">
+                                <span class="account-section-icon">💰</span>
+                                金额指定配置
+                            </h3>
+                            <div class="account-form-help">设置不同金额区间使用不同的收款账户</div>
+                            <div class="account-form-grid account-form-grid--single">
+                                <div class="account-form-group">
+                                    <div id="amountRangesList" class="amount-ranges-list">
+                                        <!-- 金额区间列表将通过JavaScript生成 -->
+                                    </div>
+                                    <button type="button" class="account-btn-secondary account-btn-small" id="addAmountRangeBtn">
+                                        <span class="btn__icon">➕</span>
+                                        添加金额区间
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 权重轮询配置 -->
+                        <div id="weightPollingConfig" class="account-form-section" style="display: none;">
+                            <h3 class="account-section-title">
+                                <span class="account-section-icon">⚖️</span>
+                                权重轮询配置
+                            </h3>
+                            <div class="account-form-help">设置各账户的权重比例，权重越高使用概率越大</div>
+                            <div class="account-form-grid account-form-grid--single">
+                                <div class="account-form-group">
+                                    <div id="pollingGroupWeightAccountsList" class="weight-accounts-list">
+                                        <!-- 权重列表将通过JavaScript生成 -->
+                                    </div>
+                                    <div class="weight-summary">
+                                        <span class="account-form-help">总权重：<strong id="totalWeightDisplay">0</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 优先级轮询配置 -->
+                        <div id="priorityPollingConfig" class="account-form-section" style="display: none;">
+                            <h3 class="account-section-title">
+                                <span class="account-section-icon">⬆️</span>
+                                优先级轮询配置
+                            </h3>
+                            <div class="account-form-help">设置账户优先级，数字越小优先级越高，系统优先使用高优先级账户</div>
+                            <div class="account-form-grid account-form-grid--single">
+                                <div class="account-form-group">
+                                    <div id="pollingGroupPriorityAccountsList" class="priority-accounts-list">
+                                        <!-- 优先级列表将通过JavaScript生成 -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 备注信息 -->
+                    <div class="account-form-section">
+                        <h3 class="account-section-title">
+                            <span class="account-section-icon">📝</span>
+                            备注信息
+                        </h3>
+                        
+                        <div class="account-form-grid account-form-grid--single">
+                            <div class="account-form-group">
+                                <label class="account-form-label" for="pollingGroupRemark">备注信息</label>
+                                <textarea class="account-form-textarea" 
+                                          id="pollingGroupRemark" 
+                                          name="remark" 
+                                          rows="3"
+                                          placeholder="请输入轮询组备注信息（可选）"
+                                          maxlength="500"></textarea>
+                                <div class="account-form-help">轮询组的补充说明信息</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="account-modal-footer">
+                <button type="button" class="account-btn-secondary" id="cancelPollingGroupBtn">
+                    取消
+                </button>
+                <button type="submit" class="account-btn-primary" id="savePollingGroupBtn">
+                    <span class="account-loading-spinner" style="display: none;"></span>
+                    创建轮询组
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+        <div class="toast-content">
+            <span class="toast-icon"></span>
+            <span class="toast-message"></span>
+        </div>
+        <button class="toast-close">&times;</button>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+    // 全局函数 - 账户机构切换处理
+    function toggleBankFields(institution) {
+        const bankSection = document.getElementById('bankSection');
+        const bankNameField = document.getElementById('receivingBankName');
+        
+        if (institution === 'bank') {
+            bankSection.style.display = 'block';
+            if (bankNameField) bankNameField.setAttribute('required', '');
+        } else {
+            bankSection.style.display = 'none';
+            if (bankNameField) {
+                bankNameField.removeAttribute('required');
+                bankNameField.value = '';
+            }
+        }
+    }
+    </script>
+    
+    <script src="/static/js/header-unified.js"></script>
+    
+    <!-- 统一通知数据管理系统 -->
+    <script src="/static/js/notification-data-unified.js"></script>
+    <script src="/static/js/account-management-new.js"></script>
+    <script src="/static/js/polling-manager.js"></script>
+    
+    <!-- 账户导出功能 -->
+    <script src="/static/js/account-export.js"></script>
+    
+    <script>
+    // 初始化账户管理系统
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('账户管理页面初始化...');
+        window.accountsManager = new AccountsManager();
+    });
+    </script>
+</body>
+</html>

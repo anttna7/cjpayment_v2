@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>系统配置 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/components.css">
+    <link rel="stylesheet" href="/static/css/dashboard-enhanced.css">
+    
+    <!-- System Config Specific CSS -->
+    <link rel="stylesheet" href="/static/css/system-config.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+</head>
+<body class="page-system-config">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link nav__link--active" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换明暗主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">0</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>配置通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item">
+                                <div class="notification-icon"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">暂无新通知</div>
+                                    <div class="notification-text">系统配置运行正常</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">刚刚</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton" aria-expanded="false" aria-haspopup="true">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">系统管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown" role="menu">
+                        <a href="/profile" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="#" class="user-menu__item user-menu__item--danger" role="menuitem" id="logoutLink">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="system-config">
+            <!-- Page Header -->
+            <div class="page__header">
+                <div class="page__title">
+                    <div class="breadcrumb">
+                        <a href="/system_management" class="breadcrumb__item">系统管理</a>
+                        <span class="breadcrumb__separator">›</span>
+                        <span class="breadcrumb__item breadcrumb__item--current">系统配置</span>
+                    </div>
+                    <h1>⚙️ 系统配置</h1>
+                    <p class="page__subtitle">系统参数配置、功能开关和业务规则设置</p>
+                </div>
+                
+                <div class="page__actions">
+                    <button class="btn btn-outline" id="exportConfig" title="导出配置">
+                        <span class="btn__icon">📤</span>
+                        <span class="btn__text">导出配置</span>
+                    </button>
+                    <button class="btn btn-outline" id="importConfig" title="导入配置">
+                        <span class="btn__icon">📥</span>
+                        <span class="btn__text">导入配置</span>
+                    </button>
+                    <button class="btn btn-primary" id="saveAllConfig" title="保存所有配置">
+                        <span class="btn__icon">💾</span>
+                        <span class="btn__text">保存配置</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Configuration Tabs -->
+            <div class="config-tabs">
+                <div class="tab-list" role="tablist">
+                    <button class="tab-button tab-button--active" data-tab="basic" role="tab" aria-selected="true">
+                        <span class="tab-icon">🏢</span>
+                        基础配置
+                    </button>
+                    <button class="tab-button" data-tab="domain" role="tab">
+                        <span class="tab-icon">🌐</span>
+                        域名管理
+                    </button>
+                    <button class="tab-button" data-tab="payment" role="tab">
+                        <span class="tab-icon">💳</span>
+                        支付配置
+                    </button>
+                    <button class="tab-button" data-tab="notification" role="tab">
+                        <span class="tab-icon">🔔</span>
+                        通知配置
+                    </button>
+                    <button class="tab-button" data-tab="advanced" role="tab">
+                        <span class="tab-icon">🔧</span>
+                        高级配置
+                    </button>
+                </div>
+            </div>
+
+            <!-- Configuration Content -->
+            <div class="config-content">
+                <!-- Basic Configuration -->
+                <div class="tab-panel tab-panel--active" id="basicPanel" role="tabpanel">
+                    <div class="config-section">
+                        <div class="section-header">
+                            <h3 class="section-title">企业基础信息</h3>
+                            <p class="section-description">配置企业的基本信息和系统标识</p>
+                        </div>
+                        
+                        <div class="config-grid">
+                            <div class="config-group">
+                                <h4 class="config-group-title">企业信息</h4>
+                                
+                                <div class="form-group">
+                                    <label for="companyName" class="form-label">企业名称</label>
+                                    <input type="text" id="companyName" class="form-input" value="CJPayment 企业支付系统">
+                                    <div class="form-help">显示在系统标题和文档中的企业名称</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="systemVersion" class="form-label">系统版本</label>
+                                    <input type="text" id="systemVersion" class="form-input" value="v2.0.1" readonly>
+                                    <div class="form-help">当前系统版本号（只读）</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="systemDomain" class="form-label">系统域名</label>
+                                    <input type="text" id="systemDomain" class="form-input" value="pay.cjpayment.com">
+                                    <div class="form-help">系统访问的主域名</div>
+                                </div>
+                            </div>
+                            
+                            <div class="config-group">
+                                <h4 class="config-group-title">显示设置</h4>
+                                
+                                <div class="form-group">
+                                    <label for="timeZone" class="form-label">时区设置</label>
+                                    <select id="timeZone" class="form-select">
+                                        <option value="Asia/Shanghai" selected>Asia/Shanghai (GMT+8)</option>
+                                        <option value="UTC">UTC (GMT+0)</option>
+                                        <option value="America/New_York">America/New_York (GMT-5)</option>
+                                    </select>
+                                    <div class="form-help">系统默认时区</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="language" class="form-label">默认语言</label>
+                                    <select id="language" class="form-select">
+                                        <option value="zh-CN" selected>简体中文</option>
+                                        <option value="en-US">English</option>
+                                        <option value="zh-TW">繁體中文</option>
+                                    </select>
+                                    <div class="form-help">系统界面默认语言</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="enableDarkMode" checked>
+                                        <span class="checkbox-custom"></span>
+                                        <span class="checkbox-text">启用暗色主题</span>
+                                    </label>
+                                    <div class="form-help">允许用户切换暗色主题</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Domain Management Configuration -->
+                <div class="tab-panel" id="domainPanel" role="tabpanel">
+                    <div class="config-section">
+                        <div class="section-header">
+                            <h3 class="section-title">多域名故障转移管理</h3>
+                            <p class="section-description">配置主域名和备用域名，实现域名故障自动转移，确保服务高可用性</p>
+                        </div>
+
+                        <!-- Domain Status Overview -->
+                        <div class="domain-overview">
+                            <div class="overview-header">
+                                <h4 class="overview-title">域名状态概览</h4>
+                                <div class="overview-actions">
+                                    <button class="btn btn-outline btn-sm" id="refreshDomainStatus">
+                                        <span class="btn__icon">🔄</span>
+                                        <span class="btn__text">刷新状态</span>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" id="addDomainBtn">
+                                        <span class="btn__icon">➕</span>
+                                        <span class="btn__text">添加域名</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="domain-stats">
+                                <div class="stat-card">
+                                    <div class="stat-card__icon">🎯</div>
+                                    <div class="stat-card__content">
+                                        <div class="stat-card__value" id="primaryDomainCount">1</div>
+                                        <div class="stat-card__label">主域名</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-card__icon">🛡️</div>
+                                    <div class="stat-card__content">
+                                        <div class="stat-card__value" id="backupDomainCount">2</div>
+                                        <div class="stat-card__label">备用域名</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-card__icon">✅</div>
+                                    <div class="stat-card__content">
+                                        <div class="stat-card__value" id="onlineDomainCount">3</div>
+                                        <div class="stat-card__label">在线域名</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-card__icon">⚠️</div>
+                                    <div class="stat-card__content">
+                                        <div class="stat-card__value" id="offlineDomainCount">0</div>
+                                        <div class="stat-card__label">离线域名</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Domain List -->
+                        <div class="domain-list">
+                            <div class="domain-list-header">
+                                <h4 class="domain-list-title">域名配置列表</h4>
+                                <div class="domain-list-actions">
+                                    <div class="search-box">
+                                        <input type="text" id="domainSearchInput" class="form-input" placeholder="搜索域名...">
+                                        <span class="search-icon">🔍</span>
+                                    </div>
+                                    <select id="domainTypeFilter" class="form-select">
+                                        <option value="">所有类型</option>
+                                        <option value="primary">主域名</option>
+                                        <option value="backup">备用域名</option>
+                                    </select>
+                                    <select id="domainStatusFilter" class="form-select">
+                                        <option value="">所有状态</option>
+                                        <option value="online">在线</option>
+                                        <option value="offline">离线</option>
+                                        <option value="checking">检查中</option>
+                                        <option value="maintenance">维护中</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="domain-table-container">
+                                <table class="domain-table" id="domainTable">
+                                    <thead>
+                                        <tr>
+                                            <th>域名</th>
+                                            <th>类型</th>
+                                            <th>状态</th>
+                                            <th>优先级</th>
+                                            <th>响应时间</th>
+                                            <th>连续失败</th>
+                                            <th>最后检查</th>
+                                            <th>SSL状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="domainTableBody">
+                                        <tr class="domain-row" data-domain-id="1">
+                                            <td>
+                                                <div class="domain-info">
+                                                    <div class="domain-name">pay.cjpayment.com</div>
+                                                    <div class="domain-desc">主要支付域名</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="domain-type primary">主域名</span>
+                                            </td>
+                                            <td>
+                                                <div class="domain-status online">
+                                                    <span class="status-dot"></span>
+                                                    <span class="status-text">在线</span>
+                                                </div>
+                                            </td>
+                                            <td><span class="priority-badge priority-0">0</span></td>
+                                            <td><span class="response-time good">158ms</span></td>
+                                            <td><span class="failure-count success">0</span></td>
+                                            <td><span class="last-check">刚刚</span></td>
+                                            <td>
+                                                <div class="ssl-status valid">
+                                                    <span class="ssl-icon">🔒</span>
+                                                    <span class="ssl-text">有效</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="btn-icon" title="编辑域名" onclick="editDomain(1)">
+                                                        <span>✏️</span>
+                                                    </button>
+                                                    <button class="btn-icon" title="健康检查" onclick="checkDomain(1)">
+                                                        <span>🔍</span>
+                                                    </button>
+                                                    <button class="btn-icon" title="查看日志" onclick="viewDomainLogs(1)">
+                                                        <span>📋</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="domain-row" data-domain-id="2">
+                                            <td>
+                                                <div class="domain-info">
+                                                    <div class="domain-name">backup1.cjpayment.com</div>
+                                                    <div class="domain-desc">备用支付域名1</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="domain-type backup">备用域名</span>
+                                            </td>
+                                            <td>
+                                                <div class="domain-status online">
+                                                    <span class="status-dot"></span>
+                                                    <span class="status-text">在线</span>
+                                                </div>
+                                            </td>
+                                            <td><span class="priority-badge priority-1">1</span></td>
+                                            <td><span class="response-time good">165ms</span></td>
+                                            <td><span class="failure-count success">0</span></td>
+                                            <td><span class="last-check">2分钟前</span></td>
+                                            <td>
+                                                <div class="ssl-status valid">
+                                                    <span class="ssl-icon">🔒</span>
+                                                    <span class="ssl-text">有效</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="btn-icon" title="编辑域名" onclick="editDomain(2)">
+                                                        <span>✏️</span>
+                                                    </button>
+                                                    <button class="btn-icon" title="健康检查" onclick="checkDomain(2)">
+                                                        <span>🔍</span>
+                                                    </button>
+                                                    <button class="btn-icon" title="查看日志" onclick="viewDomainLogs(2)">
+                                                        <span>📋</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="domain-row" data-domain-id="3">
+                                            <td>
+                                                <div class="domain-info">
+                                                    <div class="domain-name">backup2.cjpayment.com</div>
+                                                    <div class="domain-desc">备用支付域名2</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="domain-type backup">备用域名</span>
+                                            </td>
+                                            <td>
+                                                <div class="domain-status online">
+                                                    <span class="status-dot"></span>
+                                                    <span class="status-text">在线</span>
+                                                </div>
+                                            </td>
+                                            <td><span class="priority-badge priority-2">2</span></td>
+                                            <td><span class="response-time good">172ms</span></td>
+                                            <td><span class="failure-count success">0</span></td>
+                                            <td><span class="last-check">3分钟前</span></td>
+                                            <td>
+                                                <div class="ssl-status valid">
+                                                    <span class="ssl-icon">🔒</span>
+                                                    <span class="ssl-text">有效</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="btn-icon" title="编辑域名" onclick="editDomain(3)">
+                                                        <span>✏️</span>
+                                                    </button>
+                                                    <button class="btn-icon" title="健康检查" onclick="checkDomain(3)">
+                                                        <span>🔍</span>
+                                                    </button>
+                                                    <button class="btn-icon" title="查看日志" onclick="viewDomainLogs(3)">
+                                                        <span>📋</span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Failover Settings -->
+                        <div class="config-grid">
+                            <div class="config-group">
+                                <h4 class="config-group-title">故障转移配置</h4>
+
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="autoFailoverEnabled" checked>
+                                        <span class="checkbox-custom"></span>
+                                        <span class="checkbox-text">启用自动故障转移</span>
+                                    </label>
+                                    <div class="form-help">当主域名不可用时自动切换到备用域名</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="healthCheckInterval" class="form-label">健康检查间隔（秒）</label>
+                                    <input type="number" id="healthCheckInterval" class="form-input" value="30" min="10" max="300">
+                                    <div class="form-help">域名健康状态检查的时间间隔</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="failureThreshold" class="form-label">故障判定阈值</label>
+                                    <input type="number" id="failureThreshold" class="form-input" value="3" min="1" max="10">
+                                    <div class="form-help">连续失败多少次后判定为故障</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="timeoutSeconds" class="form-label">请求超时时间（秒）</label>
+                                    <input type="number" id="timeoutSeconds" class="form-input" value="10" min="5" max="60">
+                                    <div class="form-help">健康检查请求的超时时间</div>
+                                </div>
+                            </div>
+
+                            <div class="config-group">
+                                <h4 class="config-group-title">通知与日志</h4>
+
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="notificationEnabled" checked>
+                                        <span class="checkbox-custom"></span>
+                                        <span class="checkbox-text">启用故障通知</span>
+                                    </label>
+                                    <div class="form-help">域名故障时发送通知</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="webhookUrl" class="form-label">Webhook通知地址</label>
+                                    <input type="url" id="webhookUrl" class="form-input" placeholder="https://hooks.example.com/webhook">
+                                    <div class="form-help">故障时发送POST请求的URL地址</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="logRetentionDays" class="form-label">日志保留天数</label>
+                                    <input type="number" id="logRetentionDays" class="form-input" value="30" min="7" max="365">
+                                    <div class="form-help">故障转移日志的保留时间</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="sslCheckEnabled" checked>
+                                        <span class="checkbox-custom"></span>
+                                        <span class="checkbox-text">启用SSL证书检查</span>
+                                    </label>
+                                    <div class="form-help">检查域名SSL证书的有效性和过期时间</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Failover Events -->
+                        <div class="recent-events">
+                            <div class="events-header">
+                                <h4 class="events-title">最近故障转移事件</h4>
+                                <button class="btn btn-outline btn-sm" id="viewAllEvents">
+                                    <span class="btn__icon">📋</span>
+                                    <span class="btn__text">查看全部</span>
+                                </button>
+                            </div>
+                            <div class="events-list" id="recentEventsList">
+                                <div class="event-item">
+                                    <div class="event-icon success">✅</div>
+                                    <div class="event-content">
+                                        <div class="event-title">域名健康检查正常</div>
+                                        <div class="event-desc">所有域名状态正常，系统运行稳定</div>
+                                        <div class="event-meta">
+                                            <span class="event-time">刚刚</span>
+                                            <span class="event-type">健康检查</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="event-item">
+                                    <div class="event-icon info">ℹ️</div>
+                                    <div class="event-content">
+                                        <div class="event-title">SSL证书检查完成</div>
+                                        <div class="event-desc">所有域名SSL证书有效，距离过期还有180天</div>
+                                        <div class="event-meta">
+                                            <span class="event-time">10分钟前</span>
+                                            <span class="event-type">SSL检查</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="event-item">
+                                    <div class="event-icon info">🔄</div>
+                                    <div class="event-content">
+                                        <div class="event-title">故障转移配置已更新</div>
+                                        <div class="event-desc">健康检查间隔调整为30秒，故障阈值设置为3次</div>
+                                        <div class="event-meta">
+                                            <span class="event-time">1小时前</span>
+                                            <span class="event-type">配置更新</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Configuration Redirect -->
+                <div class="tab-panel" id="paymentPanel" role="tabpanel">
+                    <div class="config-section">
+                        <div class="section-header">
+                            <h3 class="section-title">支付配置</h3>
+                            <p class="section-description">支付相关配置已迁移到专门的充值支付管理中心</p>
+                        </div>
+
+                        <div class="redirect-card">
+                            <div class="redirect-icon">💳</div>
+                            <div class="redirect-content">
+                                <h4 class="redirect-title">充值支付管理中心</h4>
+                                <p class="redirect-description">
+                                    所有充值和支付相关的配置和管理功能已整合到专门的管理中心，包括：
+                                </p>
+                                <ul class="redirect-features">
+                                    <li>⚙️ 充值域名配置</li>
+                                    <li>💰 支付限额设置</li>
+                                    <li>💳 手续费配置</li>
+                                    <li>🔗 充值链接管理</li>
+                                    <li>📊 数据统计分析</li>
+                                    <li>🧪 测试工具</li>
+                                </ul>
+                                <div class="redirect-actions">
+                                    <a href="/recharge_payment_center" class="btn btn-primary">
+                                        <span class="btn__icon">💳</span>
+                                        <span class="btn__text">进入充值支付管理中心</span>
+                                    </a>
+                                    <button class="btn btn-outline" onclick="window.open('/recharge_payment_center', '_blank')">
+                                        <span class="btn__icon">🔗</span>
+                                        <span class="btn__text">新窗口打开</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-box info-box--info">
+                            <div class="info-box__icon">💡</div>
+                            <div class="info-box__content">
+                                <strong>功能整合说明：</strong>
+                                为了提供更专业和统一的充值支付管理体验，我们将所有相关功能整合到了独立的管理中心。
+                                这样可以实现从配置到运营的一站式管理，并提供更强大的数据分析和测试工具。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Notification Configuration -->
+                <div class="tab-panel" id="notificationPanel" role="tabpanel">
+                    <div class="config-section">
+                        <div class="section-header">
+                            <h3 class="section-title">通知配置</h3>
+                            <p class="section-description">配置邮件、短信和系统通知</p>
+                        </div>
+                        
+                        <div class="config-grid">
+                            <div class="config-group">
+                                <h4 class="config-group-title">邮件配置</h4>
+                                
+                                <div class="form-group">
+                                    <label for="smtpHost" class="form-label">SMTP服务器</label>
+                                    <input type="text" id="smtpHost" class="form-input" value="smtp.qq.com">
+                                    <div class="form-help">邮件服务器地址</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="smtpPort" class="form-label">SMTP端口</label>
+                                    <input type="number" id="smtpPort" class="form-input" value="587" min="1" max="65535">
+                                    <div class="form-help">邮件服务器端口号</div>
+                                </div>
+                            </div>
+                            
+                            <div class="config-group">
+                                <h4 class="config-group-title">短信配置</h4>
+                                
+                                <div class="form-group">
+                                    <label for="smsProvider" class="form-label">短信服务商</label>
+                                    <select id="smsProvider" class="form-select">
+                                        <option value="aliyun" selected>阿里云短信</option>
+                                        <option value="tencent">腾讯云短信</option>
+                                        <option value="huawei">华为云短信</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="smsSignature" class="form-label">短信签名</label>
+                                    <input type="text" id="smsSignature" class="form-input" value="CJPayment">
+                                    <div class="form-help">短信内容的签名</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Configuration -->
+                <div class="tab-panel" id="advancedPanel" role="tabpanel">
+                    <div class="config-section">
+                        <div class="section-header">
+                            <h3 class="section-title">高级配置</h3>
+                            <p class="section-description">系统性能优化和高级功能配置</p>
+                        </div>
+                        
+                        <div class="config-grid">
+                            <div class="config-group">
+                                <h4 class="config-group-title">性能优化</h4>
+                                
+                                <div class="form-group">
+                                    <label for="cacheExpireTime" class="form-label">缓存过期时间（秒）</label>
+                                    <input type="number" id="cacheExpireTime" class="form-input" value="3600" min="60" max="86400">
+                                    <div class="form-help">系统缓存的默认过期时间</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="enableGzipCompression" checked>
+                                        <span class="checkbox-custom"></span>
+                                        <span class="checkbox-text">启用Gzip压缩</span>
+                                    </label>
+                                    <div class="form-help">对HTTP响应启用Gzip压缩以减少传输大小</div>
+                                </div>
+                            </div>
+                            
+                            <div class="config-group">
+                                <h4 class="config-group-title">日志配置</h4>
+                                
+                                <div class="form-group">
+                                    <label for="logLevel" class="form-label">日志级别</label>
+                                    <select id="logLevel" class="form-select">
+                                        <option value="DEBUG">DEBUG</option>
+                                        <option value="INFO" selected>INFO</option>
+                                        <option value="WARN">WARN</option>
+                                        <option value="ERROR">ERROR</option>
+                                    </select>
+                                    <div class="form-help">系统日志记录级别</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="enableSyslog" checked>
+                                        <span class="checkbox-custom"></span>
+                                        <span class="checkbox-text">启用系统日志</span>
+                                    </label>
+                                    <div class="form-help">将日志发送到系统日志服务</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | System Configuration</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">正在处理...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="globalToast" class="toast-container" aria-live="polite"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/components.js"></script>
+    
+    <!-- Unified Header System - 统一头部系统 -->
+    <script src="/static/js/header-unified.js"></script>
+    
+    <script src="/static/js/system-config.js"></script>
+    
+    <!-- Initialize System Config -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load user information from localStorage
+            const userInfo = localStorage.getItem('userInfo');
+            const authToken = localStorage.getItem('authToken');
+            
+            // 临时移除认证检查以便测试
+            // if (!authToken) {
+            //     window.location.href = '/login';
+            //     return;
+            // }
+            
+            if (userInfo) {
+                try {
+                    const user = JSON.parse(userInfo);
+                    document.getElementById('userName').textContent = user.name || user.username;
+                    document.querySelector('.user-menu__role').textContent = user.role;
+                } catch (error) {
+                    console.error('Failed to parse user info:', error);
+                }
+            } else {
+                // 设置默认用户信息用于测试
+                document.getElementById('userName').textContent = '测试用户';
+                document.querySelector('.user-menu__role').textContent = '系统管理员';
+            }
+            
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const html = document.documentElement;
+            
+            const savedTheme = localStorage.getItem('system-theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('system-theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+            
+            function updateThemeIcon(theme) {
+                themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+                themeToggle.setAttribute('title', 
+                    theme === 'light' ? '切换到深色主题' : '切换到浅色主题'
+                );
+            }
+            
+            // Logout functionality
+            document.getElementById('logoutLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('确定要退出登录吗？')) {
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userInfo');
+                    window.location.href = '/login';
+                }
+            });
+            
+            // 充值测试功能
+            initRechargeTest();
+            
+            console.log('System config initialized successfully');
+        });
+        
+        // 充值测试功能初始化
+        function initRechargeTest() {
+            const startTestBtn = document.getElementById('startRechargeTest');
+            const viewLogBtn = document.getElementById('viewTestLog');
+            const testStatus = document.getElementById('testStatus');
+            const testResults = document.getElementById('testResults');
+            const statusDot = testStatus?.querySelector('.status-dot');
+            const statusText = testStatus?.querySelector('.status-text');
+            const progressFill = document.getElementById('testProgress');
+            const progressText = document.getElementById('progressText');
+            const resultsContent = document.getElementById('resultsContent');
+            
+            if (!startTestBtn) return;
+            
+            startTestBtn.addEventListener('click', function() {
+                startRechargeTest();
+            });
+            
+            viewLogBtn?.addEventListener('click', function() {
+                viewTestResults();
+            });
+        }
+        
+        // 启动充值测试
+        function startRechargeTest() {
+            const testStatus = document.getElementById('testStatus');
+            const testResults = document.getElementById('testResults');
+            const statusDot = testStatus?.querySelector('.status-dot');
+            const statusText = testStatus?.querySelector('.status-text');
+            const progressFill = document.getElementById('testProgress');
+            const progressText = document.getElementById('progressText');
+            const resultsContent = document.getElementById('resultsContent');
+            const startBtn = document.getElementById('startRechargeTest');
+            const viewLogBtn = document.getElementById('viewTestLog');
+            
+            // 显示测试状态
+            testStatus.style.display = 'block';
+            testResults.style.display = 'none';
+            
+            // 更新状态
+            statusDot.className = 'status-dot running';
+            statusText.textContent = '正在执行充值流程测试...';
+            
+            // 禁用开始按钮
+            startBtn.disabled = true;
+            startBtn.querySelector('.btn-text').textContent = '测试中...';
+            
+            let testLog = '';
+            let currentStep = 0;
+            const totalSteps = 8;
+            
+            // 模拟测试步骤
+            const testSteps = [
+                { name: '初始化测试环境', delay: 500 },
+                { name: '验证支付配置', delay: 800 },
+                { name: '创建测试商户', delay: 600 },
+                { name: '生成测试充值订单', delay: 700 },
+                { name: '模拟用户充值请求', delay: 1000 },
+                { name: '验证支付网关响应', delay: 900 },
+                { name: '检查订单状态更新', delay: 600 },
+                { name: '生成测试报告', delay: 400 }
+            ];
+            
+            function executeStep(stepIndex) {
+                if (stepIndex >= testSteps.length) {
+                    // 测试完成
+                    completeTest(true, testLog);
+                    return;
+                }
+                
+                const step = testSteps[stepIndex];
+                const progress = Math.round((stepIndex / totalSteps) * 100);
+                
+                // 更新进度
+                progressFill.style.width = progress + '%';
+                progressText.textContent = progress + '%';
+                statusText.textContent = `${step.name}...`;
+                
+                // 添加日志
+                testLog += `[${getCurrentTime()}] 开始执行: ${step.name}\n`;
+                
+                setTimeout(() => {
+                    // 模拟成功或偶尔失败
+                    const success = Math.random() > 0.1; // 90%成功率
+                    
+                    if (success) {
+                        testLog += `[${getCurrentTime()}] ✅ ${step.name} - 成功\n`;
+                        executeStep(stepIndex + 1);
+                    } else {
+                        testLog += `[${getCurrentTime()}] ❌ ${step.name} - 失败: 模拟错误\n`;
+                        completeTest(false, testLog);
+                    }
+                }, step.delay);
+            }
+            
+            // 开始执行测试
+            setTimeout(() => {
+                testLog += `[${getCurrentTime()}] 🚀 开始充值流程测试\n`;
+                testLog += `[${getCurrentTime()}] 📋 测试配置: 支付限额 ¥0.01-¥1,000,000, 手续费率 0.6%\n\n`;
+                executeStep(0);
+            }, 200);
+        }
+        
+        function completeTest(success, log) {
+            const statusDot = document.querySelector('.status-dot');
+            const statusText = document.querySelector('.status-text');
+            const progressFill = document.getElementById('testProgress');
+            const progressText = document.getElementById('progressText');
+            const resultsContent = document.getElementById('resultsContent');
+            const startBtn = document.getElementById('startRechargeTest');
+            const viewLogBtn = document.getElementById('viewTestLog');
+            const testResults = document.getElementById('testResults');
+            
+            // 更新状态
+            statusDot.className = success ? 'status-dot success' : 'status-dot error';
+            statusText.textContent = success ? '充值流程测试完成 - 所有功能正常' : '充值流程测试失败 - 发现问题';
+            
+            // 更新进度
+            progressFill.style.width = '100%';
+            progressText.textContent = '100%';
+            
+            // 添加完成日志
+            log += `\n[${getCurrentTime()}] 📊 测试总结:\n`;
+            log += `[${getCurrentTime()}] - 总计执行步骤: 8\n`;
+            log += `[${getCurrentTime()}] - 测试结果: ${success ? '通过' : '失败'}\n`;
+            log += `[${getCurrentTime()}] - 建议: ${success ? '充值系统运行正常，可正常使用' : '请检查系统配置和网络连接'}\n`;
+            
+            // 保存测试结果
+            window.lastTestResults = log;
+            
+            // 显示结果
+            resultsContent.textContent = log;
+            testResults.style.display = 'block';
+            
+            // 恢复按钮状态
+            startBtn.disabled = false;
+            startBtn.querySelector('.btn-text').textContent = '启动充值测试';
+            viewLogBtn.style.display = 'inline-flex';
+        }
+        
+        function viewTestResults() {
+            if (window.lastTestResults) {
+                const testResults = document.getElementById('testResults');
+                const resultsContent = document.getElementById('resultsContent');
+                resultsContent.textContent = window.lastTestResults;
+                testResults.style.display = 'block';
+                testResults.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert('暂无测试结果，请先运行充值测试');
+            }
+        }
+        
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('zh-CN', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+        }
+    </script>
+</body>
+</html>

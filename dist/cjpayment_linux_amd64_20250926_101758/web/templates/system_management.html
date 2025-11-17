@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>系统管理 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- CJPayment 统一设计系统 v3.0 -->
+    <link rel="stylesheet" href="/static/css/cjpayment-unified.css">
+    
+    <!-- 统一主题和布局系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- 系统管理专用布局优化 -->
+    <link rel="stylesheet" href="/static/css/system-management-layout.css">
+    
+    <!-- Header Dropdown 修复 - 解决通知和用户菜单默认打开状态问题 -->
+    <link rel="stylesheet" href="/static/css/header-dropdown-fix.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="CJPayment企业内部支付管理系统-系统管理">
+    <meta name="keywords" content="系统管理,配置管理,权限管理">
+</head>
+<body class="page-system">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link nav__link--active" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">3</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>系统通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部标记为已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">系统维护通知</div>
+                                    <div class="notification-text">系统将在今晚22:00-24:00进行例行维护</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">2小时前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">新商户待审核</div>
+                                    <div class="notification-text">有2个新商户申请待审核</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">10分钟前</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">数据报表已生成</div>
+                                    <div class="notification-text">本月财务报表已生成完成</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">1小时前</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name" id="userName">管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown" role="menu">
+                        <a href="/profile" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="/permission_management" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">🔐</span>
+                            权限管理
+                        </a>
+                        <a href="/help" class="user-menu__item" role="menuitem">
+                            <span class="user-menu__item-icon">❓</span>
+                            帮助中心
+                        </a>
+                        <div class="user-menu__divider"></div>
+                        <a href="#" class="user-menu__item user-menu__item--danger" role="menuitem" id="logoutLink">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="nav__toggle" id="mobileMenuToggle" aria-label="切换导航菜单">
+                    <span class="nav__toggle-line"></span>
+                    <span class="nav__toggle-line"></span>
+                    <span class="nav__toggle-line"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="system-management">
+            <!-- Enhanced Page Header -->
+            <div class="page__header">
+                <div class="page__title">
+                    <h1>系统管理</h1>
+                    <p class="page__subtitle">系统配置、权限管理和安全设置</p>
+                </div>
+                
+                <div class="page__actions">
+                    <button class="btn btn-outline" id="refreshSystem" title="刷新系统状态">
+                        <span class="btn__icon">🔄</span>
+                        <span class="btn__text">刷新状态</span>
+                    </button>
+                    <button class="btn btn-primary" id="systemBackup" title="创建系统备份">
+                        <span class="btn__icon">💾</span>
+                        <span class="btn__text">创建备份</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- System Management Cards -->
+            <div class="system-cards">
+                <div class="card-grid card-grid--system-management">
+                    <!-- User & Permission Management Center -->
+                    <div class="card card--interactive card--featured" id="userPermissionCenter">
+                        <div class="card__header">
+                            <div class="card__icon">🏛️</div>
+                            <h3 class="card__title">用户与权限管理中心</h3>
+                            <div class="card__badge">统一管理</div>
+                        </div>
+                        <div class="card__body">
+                            <p class="card__desc">集成用户账户管理、角色权限配置和访问控制策略的一站式管理中心</p>
+                            <div class="card__stats card__stats--extended">
+                                <div class="stat-item">
+                                    <span class="stat-label">👥 活跃用户</span>
+                                    <span class="stat-value">25</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🎭 角色数量</span>
+                                    <span class="stat-value">6</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">🔐 权限点</span>
+                                    <span class="stat-value">144</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">📊 权限级别</span>
+                                    <span class="stat-value">5</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <div class="card__actions card__actions--triple">
+                                <button class="btn btn-outline" onclick="window.location.href='/user_management'" title="管理用户账户、状态和基本信息">
+                                    <span class="btn__icon">👥</span>
+                                    <span class="btn__text">用户管理</span>
+                                </button>
+                                <button class="btn btn-primary" onclick="window.location.href='/permission_management?tab=roles'" title="管理角色和权限分配">
+                                    <span class="btn__icon">🎭</span>
+                                    <span class="btn__text">角色管理</span>
+                                </button>
+                                <button class="btn btn-secondary" onclick="window.location.href='/permission_management?tab=matrix'" title="配置权限矩阵和高级策略">
+                                    <span class="btn__icon">🔐</span>
+                                    <span class="btn__text">权限配置</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Configuration Card -->
+                    <div class="card card--interactive" id="systemConfigCard">
+                        <div class="card__header">
+                            <div class="card__icon">⚙️</div>
+                            <h3 class="card__title">系统配置</h3>
+                        </div>
+                        <div class="card__body">
+                            <p class="card__desc">系统参数配置、功能开关和业务规则设置</p>
+                            <div class="card__stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">配置项</span>
+                                    <span class="stat-value">156</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">环境</span>
+                                    <span class="stat-value">生产</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn-outline btn--full">
+                                <span class="btn__icon">⚙️</span>
+                                系统配置
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Security Management Card -->
+                    <div class="card card--interactive" id="securityCard">
+                        <div class="card__header">
+                            <div class="card__icon">🛡️</div>
+                            <h3 class="card__title">安全中心</h3>
+                        </div>
+                        <div class="card__body">
+                            <p class="card__desc">安全策略、访问日志和风险监控管理</p>
+                            <div class="card__stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">安全级别</span>
+                                    <span class="stat-value status-success">高</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">风险事件</span>
+                                    <span class="stat-value">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn-outline btn--full">
+                                <span class="btn__icon">🛡️</span>
+                                安全设置
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recharge Payment Center Card -->
+                    <div class="card card--interactive" id="rechargePaymentCard">
+                        <div class="card__header">
+                            <div class="card__icon">💳</div>
+                            <h3 class="card__title">充值支付管理中心</h3>
+                        </div>
+                        <div class="card__body">
+                            <p class="card__desc">统一管理充值配置、链接管理、数据统计和测试工具</p>
+                            <div class="card__stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">活跃链接</span>
+                                    <span class="stat-value status-success">156</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">今日充值</span>
+                                    <span class="stat-value">¥284万</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn-outline btn--full">
+                                <span class="btn__icon">💳</span>
+                                进入管理中心
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- API Management Card -->
+                    <div class="card card--interactive" id="apiManagementCard">
+                        <div class="card__header">
+                            <div class="card__icon">🔌</div>
+                            <h3 class="card__title">API管理</h3>
+                        </div>
+                        <div class="card__body">
+                            <p class="card__desc">API接口管理、密钥配置和调用监控</p>
+                            <div class="card__stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">API数量</span>
+                                    <span class="stat-value">45</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">今日调用</span>
+                                    <span class="stat-value">12.5K</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn-outline btn--full">
+                                <span class="btn__icon">🔌</span>
+                                API管理
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Monitoring Card -->
+                    <div class="card card--interactive" id="monitoringCard">
+                        <div class="card__header">
+                            <div class="card__icon">📊</div>
+                            <h3 class="card__title">监控告警</h3>
+                        </div>
+                        <div class="card__body">
+                            <p class="card__desc">系统性能监控、告警规则和通知管理</p>
+                            <div class="card__stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">监控项</span>
+                                    <span class="stat-value">28</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">告警规则</span>
+                                    <span class="stat-value">12</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn-outline btn--full">
+                                <span class="btn__icon">📊</span>
+                                监控中心
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Backup & Recovery Card -->
+                    <div class="card card--interactive" id="backupCard">
+                        <div class="card__header">
+                            <div class="card__icon">💾</div>
+                            <h3 class="card__title">备份恢复</h3>
+                        </div>
+                        <div class="card__body">
+                            <p class="card__desc">数据备份、灾难恢复和版本管理</p>
+                            <div class="card__stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">最近备份</span>
+                                    <span class="stat-value">2小时前</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">备份大小</span>
+                                    <span class="stat-value">2.3GB</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card__footer">
+                            <button class="btn btn-outline btn--full">
+                                <span class="btn__icon">💾</span>
+                                备份管理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Status Section -->
+            <div class="system-status-section">
+                <div class="card card--data">
+                    <div class="card__header">
+                        <h3 class="card__title">系统运行状态</h3>
+                        <div class="card__actions">
+                            <span class="status-timestamp" id="statusTimestamp">实时更新</span>
+                            <button class="btn btn--sm btn-outline" id="refreshStatus">
+                                <span class="btn__icon">🔄</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <div class="system-status-grid">
+                            <div class="status-group">
+                                <h4 class="status-group-title">核心服务</h4>
+                                <div class="status-items">
+                                    <div class="status-item">
+                                        <div class="status-indicator status-indicator--success"></div>
+                                        <div class="status-content">
+                                            <div class="status-label">应用服务器</div>
+                                            <div class="status-value">正常运行 (99.9%)</div>
+                                        </div>
+                                    </div>
+                                    <div class="status-item">
+                                        <div class="status-indicator status-indicator--success"></div>
+                                        <div class="status-content">
+                                            <div class="status-label">数据库服务</div>
+                                            <div class="status-value">正常 (5ms响应)</div>
+                                        </div>
+                                    </div>
+                                    <div class="status-item">
+                                        <div class="status-indicator status-indicator--warning"></div>
+                                        <div class="status-content">
+                                            <div class="status-label">缓存服务</div>
+                                            <div class="status-value">轻微延迟 (12ms)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="status-group">
+                                <h4 class="status-group-title">外部服务</h4>
+                                <div class="status-items">
+                                    <div class="status-item">
+                                        <div class="status-indicator status-indicator--success"></div>
+                                        <div class="status-content">
+                                            <div class="status-label">支付网关</div>
+                                            <div class="status-value">正常 (98.5%)</div>
+                                        </div>
+                                    </div>
+                                    <div class="status-item">
+                                        <div class="status-indicator status-indicator--success"></div>
+                                        <div class="status-content">
+                                            <div class="status-label">短信服务</div>
+                                            <div class="status-value">正常 (99.2%)</div>
+                                        </div>
+                                    </div>
+                                    <div class="status-item">
+                                        <div class="status-indicator status-indicator--success"></div>
+                                        <div class="status-content">
+                                            <div class="status-label">邮件服务</div>
+                                            <div class="status-value">正常 (99.8%)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="status-group">
+                                <h4 class="status-group-title">系统资源</h4>
+                                <div class="status-items">
+                                    <div class="status-item">
+                                        <div class="status-indicator status-indicator--success"></div>
+                                        <div class="status-content">
+                                            <div class="status-label">CPU使用率</div>
+                                            <div class="status-value">15.2%</div>
+                                        </div>
+                                    </div>
+                                    <div class="status-item">
+                                        <div class="status-indicator status-indicator--warning"></div>
+                                        <div class="status-content">
+                                            <div class="status-label">内存使用率</div>
+                                            <div class="status-value">78.5%</div>
+                                        </div>
+                                    </div>
+                                    <div class="status-item">
+                                        <div class="status-indicator status-indicator--success"></div>
+                                        <div class="status-content">
+                                            <div class="status-label">磁盘使用率</div>
+                                            <div class="status-value">45.3%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent System Logs -->
+            <div class="system-logs-section">
+                <div class="card card--data">
+                    <div class="card__header">
+                        <h3 class="card__title">系统操作日志</h3>
+                        <div class="card__actions">
+                            <select class="form-select form-select--sm" id="logFilter">
+                                <option value="all">全部日志</option>
+                                <option value="info">信息</option>
+                                <option value="warning">警告</option>
+                                <option value="error">错误</option>
+                            </select>
+                            <button class="btn btn--sm btn-outline" id="exportLogs">
+                                <span class="btn__icon">📊</span>
+                                导出
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <div class="logs-container" id="systemLogs">
+                            <div class="log-item log-item--info">
+                                <div class="log-time">2025-08-16 10:45:23</div>
+                                <div class="log-level log-level--info">INFO</div>
+                                <div class="log-content">系统配置已成功更新：支付限额调整为50000元</div>
+                                <div class="log-user">操作人：系统管理员</div>
+                            </div>
+                            <div class="log-item log-item--warning">
+                                <div class="log-time">2025-08-16 10:40:15</div>
+                                <div class="log-level log-level--warning">WARN</div>
+                                <div class="log-content">缓存服务响应时间较慢，建议检查Redis配置</div>
+                                <div class="log-user">系统监控</div>
+                            </div>
+                            <div class="log-item log-item--info">
+                                <div class="log-time">2025-08-16 10:35:42</div>
+                                <div class="log-level log-level--info">INFO</div>
+                                <div class="log-content">用户权限更新：新增财务审核员角色</div>
+                                <div class="log-user">操作人：系统管理员</div>
+                            </div>
+                            <div class="log-item log-item--info">
+                                <div class="log-time">2025-08-16 10:30:18</div>
+                                <div class="log-level log-level--info">INFO</div>
+                                <div class="log-content">系统备份任务完成：backup_20250816_103000.sql</div>
+                                <div class="log-user">自动任务</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | System Management</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">正在加载系统信息...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="globalToast" class="toast-container" aria-live="polite"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/components.js"></script>
+    
+    <!-- 统一头部组件管理 -->
+    <script src="/static/js/header-unified.js"></script>
+    
+    <!-- 统一通知数据管理系统 -->
+    <script src="/static/js/notification-data-unified.js"></script>    
+    <!-- User Analytics & Feedback System -->
+    <script src="/static/js/user-feedback-analytics.js"></script>
+    <script src="/static/js/analytics-init.js"></script>
+    
+    <!-- Mobile Utilities -->
+    <script src="/static/js/mobile-utilities.js"></script>
+    
+    <!-- Interaction Enhancements -->
+    <script src="/static/js/interaction-enhancements.js"></script>
+    
+    <!-- Initialize System Management -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load user information from localStorage
+            const userInfo = localStorage.getItem('userInfo');
+            const authToken = localStorage.getItem('authToken');
+            
+            // 临时移除认证检查以便测试
+            // if (!authToken) {
+            //     // Redirect to login if no token
+            //     window.location.href = '/login';
+            //     return;
+            // }
+            
+            if (userInfo) {
+                try {
+                    const user = JSON.parse(userInfo);
+                    document.getElementById('userName').textContent = user.name || user.username;
+                    document.querySelector('.user-menu__role').textContent = user.role;
+                } catch (error) {
+                    console.error('Failed to parse user info:', error);
+                }
+            } else {
+                // 设置默认用户信息用于测试
+                document.getElementById('userName').textContent = '测试用户';
+                document.querySelector('.user-menu__role').textContent = '系统管理员';
+            }
+            
+            // 初始化统一头部组件
+            window.headerUnified = new HeaderUnified();
+            
+            // System management functionality
+            document.getElementById('refreshSystem').addEventListener('click', function() {
+                // Show loading
+                document.getElementById('globalLoading').style.display = 'flex';
+                
+                // Simulate refresh
+                setTimeout(() => {
+                    document.getElementById('globalLoading').style.display = 'none';
+                    if (window.CJComponents && window.CJComponents.showToast) {
+                        window.CJComponents.showToast('系统状态已刷新', '', 'success');
+                    }
+                }, 1500);
+            });
+            
+            document.getElementById('systemBackup').addEventListener('click', function() {
+                if (confirm('确定要创建系统备份吗？这可能需要几分钟时间。')) {
+                    document.getElementById('globalLoading').style.display = 'flex';
+                    
+                    // Simulate backup
+                    setTimeout(() => {
+                        document.getElementById('globalLoading').style.display = 'none';
+                        if (window.CJComponents && window.CJComponents.showToast) {
+                            window.CJComponents.showToast('系统备份已开始创建', '', 'success');
+                        }
+                    }, 2000);
+                }
+            });
+            
+            // Module card navigation
+            
+            document.getElementById('systemConfigCard').addEventListener('click', function() {
+                window.location.href = '/system_config';
+            });
+
+            document.getElementById('securityCard').addEventListener('click', function() {
+                window.location.href = '/security_center';
+            });
+
+            document.getElementById('rechargePaymentCard').addEventListener('click', function() {
+                window.location.href = '/recharge_payment_center';
+            });
+            
+            document.getElementById('apiManagementCard').addEventListener('click', function() {
+                window.location.href = '/api_management';
+            });
+            
+            document.getElementById('monitoringCard').addEventListener('click', function() {
+                window.location.href = '/monitoring_alerts';
+            });
+            
+            document.getElementById('backupCard').addEventListener('click', function() {
+                window.location.href = '/backup_management';
+            });
+            
+            console.log('System management initialized successfully');
+        });
+        
+        // Recharge Link Management Functions
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.select();
+                element.setSelectionRange(0, 99999); // For mobile devices
+                document.execCommand('copy');
+                
+                // Show success message
+                if (window.CJComponents && window.CJComponents.showToast) {
+                    window.CJComponents.showToast('链接已复制到剪贴板', '', 'success');
+                } else {
+                    alert('链接已复制到剪贴板');
+                }
+            }
+        }
+        
+    </script>
+
+    <!-- Additional Styles -->
+    <style>
+        .card__actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .card__actions .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* Enhanced Card Styles for Management Center */
+        .card--featured {
+            border: 2px solid var(--primary, #3B82F6);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+            position: relative;
+        }
+
+        .card__badge {
+            position: absolute;
+            top: -8px;
+            right: 12px;
+            background: var(--primary, #3B82F6);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .card__stats--extended {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .card__stats--extended .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--bg-secondary, #F8FAFC);
+            border-radius: 8px;
+            border: 1px solid var(--border-color, #E2E8F0);
+        }
+
+        .card__stats--extended .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary, #64748B);
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        .card__stats--extended .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary, #3B82F6);
+        }
+
+        .card__actions--triple {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .card__actions--triple .btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.85rem;
+            min-height: 4rem;
+        }
+
+        .card__actions--triple .btn__icon {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .card__actions--triple .btn__text {
+            font-weight: 500;
+        }
+
+        .btn-secondary {
+            background: var(--secondary, #6B7280);
+            color: white;
+            border: 1px solid var(--secondary, #6B7280);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-dark, #4B5563);
+            border-color: var(--secondary-dark, #4B5563);
+            transform: translateY(-1px);
+        }
+
+        .system-cards {
+            margin: 2rem 0;
+        }
+
+        .card--interactive {
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+        
+        .card--interactive:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card__icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card__stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+            padding: 1rem 0;
+            border-top: 1px solid var(--dashboard-border-light);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--dashboard-text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-value {
+            display: block;
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+        }
+        
+        .status-success {
+            color: var(--status-success);
+        }
+        
+        /* Recharge Link Management Styles */
+        .card__config {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--dashboard-border-light);
+        }
+        
+        .config-item {
+            margin-bottom: 1rem;
+        }
+        
+        .config-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .config-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--dashboard-text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .config-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .config-input {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--dashboard-border-light);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            background: var(--dashboard-bg-secondary);
+            color: var(--dashboard-text-primary);
+            transition: border-color 0.2s ease;
+        }
+        
+        .config-input:focus {
+            outline: none;
+            border-color: var(--primary-500, #3b82f6);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .btn-copy {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 1px solid var(--dashboard-border-light);
+            border-radius: 0.375rem;
+            background: var(--dashboard-bg-primary);
+            color: var(--dashboard-text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-copy:hover {
+            background: var(--primary-500, #3b82f6);
+            border-color: var(--primary-500, #3b82f6);
+            color: white;
+        }
+        
+        .btn-copy .btn__icon {
+            font-size: 1rem;
+        }
+        
+        .system-status-section,
+        .system-logs-section {
+            margin: 2rem 0;
+        }
+        
+        .system-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .status-group-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dashboard-text-primary);
+        }
+        
+        .status-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .logs-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .log-item {
+            display: grid;
+            grid-template-columns: auto auto 1fr auto;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            background: var(--dashboard-bg-secondary);
+        }
+        
+        .log-time {
+            font-size: 0.75rem;
+            color: var(--dashboard-text-secondary);
+            white-space: nowrap;
+        }
+        
+        .log-level {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        
+        .log-level--info {
+            background: rgba(59, 130, 246, 0.1);
+            color: rgb(59, 130, 246);
+        }
+        
+        .log-level--warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: rgb(245, 158, 11);
+        }
+        
+        .log-level--error {
+            background: rgba(239, 68, 68, 0.1);
+            color: rgb(239, 68, 68);
+        }
+        
+        .log-content {
+            font-size: 0.875rem;
+            color: var(--dashboard-text-primary);
+        }
+        
+        .log-user {
+            font-size: 0.75rem;
+            color: var(--dashboard-text-secondary);
+            white-space: nowrap;
+        }
+        
+        @media (max-width: 768px) {
+            .system-status-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .log-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</body>
+</html>

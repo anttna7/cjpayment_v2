@@ -1,0 +1,482 @@
+/* ==========================================================================
+   Polling Group Configuration Styles
+   轮询组配置样式
+   ========================================================================== */
+
+/* ==========================================================================
+   Base Configuration Section
+   ========================================================================== */
+
+.polling-config-section {
+  margin: var(--space-6, 1.5rem) 0;
+  padding: var(--space-4, 1rem);
+  border: 1px solid var(--color-border-secondary, #e5e5e5);
+  border-radius: var(--radius-base, 0.25rem);
+  background: var(--color-bg-secondary, #f9fafb);
+}
+
+.form-help-text {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-text-tertiary, #737373);
+  margin: var(--space-2, 0.5rem) 0;
+  line-height: var(--line-height-normal, 1.5);
+}
+
+/* ==========================================================================
+   Sequence Configuration
+   ========================================================================== */
+
+.sequence-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  margin: var(--space-4, 1rem) 0;
+  min-height: 60px;
+  padding: var(--space-3, 0.75rem);
+  border: 2px dashed var(--color-border-secondary, #e5e5e5);
+  border-radius: var(--radius-base, 0.25rem);
+  background: var(--color-bg-surface, #ffffff);
+}
+
+.sequence-order-list:empty::before {
+  content: "选择账户后将在此显示轮询顺序，可拖拽调整";
+  color: var(--color-text-tertiary, #737373);
+  font-style: italic;
+  text-align: center;
+  display: block;
+  padding: var(--space-4, 1rem);
+}
+
+.sequence-account-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-3, 0.75rem);
+  border: 1px solid var(--color-border-secondary, #e5e5e5);
+  border-radius: var(--radius-base, 0.25rem);
+  background: var(--color-bg-surface, #ffffff);
+  cursor: move;
+  transition: all var(--duration-200, 200ms);
+}
+
+.sequence-account-item:hover {
+  background: var(--color-bg-secondary, #f9fafb);
+  border-color: var(--color-border-primary, #a3a3a3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sequence-account-item.dragging {
+  opacity: 0.6;
+  transform: rotate(2deg);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.drag-handle {
+  color: var(--color-text-tertiary, #737373);
+  font-size: var(--font-size-lg, 1.125rem);
+  cursor: grab;
+  user-select: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.sequence-number {
+  background: var(--color-interactive-primary, #0ea5e9);
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Amount Range Configuration
+   ========================================================================== */
+
+.amount-ranges-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 0.75rem);
+  margin: var(--space-4, 1rem) 0;
+  min-height: 60px;
+}
+
+.amount-ranges-list:empty::before {
+  content: "点击下方按钮添加金额区间规则";
+  color: var(--color-text-tertiary, #737373);
+  font-style: italic;
+  text-align: center;
+  display: block;
+  padding: var(--space-4, 1rem);
+  border: 2px dashed var(--color-border-secondary, #e5e5e5);
+  border-radius: var(--radius-base, 0.25rem);
+  background: var(--color-bg-surface, #ffffff);
+}
+
+.amount-range-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: var(--space-3, 0.75rem);
+  align-items: end;
+  padding: var(--space-4, 1rem);
+  border: 1px solid var(--color-border-secondary, #e5e5e5);
+  border-radius: var(--radius-base, 0.25rem);
+  background: var(--color-bg-surface, #ffffff);
+}
+
+.amount-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+}
+
+.amount-input-group label {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-text-secondary, #404040);
+  font-weight: var(--font-weight-medium, 500);
+}
+
+.amount-input {
+  text-align: right;
+}
+
+/* ==========================================================================
+   Weight Configuration
+   ========================================================================== */
+
+.weight-accounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 0.75rem);
+  margin: var(--space-4, 1rem) 0;
+  min-height: 60px;
+}
+
+.weight-accounts-list:empty::before {
+  content: "选择账户后将在此显示权重配置";
+  color: var(--color-text-tertiary, #737373);
+  font-style: italic;
+  text-align: center;
+  display: block;
+  padding: var(--space-4, 1rem);
+  border: 2px dashed var(--color-border-secondary, #e5e5e5);
+  border-radius: var(--radius-base, 0.25rem);
+  background: var(--color-bg-surface, #ffffff);
+}
+
+.weight-account-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-4, 1rem);
+  border: 1px solid var(--color-border-secondary, #e5e5e5);
+  border-radius: var(--radius-base, 0.25rem);
+  background: var(--color-bg-surface, #ffffff);
+}
+
+.weight-input-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  flex-shrink: 0;
+}
+
+.weight-input {
+  width: 80px;
+  text-align: center;
+}
+
+.weight-percentage {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-text-secondary, #404040);
+  min-width: 50px;
+  font-weight: var(--font-weight-medium, 500);
+}
+
+.weight-summary {
+  padding: var(--space-3, 0.75rem) var(--space-4, 1rem);
+  background: var(--color-bg-secondary, #f9fafb);
+  border-radius: var(--radius-base, 0.25rem);
+  text-align: center;
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-text-secondary, #404040);
+  border: 1px solid var(--color-border-secondary, #e5e5e5);
+}
+
+/* ==========================================================================
+   Priority Configuration
+   ========================================================================== */
+
+.priority-accounts-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 0.75rem);
+  margin: var(--space-4, 1rem) 0;
+  min-height: 60px;
+}
+
+.priority-accounts-list:empty::before {
+  content: "选择账户后将在此显示优先级配置";
+  color: var(--color-text-tertiary, #737373);
+  font-style: italic;
+  text-align: center;
+  display: block;
+  padding: var(--space-4, 1rem);
+  border: 2px dashed var(--color-border-secondary, #e5e5e5);
+  border-radius: var(--radius-base, 0.25rem);
+  background: var(--color-bg-surface, #ffffff);
+}
+
+.priority-account-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3, 0.75rem);
+  padding: var(--space-4, 1rem);
+  border: 1px solid var(--color-border-secondary, #e5e5e5);
+  border-radius: var(--radius-base, 0.25rem);
+  background: var(--color-bg-surface, #ffffff);
+}
+
+.priority-badge {
+  background: var(--color-interactive-primary, #0ea5e9);
+  color: white;
+  border-radius: var(--radius-base, 0.25rem);
+  padding: var(--space-1, 0.25rem) var(--space-2, 0.5rem);
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-medium, 500);
+  min-width: 70px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.priority-input-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  flex-shrink: 0;
+}
+
+.priority-input {
+  width: 60px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Account Info Section
+   ========================================================================== */
+
+.account-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+}
+
+.account-name {
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--color-text-primary, #171717);
+  font-size: var(--font-size-sm, 0.875rem);
+}
+
+.account-details {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--color-text-tertiary, #737373);
+}
+
+/* ==========================================================================
+   Action Buttons
+   ========================================================================== */
+
+.remove-account-btn,
+.remove-range-btn {
+  background: var(--color-status-error, #ef4444);
+  color: white;
+  border: none;
+  border-radius: var(--radius-base, 0.25rem);
+  padding: var(--space-2, 0.5rem);
+  cursor: pointer;
+  transition: background-color var(--duration-200, 200ms);
+  font-size: var(--font-size-sm, 0.875rem);
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.remove-account-btn:hover,
+.remove-range-btn:hover {
+  background: var(--color-status-error-dark, #dc2626);
+}
+
+.btn--small {
+  padding: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
+  font-size: var(--font-size-sm, 0.875rem);
+  height: auto;
+}
+
+/* ==========================================================================
+   Account Selector Enhanced
+   ========================================================================== */
+
+.account-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 0.5rem);
+  margin: var(--space-3, 0.75rem) 0;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border-secondary, #e5e5e5);
+  border-radius: var(--radius-base, 0.25rem);
+  padding: var(--space-3, 0.75rem);
+  background: var(--color-bg-surface, #ffffff);
+}
+
+.account-selector-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  padding: var(--space-2, 0.5rem);
+  border-radius: var(--radius-base, 0.25rem);
+  transition: background-color var(--duration-200, 200ms);
+}
+
+.account-selector-item:hover {
+  background: var(--color-bg-secondary, #f9fafb);
+}
+
+.account-selector-checkbox {
+  flex-shrink: 0;
+}
+
+.account-label {
+  flex: 1;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1, 0.25rem);
+}
+
+/* ==========================================================================
+   Form Section Title
+   ========================================================================== */
+
+.form-section-title {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-text-primary, #171717);
+  margin: 0 0 var(--space-3, 0.75rem) 0;
+  padding-bottom: var(--space-2, 0.5rem);
+  border-bottom: 2px solid var(--color-interactive-primary, #0ea5e9);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+/* ==========================================================================
+   Mobile Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .amount-range-item {
+    grid-template-columns: 1fr;
+    gap: var(--space-2, 0.5rem);
+  }
+  
+  .weight-account-item,
+  .priority-account-item,
+  .sequence-account-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2, 0.5rem);
+  }
+  
+  .weight-input-group,
+  .priority-input-group {
+    justify-content: space-between;
+  }
+  
+  .polling-config-section {
+    padding: var(--space-3, 0.75rem);
+  }
+}
+
+/* ==========================================================================
+   Animation and Transitions
+   ========================================================================== */
+
+.polling-config-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.polling-config-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all var(--duration-300, 300ms) var(--ease-out, ease-out);
+}
+
+.polling-config-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.polling-config-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all var(--duration-300, 300ms) var(--ease-out, ease-out);
+}
+
+/* ==========================================================================
+   Validation States
+   ========================================================================== */
+
+.amount-input.error,
+.weight-input.error,
+.priority-input.error {
+  border-color: var(--color-status-error, #ef4444);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.amount-input.success,
+.weight-input.success,
+.priority-input.success {
+  border-color: var(--color-status-success, #22c55e);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+/* ==========================================================================
+   Dark Theme Support
+   ========================================================================== */
+
+[data-theme="dark"] .polling-config-section {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border-secondary);
+}
+
+[data-theme="dark"] .sequence-account-item,
+[data-theme="dark"] .amount-range-item,
+[data-theme="dark"] .weight-account-item,
+[data-theme="dark"] .priority-account-item {
+  background: var(--color-bg-surface);
+  border-color: var(--color-border-secondary);
+}
+
+[data-theme="dark"] .sequence-account-item:hover,
+[data-theme="dark"] .account-selector-item:hover {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border-primary);
+}
+
+[data-theme="dark"] .weight-summary {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border-secondary);
+}

@@ -1,0 +1,231 @@
+# Alerting Rules for CJPayment System
+groups:
+  - name: cjpayment.database
+    rules:
+      - alert: DatabaseConnectionPoolExhausted
+        expr: database_connections_open >= database_max_open_connections * 0.9
+        for: 2m
+        labels:
+          severity: critical
+          service: cjpayment
+          component: database
+        annotations:
+          summary: "Database connection pool nearly exhausted"
+          description: "Database connection pool is at {{ $value }} connections, which is {{ $value | humanizePercentage }} of the maximum"
+
+      - alert: DatabaseHighQueryLatency
+        expr: database_query_duration_seconds{quantile="0.95"} > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: database
+        annotations:
+          summary: "High database query latency"
+          description: "95th percentile query latency is {{ $value }}s"
+
+      - alert: DatabaseConnectionFailure
+        expr: up{job="cjpayment-database"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: cjpayment
+          component: database
+        annotations:
+          summary: "Database connection failure"
+          description: "Cannot connect to database"
+
+      - alert: DatabaseSlowQueries
+        expr: increase(database_slow_queries_total[5m]) > 10
+        for: 2m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: database
+        annotations:
+          summary: "High number of slow database queries"
+          description: "{{ $value }} slow queries detected in the last 5 minutes"
+
+  - name: cjpayment.redis
+    rules:
+      - alert: RedisConnectionFailure
+        expr: up{job="cjpayment-redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: cjpayment
+          component: redis
+        annotations:
+          summary: "Redis connection failure"
+          description: "Cannot connect to Redis"
+
+      - alert: RedisHighMemoryUsage
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: redis
+        annotations:
+          summary: "Redis high memory usage"
+          description: "Redis memory usage is {{ $value | humanizePercentage }}"
+
+      - alert: RedisLowHitRate
+        expr: redis_cache_hit_rate < 0.8
+        for: 10m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: redis
+        annotations:
+          summary: "Redis low cache hit rate"
+          description: "Redis cache hit rate is {{ $value | humanizePercentage }}"
+
+      - alert: RedisHighConnectionCount
+        expr: redis_connected_clients > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: redis
+        annotations:
+          summary: "Redis high connection count"
+          description: "Redis has {{ $value }} connected clients"
+
+  - name: cjpayment.application
+    rules:
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: api
+        annotations:
+          summary: "High HTTP error rate"
+          description: "HTTP error rate is {{ $value | humanizePercentage }}"
+
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: api
+        annotations:
+          summary: "High HTTP response time"
+          description: "95th percentile response time is {{ $value }}s"
+
+      - alert: ApplicationDown
+        expr: up{job="cjpayment-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: cjpayment
+          component: api
+        annotations:
+          summary: "Application is down"
+          description: "CJPayment application is not responding"
+
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes / 1024 / 1024 / 1024 > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: system
+        annotations:
+          summary: "High memory usage"
+          description: "Application memory usage is {{ $value }}GB"
+
+      - alert: HighGoroutineCount
+        expr: go_goroutines > 1000
+        for: 10m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: system
+        annotations:
+          summary: "High goroutine count"
+          description: "Application has {{ $value }} goroutines"
+
+  - name: cjpayment.business
+    rules:
+      - alert: HighRechargeFailureRate
+        expr: rate(recharge_orders_total{status="failed"}[5m]) / rate(recharge_orders_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: business
+        annotations:
+          summary: "High recharge failure rate"
+          description: "Recharge failure rate is {{ $value | humanizePercentage }}"
+
+      - alert: WebhookDeliveryFailure
+        expr: rate(webhook_notifications_total{status="failed"}[5m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: webhook
+        annotations:
+          summary: "High webhook delivery failure rate"
+          description: "{{ $value }} webhook deliveries failed per second"
+
+      - alert: AccountLimitExceeded
+        expr: increase(account_limit_exceeded_total[1h]) > 50
+        for: 0m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: business
+        annotations:
+          summary: "High number of account limit exceeded events"
+          description: "{{ $value }} account limit exceeded events in the last hour"
+
+      - alert: UnusualRechargeVolume
+        expr: rate(recharge_amount_total[1h]) > 1000000  # 1M per hour
+        for: 0m
+        labels:
+          severity: info
+          service: cjpayment
+          component: business
+        annotations:
+          summary: "Unusual recharge volume detected"
+          description: "Recharge volume is {{ $value }} per hour"
+
+  - name: cjpayment.security
+    rules:
+      - alert: HighFailedLoginAttempts
+        expr: increase(auth_failed_attempts_total[5m]) > 20
+        for: 0m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: security
+        annotations:
+          summary: "High number of failed login attempts"
+          description: "{{ $value }} failed login attempts in the last 5 minutes"
+
+      - alert: SuspiciousActivity
+        expr: increase(security_violations_total[5m]) > 5
+        for: 0m
+        labels:
+          severity: critical
+          service: cjpayment
+          component: security
+        annotations:
+          summary: "Suspicious security activity detected"
+          description: "{{ $value }} security violations in the last 5 minutes"
+
+      - alert: UnauthorizedAccess
+        expr: increase(http_requests_total{status="401"}[5m]) > 50
+        for: 2m
+        labels:
+          severity: warning
+          service: cjpayment
+          component: security
+        annotations:
+          summary: "High number of unauthorized access attempts"
+          description: "{{ $value }} unauthorized access attempts in the last 5 minutes"

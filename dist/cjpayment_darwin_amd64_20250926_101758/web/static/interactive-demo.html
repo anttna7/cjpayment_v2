@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CJPayment新界面交互式演示</title>
+    <link rel="stylesheet" href="/static/css/design-tokens.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <style>
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-6);
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: var(--space-12);
+        }
+
+        .demo-title {
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--primary-600);
+            margin-bottom: var(--space-4);
+        }
+
+        .demo-subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--neutral-600);
+            margin-bottom: var(--space-8);
+        }
+
+        .demo-progress {
+            background: var(--neutral-200);
+            border-radius: var(--radius-full);
+            height: 8px;
+            margin-bottom: var(--space-6);
+        }
+
+        .demo-progress-bar {
+            background: var(--primary-500);
+            height: 100%;
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .demo-step {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .demo-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .demo-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-8);
+            margin-bottom: var(--space-8);
+        }
+
+        .demo-explanation {
+            background: var(--neutral-50);
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--primary-500);
+        }
+
+        .demo-explanation h3 {
+            color: var(--primary-700);
+            margin-bottom: var(--space-4);
+        }
+
+        .demo-explanation p {
+            color: var(--neutral-700);
+            line-height: var(--line-height-relaxed);
+            margin-bottom: var(--space-3);
+        }
+
+        .demo-explanation ul {
+            color: var(--neutral-600);
+            padding-left: var(--space-6);
+        }
+
+        .demo-explanation li {
+            margin-bottom: var(--space-2);
+        }
+
+        .demo-interactive {
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .demo-highlight {
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        .demo-highlight::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid var(--primary-400);
+            border-radius: var(--radius-lg);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .demo-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--space-8);
+        }
+
+        .demo-nav {
+            display: flex;
+            gap: var(--space-3);
+        }
+
+        .demo-step-indicator {
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .demo-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--neutral-300);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .demo-dot.active {
+            background: var(--primary-500);
+            transform: scale(1.2);
+        }
+
+        .demo-tooltip {
+            position: absolute;
+            background: var(--neutral-900);
+            color: white;
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+            white-space: nowrap;
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+
+        .demo-tooltip.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .demo-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: var(--neutral-900);
+        }
+
+        .demo-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-4);
+        }
+
+        .demo-stat-card {
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            color: white;
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .demo-stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .demo-stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .demo-stat-value {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--space-2);
+        }
+
+        .demo-stat-label {
+            font-size: var(--font-size-sm);
+            opacity: 0.9;
+        }
+
+        .demo-theme-switcher {
+            display: flex;
+            gap: var(--space-2);
+            padding: var(--space-2);
+            background: var(--neutral-100);
+            border-radius: var(--radius-full);
+            margin-bottom: var(--space-4);
+        }
+
+        .demo-theme-option {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-sm);
+        }
+
+        .demo-theme-option.active {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .demo-form-group {
+            margin-bottom: var(--space-4);
+        }
+
+        .demo-form-label {
+            display: block;
+            margin-bottom: var(--space-2);
+            font-weight: var(--font-weight-medium);
+            color: var(--neutral-700);
+        }
+
+        .demo-form-input {
+            width: 100%;
+            padding: var(--space-3);
+            border: 1px solid var(--neutral-300);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+        }
+
+        .demo-form-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .demo-form-input.valid {
+            border-color: var(--success-500);
+        }
+
+        .demo-form-input.invalid {
+            border-color: var(--error-500);
+        }
+
+        .demo-feedback {
+            margin-top: var(--space-1);
+            font-size: var(--font-size-xs);
+        }
+
+        .demo-feedback.valid {
+            color: var(--success-600);
+        }
+
+        .demo-feedback.invalid {
+            color: var(--error-600);
+        }
+
+        .demo-completion {
+            text-align: center;
+            padding: var(--space-12);
+        }
+
+        .demo-completion-icon {
+            font-size: 4rem;
+            color: var(--success-500);
+            margin-bottom: var(--space-4);
+        }
+
+        .demo-completion-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--neutral-900);
+            margin-bottom: var(--space-4);
+        }
+
+        .demo-completion-text {
+            color: var(--neutral-600);
+            margin-bottom: var(--space-6);
+        }
+
+        @media (max-width: 768px) {
+            .demo-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-controls {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1 class="demo-title">CJPayment新界面交互式演示</h1>
+            <p class="demo-subtitle">通过实际操作了解新界面的特点和功能</p>
+            <div class="demo-progress">
+                <div class="demo-progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <!-- 步骤1：界面概览 -->
+        <div class="demo-step active" id="step1">
+            <div class="demo-content">
+                <div class="demo-explanation">
+                    <h3>🎯 界面概览</h3>
+                    <p>欢迎体验CJPayment的全新界面！新界面采用现代化的卡片式设计，让信息展示更加直观清晰。</p>
+                    <p><strong>主要改进：</strong></p>
+                    <ul>
+                        <li>现代化的设计语言</li>
+                        <li>卡片式信息组织</li>
+                        <li>响应式布局设计</li>
+                        <li>丰富的交互反馈</li>
+                    </ul>
+                    <p>右侧是新界面的预览，您可以看到整体的布局结构。</p>
+                </div>
+                <div class="demo-interactive">
+                    <div class="demo-theme-switcher">
+                        <div class="demo-theme-option active" data-theme="light" title="明亮主题">☀️</div>
+                        <div class="demo-theme-option" data-theme="dark" title="暗黑主题">🌙</div>
+                        <div class="demo-theme-option" data-theme="contrast" title="高对比度">🔍</div>
+                    </div>
+                    <div class="demo-card-grid">
+                        <div class="demo-stat-card demo-highlight">
+                            <div class="demo-stat-value">¥1,234,567</div>
+                            <div class="demo-stat-label">今日交易额</div>
+                        </div>
+                        <div class="demo-stat-card">
+                            <div class="demo-stat-value">2,468</div>
+                            <div class="demo-stat-label">今日订单数</div>
+                        </div>
+                        <div class="demo-stat-card">
+                            <div class="demo-stat-value">98.5%</div>
+                            <div class="demo-stat-label">成功率</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 步骤2：主题切换 -->
+        <div class="demo-step" id="step2">
+            <div class="demo-content">
+                <div class="demo-explanation">
+                    <h3>🎨 主题切换</h3>
+                    <p>新界面支持多种主题，您可以根据个人喜好和使用环境选择合适的主题。</p>
+                    <p><strong>可用主题：</strong></p>
+                    <ul>
+                        <li><strong>明亮主题</strong>：适合日间办公使用</li>
+                        <li><strong>暗黑主题</strong>：适合夜间或低光环境</li>
+                        <li><strong>高对比度</strong>：适合视觉辅助需求</li>
+                    </ul>
+                    <p>请点击右侧的主题切换器体验不同主题的效果。</p>
+                </div>
+                <div class="demo-interactive">
+                    <div class="demo-theme-switcher demo-highlight">
+                        <div class="demo-theme-option active" data-theme="light" title="明亮主题">☀️</div>
+                        <div class="demo-theme-option" data-theme="dark" title="暗黑主题">🌙</div>
+                        <div class="demo-theme-option" data-theme="contrast" title="高对比度">🔍</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>主题预览</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>这是一个示例卡片，展示当前主题的效果。</p>
+                            <button class="btn btn-primary">主要按钮</button>
+                            <button class="btn btn-secondary">次要按钮</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 步骤3：卡片交互 -->
+        <div class="demo-step" id="step3">
+            <div class="demo-content">
+                <div class="demo-explanation">
+                    <h3>📋 卡片交互</h3>
+                    <p>卡片是新界面的核心元素，提供丰富的交互功能。</p>
+                    <p><strong>交互特点：</strong></p>
+                    <ul>
+                        <li>悬停时有上浮效果</li>
+                        <li>点击可查看详情</li>
+                        <li>支持展开/折叠</li>
+                        <li>内置快捷操作</li>
+                    </ul>
+                    <p>请将鼠标悬停在右侧的卡片上，体验交互效果。</p>
+                </div>
+                <div class="demo-interactive">
+                    <div class="card demo-highlight" style="cursor: pointer;">
+                        <div class="card-header">
+                            <h4>订单 #12345</h4>
+                            <span class="badge badge-success">已完成</span>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>金额：</strong>¥1,000.00</p>
+                            <p><strong>时间：</strong>2024-01-15 14:30</p>
+                            <p><strong>商户：</strong>示例商户</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-sm btn-primary">查看详情</button>
+                            <button class="btn btn-sm btn-outline">编辑</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 步骤4：表单体验 -->
+        <div class="demo-step" id="step4">
+            <div class="demo-content">
+                <div class="demo-explanation">
+                    <h3>📝 智能表单</h3>
+                    <p>新的表单系统提供实时验证和智能提示功能。</p>
+                    <p><strong>表单特点：</strong></p>
+                    <ul>
+                        <li>实时输入验证</li>
+                        <li>智能错误提示</li>
+                        <li>自动保存草稿</li>
+                        <li>清晰的视觉反馈</li>
+                    </ul>
+                    <p>请在右侧的表单中输入内容，体验实时验证功能。</p>
+                </div>
+                <div class="demo-interactive">
+                    <form class="demo-highlight">
+                        <div class="demo-form-group">
+                            <label class="demo-form-label">用户名</label>
+                            <input type="text" class="demo-form-input" id="username" placeholder="请输入用户名">
+                            <div class="demo-feedback" id="usernameFeedback"></div>
+                        </div>
+                        <div class="demo-form-group">
+                            <label class="demo-form-label">邮箱地址</label>
+                            <input type="email" class="demo-form-input" id="email" placeholder="请输入邮箱地址">
+                            <div class="demo-feedback" id="emailFeedback"></div>
+                        </div>
+                        <div class="demo-form-group">
+                            <label class="demo-form-label">金额</label>
+                            <input type="number" class="demo-form-input" id="amount" placeholder="请输入金额">
+                            <div class="demo-feedback" id="amountFeedback"></div>
+                        </div>
+                        <button type="button" class="btn btn-primary">提交表单</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 步骤5：响应式设计 -->
+        <div class="demo-step" id="step5">
+            <div class="demo-content">
+                <div class="demo-explanation">
+                    <h3>📱 响应式设计</h3>
+                    <p>新界面完美适配各种设备屏幕尺寸。</p>
+                    <p><strong>适配特点：</strong></p>
+                    <ul>
+                        <li>桌面端：多列布局</li>
+                        <li>平板端：两列布局</li>
+                        <li>移动端：单列布局</li>
+                        <li>触摸友好的交互</li>
+                    </ul>
+                    <p>右侧展示了不同屏幕尺寸下的布局效果。</p>
+                </div>
+                <div class="demo-interactive">
+                    <div class="demo-responsive-preview">
+                        <div class="demo-device-frame demo-highlight" id="deviceFrame">
+                            <div class="demo-device-content">
+                                <div class="demo-card-grid" id="responsiveGrid">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5>卡片 1</h5>
+                                            <p>响应式内容</p>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5>卡片 2</h5>
+                                            <p>响应式内容</p>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5>卡片 3</h5>
+                                            <p>响应式内容</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="demo-device-controls">
+                            <button class="btn btn-sm" data-device="desktop">桌面端</button>
+                            <button class="btn btn-sm" data-device="tablet">平板端</button>
+                            <button class="btn btn-sm" data-device="mobile">移动端</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 完成页面 -->
+        <div class="demo-step" id="completion">
+            <div class="demo-completion">
+                <div class="demo-completion-icon">🎉</div>
+                <h2 class="demo-completion-title">演示完成！</h2>
+                <p class="demo-completion-text">
+                    恭喜您完成了新界面的交互式演示！现在您已经了解了新界面的主要特点和功能。
+                </p>
+                <div class="demo-nav">
+                    <button class="btn btn-primary" onclick="restartDemo()">重新开始</button>
+                    <button class="btn btn-outline" onclick="window.open('/docs/UI_USER_GUIDE.md')">查看完整指南</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-controls">
+            <div class="demo-nav">
+                <button class="btn btn-outline" id="prevBtn" onclick="previousStep()" disabled>上一步</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">下一步</button>
+            </div>
+            <div class="demo-step-indicator" id="stepIndicator">
+                <div class="demo-dot active" data-step="1"></div>
+                <div class="demo-dot" data-step="2"></div>
+                <div class="demo-dot" data-step="3"></div>
+                <div class="demo-dot" data-step="4"></div>
+                <div class="demo-dot" data-step="5"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-tooltip" id="tooltip"></div>
+
+    <script src="/static/js/interactive-demo.js"></script>
+</body>
+</html>

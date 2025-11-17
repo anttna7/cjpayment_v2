@@ -1,0 +1,571 @@
+/**
+ * 统一表格样式系统
+ * 为所有页面提供一致的表格设计和交互体验
+ * 支持：固定列滚动、文本截断处理、tooltip、复制功能、导出功能
+ */
+
+/* =========================
+   通用表格容器
+   ========================= */
+
+.unified-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.unified-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    position: relative;
+}
+
+/* 动态设置最小宽度，根据列数计算 */
+.unified-table.columns-10 { min-width: 1400px; }
+.unified-table.columns-12 { min-width: 1680px; }
+.unified-table.columns-14 { min-width: 1960px; }
+.unified-table.columns-15 { min-width: 2100px; }
+
+/* =========================
+   表头统一样式
+   ========================= */
+
+.unified-table-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    border-bottom: 2px solid #cbd5e1;
+}
+
+.unified-table-header-row {
+    height: 56px;
+}
+
+.unified-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    color: #374151;
+    border-right: 1px solid #d1d5db;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    user-select: none;
+    position: relative;
+}
+
+.unified-table th:last-child {
+    border-right: none;
+}
+
+/* 表头图标和文字 */
+.th-content-enhanced {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.th-icon {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+/* =========================
+   固定列样式（左右两侧）
+   ========================= */
+
+/* 左侧固定序号列 */
+.col-serial.col-fixed-left {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 101 !important;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0) !important;
+    border-right: 2px solid #3b82f6 !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1) !important;
+    min-width: 80px !important;
+    width: 80px !important;
+}
+
+/* 右侧固定操作列 */
+.col-actions.col-fixed-right {
+    position: sticky !important;
+    right: 0 !important;
+    z-index: 101 !important;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0) !important;
+    border-left: 2px solid #3b82f6 !important;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1) !important;
+    min-width: 160px !important;
+    width: 160px !important;
+}
+
+/* =========================
+   表格数据行统一样式
+   ========================= */
+
+.unified-table tbody tr {
+    height: 60px;
+    border-bottom: 1px solid #f3f4f6;
+    transition: all 0.2s ease;
+}
+
+.unified-table tbody tr:hover {
+    background: #f8fafc;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.unified-table tbody tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+.unified-table tbody tr:nth-child(even):hover {
+    background: #f1f5f9;
+}
+
+.unified-table td {
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #374151;
+    border-right: 1px solid #f3f4f6;
+    vertical-align: middle;
+    position: relative;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+.unified-table td:last-child {
+    border-right: none;
+}
+
+/* =========================
+   固定列单元格样式
+   ========================= */
+
+/* 序号列单元格 */
+.col-serial-cell {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 99 !important;
+    background: #ffffff !important;
+    border-right: 2px solid #3b82f6 !important;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1) !important;
+    text-align: center;
+    font-weight: 600;
+    color: #3b82f6;
+}
+
+/* 操作列单元格 */
+.col-actions-cell {
+    position: sticky !important;
+    right: 0 !important;
+    z-index: 99 !important;
+    background: #ffffff !important;
+    border-left: 2px solid #3b82f6 !important;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1) !important;
+    text-align: center;
+    padding: 8px 12px;
+}
+
+/* 固定列hover状态背景处理 */
+.unified-table tbody tr:hover .col-serial-cell {
+    background: #f8fafc !important;
+}
+
+.unified-table tbody tr:hover .col-actions-cell {
+    background: #f8fafc !important;
+}
+
+.unified-table tbody tr:nth-child(even) .col-serial-cell {
+    background: #f9fafb !important;
+}
+
+.unified-table tbody tr:nth-child(even) .col-actions-cell {
+    background: #f9fafb !important;
+}
+
+.unified-table tbody tr:nth-child(even):hover .col-serial-cell {
+    background: #f1f5f9 !important;
+}
+
+.unified-table tbody tr:nth-child(even):hover .col-actions-cell {
+    background: #f1f5f9 !important;
+}
+
+/* =========================
+   内容交互和截断处理
+   ========================= */
+
+/* 可复制单元格 */
+.copyable-cell {
+    cursor: pointer;
+    position: relative;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.copyable-cell:hover {
+    background: rgba(59, 130, 246, 0.05);
+    border-radius: 4px;
+}
+
+/* 可展开单元格 */
+.expandable-cell {
+    cursor: pointer;
+    position: relative;
+    max-width: 250px;
+}
+
+.expandable-cell.expanded {
+    white-space: normal;
+    word-break: break-all;
+    max-width: none;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    padding: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Tooltip样式 */
+.cell-tooltip {
+    position: fixed;
+    background: #1f2937;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    z-index: 10000;
+    max-width: 300px;
+    word-wrap: break-word;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
+}
+
+.cell-tooltip.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.cell-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #1f2937;
+}
+
+/* =========================
+   隐私保护样式
+   ========================= */
+
+.privacy-protected {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+    background: rgba(59, 130, 246, 0.05);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.privacy-protected:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* =========================
+   操作按钮样式
+   ========================= */
+
+.action-link {
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 2px;
+}
+
+.action-view {
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.action-view:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.action-arrived {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.action-arrived:hover {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.action-not-arrived {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.action-not-arrived:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.action-edit {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.action-edit:hover {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.action-delete {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.action-delete:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* =========================
+   状态标签样式
+   ========================= */
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.status-failed {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.status-inactive {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+    border: 1px solid rgba(107, 114, 128, 0.2);
+}
+
+/* =========================
+   表格视图切换
+   ========================= */
+
+.table-view-switcher {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.view-switch-btn {
+    padding: 8px 16px;
+    border: 1px solid #d1d5db;
+    background: white;
+    color: #6b7280;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.view-switch-btn:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+}
+
+.view-switch-btn.active {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+/* =========================
+   加载状态
+   ========================= */
+
+.table-loading {
+    text-align: center;
+    padding: 40px;
+    color: #6b7280;
+}
+
+.loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =========================
+   导出按钮区域
+   ========================= */
+
+.export-section {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.export-btn {
+    background: var(--success-500, #22c55e);
+    color: white;
+    border: 1px solid var(--success-500, #22c55e);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.export-btn:hover {
+    background: var(--success-600, #16a34a);
+    border-color: var(--success-600, #16a34a);
+}
+
+.export-btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.25);
+    background: var(--success-600, #16a34a);
+    border-color: var(--success-600, #16a34a);
+}
+
+.export-btn:active {
+    background: var(--success-700, #15803d);
+    border-color: var(--success-700, #15803d);
+}
+
+/* =========================
+   响应式适配
+   ========================= */
+
+@media (max-width: 768px) {
+    .unified-table-wrapper {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+    
+    .unified-table th,
+    .unified-table td {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .unified-table tbody tr {
+        height: 48px;
+    }
+    
+    .col-serial.col-fixed-left,
+    .col-actions.col-fixed-right {
+        min-width: 60px !important;
+        width: 60px !important;
+    }
+    
+    .copyable-cell,
+    .expandable-cell {
+        max-width: 120px;
+    }
+    
+    .export-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .export-btn {
+        justify-content: center;
+    }
+}
+
+/* =========================
+   打印样式
+   ========================= */
+
+@media print {
+    .unified-table-wrapper {
+        overflow: visible;
+        border: none;
+        box-shadow: none;
+    }
+    
+    .unified-table {
+        min-width: auto !important;
+    }
+    
+    .col-serial.col-fixed-left,
+    .col-actions.col-fixed-right {
+        position: static !important;
+        box-shadow: none !important;
+    }
+    
+    .action-link {
+        display: none;
+    }
+    
+    .export-section {
+        display: none;
+    }
+}

@@ -1,0 +1,246 @@
+/**
+ * Chrome图标风格系统管理 - 完全复刻Chrome浏览器图标设计
+ * 基于Google Chrome图标的简洁、现代、扁平化设计理念
+ */
+
+/* 系统管理主容器 */
+.system-management {
+    padding: var(--spacing-xl, 32px);
+    background: #f8f9fa;
+    min-height: calc(100vh - 80px);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* 页面标题区域 */
+.page-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl, 32px);
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 400;
+    color: #202124;
+    margin: 0 0 8px;
+    letter-spacing: -0.5px;
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: #5f6368;
+    margin: 0 0 32px;
+}
+
+/* Chrome风格管理卡片网格 */
+.management-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Chrome图标风格管理卡片 */
+.chrome-management-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    transition: all 0.2s ease;
+    border: 1px solid #e8eaed;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    cursor: pointer;
+}
+
+.chrome-management-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 6px 20px rgba(0,0,0,0.08);
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Chrome图标核心设计 - 管理功能版 */
+.chrome-management-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 16px;
+    position: relative;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* 用户管理 - 蓝色为主导 */
+.chrome-management-card.users .chrome-management-icon {
+    background: 
+        /* 中心蓝色圆 */
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 35%, transparent 35%),
+        /* 蓝色扇形 (顶部) */
+        conic-gradient(from -30deg, #4285f4 0deg, #4285f4 120deg, transparent 120deg),
+        /* 绿色扇形 (右下) */
+        conic-gradient(from 90deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        /* 黄色扇形 (左下) */
+        conic-gradient(from 210deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        #ffffff;
+}
+
+/* 系统配置 - 四色平衡 */
+.chrome-management-card.config .chrome-management-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 35%, transparent 35%),
+        conic-gradient(from 0deg, #4285f4 0deg, #4285f4 90deg, #34a853 90deg, #34a853 180deg, #fbbc05 180deg, #fbbc05 270deg, #ea4335 270deg, #ea4335 360deg),
+        #ffffff;
+}
+
+/* 安全中心 - 红色为主导 */
+.chrome-management-card.security .chrome-management-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 35%, transparent 35%),
+        conic-gradient(from -30deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        conic-gradient(from 90deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        conic-gradient(from 210deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        #ffffff;
+}
+
+/* API管理 - 绿色为主导 */
+.chrome-management-card.api .chrome-management-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 35%, transparent 35%),
+        conic-gradient(from -30deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        conic-gradient(from 90deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        conic-gradient(from 210deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        #ffffff;
+}
+
+/* 监控告警 - 黄色为主导 */
+.chrome-management-card.monitoring .chrome-management-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 35%, transparent 35%),
+        conic-gradient(from -30deg, #fbbc05 0deg, #fbbc05 120deg, transparent 120deg),
+        conic-gradient(from 90deg, #ea4335 0deg, #ea4335 120deg, transparent 120deg),
+        conic-gradient(from 210deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        #ffffff;
+}
+
+/* 数据备份 - 灰色调 */
+.chrome-management-card.backup .chrome-management-icon {
+    background: 
+        radial-gradient(circle at center, #4285f4 0%, #4285f4 35%, transparent 35%),
+        conic-gradient(from -30deg, #9aa0a6 0deg, #9aa0a6 120deg, transparent 120deg),
+        conic-gradient(from 90deg, #34a853 0deg, #34a853 120deg, transparent 120deg),
+        conic-gradient(from 210deg, #5f6368 0deg, #5f6368 120deg, transparent 120deg),
+        #ffffff;
+}
+
+/* Chrome图标的白色分割线 */
+.chrome-management-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: 
+        /* 三条放射状分割线 */
+        conic-gradient(from 0deg, transparent 0deg, transparent 58deg, #ffffff 59deg, #ffffff 61deg, transparent 62deg, transparent 118deg, #ffffff 119deg, #ffffff 121deg, transparent 122deg, transparent 178deg, #ffffff 179deg, #ffffff 181deg, transparent 182deg, transparent 238deg, #ffffff 239deg, #ffffff 241deg, transparent 242deg, transparent 298deg, #ffffff 299deg, #ffffff 301deg, transparent 302deg, transparent 358deg, #ffffff 359deg, #ffffff 361deg, transparent 362deg),
+        /* 中心圆的边框 */
+        radial-gradient(circle at center, transparent 33%, #ffffff 34%, #ffffff 36%, transparent 37%);
+    pointer-events: none;
+}
+
+/* 管理卡片标题 */
+.chrome-management-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #202124;
+    margin: 0 0 8px;
+}
+
+/* 管理卡片描述 */
+.chrome-management-description {
+    font-size: 14px;
+    color: #5f6368;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* 管理卡片状态指示器 */
+.chrome-status-indicator {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34a853;
+}
+
+.chrome-status-indicator.warning {
+    background: #fbbc05;
+}
+
+.chrome-status-indicator.error {
+    background: #ea4335;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .management-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .system-management {
+        padding: var(--spacing-lg, 24px);
+    }
+    
+    .management-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .chrome-management-icon {
+        width: 64px;
+        height: 64px;
+        font-size: 20px;
+    }
+    
+    .chrome-management-card {
+        padding: 20px;
+    }
+}
+
+/* 功能区域样式 */
+.management-section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 32px;
+    border: 1px solid #e8eaed;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #202124;
+    margin: 0 0 16px;
+}

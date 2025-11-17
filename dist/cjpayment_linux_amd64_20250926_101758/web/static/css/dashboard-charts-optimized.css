@@ -1,0 +1,353 @@
+/**
+ * 仪表板图表模块布局优化
+ * 解决交易趋势分析和交易状态分布空间利用率低的问题
+ * 实现60/40黄金分割布局，提升视觉效果和数据展示效果
+ */
+
+/* ==========================================================================
+   双图表行布局优化 - 直接复用报表页面的完整样式
+   ========================================================================== */
+
+/* 复用报表页面的charts-container样式 */
+.dashboard__chart-row--dual {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: auto auto !important;
+    gap: 1.5rem !important;
+    margin-bottom: 2rem !important;
+}
+
+/* 复用报表页面的chart-card--expanded样式 */
+.card--chart-trend,
+.card--chart-status {
+    background: var(--color-bg-surface, #ffffff) !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid var(--color-border-light, #e5e7eb) !important;
+}
+
+/* ==========================================================================
+   图表容器优化
+   ========================================================================== */
+
+/* 复用报表页面的chart-container--expanded样式 */
+.chart-container--trend,
+.chart-container--status {
+    min-height: 400px !important;
+    position: relative !important;
+}
+
+/* 复用报表页面的chart-canvas样式 */
+.chart-container--trend canvas,
+.chart-container--status canvas {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 350px !important;
+}
+
+.chart-container--trend canvas,
+.chart-container--status canvas {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+/* ==========================================================================
+   加载和空状态优化
+   ========================================================================== */
+
+.chart-loading {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+    color: var(--color-text-secondary, #6b7280) !important;
+    font-size: 0.875rem !important;
+}
+
+.loading-spinner {
+    width: 32px !important;
+    height: 32px !important;
+    border: 3px solid var(--color-border-light, #e5e7eb) !important;
+    border-top: 3px solid var(--color-primary, #3b82f6) !important;
+    border-radius: 50% !important;
+    animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.chart-empty {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    text-align: center !important;
+    color: var(--color-text-tertiary, #9ca3af) !important;
+}
+
+.chart-empty .empty-icon {
+    font-size: 3rem !important;
+    margin-bottom: 12px !important;
+    opacity: 0.5 !important;
+}
+
+.chart-empty p {
+    margin: 0 !important;
+    font-size: 0.875rem !important;
+}
+
+/* ==========================================================================
+   状态统计概览
+   ========================================================================== */
+
+.status-summary {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 16px !important;
+    background: linear-gradient(135deg, #fafbfc 0%, #f1f5f9 100%) !important;
+    border-radius: 8px !important;
+    margin-top: 8px !important;
+}
+
+.status-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex: 1 !important;
+    text-align: center !important;
+}
+
+.status-color {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    display: block !important;
+}
+
+.status-color--success {
+    background: #10b981 !important;
+}
+
+.status-color--pending {
+    background: #f59e0b !important;
+}
+
+.status-color--failed {
+    background: #ef4444 !important;
+}
+
+.status-label {
+    font-size: 0.75rem !important;
+    color: var(--color-text-secondary, #6b7280) !important;
+    font-weight: 500 !important;
+}
+
+.status-value {
+    font-size: 1.125rem !important;
+    font-weight: 700 !important;
+    color: var(--color-text-primary, #111827) !important;
+}
+
+/* ==========================================================================
+   卡片头部和主体优化 - 复用报表页面样式
+   ========================================================================== */
+
+/* 复用报表页面的chart-header样式 */
+.card--chart-trend .card__header,
+.card--chart-status .card__header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 1rem !important;
+    border-bottom: 1px solid var(--color-border-light, #e5e7eb) !important;
+}
+
+/* 复用报表页面的chart-title样式 */
+.card--chart-trend .card__title,
+.card--chart-status .card__title {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: var(--color-text-primary, #1a1a1a) !important;
+    margin: 0 !important;
+}
+
+/* 复用报表页面的chart-subtitle样式 */
+.card--chart-trend .card__subtitle,
+.card--chart-status .card__subtitle {
+    font-size: 0.875rem !important;
+    color: var(--color-text-secondary, #6c757d) !important;
+    margin: 0.25rem 0 0 0 !important;
+}
+
+.card__body--chart {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* ==========================================================================
+   响应式设计
+   ========================================================================== */
+
+@media (max-width: 1400px) {
+    .card--chart-trend {
+        flex: 0 0 58% !important;
+        max-width: 58% !important;
+    }
+    
+    .card--chart-status {
+        flex: 0 0 40% !important;
+        max-width: 40% !important;
+    }
+    
+    .chart-container--trend {
+        height: 240px !important;
+        padding: 12px !important;
+    }
+    
+    .chart-container--status {
+        height: 180px !important;
+        padding: 12px !important;
+    }
+}
+
+/* 复用报表页面的响应式布局样式 */
+@media (max-width: 1200px) {
+    .dashboard__chart-row--dual {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem !important;
+    }
+    
+    .chart-container--trend,
+    .chart-container--status {
+        min-height: 350px !important;
+    }
+    
+    .chart-container--trend canvas,
+    .chart-container--status canvas {
+        min-height: 300px !important;
+    }
+    
+    .status-summary {
+        padding: 12px !important;
+    }
+    
+    .status-item {
+        gap: 4px !important;
+    }
+    
+    .status-value {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard__chart-row--dual {
+        gap: 1rem !important;
+    }
+    
+    .card--chart-trend,
+    .card--chart-status {
+        padding: 1.25rem !important;
+    }
+    
+    .chart-container--trend,
+    .chart-container--status {
+        min-height: 300px !important;
+    }
+    
+    .chart-container--trend canvas,
+    .chart-container--status canvas {
+        min-height: 250px !important;
+    }
+    
+    .status-summary {
+        padding: 8px !important;
+    }
+    
+    .status-label {
+        font-size: 0.7rem !important;
+    }
+    
+    .status-value {
+        font-size: 0.875rem !important;
+    }
+}
+
+/* ==========================================================================
+   图表数据显示增强
+   ========================================================================== */
+
+/* 趋势图悬浮提示优化 */
+.chart-container--trend .chartjs-tooltip {
+    background: rgba(0, 0, 0, 0.8) !important;
+    border-radius: 6px !important;
+    color: white !important;
+    padding: 8px 12px !important;
+    font-size: 0.75rem !important;
+}
+
+/* 状态图中央文字显示 */
+.chart-container--status {
+    position: relative !important;
+}
+
+.chart-container--status::after {
+    content: attr(data-center-text) !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: var(--color-text-primary, #111827) !important;
+    pointer-events: none !important;
+    z-index: 10 !important;
+}
+
+/* 图表标题增强 */
+.card--chart-trend .card__title::before {
+    content: '📈' !important;
+    margin-right: 8px !important;
+    font-size: 1.2rem !important;
+}
+
+.card--chart-status .card__title::before {
+    content: '📊' !important;
+    margin-right: 8px !important;
+    font-size: 1.2rem !important;
+}
+
+/* 图表卡片悬停增强效果 */
+.card--chart-trend:hover,
+.card--chart-status:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    transform: translateY(-2px) !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+/* ==========================================================================
+   性能优化
+   ========================================================================== */
+
+.chart-container--trend,
+.chart-container--status {
+    will-change: contents !important;
+    contain: layout style paint !important;
+}
+
+.status-summary {
+    will-change: contents !important;
+    contain: layout style !important;
+}

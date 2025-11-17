@@ -1,0 +1,264 @@
+{
+  "timestamp": "2025-08-28T17:05:07.809Z",
+  "url": "http://127.0.0.1:8091/accounts",
+  "tests": {
+    "tableStructure": {
+      "passed": true,
+      "actualColumns": 10,
+      "expectedColumns": 10,
+      "columnHeaders": [
+        "序号",
+        "收款账号",
+        "账户名称",
+        "账户机构",
+        "收款类型",
+        "日限额",
+        "单笔限额",
+        "账户状态",
+        "备注信息",
+        "操作"
+      ],
+      "tableSelector": "table"
+    },
+    "headerColorConsistency": {
+      "passed": true,
+      "totalColumns": 10,
+      "uniqueBackgroundColors": [
+        "rgba(0, 0, 0, 0)"
+      ],
+      "firstColumnBackground": "rgba(0, 0, 0, 0)",
+      "lastColumnBackground": "rgba(0, 0, 0, 0)",
+      "isConsistent": true,
+      "isFirstLastConsistent": true,
+      "headerDetails": [
+        {
+          "column": 1,
+          "text": "序号",
+          "styles": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "color": "rgb(55, 65, 81)",
+            "borderColor": "rgb(55, 65, 81) rgb(55, 65, 81) rgb(226, 232, 240)",
+            "fontSize": "12.8px",
+            "fontWeight": "600",
+            "textAlign": "left",
+            "padding": "14px 16px",
+            "position": "sticky",
+            "zIndex": "11"
+          },
+          "boundingBox": {
+            "x": 293,
+            "y": 569.796875,
+            "width": 68.03125,
+            "height": 49.46875
+          }
+        },
+        {
+          "column": 2,
+          "text": "收款账号",
+          "styles": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "color": "rgb(55, 65, 81)",
+            "borderColor": "rgb(55, 65, 81) rgb(55, 65, 81) rgb(226, 232, 240)",
+            "fontSize": "12.8px",
+            "fontWeight": "600",
+            "textAlign": "left",
+            "padding": "14px 16px",
+            "position": "sticky",
+            "zIndex": "10"
+          },
+          "boundingBox": {
+            "x": 361.03125,
+            "y": 569.796875,
+            "width": 219.359375,
+            "height": 49.46875
+          }
+        },
+        {
+          "column": 3,
+          "text": "账户名称",
+          "styles": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "color": "rgb(55, 65, 81)",
+            "borderColor": "rgb(55, 65, 81) rgb(55, 65, 81) rgb(226, 232, 240)",
+            "fontSize": "12.8px",
+            "fontWeight": "600",
+            "textAlign": "left",
+            "padding": "14px 16px",
+            "position": "sticky",
+            "zIndex": "10"
+          },
+          "boundingBox": {
+            "x": 580.390625,
+            "y": 569.796875,
+            "width": 163.46875,
+            "height": 49.46875
+          }
+        },
+        {
+          "column": 4,
+          "text": "账户机构",
+          "styles": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "color": "rgb(55, 65, 81)",
+            "borderColor": "rgb(55, 65, 81) rgb(55, 65, 81) rgb(226, 232, 240)",
+            "fontSize": "12.8px",
+            "fontWeight": "600",
+            "textAlign": "left",
+            "padding": "14px 16px",
+            "position": "sticky",
+            "zIndex": "10"
+          },
+          "boundingBox": {
+            "x": 743.859375,
+            "y": 569.796875,
+            "width": 98.9140625,
+            "height": 49.46875
+          }
+        },
+        {
+          "column": 5,
+          "text": "收款类型",
+          "styles": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "color": "rgb(55, 65, 81)",
+            "borderColor": "rgb(55, 65, 81) rgb(55, 65, 81) rgb(226, 232, 240)",
+            "fontSize": "12.8px",
+            "fontWeight": "600",
+            "textAlign": "left",
+            "padding": "14px 16px",
+            "position": "sticky",
+            "zIndex": "10"
+          },
+          "boundingBox": {
+            "x": 842.7734375,
+            "y": 569.796875,
+            "width": 98.9140625,
+            "height": 49.46875
+          }
+        },
+        {
+          "column": 6,
+          "text": "日限额",
+          "styles": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "color": "rgb(55, 65, 81)",
+            "borderColor": "rgb(55, 65, 81) rgb(55, 65, 81) rgb(226, 232, 240)",
+            "fontSize": "12.8px",
+            "fontWeight": "600",
+            "textAlign": "left",
+            "padding": "14px 16px",
+            "position": "sticky",
+            "zIndex": "10"
+          },
+          "boundingBox": {
+            "x": 941.6875,
+            "y": 569.796875,
+            "width": 99.5234375,
+            "height": 49.46875
+          }
+        },
+        {
+          "column": 7,
+          "text": "单笔限额",
+          "styles": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "color": "rgb(55, 65, 81)",
+            "borderColor": "rgb(55, 65, 81) rgb(55, 65, 81) rgb(226, 232, 240)",
+            "fontSize": "12.8px",
+            "fontWeight": "600",
+            "textAlign": "left",
+            "padding": "14px 16px",
+            "position": "sticky",
+            "zIndex": "10"
+          },
+          "boundingBox": {
+            "x": 1041.2109375,
+            "y": 569.796875,
+            "width": 98.9140625,
+            "height": 49.46875
+          }
+        },
+        {
+          "column": 8,
+          "text": "账户状态",
+          "styles": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "color": "rgb(55, 65, 81)",
+            "borderColor": "rgb(55, 65, 81) rgb(55, 65, 81) rgb(226, 232, 240)",
+            "fontSize": "12.8px",
+            "fontWeight": "600",
+            "textAlign": "left",
+            "padding": "14px 16px",
+            "position": "sticky",
+            "zIndex": "10"
+          },
+          "boundingBox": {
+            "x": 1140.125,
+            "y": 569.796875,
+            "width": 98.9140625,
+            "height": 49.46875
+          }
+        },
+        {
+          "column": 9,
+          "text": "备注信息",
+          "styles": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "color": "rgb(55, 65, 81)",
+            "borderColor": "rgb(55, 65, 81) rgb(55, 65, 81) rgb(226, 232, 240)",
+            "fontSize": "12.8px",
+            "fontWeight": "600",
+            "textAlign": "left",
+            "padding": "14px 16px",
+            "position": "sticky",
+            "zIndex": "10"
+          },
+          "boundingBox": {
+            "x": 1239.0390625,
+            "y": 569.796875,
+            "width": 242.4140625,
+            "height": 49.46875
+          }
+        },
+        {
+          "column": 10,
+          "text": "操作",
+          "styles": {
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "color": "rgb(55, 65, 81)",
+            "borderColor": "rgb(55, 65, 81) rgb(55, 65, 81) rgb(226, 232, 240)",
+            "fontSize": "12.8px",
+            "fontWeight": "600",
+            "textAlign": "left",
+            "padding": "14px 16px",
+            "position": "sticky",
+            "zIndex": "101"
+          },
+          "boundingBox": {
+            "x": 1481.453125,
+            "y": 569.796875,
+            "width": 145.546875,
+            "height": 49.46875
+          }
+        }
+      ]
+    },
+    "visualHighlight": {
+      "passed": true,
+      "description": "视觉高亮对比截图已生成",
+      "highlightedColumns": [
+        1,
+        10
+      ]
+    }
+  },
+  "screenshots": [
+    "table-header-final-01-initial.png",
+    "table-header-final-02-after-tab-click.png",
+    "table-header-final-03-table-visible.png",
+    "table-header-final-04-first-highlighted.png",
+    "table-header-final-05-last-highlighted.png",
+    "table-header-fix-verification.png"
+  ],
+  "errors": []
+}

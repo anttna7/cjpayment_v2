@@ -1,0 +1,178 @@
+/* 修复stat-card内部元素垂直居中对齐 */
+
+/* 确保stat-card容器使用flex布局并垂直居中 */
+html body.page-recharge-payment .stat-card,
+.page-recharge-payment .stat-card,
+.stat-card.stat-card.stat-card.stat-card.stat-card.stat-card.stat-card {
+    /* 确保flexbox布局 */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    /* 移除任何可能影响垂直对齐的属性 */
+    align-content: center !important;
+    flex-wrap: nowrap !important;
+
+    /* 确保内部元素有合适的空间 */
+    padding: 1rem !important;
+    box-sizing: border-box !important;
+}
+
+/* 优化stat-card__icon的垂直居中 */
+.page-recharge-payment .stat-card .stat-card__icon {
+    /* 移除任何margin影响 */
+    margin: 0 !important;
+    margin-right: 1rem !important;
+
+    /* 确保icon容器自身也是垂直居中 */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+
+    /* 固定尺寸 */
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    flex-shrink: 0 !important;
+
+    /* 视觉样式 */
+    font-size: 1.6rem !important;
+    background: rgba(102, 126, 234, 0.1) !important;
+    border-radius: 8px !important;
+
+    /* 确保垂直居中 */
+    vertical-align: middle !important;
+    line-height: 1 !important;
+}
+
+/* 优化stat-card__content的垂直居中 */
+.page-recharge-payment .stat-card .stat-card__content {
+    /* 确保content区域占据剩余空间并垂直居中 */
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    align-self: center !important;
+
+    /* 移除任何margin/padding影响 */
+    margin: 0 !important;
+    padding: 0 !important;
+
+    /* 确保内容不会被截断 - 关键修复 */
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: auto !important;
+
+    /* 移除可能导致文字隐藏的高度限制 */
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+
+    /* 确保文字可见 */
+    overflow: visible !important;
+}
+
+/* 确保stat-card内的文字元素也垂直居中和可见 */
+.page-recharge-payment .stat-card .stat-card__value {
+    /* 移除影响垂直对齐的margin */
+    margin: 0 !important;
+    margin-bottom: 0.3rem !important;
+
+    /* 确保文字可见 */
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    /* 文字样式 */
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    color: #1a202c !important;
+    line-height: 1.3 !important;
+
+    /* 防止文字溢出但保持可见 */
+    max-width: 100% !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+}
+
+.page-recharge-payment .stat-card .stat-card__label {
+    /* 移除影响垂直对齐的margin */
+    margin: 0 !important;
+
+    /* 确保文字可见 */
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    /* 文字样式 */
+    font-size: 0.8rem !important;
+    color: #718096 !important;
+    font-weight: 500 !important;
+    line-height: 1.3 !important;
+
+    /* 防止文字溢出但保持可见 */
+    max-width: 100% !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+}
+
+/* 响应式调整 - 保持垂直居中 */
+@media (max-width: 768px) {
+    .page-recharge-payment .stat-card .stat-card__icon {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        font-size: 1.4rem !important;
+        margin-right: 0.8rem !important;
+    }
+
+    .page-recharge-payment .stat-card .stat-card__value {
+        font-size: 1.3rem !important;
+    }
+
+    .page-recharge-payment .stat-card .stat-card__label {
+        font-size: 0.75rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-recharge-payment .stat-card .stat-card__icon {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        min-height: 28px !important;
+        font-size: 1.2rem !important;
+        margin-right: 0.6rem !important;
+    }
+
+    .page-recharge-payment .stat-card .stat-card__value {
+        font-size: 1.2rem !important;
+    }
+
+    .page-recharge-payment .stat-card .stat-card__label {
+        font-size: 0.7rem !important;
+    }
+}
+
+/* 调试辅助 - 可以临时取消注释来查看对齐 */
+/*
+.page-recharge-payment .stat-card {
+    border: 1px solid red !important;
+}
+
+.page-recharge-payment .stat-card .stat-card__icon {
+    border: 1px solid blue !important;
+}
+
+.page-recharge-payment .stat-card .stat-card__content {
+    border: 1px solid green !important;
+}
+*/

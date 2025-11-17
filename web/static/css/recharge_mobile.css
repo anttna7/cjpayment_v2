@@ -1,0 +1,1399 @@
+/* 移动端充值页面专用样式 */
+
+/* 基础移动端样式 */
+.mobile-body {
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* 顶部导航 */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 16px;
+}
+
+.nav-back {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.nav-back:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+    flex: 1;
+}
+
+.nav-placeholder {
+    width: 34px;
+}
+
+/* 主要内容区域 */
+.mobile-main {
+    margin-top: 56px;
+    padding: 16px;
+    min-height: calc(100vh - 56px);
+}
+
+/* 商户信息卡片 */
+.merchant-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.merchant-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.merchant-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.merchant-details h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: #333;
+}
+
+.merchant-details p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.security-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.security-badges .badge {
+    background: #e8f4fd;
+    color: #1976d2;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+}
+
+.security-badges .badge i {
+    margin-right: 4px;
+}
+
+/* 表单容器 */
+.form-container {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 表单组 */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-label i {
+    margin-right: 8px;
+    color: #667eea;
+    width: 16px;
+}
+
+.required {
+    color: #e53e3e;
+    margin-left: 4px;
+}
+
+/* 表单控件 */
+.form-control {
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    background: #fafafa;
+    transition: all 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-control.is-invalid {
+    border-color: #e53e3e;
+    background: #fef5f5;
+}
+
+.form-control.is-valid {
+    border-color: #38a169;
+    background: #f0fff4;
+}
+
+/* 金额输入组 */
+.amount-input-group {
+    position: relative;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    font-weight: 600;
+    color: #667eea;
+    z-index: 1;
+}
+
+.amount-input-group .form-control {
+    padding-left: 40px;
+}
+
+/* 付款方式选择 */
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.payment-option {
+    position: relative;
+}
+
+.payment-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.payment-label {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fafafa;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.payment-label:hover {
+    border-color: #667eea;
+    background: white;
+}
+
+.payment-option input:checked + .payment-label {
+    border-color: #667eea;
+    background: #f0f4ff;
+}
+
+.payment-icon {
+    width: 40px;
+    height: 40px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 18px;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.payment-option input:checked + .payment-label .payment-icon {
+    background: #667eea;
+    color: white;
+}
+
+.payment-info {
+    flex: 1;
+}
+
+.payment-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.payment-desc {
+    font-size: 14px;
+    color: #666;
+}
+
+.payment-check {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    transition: all 0.2s;
+}
+
+.payment-option input:checked + .payment-label .payment-check {
+    border-color: #667eea;
+    background: #667eea;
+    color: white;
+}
+
+/* 提交按钮 */
+.submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    margin-top: 32px;
+}
+
+.submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 底部弹窗 */
+.bottom-sheet {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.bottom-sheet.show {
+    pointer-events: all;
+    opacity: 1;
+}
+
+.sheet-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.bottom-sheet.show .sheet-backdrop {
+    opacity: 1;
+}
+
+.sheet-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bottom-sheet.show .sheet-content {
+    transform: translateY(0);
+}
+
+.sheet-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 20px 20px 0 0;
+}
+
+.sheet-handle {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: #cbd5e0;
+    border-radius: 2px;
+}
+
+.sheet-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sheet-close {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.sheet-close:hover {
+    background: #f7fafc;
+}
+
+.sheet-body {
+    padding: 0 20px 20px;
+}
+
+/* 订单信息 */
+.order-info {
+    background: #f0f4ff;
+    border: 1px solid #c6d2fd;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.order-number {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-number .label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+.order-number .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    flex: 1;
+}
+
+/* 收款账号信息 */
+.account-section {
+    margin-bottom: 24px;
+}
+
+.account-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.account-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.account-item:last-child {
+    border-bottom: none;
+}
+
+.account-label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+.account-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.amount-section {
+    background: linear-gradient(135deg, #38a169 0%, #48bb78 100%);
+    color: white;
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    margin-top: 16px;
+}
+
+.amount-label {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 4px;
+}
+
+.amount-value {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* 复制按钮 */
+.copy-btn {
+    background: #e2e8f0;
+    border: none;
+    color: #666;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.copy-btn:hover {
+    background: #cbd5e0;
+    color: #333;
+}
+
+/* 付款说明 */
+.instructions {
+    background: #fffbeb;
+    border: 1px solid #fed7aa;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.instructions h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.instructions ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #92400e;
+}
+
+.instructions li {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* 上传区域 */
+.upload-section {
+    margin-bottom: 24px;
+}
+
+.upload-section h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.upload-area {
+    border: 2px dashed #cbd5e0;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.upload-area:hover {
+    border-color: #667eea;
+    background: #f0f4ff;
+}
+
+.upload-area input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-content {
+    pointer-events: none;
+}
+
+.upload-content i {
+    font-size: 32px;
+    color: #cbd5e0;
+    margin-bottom: 12px;
+}
+
+.upload-content p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.upload-preview {
+    position: relative;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+.upload-preview img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.remove-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.upload-btn {
+    width: 100%;
+    padding: 12px;
+    background: #38a169;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.upload-btn:hover:not(:disabled) {
+    background: #2f855a;
+}
+
+.upload-btn:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+}
+
+/* 操作按钮 */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.action-buttons button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.btn-secondary:hover {
+    background: #cbd5e0;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* 加载覆盖层 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+.loading-content {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-content p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+/* Toast 容器 */
+.toast-container {
+    position: fixed;
+    top: 72px;
+    left: 16px;
+    right: 16px;
+    z-index: 3000;
+    pointer-events: none;
+}
+
+.toast {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid #667eea;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    pointer-events: all;
+    transform: translateX(100%);
+    animation: slideInRight 0.3s ease-out forwards;
+}
+
+.toast.success {
+    border-left-color: #38a169;
+}
+
+.toast.error {
+    border-left-color: #e53e3e;
+}
+
+.toast.info {
+    border-left-color: #3182ce;
+}
+
+@keyframes slideInRight {
+    to {
+        transform: translateX(0);
+    }
+}
+
+.toast-icon {
+    font-size: 20px;
+}
+
+.toast.success .toast-icon {
+    color: #38a169;
+}
+
+.toast.error .toast-icon {
+    color: #e53e3e;
+}
+
+.toast.info .toast-icon {
+    color: #3182ce;
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.toast-message {
+    font-size: 14px;
+    color: #666;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: #a0aec0;
+    font-size: 18px;
+    padding: 4px;
+}
+
+/* 表单验证反馈 */
+.invalid-feedback {
+    display: block;
+    color: #e53e3e;
+    font-size: 14px;
+    margin-top: 8px;
+    padding-left: 4px;
+}
+
+.form-control.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+/* 响应式调整 */
+@media (max-width: 375px) {
+    .mobile-main {
+        padding: 12px;
+    }
+    
+    .merchant-card,
+    .form-container {
+        padding: 16px;
+    }
+    
+    .form-control {
+        padding: 14px;
+        font-size: 16px;
+    }
+    
+    .submit-btn {
+        padding: 14px;
+    }
+    
+    .sheet-body {
+        padding: 0 16px 16px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .action-buttons button {
+        width: 100%;
+    }
+}
+
+/* 横屏适配 */
+@media (orientation: landscape) and (max-height: 500px) {
+    .mobile-nav {
+        height: 48px;
+    }
+    
+    .mobile-main {
+        margin-top: 48px;
+        padding: 12px;
+    }
+    
+    .merchant-card {
+        padding: 16px;
+        margin-bottom: 12px;
+    }
+    
+    .form-container {
+        padding: 16px;
+    }
+    
+    .form-group {
+        margin-bottom: 16px;
+    }
+    
+    .submit-btn {
+        margin-top: 20px;
+    }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+    .form-control {
+        border-width: 3px;
+    }
+    
+    .payment-label {
+        border-width: 3px;
+    }
+    
+    .submit-btn {
+        border: 3px solid transparent;
+    }
+}
+
+/* 减少动画 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .loading-spinner {
+        animation: none;
+        border-top-color: transparent;
+    }
+}
+
+/* 移动端增强功能样式 */
+
+/* 网络状态指示器 */
+.network-indicator {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    z-index: 2000;
+    transition: all 0.3s;
+}
+
+.network-indicator.online {
+    background: #38a169;
+    color: white;
+}
+
+.network-indicator.offline {
+    background: #e53e3e;
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+/* 相机模态框 */
+.camera-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: black;
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+}
+
+.camera-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#cameraVideo {
+    flex: 1;
+    width: 100%;
+    object-fit: cover;
+}
+
+.camera-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.camera-controls button {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 18px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.camera-capture {
+    width: 80px !important;
+    height: 80px !important;
+    background: #667eea !important;
+    color: white !important;
+}
+
+.camera-controls button:active {
+    transform: scale(0.95);
+}
+
+/* 上传按钮组 */
+.upload-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.camera-btn,
+.gallery-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    color: #667eea;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.camera-btn:hover,
+.gallery-btn:hover {
+    border-color: #667eea;
+    background: #f0f4ff;
+}
+
+/* 分享按钮 */
+.share-btn {
+    background: #1da1f2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    flex: 1;
+}
+
+.share-btn:hover {
+    background: #1991db;
+    transform: translateY(-1px);
+}
+
+/* 下拉刷新指示器 */
+.refresh-indicator {
+    position: fixed;
+    top: -60px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: rgba(102, 126, 234, 0.9);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 1500;
+    transition: transform 0.3s;
+}
+
+.refresh-indicator.ready {
+    background: rgba(56, 161, 105, 0.9);
+}
+
+.refresh-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.refresh-text {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* 触摸优化 */
+.touch-target {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* 拖拽上传样式 */
+.upload-area.dragover {
+    border-color: #667eea;
+    background: #f0f4ff;
+    transform: scale(1.02);
+}
+
+/* 复制成功提示 */
+.copy-success {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(56, 161, 105, 0.95);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 3000;
+    animation: copySuccessAnimation 2s ease-out forwards;
+}
+
+@keyframes copySuccessAnimation {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+/* 慢网络优化 */
+.reduce-animations * {
+    animation-duration: 0.1s !important;
+    transition-duration: 0.1s !important;
+}
+
+.reduce-animations .loading-spinner {
+    animation: none !important;
+    border-top-color: transparent !important;
+}
+
+/* 电池优化模式 */
+.battery-saver {
+    filter: grayscale(0.2);
+}
+
+.battery-saver * {
+    animation-play-state: paused !important;
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+    .form-control,
+    .payment-label,
+    .submit-btn {
+        border-width: 3px !important;
+    }
+    
+    .toast {
+        border-width: 2px !important;
+        border-style: solid !important;
+    }
+    
+    .toast.success {
+        border-color: #38a169 !important;
+    }
+    
+    .toast.error {
+        border-color: #e53e3e !important;
+    }
+    
+    .toast.info {
+        border-color: #3182ce !important;
+    }
+}
+
+/* 大字体模式 */
+.large-font {
+    font-size: 1.2em !important;
+}
+
+.large-font .form-control {
+    font-size: 1.1em !important;
+    padding: 18px !important;
+}
+
+.large-font .submit-btn {
+    font-size: 1.1em !important;
+    padding: 18px !important;
+}
+
+/* 语音播报样式 */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* 焦点指示器增强 */
+.form-control:focus,
+.payment-label:focus-within,
+.submit-btn:focus {
+    outline: 3px solid #667eea !important;
+    outline-offset: 2px !important;
+}
+
+/* 触觉反馈视觉提示 */
+.haptic-feedback {
+    animation: hapticPulse 0.1s ease-out;
+}
+
+@keyframes hapticPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* PWA 安装提示 */
+.pwa-install-prompt {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    z-index: 2000;
+    transform: translateY(100%);
+    transition: transform 0.3s;
+}
+
+.pwa-install-prompt.show {
+    transform: translateY(0);
+}
+
+.pwa-install-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.pwa-install-icon {
+    width: 48px;
+    height: 48px;
+    background: #667eea;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+.pwa-install-text h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.pwa-install-text p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.pwa-install-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.pwa-install-btn,
+.pwa-dismiss-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.pwa-install-btn {
+    background: #667eea;
+    color: white;
+}
+
+.pwa-install-btn:hover {
+    background: #5a67d8;
+}
+
+.pwa-dismiss-btn {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.pwa-dismiss-btn:hover {
+    background: #cbd5e0;
+}
+
+/* 超小屏幕优化 */
+@media (max-width: 320px) {
+    .mobile-main {
+        padding: 8px;
+    }
+    
+    .merchant-card,
+    .form-container {
+        padding: 12px;
+    }
+    
+    .form-control {
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    .submit-btn {
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    .payment-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+    
+    .payment-title {
+        font-size: 14px;
+    }
+    
+    .payment-desc {
+        font-size: 12px;
+    }
+}
+
+/* 超大屏幕优化 */
+@media (min-width: 1200px) {
+    .mobile-main {
+        max-width: 500px;
+        margin: 56px auto 0;
+    }
+}

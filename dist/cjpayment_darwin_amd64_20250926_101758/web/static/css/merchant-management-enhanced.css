@@ -1,0 +1,1425 @@
+/* ==========================================================================
+   Enhanced Merchant Management - Modern Interface
+   ========================================================================== */
+
+/* Unified container width consistency */
+.merchant-management {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .merchant-management {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .merchant-management {
+        padding: 1rem;
+    }
+}
+
+/* ==========================================================================
+   Variables for Enhanced Merchant Management
+   ========================================================================== */
+:root {
+    /* Enhanced color scheme */
+    --merchant-primary: #667eea;
+    --merchant-primary-hover: #5a67d8;
+    --merchant-secondary: #764ba2;
+    --merchant-accent: #f093fb;
+    
+    /* Status colors */
+    --status-active: #22c55e;
+    --status-inactive: #94a3b8;
+    --status-pending: #f59e0b;
+    --status-suspended: #ef4444;
+    
+    /* Background colors */
+    --merchant-bg-primary: #f8fafc;
+    --merchant-bg-secondary: #ffffff;
+    --merchant-bg-tertiary: #f1f5f9;
+    --merchant-bg-hover: rgba(102, 126, 234, 0.05);
+    
+    /* Enhanced shadows */
+    --merchant-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --merchant-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --merchant-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --merchant-shadow-card: 0 4px 12px rgba(102, 126, 234, 0.08);
+    
+    /* Text colors */
+    --merchant-text-primary: #1e293b;
+    --merchant-text-secondary: #64748b;
+    --merchant-text-muted: #9ca3af;
+    
+    /* Border colors */
+    --merchant-border-light: #e2e8f0;
+    --merchant-border-primary: var(--merchant-primary);
+}
+    
+    /* Animation variables */
+    --merchant-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --merchant-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+    --merchant-bg-primary: #0f172a;
+    --merchant-bg-secondary: #1e293b;
+    --merchant-bg-tertiary: #334155;
+    --merchant-bg-hover: rgba(102, 126, 234, 0.1);
+    --merchant-shadow-card: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================================================================
+   Enhanced Page Layout
+   ========================================================================== */
+.merchant-management {
+    padding: 2rem;
+    background: var(--merchant-bg-primary);
+    min-height: 100vh;
+}
+
+/* Enhanced Header */
+.merchant-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.merchant-header__left {
+    flex: 1;
+    min-width: 300px;
+}
+
+.merchant-header__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dashboard-text-primary);
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(135deg, var(--merchant-primary) 0%, var(--merchant-secondary) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.merchant-header__subtitle {
+    color: var(--dashboard-text-secondary);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.merchant-header__right {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Enhanced Search and Filter */
+.merchant-search {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-container {
+    position: relative;
+    min-width: 300px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 2px solid var(--dashboard-border-light);
+    border-radius: 12px;
+    background: var(--merchant-bg-secondary);
+    color: var(--dashboard-text-primary);
+    font-size: 0.875rem;
+    transition: var(--merchant-transition);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--merchant-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dashboard-text-muted);
+    font-size: 1rem;
+}
+
+.filter-dropdown {
+    position: relative;
+}
+
+.filter-select {
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--dashboard-border-light);
+    border-radius: 12px;
+    background: var(--merchant-bg-secondary);
+    color: var(--dashboard-text-primary);
+    font-size: 0.875rem;
+    min-width: 150px;
+    transition: var(--merchant-transition);
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--merchant-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Enhanced Action Buttons */
+.merchant-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.btn-enhanced {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--merchant-transition);
+    text-decoration: none;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-enhanced:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--merchant-primary) 0%, var(--merchant-secondary) 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--merchant-shadow-lg);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--dashboard-border-medium);
+    color: var(--dashboard-text-secondary);
+}
+
+.btn-outline:hover {
+    background: var(--merchant-bg-hover);
+    border-color: var(--merchant-primary);
+    color: var(--merchant-primary);
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Enhanced Merchant Grid/Table
+   ========================================================================== */
+.merchant-container {
+    background: var(--merchant-bg-secondary);
+    border-radius: 16px;
+    box-shadow: var(--merchant-shadow-card);
+    overflow: hidden;
+    border: 1px solid var(--dashboard-border-light);
+}
+
+/* View Toggle */
+.view-toggle {
+    display: flex;
+    background: var(--merchant-bg-tertiary);
+    border-radius: 8px;
+    padding: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.view-toggle__button {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--merchant-transition);
+    color: var(--dashboard-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.view-toggle__button.active {
+    background: var(--merchant-bg-secondary);
+    color: var(--merchant-primary);
+    box-shadow: var(--merchant-shadow-sm);
+}
+
+/* Enhanced Merchant Cards (Grid View) */
+.merchant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+
+.merchant-card {
+    background: var(--merchant-bg-secondary);
+    border: 2px solid var(--dashboard-border-light);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: var(--merchant-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.merchant-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--merchant-primary) 0%, var(--merchant-secondary) 100%);
+}
+
+.merchant-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--merchant-shadow-lg);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.merchant-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.merchant-card__info {
+    flex: 1;
+}
+
+.merchant-card__name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--dashboard-text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.merchant-card__id {
+    font-size: 0.75rem;
+    color: var(--dashboard-text-muted);
+    font-family: monospace;
+    background: var(--merchant-bg-tertiary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.merchant-card__status {
+    align-self: flex-start;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.status-badge--active {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--status-active);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.status-badge--inactive {
+    background: rgba(148, 163, 184, 0.1);
+    color: var(--status-inactive);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.status-badge--pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--status-pending);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.status-badge--suspended {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--status-suspended);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.merchant-card__details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.merchant-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.merchant-detail__label {
+    font-size: 0.75rem;
+    color: var(--dashboard-text-muted);
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.merchant-detail__value {
+    font-size: 0.875rem;
+    color: var(--dashboard-text-primary);
+    font-weight: 500;
+}
+
+.merchant-card__actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dashboard-border-light);
+}
+
+.action-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--dashboard-border-medium);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--dashboard-text-secondary);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: var(--merchant-transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.action-btn:hover {
+    background: var(--merchant-bg-hover);
+    border-color: var(--merchant-primary);
+    color: var(--merchant-primary);
+}
+
+.action-btn--primary {
+    background: var(--merchant-primary);
+    border-color: var(--merchant-primary);
+    color: white;
+}
+
+.action-btn--primary:hover {
+    background: var(--merchant-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--merchant-shadow-md);
+}
+
+/* ==========================================================================
+   Enhanced Table View
+   ========================================================================== */
+.merchant-table-container {
+    padding: 1.5rem;
+    display: none;
+}
+
+.merchant-table-container.active {
+    display: block;
+}
+
+.enhanced-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--merchant-bg-secondary);
+}
+
+.enhanced-table th {
+    background: var(--merchant-bg-tertiary);
+    color: var(--dashboard-text-primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 2px solid var(--dashboard-border-light);
+    position: sticky;
+    top: 0;
+}
+
+.enhanced-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--dashboard-border-light);
+    color: var(--dashboard-text-secondary);
+    font-size: 0.875rem;
+    vertical-align: middle;
+}
+
+.enhanced-table tr:hover {
+    background: var(--merchant-bg-hover);
+}
+
+.table-cell--merchant {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.merchant-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--merchant-primary) 0%, var(--merchant-secondary) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.merchant-info {
+    flex: 1;
+}
+
+.merchant-name {
+    font-weight: 600;
+    color: var(--dashboard-text-primary);
+    margin-bottom: 0.125rem;
+}
+
+.merchant-contact {
+    font-size: 0.75rem;
+    color: var(--dashboard-text-muted);
+}
+
+.table-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* ==========================================================================
+   Enhanced Modal - Modern Design
+   ========================================================================== */
+.modal-enhanced {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-enhanced.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: var(--merchant-bg-secondary);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    overflow: hidden;
+    transform: scale(0.95) translateY(30px);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+.modal-enhanced.active .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+/* Modern gradient header */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 2.5rem 1.5rem;
+    background: linear-gradient(135deg, var(--merchant-primary) 0%, var(--merchant-secondary) 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    pointer-events: none;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal body with enhanced scrolling */
+.modal-body {
+    padding: 0;
+    max-height: calc(85vh - 120px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--merchant-primary) transparent;
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: var(--merchant-primary);
+    border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: var(--merchant-primary-hover);
+}
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: var(--merchant-transition);
+}
+
+.modal-close:hover {
+    background: var(--merchant-bg-tertiary);
+    color: var(--dashboard-text-primary);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--dashboard-border-light);
+    background: var(--merchant-bg-tertiary);
+}
+
+/* ==========================================================================
+   Enhanced Form Elements - Modern & Beautiful
+   ========================================================================== */
+
+/* Enhanced Form Layout */
+.merchant-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.form-section {
+    background: var(--merchant-bg-secondary);
+    padding: 2.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    border-radius: 0 0 20px 20px;
+}
+
+.form-section-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--merchant-primary);
+    margin: 0 0 2rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid var(--merchant-primary);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.form-section-title::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--merchant-primary);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.form-group-enhanced {
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.form-label-enhanced {
+    display: block;
+    font-size: 0.925rem;
+    font-weight: 600;
+    color: var(--dashboard-text-primary);
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.form-label-enhanced.required::after {
+    content: ' *';
+    color: #ef4444;
+    font-weight: 700;
+}
+
+.form-input-enhanced {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--dashboard-border-light);
+    border-radius: 12px;
+    background: var(--merchant-bg-secondary);
+    color: var(--dashboard-text-primary);
+    font-size: 0.925rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-input-enhanced:focus {
+    outline: none;
+    border-color: var(--merchant-primary);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-input-enhanced:hover {
+    border-color: var(--merchant-primary-hover);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.form-input-enhanced.error {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-input-enhanced:disabled,
+.form-input-enhanced:read-only {
+    background: var(--merchant-bg-tertiary);
+    border-color: var(--dashboard-border-light);
+    color: var(--dashboard-text-muted);
+    cursor: not-allowed;
+}
+
+/* Enhanced form helpers */
+.form-error {
+    display: block;
+    font-size: 0.8rem;
+    color: #ef4444;
+    margin-top: 0.5rem;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+.form-error.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.form-help {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--dashboard-text-muted);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+/* Select input styling with custom dropdown arrow */
+select.form-input-enhanced {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 3rem;
+    cursor: pointer;
+}
+
+select.form-input-enhanced:hover {
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23667eea' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+}
+
+/* Enhanced button in modal footer */
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 2rem 2.5rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.02) 100%);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+
+.form-help {
+    color: var(--dashboard-text-muted);
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   Pagination Enhanced
+   ========================================================================== */
+.pagination-enhanced {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--dashboard-border-light);
+    background: var(--merchant-bg-tertiary);
+}
+
+.pagination-info {
+    font-size: 0.875rem;
+    color: var(--dashboard-text-secondary);
+}
+
+.pagination-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.pagination-btn {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--dashboard-border-medium);
+    border-radius: 6px;
+    background: var(--merchant-bg-secondary);
+    color: var(--dashboard-text-secondary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--merchant-transition);
+    text-decoration: none;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: var(--merchant-bg-hover);
+    border-color: var(--merchant-primary);
+    color: var(--merchant-primary);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-btn.active {
+    background: var(--merchant-primary);
+    border-color: var(--merchant-primary);
+    color: white;
+}
+
+/* ==========================================================================
+   Loading States
+   ========================================================================== */
+.loading-skeleton {
+    background: linear-gradient(90deg, var(--merchant-bg-tertiary) 25%, rgba(102, 126, 234, 0.1) 50%, var(--merchant-bg-tertiary) 75%);
+    background-size: 200% 100%;
+    animation: loading-shimmer 2s infinite;
+    border-radius: 4px;
+}
+
+@keyframes loading-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.merchant-card--loading .merchant-card__name {
+    height: 20px;
+    width: 60%;
+    margin-bottom: 0.5rem;
+}
+
+.merchant-card--loading .merchant-card__id {
+    height: 16px;
+    width: 40%;
+}
+
+.merchant-card--loading .merchant-detail__value {
+    height: 16px;
+    width: 80%;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .merchant-management {
+        padding: 1.5rem;
+    }
+    
+    .merchant-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .merchant-search {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-container {
+        min-width: auto;
+    }
+    
+    .merchant-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .merchant-management {
+        padding: 1rem;
+    }
+    
+    .merchant-header__title {
+        font-size: 1.5rem;
+    }
+    
+    .merchant-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .merchant-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .merchant-card__details {
+        grid-template-columns: 1fr;
+    }
+    
+    .merchant-table-container {
+        overflow-x: auto;
+    }
+    
+    .enhanced-table {
+        min-width: 600px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 1rem;
+    }
+    
+    .pagination-enhanced {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+        text-align: center;
+    }
+}
+
+/* ==========================================================================
+   Import Modal Styles
+   ========================================================================== */
+.import-instructions {
+    background: var(--merchant-bg-tertiary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--dashboard-border-light);
+}
+
+.instruction-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.instruction-icon {
+    font-size: 1.5rem;
+}
+
+.instruction-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dashboard-text-primary);
+    margin: 0;
+}
+
+.instruction-step {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.instruction-step:last-child {
+    margin-bottom: 0;
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    background: var(--merchant-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.step-content h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--dashboard-text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.step-content p {
+    color: var(--dashboard-text-secondary);
+    margin: 0 0 1rem 0;
+    line-height: 1.5;
+}
+
+.template-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.format-requirements {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.requirement-group h5 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--dashboard-text-primary);
+    margin: 0 0 0.75rem 0;
+}
+
+.requirement-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.requirement-list li {
+    padding: 0.375rem 0;
+    font-size: 0.875rem;
+    color: var(--dashboard-text-secondary);
+    line-height: 1.4;
+}
+
+.requirement-list strong {
+    color: var(--dashboard-text-primary);
+}
+
+/* Import Upload Section */
+.import-upload-section {
+    margin-bottom: 2rem;
+}
+
+.upload-area {
+    border: 2px dashed var(--dashboard-border-light);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    background: var(--merchant-bg-secondary);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    border-color: var(--merchant-primary);
+    background: var(--merchant-bg-hover);
+}
+
+.upload-area.drag-over {
+    border-color: var(--merchant-primary);
+    background: var(--merchant-bg-hover);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+}
+
+.upload-text h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--dashboard-text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.upload-text p {
+    color: var(--dashboard-text-secondary);
+    margin: 0 0 1.5rem 0;
+}
+
+/* Selected File Info */
+.selected-file-info {
+    background: var(--merchant-bg-secondary);
+    border: 1px solid var(--dashboard-border-light);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.file-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.file-icon {
+    font-size: 2rem;
+    opacity: 0.7;
+}
+
+.file-info {
+    flex: 1;
+}
+
+.file-name {
+    font-weight: 600;
+    color: var(--dashboard-text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.file-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--dashboard-text-secondary);
+}
+
+.remove-file-btn {
+    background: none;
+    border: none;
+    color: var(--dashboard-text-secondary);
+    cursor: pointer;
+    font-size: 1.25rem;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.remove-file-btn:hover {
+    background: var(--merchant-bg-tertiary);
+    color: var(--status-suspended);
+}
+
+/* Import Options */
+.import-options {
+    background: var(--merchant-bg-secondary);
+    border: 1px solid var(--dashboard-border-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.options-header h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--dashboard-text-primary);
+    margin: 0 0 1rem 0;
+}
+
+.option-group {
+    margin-bottom: 1rem;
+}
+
+.option-group:last-child {
+    margin-bottom: 0;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--dashboard-text-primary);
+}
+
+.checkbox-custom {
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 2px solid var(--dashboard-border-base);
+    border-radius: 4px;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+    background: var(--merchant-primary);
+    border-color: var(--merchant-primary);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Dark theme support */
+[data-theme="dark"] .import-instructions {
+    background: var(--dashboard-bg-secondary);
+}
+
+[data-theme="dark"] .upload-area {
+    background: var(--dashboard-bg-secondary);
+    border-color: var(--dashboard-border-light);
+}
+
+[data-theme="dark"] .selected-file-info,
+[data-theme="dark"] .import-options {
+    background: var(--dashboard-bg-secondary);
+}
+
+/* ==========================================================================
+   修复下拉框箭头重复问题 - 美化下拉框样式
+   ========================================================================== */
+
+.form-select-enhanced {
+    position: relative;
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--merchant-border-light);
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--merchant-bg-secondary) 0%, rgba(102, 126, 234, 0.02) 100%);
+    color: var(--merchant-text-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 18px 18px !important;
+    padding-right: 3.5rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-select-enhanced:hover {
+    border-color: var(--merchant-primary);
+    background: linear-gradient(135deg, var(--merchant-bg-secondary) 0%, rgba(102, 126, 234, 0.05) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+}
+
+.form-select-enhanced:focus {
+    outline: none;
+    border-color: var(--merchant-primary);
+    background: linear-gradient(135deg, var(--merchant-bg-secondary) 0%, rgba(102, 126, 234, 0.08) 100%);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12), 0 4px 16px rgba(102, 126, 234, 0.2);
+    transform: translateY(-1px);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+}
+
+.form-select-enhanced:disabled {
+    background: var(--merchant-bg-tertiary);
+    color: var(--merchant-text-muted);
+    cursor: not-allowed;
+    border-color: var(--merchant-border-light);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+}
+
+/* 下拉框选项美化（支持的浏览器） */
+.form-select-enhanced option {
+    padding: 0.75rem 1rem;
+    background: var(--merchant-bg-secondary);
+    color: var(--merchant-text-primary);
+    border: none;
+}
+
+.form-select-enhanced option:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.form-select-enhanced option:checked {
+    background: var(--merchant-primary);
+    color: white;
+    font-weight: 600;
+}
+
+/* 银行字段动态显示样式 */
+#merchantBankNameRow {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+#merchantBankNameRow.show {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 200px;
+}
+
+#merchantBankNameRow.hide {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* 手动输入银行名称字段样式 */
+#manualBankNameGroup {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .format-requirements {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .template-actions {
+        flex-direction: column;
+    }
+    
+    .upload-area {
+        padding: 2rem 1rem;
+    }
+    
+    .file-meta {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
+/* ==========================================================================
+   User Menu颜色统一修复 - 确保与其他页面颜色一致
+   ========================================================================== */
+
+/* 强制覆盖user-menu头像颜色，确保与其他页面一致 */
+.user-menu .user-menu__avatar {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+}
+
+body .user-menu .user-menu__avatar {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+}

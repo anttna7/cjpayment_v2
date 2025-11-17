@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-08-22T08:19:44.785Z",
+  "testResults": [],
+  "consoleLogs": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "timestamp": "2025-08-22T08:19:44.956Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "timestamp": "2025-08-22T08:19:45.037Z"
+    }
+  ],
+  "networkRequests": [],
+  "errors": [
+    {
+      "message": "locator.count: Unexpected token \"=\" while parsing css selector \"[data-tab=\"rotation-rules\"], text=\"轮询规则\"\". Did you mean to CSS.escape it?",
+      "stack": "locator.count: Unexpected token \"=\" while parsing css selector \"[data-tab=\"rotation-rules\"], text=\"轮询规则\"\". Did you mean to CSS.escape it?\n    at debugRotationGroupSave (/Users/c/Desktop/labs/cjpay/cjpayment/tests/ui-automation/rotation-group-save-debug.js:95:31)",
+      "timestamp": "2025-08-22T08:19:46.153Z",
+      "context": "main_process"
+    }
+  ]
+}

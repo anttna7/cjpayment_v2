@@ -1,0 +1,60 @@
+[Unit]
+Description=Recharge Testing System
+Documentation=https://github.com/your-org/recharge-system
+After=network.target mysql.service redis.service
+Wants=mysql.service redis.service
+
+[Service]
+Type=simple
+User=recharge
+Group=recharge
+WorkingDirectory=/opt/recharge-system
+ExecStart=/opt/recharge-system/recharge-system --config /opt/recharge-system/configs/config.recharge.production.yaml --env production
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -TERM $MAINPID
+Restart=always
+RestartSec=5
+StartLimitInterval=60s
+StartLimitBurst=3
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/recharge-system/uploads /var/log/recharge-system
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+LimitCORE=0
+MemoryMax=2G
+CPUQuota=200%
+TasksMax=4096
+
+# Environment
+Environment=ENVIRONMENT=production
+EnvironmentFile=-/opt/recharge-system/.env.production
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=recharge-system
+
+# Process management
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

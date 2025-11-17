@@ -1,0 +1,120 @@
+{
+  "timestamp": "2025-08-27T06:14:02.778Z",
+  "pageInfo": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "document": {
+      "scrollWidth": 1382,
+      "scrollHeight": 2747,
+      "clientWidth": 1280,
+      "clientHeight": 720
+    },
+    "body": {
+      "scrollWidth": 1382,
+      "scrollHeight": 2731,
+      "clientWidth": 1280,
+      "clientHeight": 2731
+    }
+  },
+  "backdropAnalysis": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "document": {
+      "scrollWidth": 1382,
+      "clientWidth": 1280
+    },
+    "backdrop": {
+      "rect": {
+        "width": 1280,
+        "height": 720,
+        "left": 25,
+        "right": 1305,
+        "top": 1702.453125,
+        "bottom": 2422.453125
+      },
+      "computed": {
+        "width": "1280px",
+        "height": "720px",
+        "position": "fixed",
+        "left": "0px",
+        "top": "0px",
+        "right": "0px",
+        "bottom": "0px",
+        "zIndex": "1000",
+        "display": "flex",
+        "visibility": "visible"
+      },
+      "exceedsViewport": {
+        "width": false,
+        "height": false,
+        "right": true,
+        "bottom": true,
+        "excess": {
+          "width": 0,
+          "height": 0,
+          "right": 25,
+          "bottom": 1702.453125
+        }
+      }
+    },
+    "container": {
+      "rect": {
+        "width": 1088,
+        "height": 612,
+        "left": 121,
+        "right": 1209,
+        "top": 1756.453125,
+        "bottom": 2368.453125
+      },
+      "styles": {
+        "width": "1088px",
+        "height": "612px",
+        "position": "relative",
+        "left": "0px",
+        "top": "0px",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      }
+    }
+  },
+  "positioningAnalysis": {
+    "positioning": {
+      "position": "fixed",
+      "left": "0px",
+      "top": "0px",
+      "right": "0px",
+      "bottom": "0px",
+      "width": "1280px",
+      "height": "720px"
+    },
+    "viewport": {
+      "width": "1280px",
+      "height": "720px"
+    },
+    "documentSize": {
+      "width": "1382px",
+      "height": "2731px"
+    },
+    "shouldBe": {
+      "width": "100vw",
+      "height": "100vh",
+      "position": "fixed",
+      "left": "0",
+      "top": "0"
+    }
+  },
+  "issues": [
+    {
+      "type": "backdrop-width-not-viewport",
+      "message": "backdrop宽度不是基于视口(100vw)",
+      "severity": "medium",
+      "details": {
+        "currentWidth": "1280px",
+        "shouldBe": "100vw"
+      }
+    }
+  ]
+}

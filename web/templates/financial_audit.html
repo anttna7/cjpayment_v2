@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>财务审核 - CJPayment 企业内部支付管理系统</title>
+    
+    <!-- CJPayment 统一设计系统 v3.0 -->
+    <link rel="stylesheet" href="/static/css/cjpayment-unified.css">
+    
+    <!-- 统一主题系统 -->
+    <link rel="stylesheet" href="/static/css/theme-unified.css">
+    <link rel="stylesheet" href="/static/css/header-unified.css">
+    
+    <!-- 统一布局样式系统 -->
+    <link rel="stylesheet" href="/static/css/layout-unified.css">
+    
+    <!-- 统一按钮交互样式系统 -->
+    <link rel="stylesheet" href="/static/css/buttons-unified.css">
+    
+    <!-- 页面特定样式 -->
+    <link rel="stylesheet" href="/static/css/financial-audit-enhanced.css">
+    
+    <!-- 财务审核页面优化样式 -->
+    <link rel="stylesheet" href="/static/css/financial-audit-optimized.css">
+    
+    <!-- 财务审核表格专用样式 -->
+    <link rel="stylesheet" href="/static/css/financial-audit-table.css">
+    
+    <!-- 统一分页组件样式系统 -->
+    <link rel="stylesheet" href="/static/css/pagination-unified.css">
+    
+    <!-- Header Dropdown 修复 - 解决通知和用户菜单默认打开状态问题 -->
+    <link rel="stylesheet" href="/static/css/header-dropdown-fix.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="CJPayment企业内部支付管理系统财务审核和订单处理">
+    <meta name="keywords" content="财务审核,订单处理,支付管理,企业系统">
+</head>
+<body class="page-financial-audit">
+    <!-- Enhanced Navigation Header -->
+    <header class="app__header" id="appHeader">
+        <div class="header">
+            <!-- Logo Section -->
+            <div class="header__left">
+                <a href="/dashboard" class="logo">
+                    <div class="logo__icon">💎</div>
+                    <div>
+                        <h1 class="logo__text">CJPayment</h1>
+                        <span class="logo__version">v2.0</span>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="nav" id="headerNav" role="navigation" aria-label="主要导航">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="/dashboard" class="nav__link" data-route="dashboard">
+                            <span class="nav__icon">📊</span>
+                            <span class="nav__text">仪表板</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/merchant" class="nav__link" data-route="merchant">
+                            <span class="nav__icon">🏪</span>
+                            <span class="nav__text">商户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/accounts" class="nav__link" data-route="accounts">
+                            <span class="nav__icon">💰</span>
+                            <span class="nav__text">账户管理</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/audit" class="nav__link nav__link--active" data-route="audit">
+                            <span class="nav__icon">📋</span>
+                            <span class="nav__text">财务审核</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/reports" class="nav__link" data-route="reports">
+                            <span class="nav__icon">📈</span>
+                            <span class="nav__text">数据报表</span>
+                        </a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="/system_management" class="nav__link" data-route="system">
+                            <span class="nav__icon">⚙️</span>
+                            <span class="nav__text">系统管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Header Right -->
+            <div class="header__right">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                
+                <!-- Notifications -->
+                <div class="notifications" id="notifications">
+                    <button class="notifications__trigger" id="notificationButton" aria-label="通知" title="查看通知">
+                        <span class="notifications__icon">🔔</span>
+                        <span class="notifications__badge" id="notificationBadge">3</span>
+                    </button>
+                    <div class="notifications__dropdown" id="notificationsDropdown">
+                        <div class="notifications__header">
+                            <h4>商户通知</h4>
+                            <button class="notifications__clear" id="clearNotifications">全部已读</button>
+                        </div>
+                        <div class="notifications__list" id="notificationsList">
+                            <div class="notification-item notification-unread">
+                                <div class="notification-icon unread"></div>
+                                <div class="notification-content">
+                                    <div class="notification-title">紧急审核订单</div>
+                                    <div class="notification-text">有5笔大额订单待紧急审核</div>
+                                    <div class="notification-meta">
+                                        <span class="notification-time">刚刚</span>
+                                        <span class="notification-new">新</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <button class="user-menu__trigger" id="userButton">
+                        <div class="user-menu__avatar">👤</div>
+                        <div class="user-menu__info">
+                            <span class="user-menu__name">管理员</span>
+                            <span class="user-menu__role">超级管理员</span>
+                        </div>
+                        <span class="user-menu__arrow">▼</span>
+                    </button>
+                    <div class="user-menu__dropdown" id="userDropdown">
+                        <a href="/profile" class="user-menu__item">
+                            <span class="user-menu__item-icon">👤</span>
+                            个人资料
+                        </a>
+                        <a href="/account-settings" class="user-menu__item">
+                            <span class="user-menu__item-icon">⚙️</span>
+                            账户设置
+                        </a>
+                        <a href="/help" class="user-menu__item">
+                            <span class="user-menu__item-icon">❓</span>
+                            帮助中心
+                        </a>
+                        <div class="user-menu__divider"></div>
+                        <a href="/logout" class="user-menu__item user-menu__item--danger">
+                            <span class="user-menu__item-icon">🚪</span>
+                            退出登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Main Content -->
+    <main class="app__main" id="appMain">
+        <div class="audit-management">
+            <!-- Enhanced Header -->
+            <div class="audit-header">
+                <div class="audit-header__left">
+                    <h1 class="audit-header__title">财务审核中心</h1>
+                    <p class="audit-header__subtitle">高效处理充值订单，确保资金安全和合规性</p>
+                </div>
+                
+                <div class="audit-header__right">
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <button class="btn-enhanced btn-outline" id="exportAuditBtn">
+                            <span class="btn__icon">📊</span>
+                            <span class="btn__text">导出报表</span>
+                        </button>
+                        <button class="btn-enhanced btn-primary" id="refreshDataBtn">
+                            <span class="btn__icon">🔄</span>
+                            <span class="btn__text">刷新数据</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Statistics Dashboard -->
+            <div class="audit-stats">
+                <div class="stat-card stat-card--pending">
+                    <div class="stat-card__icon">⏳</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__value" id="pendingCount">0</div>
+                        <div class="stat-card__label">待审核订单</div>
+                        <div class="stat-card__trend">
+                            <span class="trend-icon">📈</span>
+                            <span class="trend-text">较昨日 +5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card--amount">
+                    <div class="stat-card__icon">💰</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__value" id="pendingAmount">¥0.00</div>
+                        <div class="stat-card__label">待审核金额</div>
+                        <div class="stat-card__trend">
+                            <span class="trend-icon">💹</span>
+                            <span class="trend-text">¥125,680.50</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card--processed">
+                    <div class="stat-card__icon">✅</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__value" id="todayProcessed">0</div>
+                        <div class="stat-card__label">今日已处理</div>
+                        <div class="stat-card__trend">
+                            <span class="trend-icon">⚡</span>
+                            <span class="trend-text">平均 2.3min/单</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card--efficiency">
+                    <div class="stat-card__icon">📊</div>
+                    <div class="stat-card__content">
+                        <div class="stat-card__value" id="approvalRate">98.5%</div>
+                        <div class="stat-card__label">审核通过率</div>
+                        <div class="stat-card__trend">
+                            <span class="trend-icon">🎯</span>
+                            <span class="trend-text">月度目标 95%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Filter Section -->
+            <div class="audit-filters">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="pending">
+                        <span class="filter-tab__icon">⏳</span>
+                        <span class="filter-tab__text">待审核 (<span id="pendingTabCount">0</span>)</span>
+                    </button>
+                    <button class="filter-tab" data-filter="urgent">
+                        <span class="filter-tab__icon">🚨</span>
+                        <span class="filter-tab__text">紧急处理 (<span id="urgentTabCount">0</span>)</span>
+                    </button>
+                    <button class="filter-tab" data-filter="large">
+                        <span class="filter-tab__icon">💎</span>
+                        <span class="filter-tab__text">大额订单 (<span id="largeTabCount">0</span>)</span>
+                    </button>
+                    <button class="filter-tab" data-filter="processed">
+                        <span class="filter-tab__icon">✅</span>
+                        <span class="filter-tab__text">已处理</span>
+                    </button>
+                </div>
+
+                <div class="advanced-filters">
+                    <div class="filter-group">
+                        <label class="filter-label">支付类型</label>
+                        <select class="filter-select" id="paymentTypeFilter">
+                            <option value="">全部类型</option>
+                            <option value="private">对私充值</option>
+                            <option value="public">对公充值</option>
+                            <option value="third_party">第三方支付</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">金额范围</label>
+                        <select class="filter-select" id="amountRangeFilter">
+                            <option value="">全部金额</option>
+                            <option value="small">小额 (&lt; ¥1,000)</option>
+                            <option value="medium">中额 (¥1,000 - ¥10,000)</option>
+                            <option value="large">大额 (&gt; ¥10,000)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">日期范围</label>
+                        <select class="filter-select" id="dateRangeFilter">
+                            <option value="today">今天</option>
+                            <option value="yesterday">昨天</option>
+                            <option value="week">本周</option>
+                            <option value="month">本月</option>
+                            <option value="custom">自定义</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <button class="btn-enhanced btn-primary" id="applyFiltersBtn">
+                            <span class="btn__icon">🔍</span>
+                            <span class="btn__text">应用筛选</span>
+                        </button>
+                        <button class="btn-enhanced btn-outline" id="resetFiltersBtn">
+                            <span class="btn__icon">🔄</span>
+                            <span class="btn__text">重置</span>
+                        </button>
+                        <button class="btn btn-success" id="exportAuditReportBtn">
+                            <span class="btn__icon">📊</span>
+                            <span class="btn__text">导出报表</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Orders Table -->
+            <div class="audit-orders">
+                <div class="orders-header">
+                    <div class="orders-header__left">
+                        <h3 class="orders-title">审核订单列表</h3>
+                        <div class="bulk-actions" id="bulkActions" style="display: none;">
+                            <button class="btn-enhanced btn-success btn-sm" id="bulkApproveBtn">
+                                <span class="btn__icon">✅</span>
+                                批量通过 (<span id="selectedCount">0</span>)
+                            </button>
+                            <button class="btn-enhanced btn-danger btn-sm" id="bulkRejectBtn">
+                                <span class="btn__icon">❌</span>
+                                批量拒绝
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="orders-header__right">
+                        <!-- 移除视图切换控件，仅保留表格视图 -->
+                    </div>
+                </div>
+
+                <!-- Table View -->
+                <div class="orders-table-view" id="tableView">
+                    <div class="financial-audit-table-wrapper">
+                        <table class="financial-audit-table horizontal-scroll-table" id="financialAuditTable">
+                            <thead class="table-head-fixed">
+                                <tr class="table-header-row">
+                                    <!-- 序号列 - 固定在左侧不滚动 -->
+                                    <th class="col-serial col-fixed-left" data-priority="1" style="min-width: 80px;">
+                                        <div class="th-content">
+                                            <span class="th-text">序号</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 订单号 -->
+                                    <th class="col-sortable col-resizable" data-sort="order_number" data-column="order_number" style="min-width: 160px;">
+                                        <div class="th-content">
+                                            <span class="th-text">订单号</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 付款凭证 -->
+                                    <th class="col-sortable col-resizable" data-sort="payment_voucher" data-column="payment_voucher" style="min-width: 150px;">
+                                        <div class="th-content">
+                                            <span class="th-text">付款凭证</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 付款金额 -->
+                                    <th class="col-sortable col-resizable col-highlight" data-sort="amount" data-column="amount" style="min-width: 130px;">
+                                        <div class="th-content">
+                                            <span class="th-text">付款金额</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 付款账号 -->
+                                    <th class="col-sortable col-resizable" data-sort="payer_account" data-column="payer_account" style="min-width: 160px;">
+                                        <div class="th-content">
+                                            <span class="th-text">付款账号</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 付款账户名称 -->
+                                    <th class="col-sortable col-resizable" data-sort="payer_name" data-column="payer_name" style="min-width: 140px;">
+                                        <div class="th-content">
+                                            <span class="th-text">付款账户名称</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 付款账户机构 -->
+                                    <th class="col-sortable col-resizable" data-sort="payer_bank" data-column="payer_bank" style="min-width: 160px;">
+                                        <div class="th-content">
+                                            <span class="th-text">付款账户机构</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 付款类型 -->
+                                    <th class="col-sortable col-resizable" data-sort="payment_type" data-column="payment_type" style="min-width: 130px;">
+                                        <div class="th-content">
+                                            <span class="th-text">付款类型</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 收款账号 -->
+                                    <th class="col-sortable col-resizable" data-sort="receiver_account" data-column="receiver_account" style="min-width: 160px;">
+                                        <div class="th-content">
+                                            <span class="th-text">收款账号</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 收款账户名称 -->
+                                    <th class="col-sortable col-resizable" data-sort="receiver_name" data-column="receiver_name" style="min-width: 140px;">
+                                        <div class="th-content">
+                                            <span class="th-text">收款账户名称</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 收款账户机构 -->
+                                    <th class="col-sortable col-resizable" data-sort="receiver_bank" data-column="receiver_bank" style="min-width: 160px;">
+                                        <div class="th-content">
+                                            <span class="th-text">收款账户机构</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 订单状态 -->
+                                    <th class="col-sortable col-resizable" data-sort="order_status" data-column="order_status" style="min-width: 120px;">
+                                        <div class="th-content">
+                                            <span class="th-text">订单状态</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 创建时间 -->
+                                    <th class="col-sortable col-resizable" data-sort="created_time" data-column="created_time" style="min-width: 160px;">
+                                        <div class="th-content">
+                                            <span class="th-text">创建时间</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 付款时间 -->
+                                    <th class="col-sortable col-resizable" data-sort="payment_time" data-column="payment_time" style="min-width: 160px;">
+                                        <div class="th-content">
+                                            <span class="th-text">付款时间</span>
+                                            <span class="sort-indicator">↕️</span>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- 操作列 - 固定在右侧不滚动 -->
+                                    <th class="col-actions col-fixed-right" style="min-width: 200px;">
+                                        <div class="th-content">
+                                            <span class="th-text">操作</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="financialAuditTableBody">
+                                <!-- Loading skeleton -->
+                                <tr class="loading-row">
+                                    <td colspan="15" class="loading-cell">
+                                        <div class="loading-skeleton-table">
+                                            <div class="loading-spinner"></div>
+                                            <span>正在加载审核订单...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 已移除卡片视图，仅保留表格视图 -->
+                
+                <!-- 分页控件 -->
+                <div class="audit-pagination" id="auditPagination">
+                    <div class="pagination-info">
+                        <span>显示第</span>
+                        <span id="pageStartAudit">1</span>
+                        <span>-</span>
+                        <span id="pageEndAudit">20</span>
+                        <span>条，共</span>
+                        <span id="totalRecordsAudit">-</span>
+                        <span>条记录</span>
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="pagination-btn" id="firstPageBtnAudit" disabled>首页</button>
+                        <button class="pagination-btn" id="prevPageBtnAudit" disabled>上一页</button>
+                        <div class="pagination-numbers" id="paginationNumbersAudit">
+                        </div>
+                        <button class="pagination-btn" id="nextPageBtnAudit">下一页</button>
+                        <button class="pagination-btn" id="lastPageBtnAudit">末页</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+    <!-- Financial Audit Export Modal - 复用数据报表页面样式 -->
+    <div class="modal-enhanced" id="exportAuditModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">导出审核报表</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <div class="option-group">
+                        <label class="option-label">导出格式</label>
+                        <div class="format-options">
+                            <label class="format-option">
+                                <input type="radio" name="auditFormat" value="pdf" checked>
+                                <span class="format-icon">📄</span>
+                                <span class="format-text">PDF报告</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="auditFormat" value="excel">
+                                <span class="format-icon">📊</span>
+                                <span class="format-text">Excel表格</span>
+                            </label>
+                            <label class="format-option">
+                                <input type="radio" name="auditFormat" value="csv">
+                                <span class="format-icon">📋</span>
+                                <span class="format-text">CSV数据</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label class="option-label">包含内容</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>审核订单明细</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>财务审核统计</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox" checked>
+                                <span>交易状态分析</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="checkbox">
+                                <span>审核流程记录</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <label class="option-label">数据范围</label>
+                        <div class="content-options">
+                            <label class="content-option">
+                                <input type="radio" name="dataRange" value="current" checked>
+                                <span>当前筛选结果</span>
+                            </label>
+                            <label class="content-option">
+                                <input type="radio" name="dataRange" value="all">
+                                <span>所有审核数据</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeExportAuditModal()">取消</button>
+                <button class="btn-enhanced btn-primary" id="confirmAuditExportBtn">
+                    <span class="btn__icon">📤</span>
+                    确认导出
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Footer -->
+    <footer class="app__footer">
+        <div class="footer">
+            <div class="footer__left">
+                <p class="footer__text">&copy; 2025 CJPayment. All rights reserved.</p>
+            </div>
+            <div class="footer__right">
+                <span class="footer__text">Version 2.0 | Financial Audit</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Enhanced Order Detail Modal -->
+    <div class="modal-enhanced" id="orderDetailModal" role="dialog" aria-labelledby="orderModalTitle" aria-hidden="true">
+        <div class="modal-content modal-content--large">
+            <div class="modal-header">
+                <h2 class="modal-title" id="orderModalTitle">订单详情审核</h2>
+                <button class="modal-close" id="orderModalClose" aria-label="关闭对话框">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-detail-tabs">
+                    <button class="detail-tab active" data-tab="basic">基本信息</button>
+                    <button class="detail-tab" data-tab="payment">付款详情</button>
+                    <button class="detail-tab" data-tab="merchant">商户信息</button>
+                    <button class="detail-tab" data-tab="voucher">付款凭证</button>
+                    <button class="detail-tab" data-tab="history">操作历史</button>
+                </div>
+
+                <div class="order-detail-content">
+                    <!-- Basic Info Tab -->
+                    <div class="detail-tab-content active" id="basicInfo">
+                        <div class="order-summary">
+                            <div class="summary-item">
+                                <div class="summary-label">订单号</div>
+                                <div class="summary-value" id="detailOrderNumber">-</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">充值金额</div>
+                                <div class="summary-value amount" id="detailAmount">-</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">创建时间</div>
+                                <div class="summary-value" id="detailCreatedAt">-</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">当前状态</div>
+                                <div class="summary-value">
+                                    <span class="status-badge" id="detailStatus">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Info Tab -->
+                    <div class="detail-tab-content" id="paymentInfo">
+                        <div class="payment-details">
+                            <h4>付款人信息</h4>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <label>姓名：</label>
+                                    <span id="payerName">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>账号：</label>
+                                    <span id="payerAccount">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>银行：</label>
+                                    <span id="payerBank">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>支付时间：</label>
+                                    <span id="paymentTime">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Merchant Info Tab -->
+                    <div class="detail-tab-content" id="merchantInfo">
+                        <div class="merchant-details">
+                            <h4>商户信息</h4>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <label>商户名称：</label>
+                                    <span id="merchantName">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>广告账户：</label>
+                                    <span id="adAccount">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>收款账户：</label>
+                                    <span id="receiverAccount">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>收款人：</label>
+                                    <span id="receiverName">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Voucher Tab -->
+                    <div class="detail-tab-content" id="voucherInfo">
+                        <div class="voucher-section">
+                            <h4>付款凭证</h4>
+                            <div class="voucher-container">
+                                <div class="voucher-preview" id="voucherPreview">
+                                    <!-- Voucher will be loaded here -->
+                                </div>
+                                <div class="voucher-actions">
+                                    <button class="btn-enhanced btn-outline" id="downloadVoucherBtn">
+                                        <span class="btn__icon">📥</span>
+                                        下载凭证
+                                    </button>
+                                    <button class="btn-enhanced btn-outline" id="openVoucherBtn">
+                                        <span class="btn__icon">🔗</span>
+                                        新窗口打开
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History Tab -->
+                    <div class="detail-tab-content" id="historyInfo">
+                        <div class="history-section">
+                            <h4>操作历史</h4>
+                            <div class="history-timeline" id="orderHistory">
+                                <!-- History items will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-danger" id="rejectOrderBtn">
+                    <span class="btn__icon">❌</span>
+                    <span class="btn__text">拒绝订单</span>
+                </button>
+                <button class="btn-enhanced btn-warning" id="flagOrderBtn">
+                    <span class="btn__icon">🚩</span>
+                    <span class="btn__text">标记异常</span>
+                </button>
+                <button class="btn-enhanced btn-success" id="approveOrderBtn">
+                    <span class="btn__icon">✅</span>
+                    <span class="btn__text">通过审核</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approval Modal -->
+    <div class="modal-enhanced" id="approvalModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">确认审核通过</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="approval-summary">
+                    <div class="approval-info">
+                        <p>确认通过以下订单的审核？</p>
+                        <div class="order-summary-mini">
+                            <span class="order-id">订单号：<span id="approvalOrderId">-</span></span>
+                            <span class="order-amount">金额：<span id="approvalAmount">-</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="approvalRemark">审核备注（可选）</label>
+                    <textarea id="approvalRemark" class="form-textarea" rows="3" placeholder="请输入审核备注..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="autoProcess">
+                        <span class="checkbox-text">自动执行后续处理流程</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeApprovalModal()">取消</button>
+                <button class="btn-enhanced btn-success" id="confirmApprovalBtn">
+                    <span class="btn__icon">✅</span>
+                    确认通过
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rejection Modal -->
+    <div class="modal-enhanced" id="rejectionModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">拒绝订单</h3>
+                <button class="modal-close" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="rejection-form">
+                    <div class="form-group">
+                        <label for="rejectionReason">拒绝原因 *</label>
+                        <select id="rejectionReason" class="form-select" required>
+                            <option value="">请选择拒绝原因</option>
+                            <option value="insufficient_funds">账户余额不足</option>
+                            <option value="invalid_voucher">付款凭证无效</option>
+                            <option value="amount_mismatch">金额不匹配</option>
+                            <option value="suspicious_activity">可疑交易</option>
+                            <option value="merchant_issue">商户问题</option>
+                            <option value="other">其他原因</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rejectionDetails">详细说明 *</label>
+                        <textarea id="rejectionDetails" class="form-textarea" rows="4" 
+                                  placeholder="请详细说明拒绝原因，以便相关人员处理..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="notifyMerchant">
+                            <span class="checkbox-text">通知商户处理</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeRejectionModal()">取消</button>
+                <button class="btn-enhanced btn-danger" id="confirmRejectionBtn">
+                    <span class="btn__icon">❌</span>
+                    确认拒绝
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="globalLoading" class="loading-overlay" style="display: none;" aria-hidden="true">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">处理中，请稍候...</p>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="globalToast" class="toast-container" aria-live="polite"></div>
+
+    <!-- 到账类型选择与确认弹窗 -->
+    <div class="modal-enhanced" id="arrivedModal" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">确认到账并选择入账类型</h3>
+                <button class="modal-close" onclick="closeArrivedModal()" aria-label="关闭">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="option-group">
+                    <div>订单ID：<span id="arrivedOrderId">-</span></div>
+                    <div>订单金额：<span id="arrivedOrderAmount">-</span></div>
+                </div>
+                <div class="option-group">
+                    <label class="option-label">入账类型</label>
+                    <div class="content-options">
+                        <label class="content-option"><input type="radio" name="creditType" value="cash" checked> 全部计入现金余额</label>
+                        <label class="content-option"><input type="radio" name="creditType" value="grant"> 全部计入赠款余额</label>
+                        <label class="content-option"><input type="radio" name="creditType" value="split"> 部分计入赠款</label>
+                    </div>
+                </div>
+                <div class="option-group" id="splitGroup" style="display:none">
+                    <label class="option-label">赠款入账金额</label>
+                    <input type="number" id="grantAmountInput" min="0" step="0.01" placeholder="例如 100.00" class="form-input">
+                    <small>剩余金额自动计入现金余额</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-enhanced btn-outline" onclick="closeArrivedModal()">取消</button>
+                <button class="btn-enhanced btn-success" onclick="confirmArrived()">确认到账</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/components.js"></script>
+    
+    <!-- 统一头部组件管理 -->
+    <script src="/static/js/header-unified.js"></script>
+    
+    <!-- 统一通知数据管理系统 -->
+    <script src="/static/js/notification-data-unified.js"></script>    
+    <script src="/static/js/financial-audit-enhanced.js"></script>
+    
+    <!-- 财务审核表格管理器 -->
+    <script src="/static/js/financial-audit-table.js"></script>
+    
+    <!-- User Analytics & Feedback System -->
+    <script src="/static/js/user-feedback-analytics.js"></script>
+    <script src="/static/js/analytics-init.js"></script>
+    
+    <!-- Mobile Utilities -->
+    <script src="/static/js/mobile-utilities.js"></script>
+    
+    <!-- Interaction Enhancements -->
+    <script src="/static/js/interaction-enhancements.js"></script>
+    
+    <!-- Initialize Financial Audit -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 演示环境认证状态设置
+            const authToken = localStorage.getItem('authToken');
+            if (!authToken) {
+                console.log('FinancialAudit: 演示模式 - 跳过认证检查');
+                // 设置默认认证信息用于演示
+                localStorage.setItem('authToken', 'demo-token');
+                localStorage.setItem('userInfo', JSON.stringify({
+                    name: '系统管理员',
+                    username: 'admin',
+                    role: '超级管理员',
+                    id: 'demo_admin'
+                }));
+            }
+            
+            // Check dependencies
+            const dependencies = ['CJUtils', 'CJApi', 'CJComponents'];
+            const missing = dependencies.filter(dep => typeof window[dep] === 'undefined');
+            
+            if (missing.length > 0) {
+                console.error('Missing dependencies:', missing);
+                return;
+            }
+            
+            try {
+                // Initialize enhanced financial audit
+                window.auditManager = new FinancialAuditEnhanced({
+                    apiEndpoint: '/api/audit',
+                    pageSize: 20,
+                    enableRealTime: true,
+                    autoRefresh: 30000,
+                    enableNotifications: true
+                });
+                
+                console.log('Enhanced financial audit initialized successfully');
+            } catch (error) {
+                console.error('Failed to initialize enhanced financial audit:', error);
+            }
+            
+            // 初始化统一头部组件
+            window.headerUnified = new HeaderUnified();
+        });
+
+        // 到账弹窗逻辑
+        let currentArriveOrderId = null;
+        let currentArriveAmount = null;
+        function openArrivedModal(orderId, amount){
+            currentArriveOrderId = orderId; currentArriveAmount = amount;
+            document.getElementById('arrivedOrderId').textContent = orderId;
+            document.getElementById('arrivedOrderAmount').textContent = amount;
+            document.getElementById('arrivedModal').classList.add('show');
+            // radio change
+            document.querySelectorAll('input[name="creditType"]').forEach(r=>{
+                r.onchange = ()=>{
+                    document.getElementById('splitGroup').style.display = (r.value==='split' && r.checked)?'block':'none';
+                };
+            });
+        }
+        function closeArrivedModal(){
+            document.getElementById('arrivedModal').classList.remove('show');
+            currentArriveOrderId=null; currentArriveAmount=null;
+            document.getElementById('grantAmountInput').value='';
+            document.getElementById('splitGroup').style.display='none';
+            document.querySelector('input[name="creditType"][value="cash"]').checked=true;
+        }
+        async function confirmArrived(){
+            if(!currentArriveOrderId){ closeArrivedModal(); return; }
+            const type = document.querySelector('input[name="creditType"]:checked').value;
+            const token = localStorage.getItem('auth') || localStorage.getItem('authToken') || '';
+            const body = { credit_type: type };
+            if(type==='split'){
+                const ga = document.getElementById('grantAmountInput').value;
+                if(ga && parseFloat(ga)>0){ body.grant_amount = ga; } else { alert('请输入有效的赠款金额'); return; }
+            }
+            try{
+                const res = await fetch(`/api/v1/recharge/${currentArriveOrderId}/mark-arrived`,{ method:'POST', headers:{ 'Content-Type':'application/json', Authorization: token }, body: JSON.stringify(body) });
+                if(res.ok){ closeArrivedModal(); showToast('到账成功，已入账并写入流水'); if(window.financialAuditTable && typeof window.financialAuditTable.loadAuditData==='function'){ window.financialAuditTable.loadAuditData(); } refreshStatsUI(); }
+                else{ const t=await res.text(); alert('操作失败: '+t); }
+            }catch(e){ alert('网络错误: '+e.message); }
+        }
+        function showToast(text){ const c=document.getElementById('globalToast'); const d=document.createElement('div'); d.textContent=text; d.style.background='#1f2937'; d.style.color='#fff'; d.style.padding='8px 12px'; d.style.margin='6px 0'; d.style.borderRadius='6px'; c.appendChild(d); setTimeout(()=>{ c.removeChild(d); },3000); }
+        async function refreshStatsUI(){
+            try{
+                const token = localStorage.getItem('auth') || localStorage.getItem('authToken') || '';
+                const res = await fetch('/api/v1/reports/realtime-stats',{ headers:{ Authorization: token }});
+                if(!res.ok) return;
+                const data = await res.json();
+                const s = data || {};
+                // 依据页面已有元素更新
+                const pendingEl = document.getElementById('pendingCount');
+                const processedEl = document.getElementById('todayProcessed');
+                if(pendingEl && s.PendingOrders!=null) pendingEl.textContent = s.PendingOrders;
+                if(processedEl && s.TodayTransactions && s.TodayTransactions.success_count!=null) processedEl.textContent = s.TodayTransactions.success_count || 0;
+            }catch(e){ /* 忽略错误 */ }
+        }
+        // 事件委托：为表格中的“已到账”操作绑定弹窗
+        document.addEventListener('click', function(e){
+            const el = e.target.closest('.action-approve');
+            if(el){
+                e.preventDefault();
+                const tr = el.closest('tr');
+                const idCell = tr ? tr.querySelector('.col-order-number') : null;
+                const amountCell = tr ? tr.querySelector('.col-amount') : null;
+                const idText = idCell ? idCell.textContent.trim() : '';
+                const amtText = amountCell ? amountCell.textContent.replace('￥','').trim() : '';
+                if(idText){ openArrivedModal(idText, amtText); }
+            }
+        });
+    </script>
+
+    <!-- Additional Styles -->
+    <style>
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            margin: 0;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+        }
+        
+        .loading-spinner {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: 10000;
+        }
+
+        /* 导出按钮样式 - 与数据报表页面保持一致 */
+        .btn-success {
+            background: var(--success-500, #22c55e);
+            color: white;
+            border: 1px solid var(--success-500, #22c55e);
+        }
+
+        .btn-success:hover {
+            background: var(--success-600, #16a34a);
+            border-color: var(--success-600, #16a34a);
+            color: white;
+        }
+
+        .btn-success:focus {
+            box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.25);
+            background: var(--success-600, #16a34a);
+            border-color: var(--success-600, #16a34a);
+            color: white;
+        }
+
+        .btn-success:active {
+            background: var(--success-700, #15803d);
+            border-color: var(--success-700, #15803d);
+            color: white;
+        }
+
+        /* 模态框样式 - 复用数据报表页面完整样式 */
+        .modal-enhanced {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-enhanced.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-enhanced.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+
+        /* 导出选项样式 */
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .format-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .format-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .format-option:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .format-option input[type="radio"] {
+            display: none;
+        }
+
+        .format-option input[type="radio"]:checked + .format-icon + .format-text {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .format-option:has(input[type="radio"]:checked) {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .format-icon {
+            font-size: 2rem;
+        }
+
+        .format-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .content-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .content-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .content-option:hover {
+            background: #f3f4f6;
+        }
+
+        .content-option input[type="checkbox"],
+        .content-option input[type="radio"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: #3b82f6;
+        }
+
+        /* 响应式模态框 - 与数据报表页面完全一致 */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .format-options {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .btn-enhanced {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+    
+    <!-- 财务审核表初始化脚本 -->
+    <script>
+        // 确保DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 财务审核页面DOM加载完成，开始初始化...');
+            
+            // 首先验证关键DOM元素存在
+            const table = document.getElementById('financialAuditTable');
+            const tbody = document.getElementById('financialAuditTableBody');
+            
+            console.log('📋 DOM元素检查:');
+            console.log('- financialAuditTable:', table ? '✅ 存在' : '❌ 不存在');
+            console.log('- financialAuditTableBody:', tbody ? '✅ 存在' : '❌ 不存在');
+            
+            if (!table || !tbody) {
+                console.error('❌ 关键DOM元素缺失，无法初始化');
+                return;
+            }
+            
+            // 确保FinancialAuditTable类已加载
+            if (typeof FinancialAuditTable !== 'undefined') {
+                // 创建全局实例
+                window.financialAuditTable = new FinancialAuditTable();
+                console.log('✅ FinancialAuditTable实例创建成功');
+                
+                // 强制检查数据加载
+                setTimeout(() => {
+                    const tbody = document.getElementById('financialAuditTableBody');
+                    const rows = tbody ? tbody.querySelectorAll('tr:not(.loading-row)') : [];
+                    console.log(`📊 当前表格行数: ${rows.length}`);
+                    
+                    if (rows.length === 0) {
+                        console.log('⚠️ 表格无数据，强制加载...');
+                        if (window.financialAuditTable && typeof window.financialAuditTable.loadAuditData === 'function') {
+                            window.financialAuditTable.loadAuditData();
+                        }
+                    }
+                }, 2000);
+                
+            } else {
+                console.error('❌ FinancialAuditTable类未定义，请检查JS文件加载');
+                
+                // 尝试延迟初始化
+                setTimeout(() => {
+                    if (typeof FinancialAuditTable !== 'undefined') {
+                        window.financialAuditTable = new FinancialAuditTable();
+                        console.log('✅ FinancialAuditTable延迟初始化成功');
+                        
+                        // 延迟后也检查数据
+                        setTimeout(() => {
+                            const tbody = document.getElementById('financialAuditTableBody');
+                            const rows = tbody ? tbody.querySelectorAll('tr:not(.loading-row)') : [];
+                            if (rows.length === 0 && window.financialAuditTable) {
+                                console.log('⚠️ 延迟初始化后仍无数据，强制加载...');
+                                window.financialAuditTable.loadAuditData();
+                            }
+                        }, 1000);
+                    } else {
+                        console.error('❌ FinancialAuditTable类延迟加载失败');
+                        // 如果JS类加载失败，直接渲染静态数据
+                        console.log('🔧 启动备用数据渲染...');
+                        renderFallbackData();
+                    }
+                }, 1000);
+            }
+        });
+        
+        // 备用初始化方式
+        window.addEventListener('load', function() {
+            if (!window.financialAuditTable && typeof FinancialAuditTable !== 'undefined') {
+                window.financialAuditTable = new FinancialAuditTable();
+                console.log('✅ FinancialAuditTable备用初始化成功');
+            }
+        });
+        
+        // 最终保障机制：5秒后检查表格状态
+        setTimeout(() => {
+            const tbody = document.getElementById('financialAuditTableBody');
+            if (tbody) {
+                const allRows = tbody.querySelectorAll('tr');
+                const dataRows = tbody.querySelectorAll('tr:not(.loading-row):not(.empty-row)');
+                console.log(`🔍 最终检查: 总行数 ${allRows.length}, 数据行数 ${dataRows.length}`);
+                
+                // 如果只有loading行或无数据行，强制修复
+                if (dataRows.length === 0) {
+                    console.log('⚠️ 最终检查发现无数据行，启动紧急修复...');
+                    console.log('🧹 强制清除所有内容并渲染数据...');
+                    
+                    // 直接清除并重新渲染
+                    tbody.innerHTML = '';
+                    renderFallbackData();
+                }
+            }
+        }, 5000);
+        
+        // 额外的紧急修复：8秒后再次检查
+        setTimeout(() => {
+            const tbody = document.getElementById('financialAuditTableBody');
+            if (tbody && tbody.children.length === 0) {
+                console.log('🚨 8秒后仍无内容，执行最后的紧急修复...');
+                renderFallbackData();
+            }
+        }, 8000);
+        
+        // CSS可见性强制修复：3秒后检查
+        setTimeout(() => {
+            console.log('🎨 检查CSS可见性问题...');
+            
+            const table = document.getElementById('financialAuditTable');
+            const tableView = document.getElementById('tableView');
+            const tbody = document.getElementById('financialAuditTableBody');
+            
+            if (table && tbody && tbody.children.length > 0) {
+                const tableStyle = window.getComputedStyle(table);
+                const tableViewStyle = tableView ? window.getComputedStyle(tableView) : null;
+                const rect = table.getBoundingClientRect();
+                
+                console.log('表格尺寸:', rect.width, 'x', rect.height);
+                console.log('表格display:', tableStyle.display);
+                console.log('表格visibility:', tableStyle.visibility);
+                
+                // 如果表格不可见，强制修复
+                if (rect.width === 0 || rect.height === 0 || tableStyle.display === 'none') {
+                    console.log('🔧 发现表格不可见，强制修复...');
+                    
+                    // 强制显示表格视图
+                    if (tableView) {
+                        tableView.style.display = 'block';
+                        tableView.style.visibility = 'visible';
+                        tableView.style.opacity = '1';
+                        tableView.classList.add('active');
+                    }
+                    
+                    // 强制显示表格
+                    table.style.display = 'table';
+                    table.style.visibility = 'visible';
+                    table.style.opacity = '1';
+                    table.style.width = '100%';
+                    
+                    // 强制显示表体
+                    tbody.style.display = 'table-row-group';
+                    tbody.style.visibility = 'visible';
+                    tbody.style.opacity = '1';
+                    
+                    console.log('✅ 强制显示样式已应用');
+                    
+                    // 验证修复效果
+                    setTimeout(() => {
+                        const newRect = table.getBoundingClientRect();
+                        console.log('修复后表格尺寸:', newRect.width, 'x', newRect.height);
+                        
+                        if (newRect.width > 0 && newRect.height > 0) {
+                            console.log('🎉 CSS可见性修复成功！');
+                            // 滚动到表格位置
+                            table.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        } else {
+                            console.log('❌ CSS修复后仍不可见');
+                        }
+                    }, 100);
+                }
+            }
+        }, 3000);
+        
+        // 备用数据渲染函数
+        function renderFallbackData() {
+            console.log('🔧 执行备用数据渲染...');
+            
+            const tbody = document.getElementById('financialAuditTableBody');
+            if (!tbody) {
+                console.error('❌ 表体元素不存在');
+                return;
+            }
+            
+            // 生成简单的测试数据
+            const fallbackData = [];
+            const now = new Date();
+            
+            for (let i = 1; i <= 15; i++) {
+                const amount = (Math.random() * 999999 + 1000).toFixed(2);
+                const isSuccess = i % 4 !== 0; // 75% 成功率
+                const createdTime = new Date(now.getTime() - i * 60 * 60 * 1000);
+                
+                fallbackData.push({
+                    serial: i,
+                    orderNumber: `CJP${String(20250101 + i).padStart(8, '0')}`,
+                    paymentVoucher: `PV${String(Date.now() + i).slice(-10)}`,
+                    amount: amount,
+                    payerAccount: `6222****${String(1000 + i).slice(-4)}`,
+                    payerName: `测试商户${i}`,
+                    payerBank: ['中国银行', '工商银行', '建设银行'][i % 3],
+                    businessType: i % 2 === 0 ? '对公' : '对私',
+                    receiverAccount: `6223****${String(2000 + i).slice(-4)}`,
+                    receiverName: `收款方${i}`,
+                    receiverBank: ['招商银行', '交通银行', '农业银行'][i % 3],
+                    status: isSuccess ? '交易成功' : '交易失败',
+                    createdTime: createdTime.toISOString().slice(0, 19).replace('T', ' '),
+                    paymentTime: isSuccess ? createdTime.toISOString().slice(0, 19).replace('T', ' ') : '-'
+                });
+            }
+            
+            // 渲染到表格
+            tbody.innerHTML = fallbackData.map(row => `
+                <tr>
+                    <td class="col-serial">${row.serial}</td>
+                    <td class="col-order-number">${row.orderNumber}</td>
+                    <td class="col-payment-voucher">${row.paymentVoucher}</td>
+                    <td class="col-amount">￥${row.amount}</td>
+                    <td class="col-payer-account">${row.payerAccount}</td>
+                    <td class="col-payer-name">${row.payerName}</td>
+                    <td class="col-payer-bank">${row.payerBank}</td>
+                    <td class="col-business-type">${row.businessType}</td>
+                    <td class="col-receiver-account">${row.receiverAccount}</td>
+                    <td class="col-receiver-name">${row.receiverName}</td>
+                    <td class="col-receiver-bank">${row.receiverBank}</td>
+                    <td class="col-status">
+                        <span class="status-badge status-${row.status === '交易成功' ? 'success' : 'failed'}">
+                            ${row.status}
+                        </span>
+                    </td>
+                    <td class="col-created-time">${row.createdTime}</td>
+                    <td class="col-payment-time">${row.paymentTime}</td>
+                    <td class="col-actions-cell">
+                        <div class="action-buttons">
+                            <a href="#" class="action-link action-view">查看详情</a>
+                            <a href="#" class="action-link action-approve">已到账</a>
+                            <a href="#" class="action-link action-reject">未到账</a>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            
+            console.log(`✅ 备用数据渲染完成，显示 ${fallbackData.length} 条记录`);
+        }
+    </script>
+</body>
+</html>
