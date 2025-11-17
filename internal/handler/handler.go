@@ -228,7 +228,63 @@ func (h *Handler) RegisterRoutes(router *gin.Engine) {
 		c.Header("Content-Type", "text/html; charset=utf-8")
 		c.File("./web/templates/form_management.html")
 	})
-	
+
+	// Role management pages
+	router.GET("/role-management", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/role_management.html")
+	})
+	router.GET("/role_management", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/role_management.html")
+	})
+
+	// Permission management pages
+	router.GET("/permission-groups", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/permission_groups.html")
+	})
+	router.GET("/permission_groups", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/permission_groups.html")
+	})
+	router.GET("/permission-assignment", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/permission_assignment.html")
+	})
+	router.GET("/permission_assignment", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/permission_assignment.html")
+	})
+
+	// Contract archive page
+	router.GET("/contract-archive", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/contract_archive.html")
+	})
+	router.GET("/contract_archive", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/contract_archive.html")
+	})
+
+	// Order management pages
+	router.GET("/recharge-orders", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/recharge_orders.html")
+	})
+	router.GET("/recharge_orders", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/recharge_orders.html")
+	})
+	router.GET("/transfer-orders", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/transfer_orders.html")
+	})
+	router.GET("/transfer_orders", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		c.File("./web/templates/transfer_orders.html")
+	})
+
 	// System management pages
 	router.GET("/system_management", h.SystemManagementPage)
 	router.GET("/system-management", h.SystemManagementPage) // Add hyphen version

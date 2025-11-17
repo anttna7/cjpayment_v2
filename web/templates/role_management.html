@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>角色管理 - CJPayment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/css/admin-layout.css">
+  <style>
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f8fafc}
+    .page-header{background:#fff;padding:1.5rem;border-radius:8px;margin-bottom:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+    .page-title{font-size:1.5rem;font-weight:600;margin:0 0 0.5rem 0;color:#1e293b}
+    .page-description{color:#64748b;font-size:0.875rem;margin:0}
+    .scope-tabs{display:flex;gap:0.5rem;margin-bottom:1.5rem}
+    .scope-tab{padding:0.625rem 1.25rem;border:2px solid #e2e8f0;background:#fff;border-radius:6px;cursor:pointer;font-weight:500;color:#64748b;transition:all 0.2s}
+    .scope-tab:hover{border-color:#cbd5e1;color:#475569}
+    .scope-tab.active{border-color:#3b82f6;background:#3b82f6;color:#fff}
+    .scope-tab .icon{margin-right:0.5rem}
+    .toolbar{display:flex;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap}
+    input,select,button{padding:0.625rem 1rem;border:1px solid #e2e8f0;border-radius:6px;font-size:0.875rem}
+    input,select{background:#fff;flex:1;min-width:200px}
+    input:focus,select:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.1)}
+    button{background:#3b82f6;color:#fff;border:none;cursor:pointer;font-weight:500;transition:all 0.2s;white-space:nowrap}
+    button:hover{background:#2563eb}
+    button.secondary{background:#fff;color:#64748b;border:1px solid #e2e8f0}
+    button.secondary:hover{background:#f8fafc;color:#475569}
+    button.danger{background:#ef4444}
+    button.danger:hover{background:#dc2626}
+    .card{background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1);overflow:hidden}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:1rem;text-align:left;border-bottom:1px solid #e2e8f0}
+    th{background:#f8fafc;font-weight:600;color:#475569;font-size:0.875rem;text-transform:uppercase;letter-spacing:0.05em}
+    td{color:#1e293b}
+    tr:last-child td{border-bottom:none}
+    tr:hover{background:#f8fafc}
+    .badge{display:inline-block;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:600}
+    .badge-platform{background:#dbeafe;color:#1e40af}
+    .badge-tenant{background:#dcfce7;color:#166534}
+    .badge-admin{background:#fef3c7;color:#92400e}
+    .btn-group{display:flex;gap:0.5rem}
+    .btn-sm{padding:0.375rem 0.75rem;font-size:0.8125rem}
+    .modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center}
+    .modal.show{display:flex}
+    .modal-content{background:#fff;border-radius:12px;width:90%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1)}
+    .modal-header{padding:1.5rem;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center}
+    .modal-title{font-size:1.25rem;font-weight:600;margin:0;color:#1e293b}
+    .modal-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:#94a3b8;padding:0;width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+    .modal-close:hover{background:#f1f5f9;color:#64748b}
+    .modal-body{padding:1.5rem}
+    .form-group{margin-bottom:1.25rem}
+    .form-label{display:block;margin-bottom:0.5rem;font-weight:500;color:#475569;font-size:0.875rem}
+    .form-control{width:100%;padding:0.625rem;border:1px solid #e2e8f0;border-radius:6px;font-size:0.875rem}
+    .form-control:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.1)}
+    textarea.form-control{resize:vertical;min-height:80px}
+    .permissions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;max-height:300px;overflow-y:auto;padding:0.5rem;background:#f8fafc;border-radius:6px}
+    .permission-item{display:flex;align-items:center;gap:0.5rem;padding:0.5rem;background:#fff;border-radius:4px;cursor:pointer;transition:all 0.2s}
+    .permission-item:hover{background:#f1f5f9}
+    .permission-item input[type="checkbox"]{cursor:pointer}
+    .empty-state{text-align:center;padding:3rem;color:#94a3b8}
+    .empty-state-icon{font-size:3rem;margin-bottom:1rem}
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h1 class="page-title">角色管理</h1>
+      <p class="page-description">管理系统角色和权限分配，支持平台角色和租户角色</p>
+    </div>
+
+    <div class="scope-tabs">
+      <button class="scope-tab active" data-scope="platform">
+        <span class="icon">⚡</span>平台角色
+      </button>
+      <button class="scope-tab" data-scope="tenant">
+        <span class="icon">🏢</span>租户角色
+      </button>
+    </div>
+
+    <div class="toolbar">
+      <input id="searchInput" placeholder="搜索角色名称或描述..." style="max-width:300px">
+      <select id="statusFilter" style="max-width:150px">
+        <option value="">全部状态</option>
+        <option value="active">启用</option>
+        <option value="disabled">禁用</option>
+      </select>
+      <button onclick="loadRoles()">🔍 搜索</button>
+      <button onclick="showCreateModal()">➕ 新增角色</button>
+    </div>
+
+    <div class="card">
+      <table id="roleTable">
+        <thead>
+          <tr>
+            <th>角色名称</th>
+            <th>范围</th>
+            <th>类型</th>
+            <th>权限数量</th>
+            <th>创建时间</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="roleList">
+          <tr>
+            <td colspan="7" class="empty-state">
+              <div class="empty-state-icon">📋</div>
+              <div>暂无角色数据</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 创建/编辑角色模态框 -->
+  <div class="modal" id="roleModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">新增角色</h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="roleForm">
+          <input type="hidden" id="roleId">
+          <div class="form-group">
+            <label class="form-label">角色名称 *</label>
+            <input type="text" id="roleName" class="form-control" placeholder="请输入角色名称" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">角色范围 *</label>
+            <select id="roleScope" class="form-control" required>
+              <option value="platform">平台角色</option>
+              <option value="tenant">租户角色</option>
+            </select>
+          </div>
+          <div class="form-group" id="tenantGroup" style="display:none">
+            <label class="form-label">所属租户</label>
+            <select id="tenantId" class="form-control">
+              <option value="">选择租户...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">角色描述</label>
+            <textarea id="roleDescription" class="form-control" placeholder="请输入角色描述"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">权限分配</label>
+            <div class="permissions-grid" id="permissionsGrid">
+              <div style="grid-column:1/-1;text-align:center;color:#94a3b8;padding:2rem">加载中...</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1.5rem">
+            <button type="button" class="secondary" onclick="closeModal()">取消</button>
+            <button type="submit">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = '/api/v1';
+    const auth = () => ({Authorization: localStorage.getItem('auth')});
+    let currentScope = 'platform';
+    let allPermissions = [];
+
+    // 切换范围标签
+    document.querySelectorAll('.scope-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.scope-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        currentScope = this.dataset.scope;
+        loadRoles();
+      });
+    });
+
+    // 加载角色列表
+    async function loadRoles() {
+      const search = document.getElementById('searchInput').value;
+      const status = document.getElementById('statusFilter').value;
+      let url = `${API_BASE}/roles?scope=${currentScope}`;
+      if(search) url += `&search=${encodeURIComponent(search)}`;
+      if(status) url += `&status=${status}`;
+
+      const res = await fetch(url, {headers: auth()});
+      const data = await res.json();
+      const tbody = document.getElementById('roleList');
+      tbody.innerHTML = '';
+
+      const roles = data.data || data.roles || [];
+      if(roles.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="empty-state-icon">📋</div><div>暂无角色数据</div></td></tr>';
+        return;
+      }
+
+      roles.forEach(role => {
+        const tr = document.createElement('tr');
+        const scopeBadge = role.scope === 'platform' ? 'badge-platform' : 'badge-tenant';
+        const typeBadge = role.is_admin ? 'badge-admin' : 'badge';
+        tr.innerHTML = `
+          <td><strong>${role.name}</strong></td>
+          <td><span class="badge ${scopeBadge}">${role.scope === 'platform' ? '平台' : '租户'}</span></td>
+          <td><span class="badge ${typeBadge}">${role.is_admin ? '管理员' : '普通角色'}</span></td>
+          <td>${role.permission_count || 0} 项</td>
+          <td>${new Date(role.created_at).toLocaleDateString('zh-CN')}</td>
+          <td>${role.is_active ? '✅ 启用' : '❌ 禁用'}</td>
+          <td>
+            <div class="btn-group">
+              <button class="secondary btn-sm" onclick="editRole('${role.id}')">✏️ 编辑</button>
+              <button class="danger btn-sm" onclick="deleteRole('${role.id}', '${role.name}')">🗑️ 删除</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // 加载权限列表
+    async function loadPermissions() {
+      if(allPermissions.length > 0) {
+        renderPermissions();
+        return;
+      }
+
+      const res = await fetch(`${API_BASE}/permissions`, {headers: auth()});
+      const data = await res.json();
+      allPermissions = data.data || data.permissions || [];
+      renderPermissions();
+    }
+
+    // 渲染权限选择器
+    function renderPermissions(selectedIds = []) {
+      const grid = document.getElementById('permissionsGrid');
+      grid.innerHTML = '';
+
+      if(allPermissions.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#94a3b8;padding:2rem">暂无权限数据</div>';
+        return;
+      }
+
+      allPermissions.forEach(perm => {
+        const item = document.createElement('div');
+        item.className = 'permission-item';
+        const checked = selectedIds.includes(perm.id) ? 'checked' : '';
+        item.innerHTML = `
+          <input type="checkbox" id="perm_${perm.id}" value="${perm.id}" ${checked}>
+          <label for="perm_${perm.id}" style="cursor:pointer;flex:1">${perm.name}</label>
+        `;
+        grid.appendChild(item);
+      });
+    }
+
+    // 显示创建模态框
+    function showCreateModal() {
+      document.getElementById('modalTitle').textContent = '新增角色';
+      document.getElementById('roleForm').reset();
+      document.getElementById('roleId').value = '';
+      document.getElementById('roleScope').value = currentScope;
+      toggleTenantGroup();
+      loadPermissions();
+      document.getElementById('roleModal').classList.add('show');
+    }
+
+    // 编辑角色
+    async function editRole(id) {
+      const res = await fetch(`${API_BASE}/roles/${id}`, {headers: auth()});
+      const result = await res.json();
+      const role = result.data || result.role;
+
+      document.getElementById('modalTitle').textContent = '编辑角色';
+      document.getElementById('roleId').value = role.id;
+      document.getElementById('roleName').value = role.name;
+      document.getElementById('roleScope').value = role.scope;
+      document.getElementById('roleDescription').value = role.description || '';
+      if(role.tenant_id) document.getElementById('tenantId').value = role.tenant_id;
+
+      toggleTenantGroup();
+      await loadPermissions();
+
+      // 获取角色权限
+      const permRes = await fetch(`${API_BASE}/roles/${id}/permissions`, {headers: auth()});
+      const permData = await permRes.json();
+      const permIds = (permData.data || permData.permissions || []).map(p => p.id);
+      renderPermissions(permIds);
+
+      document.getElementById('roleModal').classList.add('show');
+    }
+
+    // 删除角色
+    async function deleteRole(id, name) {
+      if(!confirm(`确定要删除角色"${name}"吗？此操作不可恢复。`)) return;
+
+      const res = await fetch(`${API_BASE}/roles/${id}`, {
+        method: 'DELETE',
+        headers: auth()
+      });
+
+      if(res.ok) {
+        alert('删除成功');
+        loadRoles();
+      } else {
+        alert('删除失败');
+      }
+    }
+
+    // 提交表单
+    document.getElementById('roleForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const id = document.getElementById('roleId').value;
+      const body = {
+        name: document.getElementById('roleName').value,
+        scope: document.getElementById('roleScope').value,
+        description: document.getElementById('roleDescription').value || null,
+        tenant_id: document.getElementById('roleScope').value === 'tenant' ? document.getElementById('tenantId').value : null,
+        permission_ids: Array.from(document.querySelectorAll('#permissionsGrid input:checked')).map(cb => cb.value)
+      };
+
+      const url = id ? `${API_BASE}/roles/${id}` : `${API_BASE}/roles`;
+      const method = id ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method: method,
+        headers: {'Content-Type': 'application/json', ...auth()},
+        body: JSON.stringify(body)
+      });
+
+      if(res.ok) {
+        alert(id ? '更新成功' : '创建成功');
+        closeModal();
+        loadRoles();
+      } else {
+        alert(id ? '更新失败' : '创建失败');
+      }
+    });
+
+    // 关闭模态框
+    function closeModal() {
+      document.getElementById('roleModal').classList.remove('show');
+    }
+
+    // 切换租户组显示
+    document.getElementById('roleScope').addEventListener('change', toggleTenantGroup);
+
+    function toggleTenantGroup() {
+      const scope = document.getElementById('roleScope').value;
+      document.getElementById('tenantGroup').style.display = scope === 'tenant' ? 'block' : 'none';
+    }
+
+    // 初始化加载
+    loadRoles();
+  </script>
+</body>
+</html>

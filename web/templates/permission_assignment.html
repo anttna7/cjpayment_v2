@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>权限分配 - CJPayment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/css/admin-layout.css">
+  <style>
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f8fafc}
+    .page-header{background:#fff;padding:1.5rem;border-radius:8px;margin-bottom:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+    .page-title{font-size:1.5rem;font-weight:600;margin:0 0 0.5rem 0}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+    .card{background:#fff;border-radius:8px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+    .card-title{font-size:1.125rem;font-weight:600;margin:0 0 1rem 0}
+    select,button{padding:0.625rem 1rem;border:1px solid #e2e8f0;border-radius:6px}
+    button{background:#3b82f6;color:#fff;border:none;cursor:pointer;transition:all 0.2s}
+    button:hover{background:#2563eb}
+    .list-item{padding:0.75rem;border:1px solid #e2e8f0;border-radius:6px;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center}
+    .list-item:hover{background:#f8fafc}
+  </style>
+</head>
+<body>
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h1 class="page-title">权限分配</h1>
+      <p style="color:#64748b;font-size:0.875rem;margin:0">为用户、角色和部门分配权限</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3 class="card-title">用户权限分配</h3>
+        <select id="userSelect" style="width:100%;margin-bottom:1rem">
+          <option>选择用户...</option>
+        </select>
+        <div id="userPermissions"></div>
+        <button style="width:100%;margin-top:1rem">保存用户权限</button>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">部门权限分配</h3>
+        <select id="deptSelect" style="width:100%;margin-bottom:1rem">
+          <option>选择部门...</option>
+        </select>
+        <div id="deptPermissions"></div>
+        <button style="width:100%;margin-top:1rem">保存部门权限</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

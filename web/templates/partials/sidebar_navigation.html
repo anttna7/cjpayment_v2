@@ -1,0 +1,286 @@
+<!-- 管理后台侧边栏导航 -->
+<div class="admin-layout">
+    <!-- 侧边栏 -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <h1 class="logo-text">CJPayment</h1>
+                <span class="logo-badge">v2.0</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+                <!-- 仪表台 -->
+                <li class="nav-item">
+                    <a href="/dashboard" class="nav-link" data-page="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">仪表台</span>
+                    </a>
+                </li>
+
+                <!-- 角色管理 -->
+                <li class="nav-item has-submenu">
+                    <a href="#" class="nav-link" data-submenu="roles">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">角色管理</span>
+                        <span class="nav-arrow">▼</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/role-management?scope=platform" class="submenu-link">
+                            <span class="submenu-icon">⚡</span>
+                            <span class="submenu-text">平台角色</span>
+                        </a></li>
+                        <li><a href="/role-management?scope=tenant" class="submenu-link">
+                            <span class="submenu-icon">🏢</span>
+                            <span class="submenu-text">租户角色</span>
+                        </a></li>
+                    </ul>
+                </li>
+
+                <!-- 权限管理 -->
+                <li class="nav-item has-submenu">
+                    <a href="#" class="nav-link" data-submenu="permissions">
+                        <span class="nav-icon">🔐</span>
+                        <span class="nav-text">权限管理</span>
+                        <span class="nav-arrow">▼</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/permission-groups" class="submenu-link">
+                            <span class="submenu-icon">📦</span>
+                            <span class="submenu-text">权限组</span>
+                        </a></li>
+                        <li><a href="/permission-assignment" class="submenu-link">
+                            <span class="submenu-icon">🔗</span>
+                            <span class="submenu-text">权限分配</span>
+                        </a></li>
+                        <li><a href="/department-management" class="submenu-link">
+                            <span class="submenu-icon">🏛️</span>
+                            <span class="submenu-text">部门管理</span>
+                        </a></li>
+                    </ul>
+                </li>
+
+                <!-- 客户管理 -->
+                <li class="nav-item has-submenu">
+                    <a href="#" class="nav-link" data-submenu="customers">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-text">客户管理</span>
+                        <span class="nav-arrow">▼</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/customer-management" class="submenu-link">
+                            <span class="submenu-icon">📋</span>
+                            <span class="submenu-text">客户信息</span>
+                        </a></li>
+                        <li><a href="/contract-archive" class="submenu-link">
+                            <span class="submenu-icon">📄</span>
+                            <span class="submenu-text">合同归档</span>
+                        </a></li>
+                    </ul>
+                </li>
+
+                <!-- 订单管理 -->
+                <li class="nav-item has-submenu">
+                    <a href="#" class="nav-link" data-submenu="orders">
+                        <span class="nav-icon">📦</span>
+                        <span class="nav-text">订单管理</span>
+                        <span class="nav-arrow">▼</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/recharge-orders" class="submenu-link">
+                            <span class="submenu-icon">💰</span>
+                            <span class="submenu-text">充值订单</span>
+                        </a></li>
+                        <li><a href="/settlement-order-management" class="submenu-link">
+                            <span class="submenu-icon">🧾</span>
+                            <span class="submenu-text">结算订单</span>
+                        </a></li>
+                        <li><a href="/transfer-orders" class="submenu-link">
+                            <span class="submenu-icon">💸</span>
+                            <span class="submenu-text">转账订单</span>
+                        </a></li>
+                    </ul>
+                </li>
+
+                <!-- 财务管理 -->
+                <li class="nav-item has-submenu">
+                    <a href="#" class="nav-link" data-submenu="finance">
+                        <span class="nav-icon">💵</span>
+                        <span class="nav-text">财务管理</span>
+                        <span class="nav-arrow">▼</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/financial-audit" class="submenu-link">
+                            <span class="submenu-icon">✅</span>
+                            <span class="submenu-text">充值审核</span>
+                        </a></li>
+                        <li><a href="/invoice-management" class="submenu-link">
+                            <span class="submenu-icon">🧾</span>
+                            <span class="submenu-text">发票管理</span>
+                        </a></li>
+                    </ul>
+                </li>
+
+                <!-- 表单管理 -->
+                <li class="nav-item">
+                    <a href="/form-management" class="nav-link" data-page="forms">
+                        <span class="nav-icon">📝</span>
+                        <span class="nav-text">表单管理</span>
+                    </a>
+                </li>
+
+                <!-- 数据报表 -->
+                <li class="nav-item">
+                    <a href="/report-dashboard" class="nav-link" data-page="reports">
+                        <span class="nav-icon">📈</span>
+                        <span class="nav-text">数据报表</span>
+                    </a>
+                </li>
+
+                <!-- 系统管理 -->
+                <li class="nav-item">
+                    <a href="/admin" class="nav-link" data-page="system">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-text">系统管理</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">👤</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">管理员</div>
+                    <div class="user-role" id="userRole">超级管理员</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <span>🚪</span>
+                <span>退出</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- 主内容区域 -->
+    <main class="main-content" id="mainContent">
+        <header class="top-bar">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="breadcrumb" id="breadcrumb">
+                <span class="breadcrumb-item">首页</span>
+            </div>
+            <div class="top-bar-actions">
+                <button class="action-btn" title="通知">
+                    <span class="icon">🔔</span>
+                    <span class="badge">3</span>
+                </button>
+                <button class="action-btn" title="设置">
+                    <span class="icon">⚙️</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="content-wrapper" id="contentWrapper">
+            <!-- 页面内容将在这里加载 -->
+        </div>
+    </main>
+</div>
+
+<script>
+// 侧边栏交互脚本
+(function() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navItems = document.querySelectorAll('.nav-item.has-submenu');
+
+    // 侧边栏折叠/展开
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+    }
+
+    // 移动端菜单
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('mobile-open');
+        });
+    }
+
+    // 恢复侧边栏状态
+    if (localStorage.getItem('sidebarCollapsed') === 'true') {
+        sidebar.classList.add('collapsed');
+    }
+
+    // 子菜单展开/收起
+    navItems.forEach(item => {
+        const link = item.querySelector('.nav-link');
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // 关闭其他展开的菜单
+            navItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('open');
+                }
+            });
+
+            // 切换当前菜单
+            item.classList.toggle('open');
+        });
+    });
+
+    // 高亮当前页面
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.nav-link, .submenu-link').forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('active');
+            // 如果是子菜单项，展开父菜单
+            const parentItem = link.closest('.has-submenu');
+            if (parentItem) {
+                parentItem.classList.add('open');
+            }
+        }
+    });
+
+    // 更新面包屑
+    function updateBreadcrumb() {
+        const breadcrumb = document.getElementById('breadcrumb');
+        const activeLink = document.querySelector('.nav-link.active, .submenu-link.active');
+        if (activeLink && breadcrumb) {
+            const text = activeLink.querySelector('.nav-text, .submenu-text');
+            if (text) {
+                breadcrumb.innerHTML = `<span class="breadcrumb-item">首页</span><span class="breadcrumb-separator">/</span><span class="breadcrumb-item">${text.textContent}</span>`;
+            }
+        }
+    }
+    updateBreadcrumb();
+
+    // 退出登录
+    window.logout = function() {
+        if (confirm('确定要退出登录吗？')) {
+            localStorage.removeItem('auth');
+            window.location.href = '/login';
+        }
+    };
+
+    // 点击主内容区域关闭移动端菜单
+    document.getElementById('mainContent')?.addEventListener('click', function() {
+        if (sidebar.classList.contains('mobile-open')) {
+            sidebar.classList.remove('mobile-open');
+        }
+    });
+})();
+</script>
