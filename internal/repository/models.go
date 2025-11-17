@@ -96,6 +96,8 @@ type Role struct {
 	Code        string     `json:"code" db:"code"`
 	Description *string    `json:"description" db:"description"`
 	IsSystem    bool       `json:"is_system" db:"is_system"`
+	Scope       string     `json:"scope" db:"scope"`           // platform, tenant
+	TenantID    *uuid.UUID `json:"tenant_id" db:"tenant_id"`   // 租户ID，仅对租户角色有效
 	CreatedAt   time.Time  `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time  `json:"updated_at" db:"updated_at"`
 	CreatedBy   *uuid.UUID `json:"created_by" db:"created_by"`
@@ -1572,4 +1574,264 @@ type PayerCreditScore struct {
 	
 	CreatedAt            time.Time  `json:"created_at" db:"created_at"`
 	UpdatedAt            time.Time  `json:"updated_at" db:"updated_at"`
+}
+
+// Department 部门模型
+type Department struct {
+	ID          uuid.UUID  `json:"id" db:"id"`
+	TenantID    uuid.UUID  `json:"tenant_id" db:"tenant_id"`
+	Name        string     `json:"name" db:"name"`
+	Description *string    `json:"description" db:"description"`
+	CreatedAt   time.Time  `json:"created_at" db:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at" db:"updated_at"`
+}
+
+// UserDepartment 用户-部门关联模型
+type UserDepartment struct {
+	ID           uuid.UUID `json:"id" db:"id"`
+	UserID       uuid.UUID `json:"user_id" db:"user_id"`
+	DepartmentID uuid.UUID `json:"department_id" db:"department_id"`
+	AssignedAt   time.Time `json:"assigned_at" db:"assigned_at"`
+}
+
+// RoleHierarchy 角色层级模型
+type RoleHierarchy struct {
+	ID           uuid.UUID `json:"id" db:"id"`
+	ChildRoleID  uuid.UUID `json:"child_role_id" db:"child_role_id"`
+	ParentRoleID uuid.UUID `json:"parent_role_id" db:"parent_role_id"`
+	Scope        string    `json:"scope" db:"scope"` // platform, tenant, department
+	CreatedAt    time.Time `json:"created_at" db:"created_at"`
+}
+
+// DepartmentRole 部门-角色关联模型
+type DepartmentRole struct {
+	ID           uuid.UUID `json:"id" db:"id"`
+	DepartmentID uuid.UUID `json:"department_id" db:"department_id"`
+	RoleID       uuid.UUID `json:"role_id" db:"role_id"`
+	CreatedAt    time.Time `json:"created_at" db:"created_at"`
+}
+
+// Invoice 发票模型
+type Invoice struct {
+	ID               uuid.UUID       `json:"id" db:"id"`
+	TenantID         uuid.UUID       `json:"tenant_id" db:"tenant_id"`
+	CustomerID       uuid.UUID       `json:"customer_id" db:"customer_id"`
+	InvoiceNumber    string          `json:"invoice_number" db:"invoice_number"`
+	OrderID          *uuid.UUID      `json:"order_id" db:"order_id"`
+
+	// 发票信息
+	InvoiceType      string          `json:"invoice_type" db:"invoice_type"`     // vat_normal, vat_special, electronic, paper
+	InvoiceTitle     string          `json:"invoice_title" db:"invoice_title"`
+	TaxNumber        string          `json:"tax_number" db:"tax_number"`
+
+	// 金额信息
+	Amount           decimal.Decimal `json:"amount" db:"amount"`
+	TaxAmount        decimal.Decimal `json:"tax_amount" db:"tax_amount"`
+	TotalAmount      decimal.Decimal `json:"total_amount" db:"total_amount"`
+
+	// 发票状态
+	Status           string          `json:"status" db:"status"` // pending, issued, sent, confirmed, cancelled
+
+	// 发票文件
+	FileURL          *string         `json:"file_url" db:"file_url"`
+	FileName         *string         `json:"file_name" db:"file_name"`
+	FileSize         *int64          `json:"file_size" db:"file_size"`
+
+	// 申请和开具信息
+	ApplicantID      *uuid.UUID      `json:"applicant_id" db:"applicant_id"`
+	IssuerID         *uuid.UUID      `json:"issuer_id" db:"issuer_id"`
+
+	// 收件信息
+	RecipientName    *string         `json:"recipient_name" db:"recipient_name"`
+	RecipientPhone   *string         `json:"recipient_phone" db:"recipient_phone"`
+	RecipientAddress *string         `json:"recipient_address" db:"recipient_address"`
+
+	// 备注
+	Notes            *string         `json:"notes" db:"notes"`
+
+	// 时间戳
+	AppliedAt        time.Time       `json:"applied_at" db:"applied_at"`
+	IssuedAt         *time.Time      `json:"issued_at" db:"issued_at"`
+	SentAt           *time.Time      `json:"sent_at" db:"sent_at"`
+	ConfirmedAt      *time.Time      `json:"confirmed_at" db:"confirmed_at"`
+	CreatedAt        time.Time       `json:"created_at" db:"created_at"`
+	UpdatedAt        time.Time       `json:"updated_at" db:"updated_at"`
+}
+
+// SettlementOrder 结算订单模型
+type SettlementOrder struct {
+	ID                      uuid.UUID       `json:"id" db:"id"`
+	TenantID                uuid.UUID       `json:"tenant_id" db:"tenant_id"`
+	CustomerID              uuid.UUID       `json:"customer_id" db:"customer_id"`
+
+	// 订单编号
+	OrderNumber             string          `json:"order_number" db:"order_number"`
+
+	// 结算信息
+	SettlementPeriodStart   time.Time       `json:"settlement_period_start" db:"settlement_period_start"`
+	SettlementPeriodEnd     time.Time       `json:"settlement_period_end" db:"settlement_period_end"`
+	TotalAmount             decimal.Decimal `json:"total_amount" db:"total_amount"`
+	SettledAmount           decimal.Decimal `json:"settled_amount" db:"settled_amount"`
+	OutstandingAmount       decimal.Decimal `json:"outstanding_amount" db:"outstanding_amount"`
+
+	// 关联的充值订单
+	RelatedRechargeOrders   JSONBArray      `json:"related_recharge_orders" db:"related_recharge_orders"`
+
+	// 结算状态
+	Status                  string          `json:"status" db:"status"` // pending, reviewing, approved, rejected, settled, cancelled
+
+	// 审批信息
+	ReviewerID              *uuid.UUID      `json:"reviewer_id" db:"reviewer_id"`
+	ReviewedAt              *time.Time      `json:"reviewed_at" db:"reviewed_at"`
+	ReviewNotes             *string         `json:"review_notes" db:"review_notes"`
+
+	// 结算完成信息
+	SettlerID               *uuid.UUID      `json:"settler_id" db:"settler_id"`
+	SettledAt               *time.Time      `json:"settled_at" db:"settled_at"`
+	SettlementNotes         *string         `json:"settlement_notes" db:"settlement_notes"`
+
+	// 附件
+	AttachmentURL           *string         `json:"attachment_url" db:"attachment_url"`
+	AttachmentName          *string         `json:"attachment_name" db:"attachment_name"`
+
+	// 备注
+	Notes                   *string         `json:"notes" db:"notes"`
+
+	// 时间戳
+	CreatedAt               time.Time       `json:"created_at" db:"created_at"`
+	UpdatedAt               time.Time       `json:"updated_at" db:"updated_at"`
+	CreatedBy               *uuid.UUID      `json:"created_by" db:"created_by"`
+}
+
+// CustomForm 自定义表单模型
+type CustomForm struct {
+	ID                 uuid.UUID              `json:"id" db:"id"`
+	TenantID           uuid.UUID              `json:"tenant_id" db:"tenant_id"`
+
+	// 表单基本信息
+	Name               string                 `json:"name" db:"name"`
+	Code               string                 `json:"code" db:"code"`
+	Description        *string                `json:"description" db:"description"`
+	Category           *string                `json:"category" db:"category"`
+
+	// 表单配置
+	Config             map[string]interface{} `json:"config" db:"config"`
+
+	// 状态
+	Status             string                 `json:"status" db:"status"` // draft, active, archived
+	IsTemplate         bool                   `json:"is_template" db:"is_template"`
+
+	// 权限控制
+	AllowedRoles       JSONBArray             `json:"allowed_roles" db:"allowed_roles"`
+	AllowedDepartments JSONBArray             `json:"allowed_departments" db:"allowed_departments"`
+
+	// 创建和更新信息
+	CreatedBy          *uuid.UUID             `json:"created_by" db:"created_by"`
+	UpdatedBy          *uuid.UUID             `json:"updated_by" db:"updated_by"`
+	CreatedAt          time.Time              `json:"created_at" db:"created_at"`
+	UpdatedAt          time.Time              `json:"updated_at" db:"updated_at"`
+}
+
+// FormField 表单字段模型
+type FormField struct {
+	ID               uuid.UUID              `json:"id" db:"id"`
+	FormID           uuid.UUID              `json:"form_id" db:"form_id"`
+
+	// 字段基本信息
+	FieldName        string                 `json:"field_name" db:"field_name"`
+	FieldLabel       string                 `json:"field_label" db:"field_label"`
+	FieldType        string                 `json:"field_type" db:"field_type"`
+
+	// 字段配置
+	Placeholder      *string                `json:"placeholder" db:"placeholder"`
+	DefaultValue     *string                `json:"default_value" db:"default_value"`
+	Options          JSONBArray             `json:"options" db:"options"`
+	ValidationRules  map[string]interface{} `json:"validation_rules" db:"validation_rules"`
+
+	// 显示配置
+	DisplayOrder     int                    `json:"display_order" db:"display_order"`
+	IsRequired       bool                   `json:"is_required" db:"is_required"`
+	IsVisible        bool                   `json:"is_visible" db:"is_visible"`
+	IsReadonly       bool                   `json:"is_readonly" db:"is_readonly"`
+	Width            string                 `json:"width" db:"width"`
+
+	// 高级配置
+	DependsOn        JSONBArray             `json:"depends_on" db:"depends_on"`
+	HelpText         *string                `json:"help_text" db:"help_text"`
+	ErrorMessage     *string                `json:"error_message" db:"error_message"`
+
+	CreatedAt        time.Time              `json:"created_at" db:"created_at"`
+	UpdatedAt        time.Time              `json:"updated_at" db:"updated_at"`
+}
+
+// FormSubmission 表单提交记录模型
+type FormSubmission struct {
+	ID             uuid.UUID              `json:"id" db:"id"`
+	FormID         uuid.UUID              `json:"form_id" db:"form_id"`
+	TenantID       uuid.UUID              `json:"tenant_id" db:"tenant_id"`
+
+	// 提交数据
+	SubmissionData map[string]interface{} `json:"submission_data" db:"submission_data"`
+
+	// 关联对象
+	RelatedType    *string                `json:"related_type" db:"related_type"`
+	RelatedID      *uuid.UUID             `json:"related_id" db:"related_id"`
+
+	// 状态
+	Status         string                 `json:"status" db:"status"` // submitted, reviewing, approved, rejected
+
+	// 审核信息
+	ReviewerID     *uuid.UUID             `json:"reviewer_id" db:"reviewer_id"`
+	ReviewedAt     *time.Time             `json:"reviewed_at" db:"reviewed_at"`
+	ReviewNotes    *string                `json:"review_notes" db:"review_notes"`
+
+	// 提交信息
+	SubmittedBy    *uuid.UUID             `json:"submitted_by" db:"submitted_by"`
+	SubmittedAt    time.Time              `json:"submitted_at" db:"submitted_at"`
+
+	// IP和用户代理
+	IPAddress      *string                `json:"ip_address" db:"ip_address"`
+	UserAgent      *string                `json:"user_agent" db:"user_agent"`
+
+	CreatedAt      time.Time              `json:"created_at" db:"created_at"`
+	UpdatedAt      time.Time              `json:"updated_at" db:"updated_at"`
+}
+
+// FormSubmissionFile 表单提交附件模型
+type FormSubmissionFile struct {
+	ID           uuid.UUID `json:"id" db:"id"`
+	SubmissionID uuid.UUID `json:"submission_id" db:"submission_id"`
+	FieldName    string    `json:"field_name" db:"field_name"`
+
+	// 文件信息
+	FileURL      string    `json:"file_url" db:"file_url"`
+	FileName     string    `json:"file_name" db:"file_name"`
+	FileSize     *int64    `json:"file_size" db:"file_size"`
+	MimeType     *string   `json:"mime_type" db:"mime_type"`
+
+	UploadedAt   time.Time `json:"uploaded_at" db:"uploaded_at"`
+}
+
+// JSONBArray 用于处理JSONB数组类型
+type JSONBArray []uuid.UUID
+
+// Scan implements the sql.Scanner interface
+func (j *JSONBArray) Scan(value interface{}) error {
+	if value == nil {
+		*j = JSONBArray{}
+		return nil
+	}
+	bytes, ok := value.([]byte)
+	if !ok {
+		return json.Unmarshal([]byte(value.(string)), j)
+	}
+	return json.Unmarshal(bytes, j)
+}
+
+// Value implements the driver.Valuer interface
+func (j JSONBArray) Value() (driver.Value, error) {
+	if len(j) == 0 {
+		return []byte("[]"), nil
+	}
+	return json.Marshal(j)
 }
